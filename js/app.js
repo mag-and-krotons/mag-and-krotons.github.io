@@ -4,147 +4,9 @@
  */
 
 // --- Research Papers Data ---
-const RESEARCH_PAPERS = [
-  {
-    id: "q-error-mitigation-2026",
-    title: "Fault-Tolerant Quantum Error Mitigation in NISQ Systems via Continuous Dynamical Decoupling",
-    authors: "<strong>Abhijit Singh</strong>, Elena Vance, Marcus Thorne",
-    venue: "Physical Review Letters (PRL), Vol. 136, 040502",
-    year: "2026",
-    category: "quantum-computing",
-    doi: "10.1103/PhysRevLett.136.040502",
-    arxiv: "arXiv:2603.08412",
-    pdf: "papers/quantum-error-mitigation.pdf",
-    github: "https://github.com/abhijitsingh/quantum-error-mitigation",
-    license: "CC-BY 4.0",
-    licenseType: "open-access",
-    abstract: "We introduce a non-perturbative mathematical framework for continuous dynamical decoupling that suppresses correlated 1/f phase noise in multi-qubit transmon processors without requiring prohibitive Trotter step overheads. Exact Lie-algebraic bounds are derived for high-frequency Hamiltonian engineering.",
-    bibtex: `@article{singh2026fault,
-  title={Fault-Tolerant Quantum Error Mitigation in NISQ Systems via Continuous Dynamical Decoupling},
-  author={Singh, Abhijit and Vance, Elena and Thorne, Marcus},
-  journal={Physical Review Letters},
-  volume={136},
-  number={4},
-  pages={040502},
-  year={2026},
-  publisher={APS},
-  doi={10.1103/PhysRevLett.136.040502},
-  license={CC-BY-4.0}
-}`
-  },
-  {
-    id: "topo-anyons-2025",
-    title: "Non-Abelian Anyons & Topological Invariants in 2D Non-Commutative Manifolds",
-    authors: "<strong>Abhijit Singh</strong>, Sophia Kovalevsky",
-    venue: "Journal of High Energy Physics & Geometry (JHEP)",
-    year: "2025",
-    category: "topology",
-    doi: "10.1007/JHEP2025.09.114",
-    arxiv: "arXiv:2509.09114",
-    pdf: "papers/topological-quantum-invariants.pdf",
-    github: "https://github.com/abhijitsingh/topological-anyons-sim",
-    license: "CC-BY 4.0",
-    licenseType: "open-access",
-    abstract: "We investigate Fibonacci anyonic braid group representations on higher-genus Riemann surfaces with non-commutative geometry. Using Chern-Simons gauge theories and K-theory invariants, we prove universal quantum computation robustness against local topological defects.",
-    bibtex: `@article{singh2025nonabelian,
-  title={Non-Abelian Anyons & Topological Invariants in 2D Non-Commutative Manifolds},
-  author={Singh, Abhijit and Kovalevsky, Sophia},
-  journal={Journal of High Energy Physics},
-  year={2025},
-  doi={10.1007/JHEP2025.09.114},
-  license={CC-BY-4.0}
-}`
-  },
-  {
-    id: "tensor-mps-2025",
-    title: "Matrix Product States for Strongly Correlated Quantum Hamiltonians in 2D Lattices",
-    authors: "<strong>Abhijit Singh</strong>, David Bohm, Chen Ning",
-    venue: "Annals of Mathematics & Quantum Foundations",
-    year: "2025",
-    category: "math-physics",
-    doi: "10.1016/j.amqf.2025.02.019",
-    arxiv: "arXiv:2502.02019",
-    pdf: "papers/tensor-network-hamiltonians.pdf",
-    github: "https://github.com/abhijitsingh/tensor-hamiltonian-solver",
-    license: "MIT License",
-    licenseType: "software-paper",
-    abstract: "A variational tensor network renormalization algorithm is constructed for chiral spin liquids. The method achieves spectral gap convergence with bond dimension D=2048, circumventing negative sign problems in Monte Carlo calculations.",
-    bibtex: `@article{singh2025mps,
-  title={Matrix Product States for Strongly Correlated Quantum Hamiltonians in 2D Lattices},
-  author={Singh, Abhijit and Bohm, David and Ning, Chen},
-  journal={Annals of Mathematics and Quantum Foundations},
-  year={2025},
-  license={MIT}
-}`
-  },
-  {
-    id: "quantum-chaos-2024",
-    title: "Spectral Form Factors and Out-of-Time-Order Correlators in Random Unitary Circuits",
-    authors: "<strong>Abhijit Singh</strong>, Julian S.",
-    venue: "Communications in Mathematical Physics",
-    year: "2024",
-    category: "math-physics",
-    doi: "10.1007/s00220-024-05118-2",
-    arxiv: "arXiv:2407.03921",
-    pdf: "papers/quantum-error-mitigation.pdf",
-    github: "https://github.com/abhijitsingh/otoc-quantum-chaos",
-    license: "CC-BY 4.0",
-    licenseType: "open-access",
-    abstract: "We prove exact asymptotic formulas for the ramp and plateau of the spectral form factor in Haar-random Floquet quantum circuits, establishing direct correspondence with random matrix Gaussian Unitary Ensembles (GUE).",
-    bibtex: `@article{singh2024chaos,
-  title={Spectral Form Factors and Out-of-Time-Order Correlators in Random Unitary Circuits},
-  author={Singh, Abhijit and Julian, S.},
-  journal={Communications in Mathematical Physics},
-  year={2024},
-  doi={10.1007/s00220-024-05118-2},
-  license={CC-BY-4.0}
-}`
-  }
-];
+const RESEARCH_PAPERS = [];
 
-// Curated Fallback Research Repositories
-const DEMO_REPOSITORIES = [
-  {
-    name: "quantum-error-mitigation",
-    description: "High-performance Python & C++ library for continuous dynamical decoupling and stabilizer error mitigation on Qiskit & Cirq.",
-    html_url: "https://github.com/abhijitsingh/quantum-error-mitigation",
-    language: "Python",
-    langColor: "#3572A5",
-    stargazers_count: 142,
-    forks_count: 38,
-    license: "MIT"
-  },
-  {
-    name: "topological-anyons-sim",
-    description: "Interactive Mathematica and Julia computational framework for topological braiding matrices and Fibonacci anyons.",
-    html_url: "https://github.com/abhijitsingh/topological-anyons-sim",
-    language: "Julia",
-    langColor: "#a270ba",
-    stargazers_count: 98,
-    forks_count: 19,
-    license: "Apache-2.0"
-  },
-  {
-    name: "tensor-hamiltonian-solver",
-    description: "High-throughput Matrix Product State (MPS) and PEPS tensor network contraction algorithms with GPU CUDA acceleration.",
-    html_url: "https://github.com/abhijitsingh/tensor-hamiltonian-solver",
-    language: "C++",
-    langColor: "#f34b7d",
-    stargazers_count: 215,
-    forks_count: 54,
-    license: "GPL-3.0"
-  },
-  {
-    name: "q-circuit-visualizer-80s",
-    description: "Ultra-modern synthwave web visualizer for multi-qubit entanglement verification and Bell inequalities.",
-    html_url: "https://github.com/abhijitsingh/q-circuit-visualizer-80s",
-    language: "JavaScript",
-    langColor: "#f1e05a",
-    stargazers_count: 87,
-    forks_count: 22,
-    license: "MIT"
-  }
-];
+const DEMO_REPOSITORIES = [];
 
 // --- 80s Perspective Canvas & Quantum Particles Animation ---
 function initBackgroundCanvas() {
@@ -464,7 +326,7 @@ function renderPapers(filterTag = "all") {
     ? RESEARCH_PAPERS 
     : RESEARCH_PAPERS.filter(p => p.category === filterTag);
 
-  container.innerHTML = filtered.map(paper => `
+  container.innerHTML = filtered.length > 0 ? filtered.map(paper => `
     <article class="paper-card" data-id="${paper.id}">
       <div class="paper-meta-row">
         <span class="paper-year">${paper.year}</span>
@@ -502,7 +364,7 @@ function renderPapers(filterTag = "all") {
         </button>
       </div>
     </article>
-  `).join("");
+  `).join("") : '<p style="color: var(--text-muted);">No papers added yet. Customize your data in js/app.js.</p>';
 
   // Attach BibTeX modal triggers
   document.querySelectorAll(".bibtex-trigger").forEach(btn => {
