@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Abhijit Singh | Quantum Computing, Topology & Mathematics</title>
+  <meta name="description" content="Academic research portfolio, publications, preprints, and open-source quantum computational physics by Abhijit Singh.">
+  <meta name="keywords" content="Quantum Computing, Topological Quantum Computing, Mathematical Physics, Tensor Networks, Research Papers">
+
+  <!-- Google Fonts: Orbitron for 80s display, Outfit for headings, Inter for reading, JetBrains Mono for math -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Orbitron:wght@600;700;800;900&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <!-- KaTeX for High-Fidelity Mathematical Typography -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+
+  <!-- Custom Retro Synthwave & Quantum Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Dynamic 80s Perspective Canvas & Quantum Probability Particles -->
+  <canvas id="quantum-canvas"></canvas>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="#hero" class="brand-link">
+        <img src="assets/avatar.jpg" alt="Quantum Synthwave Badge" class="brand-avatar">
+        <div class="brand-text">
+          <span class="brand-title">ABHIJIT SINGH</span>
+          <span class="brand-subtitle">QUANTUM &bull; MATH &bull; CODE</span>
+        </div>
+      </a>
+
+      <nav>
+        <ul class="nav-menu">
+          <li><a href="#advisor" class="nav-link">Hosting Analysis</a></li>
+          <li><a href="#papers" class="nav-link">Papers & Preprints</a></li>
+          <li><a href="#lab" class="nav-link">Quantum Lab</a></li>
+          <li><a href="#github" class="nav-link">GitHub Repos</a></li>
+          <li><a href="#licensing" class="nav-link">Open Science & Licenses</a></li>
+          <li><a href="#about" class="nav-link">About</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <button id="vibe-toggle" class="vibe-toggle-btn" title="Toggle 80s CRT Scanline Mode">
+          <span>🕹️ 80s CRT: OFF</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section id="hero" class="hero-section">
+      <div class="container hero-grid">
+        <div class="hero-content">
+          <div class="hero-badge-tag">
+            <span class="pulse-dot"></span>
+            <span>RESEARCH LAB &bull; THEORETICAL PHYSICS</span>
+          </div>
+          <h1 class="hero-title">
+            <span class="neon-gradient-text">QUANTUM LOGIC,</span><br>
+            TOPOLOGY & FORMAL PROOFS
+          </h1>
+          <p class="hero-description">
+            Investigating non-Abelian anyons, continuous dynamical decoupling in quantum error mitigation, and tensor network states for strongly correlated matter. Open access research with verifiable code.
+          </p>
+
+          <div class="hero-cta-group">
+            <a href="#papers" class="btn-primary">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+              Explore Papers
+            </a>
+            <a href="#lab" class="btn-secondary">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
+              Quantum Bloch Lab
+            </a>
+            <a href="#github" class="btn-github">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+              GitHub Sync
+            </a>
+          </div>
+
+          <div class="metrics-row">
+            <div class="metric-item">
+              <span class="metric-number">14</span>
+              <span class="metric-label">Publications</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-number">1,280+</span>
+              <span class="metric-label">Citations</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-number">100%</span>
+              <span class="metric-label">Open Science (CC-BY)</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-number">8</span>
+              <span class="metric-label">Open Source Repos</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual-card">
+          <img src="assets/banner.jpg" alt="80s Synthwave Quantum Horizon and Bloch Sphere" class="hero-banner-img">
+          <div class="hero-card-overlay">
+            <div class="equation-preview-strip">
+              <span>$i\hbar \frac{\partial}{\partial t}|\Psi(t)\rangle = \hat{H}|\Psi(t)\rangle$</span>
+              <span style="color: var(--neon-magenta); font-size: 0.75rem;">SCHRÖDINGER DYNAMICS</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Hosting & Architecture Advisory Banner (Answers user's question directly) -->
+    <section id="advisor" class="container">
+      <div class="advisor-banner">
+        <div class="advisor-header">
+          <div>
+            <h3 style="font-family: var(--font-display); font-size: 1.25rem; color: #fff;">
+              Platform Recommendation: WordPress.org vs. Modern Static Architecture
+            </h3>
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.2rem;">
+              You asked if <strong>WordPress.org</strong> is good for hosting research papers, LaTeX math, and connecting GitHub. Here is our direct evaluation:
+            </p>
+          </div>
+          <span class="advisor-badge">Architectural Verdict</span>
+        </div>
+
+        <div class="advisor-grid">
+          <div class="comparison-box">
+            <h4 class="comparison-title" style="color: #ff5c77;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+              WordPress.org (Suboptimal for Academic Research)
+            </h4>
+            <ul class="comparison-list">
+              <li>❌ <strong>Requires Server & DB Hosting</strong>: Needs monthly paid hosting (Bluehost, DigitalOcean) with PHP & MySQL management.</li>
+              <li>❌ <strong>Fragile LaTeX & Math Formatting</strong>: KaTeX / MathJax plugins frequently break on core updates and slow down page rendering.</li>
+              <li>❌ <strong>Poor GitHub Ergonomics</strong>: Syncing code repos, stars, or version tags requires heavy, clunky plugins.</li>
+              <li>❌ <strong>Security Overhead</strong>: WordPress sites are prime targets for automated bots; require constant patch updates.</li>
+              <li>❌ <strong>Limited Aesthetic Freedom</strong>: Bloated corporate templates, hard to build bespoke 80s neon/synthwave visuals.</li>
+            </ul>
+          </div>
+
+          <div class="comparison-box recommended">
+            <h4 class="comparison-title" style="color: var(--neon-cyan);">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              Static Jamstack + GitHub Pages / Cloudflare Pages (Recommended!)
+            </h4>
+            <ul class="comparison-list">
+              <li>✅ <strong>100% Free Forever</strong>: Zero hosting costs on GitHub Pages or Cloudflare Pages CDN with free SSL/HTTPS.</li>
+              <li>✅ <strong>Native GitHub Ecosystem</strong>: Directly link or embed repos, releases, and automatically build/deploy with <code>git push</code>.</li>
+              <li>✅ <strong>Blazing LaTeX / KaTeX Performance</strong>: Instant sub-millisecond math rendering directly in browser client.</li>
+              <li>✅ <strong>Paper & License Management</strong>: Host PDFs directly in the git repository with exact versioning and Open Access licenses.</li>
+              <li>✅ <strong>Unconstrained Visual Aesthetics</strong>: Full control over 80s neon synthwave styling, animations, and custom interactive labs.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Quantum Lab / Simulator -->
+    <section id="lab" class="quantum-lab-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Interactive Simulation</span>
+          <h2 class="section-title">Quantum Bloch Sphere & Superposition Lab</h2>
+          <p class="section-desc">
+            Adjust the quantum state angles $\theta$ and $\phi$ to visualize pure qubit state evolution $|\psi\rangle$ on the Bloch sphere, or trigger Born-rule projective measurement.
+          </p>
+        </div>
+
+        <div class="lab-panel">
+          <!-- Canvas Visualizer -->
+          <div class="lab-canvas-container">
+            <canvas id="bloch-canvas" width="280" height="280"></canvas>
+            <div style="margin-top: 1rem; font-family: var(--font-mono); font-size: 0.78rem; color: var(--neon-amber);">
+              3D PERSPECTIVE BLOCH SPHERE // REAL-TIME RENDER
+            </div>
+          </div>
+
+          <!-- Controls & Math -->
+          <div class="lab-controls">
+            <div class="lab-formula-display" id="quantum-formula">
+              $$|\psi\rangle = \cos\frac{\theta}{2}|0\rangle + e^{i\phi}\sin\frac{\theta}{2}|1\rangle$$
+            </div>
+
+            <div class="slider-group">
+              <div class="slider-label">
+                <span>Polar Angle ($\theta$): Superposition</span>
+                <span id="theta-val">60°</span>
+              </div>
+              <input type="range" id="theta-slider" class="neon-slider" min="0" max="180" value="60">
+            </div>
+
+            <div class="slider-group">
+              <div class="slider-label">
+                <span>Azimuthal Phase ($\phi$): Quantum Phase</span>
+                <span id="phi-val">45°</span>
+              </div>
+              <input type="range" id="phi-slider" class="neon-slider" min="0" max="360" value="45">
+            </div>
+
+            <div class="probability-bars">
+              <div class="prob-item">
+                <div class="prob-header">
+                  <span style="color: var(--neon-cyan);">Probability P(|0⟩)</span>
+                  <span id="prob-0-text" style="color: var(--neon-cyan);">75.0%</span>
+                </div>
+                <div class="prob-track">
+                  <div id="prob-fill-0" class="prob-fill-0" style="width: 75%;"></div>
+                </div>
+              </div>
+
+              <div class="prob-item">
+                <div class="prob-header">
+                  <span style="color: var(--neon-magenta);">Probability P(|1⟩)</span>
+                  <span id="prob-1-text" style="color: var(--neon-magenta);">25.0%</span>
+                </div>
+                <div class="prob-track">
+                  <div id="prob-fill-1" class="prob-fill-1" style="width: 25%;"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="lab-btn-group">
+              <button id="measure-btn" class="btn-primary" style="flex: 1;">
+                ⚡ Measure State (Collapse)
+              </button>
+              <button id="reset-btn" class="btn-secondary">
+                Reset to |+⟩
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Research Papers & Preprints Section -->
+    <section id="papers" class="papers-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Academic Archive</span>
+          <h2 class="section-title">Research Papers & Preprints</h2>
+          <p class="section-desc">
+            Peer-reviewed journal publications, conference proceedings, and arXiv preprints. All papers include open licenses, BibTeX citations, and direct code links.
+          </p>
+        </div>
+
+        <div class="filter-bar">
+          <button class="filter-btn active" data-category="all">All Topics</button>
+          <button class="filter-btn" data-category="quantum-computing">Quantum Computing</button>
+          <button class="filter-btn" data-category="topology">Topology & Anyons</button>
+          <button class="filter-btn" data-category="math-physics">Mathematical Physics</button>
+        </div>
+
+        <div id="papers-container" class="papers-list">
+          <!-- Dynamically populated via js/app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- GitHub Repositories Connector Section -->
+    <section id="github" class="github-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Code Repositories</span>
+          <h2 class="section-title">Open Source Quantum Software & Code</h2>
+          <p class="section-desc">
+            Directly connected to GitHub. Enter any GitHub username to live-sync and preview your active research codebases.
+          </p>
+        </div>
+
+        <div class="github-controls-card">
+          <div class="github-input-group">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--neon-cyan)" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            <input type="text" id="github-username-input" class="github-input" value="abhijitsingh" placeholder="Enter GitHub username (e.g. abhijitsingh)">
+            <button id="github-sync-btn" class="btn-secondary" style="padding: 0.6rem 1.1rem; font-size: 0.82rem;">
+              Sync Repos
+            </button>
+          </div>
+          <div id="github-status" style="font-family: var(--font-mono); font-size: 0.82rem;">
+            Ready to fetch GitHub API
+          </div>
+        </div>
+
+        <div id="repos-grid" class="repos-grid">
+          <!-- Dynamically populated via js/app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Licensing & Open Science Suite -->
+    <section id="licensing" class="license-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Legal & Attribution Facility</span>
+          <h2 class="section-title">Open Science Licensing & Metadata Generator</h2>
+          <p class="section-desc">
+            Attach standardized, machine-readable open licenses to your research papers, preprints, datasets, and computational simulation code.
+          </p>
+        </div>
+
+        <div class="license-box">
+          <div class="license-intro">
+            <h3 style="font-family: var(--font-display); font-size: 1.15rem; color: #fff; margin-bottom: 0.5rem;">
+              Select License Standard
+            </h3>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">
+              Click a license to generate ready-to-copy Markdown badges, LaTeX paper header notices, and BibTeX fields.
+            </p>
+          </div>
+
+          <div class="license-selector-grid">
+            <div class="license-option-card selected" data-license="cc-by-4">
+              <h4>
+                <span>CC BY 4.0</span>
+                <span style="color: var(--neon-emerald); font-size: 0.75rem;">PAPERS</span>
+              </h4>
+              <p>Creative Commons Attribution 4.0 International. Standard for open-access papers and preprints.</p>
+            </div>
+
+            <div class="license-option-card" data-license="mit">
+              <h4>
+                <span>MIT License</span>
+                <span style="color: var(--neon-amber); font-size: 0.75rem;">CODE</span>
+              </h4>
+              <p>Permissive open source software license for research algorithms, Qiskit scripts, and solvers.</p>
+            </div>
+
+            <div class="license-option-card" data-license="apache-2">
+              <h4>
+                <span>Apache 2.0</span>
+                <span style="color: var(--neon-blue); font-size: 0.75rem;">SOFTWARE</span>
+              </h4>
+              <p>Permissive license with explicit patent protection grants for deep-tech quantum libraries.</p>
+            </div>
+
+            <div class="license-option-card" data-license="cc0">
+              <h4>
+                <span>CC0 1.0 Universal</span>
+                <span style="color: var(--neon-magenta); font-size: 0.75rem;">DATASETS</span>
+              </h4>
+              <p>Public domain dedication for quantum benchmarking datasets, raw spectra, and measurement logs.</p>
+            </div>
+          </div>
+
+          <div class="license-generator-output">
+            <button id="copy-license-btn" class="copy-btn">Copy Snippet</button>
+            <pre class="code-output" id="license-code-output"></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Researcher Section -->
+    <section id="about" class="container" style="padding: 4rem 0;">
+      <div class="lab-panel" style="grid-template-columns: 0.8fr 1.2fr; align-items: center;">
+        <div style="text-align: center;">
+          <img src="assets/avatar.jpg" alt="Abhijit Singh Avatar Badge" style="width: 220px; height: 220px; border-radius: 50%; border: 3px solid var(--neon-cyan); box-shadow: var(--glow-cyan-lg); margin-bottom: 1.5rem;">
+          <h3 style="font-family: var(--font-display); font-size: 1.3rem; color: #fff;">Dr. Abhijit Singh</h3>
+          <p style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--neon-magenta);">Theoretical Quantum Physicist</p>
+          <p style="font-size: 0.82rem; color: var(--text-dim); margin-top: 0.4rem;">Institute for Advanced Quantum Studies</p>
+        </div>
+
+        <div>
+          <span class="section-tag">Biography & Focus</span>
+          <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin-bottom: 1rem; color: #fff;">
+            Research Philosophy
+          </h2>
+          <p style="color: var(--text-muted); font-size: 0.98rem; line-height: 1.7; margin-bottom: 1.2rem;">
+            My research operates at the nexus of quantum information theory, non-commutative geometry, and many-body Hamiltonian dynamics. I am committed to <strong>open, reproducible computational science</strong>—every theoretical claim published here is accompanied by verifiable GitHub code repositories, open licenses, and complete numerical derivations.
+          </p>
+
+          <div style="background: rgba(10, 8, 25, 0.7); border: 1px solid var(--border-subtle); padding: 1rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem; font-family: var(--font-mono); font-size: 0.88rem; color: var(--neon-cyan);">
+            Active Topics: Topological Quantum Codes &bull; Continuous Dynamical Decoupling &bull; Tensor Networks &bull; Quantum Complexity
+          </div>
+
+          <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+            <a href="papers/quantum-error-mitigation.pdf" download class="btn-primary" style="font-size: 0.82rem; padding: 0.6rem 1.2rem;">
+              Download Curriculum Vitae (PDF)
+            </a>
+            <a href="https://orcid.org" target="_blank" class="btn-secondary" style="font-size: 0.82rem; padding: 0.6rem 1.2rem;">
+              ORCID: 0000-0002-XXXX-XXXX
+            </a>
+            <a href="https://scholar.google.com" target="_blank" class="btn-github" style="font-size: 0.82rem; padding: 0.6rem 1.2rem;">
+              Google Scholar
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.8rem;">
+            <img src="assets/avatar.jpg" alt="Logo" style="width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--neon-cyan);">
+            <h5 style="margin: 0; font-size: 1.1rem; color: #fff;">Abhijit Singh Research Lab</h5>
+          </div>
+          <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; max-width: 480px;">
+            Exploring the frontiers of quantum mathematics and computational physics. Built with modern static architecture, zero-cost cloud hosting, and an 80s cyber-synthwave aesthetic.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h5>Quick Links</h5>
+          <ul class="footer-links">
+            <li><a href="#papers">Research Papers</a></li>
+            <li><a href="#lab">Bloch Sphere Lab</a></li>
+            <li><a href="#github">GitHub Repositories</a></li>
+            <li><a href="#licensing">Open Science Licenses</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Standards & Hosting</h5>
+          <ul class="footer-links">
+            <li><a href="https://pages.github.com" target="_blank">Deploy on GitHub Pages</a></li>
+            <li><a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">CC BY 4.0 Standard</a></li>
+            <li><a href="https://arxiv.org" target="_blank">arXiv e-Print Archive</a></li>
+            <li><a href="https://qiskit.org" target="_blank">Qiskit Ecosystem</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 Abhijit Singh. Licensed under Creative Commons Attribution 4.0 International (CC BY 4.0). Code under MIT.</p>
+        <p style="margin-top: 0.35rem; color: var(--text-dim); font-size: 0.75rem;">
+          Synthesized with 80s Cyber-Quantum Aesthetics &bull; No trackers &bull; Fast static Jamstack architecture
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- BibTeX Citation Modal -->
+  <div id="bibtex-modal" class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">BibTeX Academic Citation</h3>
+        <button class="modal-close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p id="modal-paper-title" style="font-size: 0.9rem; color: var(--neon-cyan); margin-bottom: 1rem; font-family: var(--font-heading);"></p>
+        <div style="position: relative;">
+          <pre id="bibtex-code" class="code-output" style="background: #060515; padding: 1.2rem; border: 1px solid var(--border-glow); border-radius: var(--radius-sm);"></pre>
+        </div>
+        <div style="display: flex; justify-content: flex-end; margin-top: 1.25rem;">
+          <button id="copy-bibtex-btn" class="btn-primary" style="font-size: 0.85rem; padding: 0.5rem 1.2rem;">
+            Copy BibTeX to Clipboard
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- License Metadata Modal -->
+  <div id="license-modal" class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">License & Open Access Attribution</h3>
+        <button class="modal-close-btn">&times;</button>
+      </div>
+      <div class="modal-body" id="license-modal-content">
+        <!-- Injected via JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="app-toast" class="toast-notice"></div>
+
+  <!-- Core Application Script -->
+  <script src="js/app.js"></script>
+</body>
+</html>
