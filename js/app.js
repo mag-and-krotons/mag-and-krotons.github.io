@@ -631,7 +631,7 @@ function initGitHubConnector() {
   }
 
   // Initial load with default
-  fetchGitHubRepos("abhijitsingh");
+  fetchGitHubRepos("mag-and-krotons");
 }
 
 // --- Interactive License Generator Tool ---
