@@ -542,12 +542,12 @@
       <div id="cosmos-viewport-panel" class="visualizer-panel" style="display: none;">
           <div class="section-heading">
             <div class="heading-meta">
-              <span class="section-tag">36-NODE UNIVERSAL BUILDING BLOCKS &bull; 3D SPACETIME MATRIX</span>
-              <span class="section-count">1,000-SITE CELLULAR COSMOS &bull; C3 ⋊ Z2 DIHEDRAL SYMMETRY &bull; MULTI-SCALE COSMIC EMERGENCE</span>
+              <span class="section-tag">36-NODE STRING-QUANTUM CONTINUUM &bull; CONTINUOUS ℝ³ SPACETIME</span>
+              <span class="section-count">NO FIXED GRIDS &bull; NATIVE VIBRATION &bull; RESONANT VORTEX RELAYS &bull; C3 ⋊ Z2 SYMMETRY</span>
             </div>
-            <h2 class="section-title">The Game of Cosmos: 3D 36-Node Units &amp; Advancing Civilizations</h2>
+            <h2 class="section-title">The Game of Cosmos: Continuous 36-Node Complexes &amp; Advancing Civilizations</h2>
             <p class="section-desc">
-              The fundamental atom of space is the authentic <strong>36-node simplicial building block</strong> (6 layers &times; 6 nodes = 36 nodes, derived from Papers 08 &amp; 12: modulo 6 world of clocks with dihedral symmetry $C_3 \rtimes \mathbb{Z}_2$). Watch multi-scale cosmic emergence as applied frequency ($f$), entropy ($S$), and chiral phase twists ($\phi$) drive 36-node resonance to synthesize <strong>Fermions</strong>, <strong>Hadrons</strong>, <strong>Baryon nucleons</strong>, <strong>Hydrogen ($^1\text{H}$)</strong>, <strong>Helium ($^4\text{He}$)</strong>, <strong>Organic Elements ($^{12}\text{C}, ^{16}\text{O}, ^{56}\text{Fe}$)</strong>, <strong>Main Sequence Stars</strong>, <strong>Planetary Systems with Habitable Worlds</strong>, <strong>Living Biospheres</strong>, and <strong>Advancing Civilizations</strong> (Kardashev I/II with Circumstellar Dyson Swarms and Interstellar Laser Communication Networks), alongside <strong>Type II Supernovae</strong> and <strong>Schwarzschild Black Holes</strong> collapsed to the $d = 0.50$ square-root horizon.
+              Liberated from fixed grids, the spacetime continuum is populated by autonomous <strong>36-node string-quantum simplicial complexes</strong> (6 layers &times; 6 nodes = 36 nodes, dihedral symmetry $C_3 \rtimes \mathbb{Z}_2$, Papers 08 &amp; 12). Pervaded by the <strong>universal native vibration</strong> ($\omega_0 = 14.134725$, first Riemann zero $\gamma_1$), resonant vortex cores (middle layers 2 &amp; 3 around throat $d$) ignite and transmit carrier waves across space at exact phase angles ($0^\circ, 120^\circ, 180^\circ, 109.5^\circ$) without destroying the source. Quantum coherence ($L = \frac{1+2\cos\Delta\theta}{3}$, Paper 03) governs combining into molecules, dividing (mitosis under decoherence at the thirds), and organic self-replication—evolving from primordial fermions to <strong>Living Biospheres</strong> and <strong>Advancing Civilizations</strong> with circumstellar Dyson swarms and interstellar constellation lasers.
             </p>
           </div>
 
@@ -1426,8 +1426,8 @@
   <script src="js/blog.js?v=20261007_v6"></script>
   <!-- 36-Node 6D Fluid Manifold Simulation -->
   <script type="module" src="js/manifold.js?v=20261007_v11"></script>
-  <!-- The Game of Cosmos: 3D 36-Node Simplicial Units & Multi-Scale Cosmic Emergence Engine -->
-  <script type="module" src="js/cosmos.js?v=20261007_v13"></script>
+  <!-- The Game of Cosmos: Continuous 3D 36-Node String-Quantum Emergence Engine -->
+  <script type="module" src="js/cosmos.js?v=20261007_quantum_v16"></script>
 
   <!-- Global Visualizer Tab Switcher (Manifold vs Game of Cosmos) -->
   <script>
@@ -1462,8 +1462,10 @@
         }
         if (window.cosmosInstance) {
           window.cosmosInstance.isVisible = true;
-          requestAnimationFrame(() => window.cosmosInstance && window.cosmosInstance.onResize());
-          setTimeout(() => window.cosmosInstance && window.cosmosInstance.onResize(), 60);
+          if (typeof window.cosmosInstance.onResize === 'function') {
+            requestAnimationFrame(() => window.cosmosInstance.onResize());
+            setTimeout(() => window.cosmosInstance.onResize(), 60);
+          }
         }
         if (window.history && window.history.replaceState) {
           window.history.replaceState(null, null, '#cosmos');

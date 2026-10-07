@@ -269,15 +269,18 @@ export class GameOfCosmos {
     this.scaffoldGroup.visible = false;
 
     // Resize Handler
-    window.addEventListener('resize', () => {
-      if (!this.container) return;
-      const nw = this.container.clientWidth;
-      const nh = this.container.clientHeight;
-      this.camera.aspect = nw / nh;
-      this.camera.updateProjectionMatrix();
-      this.renderer.setSize(nw, nh);
-      if (this.composer) this.composer.setSize(nw, nh);
-    });
+    window.addEventListener('resize', () => this.onResize());
+  }
+
+  onResize() {
+    if (!this.container || !this.renderer || !this.camera) return;
+    const w = this.container.clientWidth;
+    const h = this.container.clientHeight || 560;
+    if (w <= 0 || h <= 0) return;
+    this.camera.aspect = w / h;
+    this.camera.updateProjectionMatrix();
+    this.renderer.setSize(w, h);
+    if (this.composer) this.composer.setSize(w, h);
   }
 
   // --------------------------------------------------------------------------
@@ -1727,6 +1730,10 @@ export class GameOfCosmos {
       this.renderer.render(this.scene, this.camera);
     }
   }
+}
+
+if (typeof window !== 'undefined') {
+  window.GameOfCosmos = GameOfCosmos;
 }
 
 // Auto-instantiate upon DOM ready
