@@ -371,13 +371,15 @@ function renderPapers() {
     `;
   }).join("");
 
-  triggerMathRendering();
+  triggerMathRendering(container);
 }
 
-function triggerMathRendering() {
+function triggerMathRendering(target = null) {
+  const el = target || document.body;
+  if (!el) return;
   if (window.renderMathInElement) {
     try {
-      renderMathInElement(document.getElementById("papers-container"), {
+      renderMathInElement(el, {
         delimiters: [
           { left: "$$", right: "$$", display: true },
           { left: "$", right: "$", display: false },
@@ -385,6 +387,7 @@ function triggerMathRendering() {
           { left: "\\[", right: "\\]", display: true }
         ],
         macros: KATEX_MACROS,
+        ignoredTags: ["script", "noscript", "style", "textarea", "pre", "code"],
         throwOnError: false
       });
     } catch (e) {
@@ -392,7 +395,7 @@ function triggerMathRendering() {
     }
   } else {
     // Retry once scripts finish initializing
-    setTimeout(triggerMathRendering, 80);
+    setTimeout(() => triggerMathRendering(el), 60);
   }
 }
 
@@ -881,5 +884,8 @@ document.addEventListener("DOMContentLoaded", () => {
   initGitHubRepos();
   initLicensingSuite();
   initModals();
-  setTimeout(initHeroFormulas, 150);
+  // Render math across the entire page (Hero, Lab, About/Scope focus cards, etc.)
+  triggerMathRendering(document.body);
+  setTimeout(initHeroFormulas, 100);
 });
+
