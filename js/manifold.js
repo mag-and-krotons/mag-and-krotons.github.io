@@ -41,7 +41,15 @@ class FluidManifoldSimulation {
     this.clock = new THREE.Clock();
     this.elapsed = 0;
 
-    // Spacetime Geodesics & Photon Beam Simulation
+    // Still Structure & Relativistic Gamma Wave State
+    this.isStill = false;
+    this.gammaWaveActive = false;
+    this.gammaWaveRadius = 0;
+    this.gammaWaveSpeed = 38.0;
+    this.gammaWaveMaxRadius = 65.0;
+    this.nodeExcitation = new Float32Array(36);
+
+    // Spacetime Geodesics & Photon Beam Simulation (General Relativistic Binet Null Geodesics)
     this.showPhotons = true;
     this.maxPhotons = 120;
     this.photons = [];
@@ -402,6 +410,9 @@ class FluidManifoldSimulation {
 
     // 7. Spacetime Photon Beam & Gravitational Lensing Stream
     this.initPhotonStream();
+
+    // 8. Relativistic Gamma Wave Packet Emitter
+    this.initGammaWave();
   }
 
   initEventHorizon() {
@@ -444,6 +455,138 @@ class FluidManifoldSimulation {
 
     this.eventHorizonGroup.visible = false;
     this.mainGroup.add(this.eventHorizonGroup);
+  }
+
+  // --------------------------------------------------------------------------
+  // Relativistic Gamma Wave & Still Structure Systems
+  // --------------------------------------------------------------------------
+  initGammaWave() {
+    this.gammaWaveGroup = new THREE.Group();
+
+    // 1. High-frequency spherical wave packet shell
+    const gwGeo = new THREE.SphereGeometry(1.0, 48, 32);
+    this.gwMat = new THREE.MeshBasicMaterial({
+      color: 0xf43f5e,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.85,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false
+    });
+    this.gwMesh = new THREE.Mesh(gwGeo, this.gwMat);
+    this.gammaWaveGroup.add(this.gwMesh);
+
+    // 2. Concentric planar wave ripple (Compton scattering disk in xz plane)
+    const ringGeo = new THREE.RingGeometry(0.92, 1.0, 64);
+    ringGeo.rotateX(Math.PI / 2);
+    this.gwRingMat = new THREE.MeshBasicMaterial({
+      color: 0x818cf8,
+      side: THREE.DoubleSide,
+      transparent: true,
+      opacity: 0.9,
+      blending: THREE.AdditiveBlending
+    });
+    this.gwRingMesh = new THREE.Mesh(ringGeo, this.gwRingMat);
+    this.gammaWaveGroup.add(this.gwRingMesh);
+
+    // 3. Inner high-frequency secondary shell
+    const innerGeo = new THREE.SphereGeometry(0.88, 36, 24);
+    this.gwInnerMat = new THREE.MeshBasicMaterial({
+      color: 0x38bdf8,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.7,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false
+    });
+    this.gwInnerMesh = new THREE.Mesh(innerGeo, this.gwInnerMat);
+    this.gammaWaveGroup.add(this.gwInnerMesh);
+
+    this.gammaWaveGroup.visible = false;
+    this.mainGroup.add(this.gammaWaveGroup);
+  }
+
+  toggleStill(force) {
+    this.isStill = (typeof force === 'boolean') ? force : !this.isStill;
+    const btn = document.getElementById('manifold-still-btn');
+    if (btn) {
+      btn.classList.toggle('active', this.isStill);
+      const span = btn.querySelector('span');
+      if (span) span.innerText = this.isStill ? 'Still: ON' : 'Still: OFF';
+    }
+    this.updateTelemetry();
+  }
+
+  emitGammaWave() {
+    this.gammaWaveActive = true;
+    this.gammaWaveRadius = 0.5;
+    this.nodeExcitation.fill(0);
+    this.gammaWaveGroup.visible = true;
+    const item = document.getElementById('telemetry-gamma-item');
+    if (item) item.style.display = 'flex';
+    const val = document.getElementById('telemetry-gamma-val');
+    if (val) {
+      val.innerText = 'RELATIVISTIC WAVE PACKET (v = c, f = 10²⁰ Hz, λ = 1.24 pm)';
+      val.style.color = '#f43f5e';
+    }
+  }
+
+  updateGammaWave(delta) {
+    // Exponential decay of vertex excitation flash
+    for (let i = 0; i < 36; i++) {
+      if (this.nodeExcitation[i] > 0) {
+        this.nodeExcitation[i] = Math.max(0, this.nodeExcitation[i] - delta * 2.8);
+      }
+    }
+
+    if (!this.gammaWaveActive) return;
+
+    this.gammaWaveRadius += this.gammaWaveSpeed * delta;
+    const rWave = this.gammaWaveRadius;
+    const maxR = this.gammaWaveMaxRadius;
+
+    if (rWave >= maxR) {
+      this.gammaWaveActive = false;
+      this.gammaWaveGroup.visible = false;
+      const val = document.getElementById('telemetry-gamma-val');
+      if (val) {
+        val.innerText = 'SCATTERED (Compton Attenuated)';
+        val.style.color = '#94a3b8';
+      }
+      return;
+    }
+
+    this.gwMesh.scale.setScalar(rWave);
+    this.gwRingMesh.scale.setScalar(rWave);
+    this.gwInnerMesh.scale.setScalar(rWave * 0.92);
+
+    const progress = rWave / maxR;
+    const alpha = Math.max(0, (1.0 - progress) * 0.9);
+    this.gwMat.opacity = alpha;
+    this.gwRingMat.opacity = alpha * 0.85;
+    this.gwInnerMat.opacity = alpha * 0.75;
+
+    // Detect wavefront crossing each of the 36 vertices (18 primary + 18 midpoints)
+    let nodeIdx = 0;
+    for (let l = 0; l < this.LAYERS; l++) {
+      for (let j = 0; j < 3; j++) {
+        // Primary vertex
+        const vPos = this.vertMeshes[l][j].position;
+        const dV = vPos.length();
+        if (Math.abs(dV - rWave) < 1.6 && this.nodeExcitation[nodeIdx] < 0.2) {
+          this.nodeExcitation[nodeIdx] = 1.0;
+        }
+        nodeIdx++;
+
+        // Midpoint
+        const mPos = this.midMeshes[l][j].position;
+        const dM = mPos.length();
+        if (Math.abs(dM - rWave) < 1.6 && this.nodeExcitation[nodeIdx] < 0.2) {
+          this.nodeExcitation[nodeIdx] = 1.0;
+        }
+        nodeIdx++;
+      }
+    }
   }
 
   initPhotonStream() {
@@ -528,10 +671,12 @@ class FluidManifoldSimulation {
     if (this.photonPoints) this.photonPoints.visible = true;
     if (this.photonLines) this.photonLines.visible = true;
 
-    // Critical 1/2 point collapse factor: d = 0.50 is the exact critical point
+    // Critical 1/2 point collapse factor: d = 0.50
+    // Schwarzschild radius r_s emerges at d -> 0.50
     const xi = Math.max(0.0, Math.min(1.0, 1.0 - (d - 0.50) / 1.5));
-    const rHorizon = 0.75 * xi;
-    const rPhotonSphere = 1.5 * rHorizon;
+    const rs = 0.85 * xi;
+    const rPhotonSphere = 1.5 * rs;
+    const bc = (3.0 * Math.sqrt(3.0) / 2.0) * rs; // Critical impact parameter ~ 2.598 rs
     const c = 16.0;
 
     // Update Event Horizon Group
@@ -544,9 +689,6 @@ class FluidManifoldSimulation {
         this.horizonAccretionRing.material.opacity = 0.5 + 0.4 * Math.sin(t * 4.0);
       }
     }
-
-    // Effective gravitational lensing mass surges as d -> 0.50
-    const M_eff = 2.0 + 88.0 * (xi * xi) * Math.pow(0.50 / Math.max(0.35, d), 2);
 
     const posAttr = this.photonPointsGeo.attributes.position;
     const colAttr = this.photonPointsGeo.attributes.color;
@@ -561,8 +703,8 @@ class FluidManifoldSimulation {
       ph.life += dt;
 
       if (ph.trapped) {
-        // Redshift and spiral into singularity
-        ph.pos.multiplyScalar(Math.max(0.0, 1.0 - dt * 6.0));
+        // Captured inside event horizon: null geodesics terminate at r = 0 singularity
+        ph.pos.multiplyScalar(Math.max(0.0, 1.0 - dt * 7.0));
         ph.alpha -= dt * 3.5;
         if (ph.alpha <= 0) {
           this.respawnPhoton(ph);
@@ -570,42 +712,52 @@ class FluidManifoldSimulation {
       } else {
         const r = ph.pos.length();
 
-        // Check Event Horizon Crossing
-        if (r <= rHorizon && xi > 0.12) {
+        // Check Event Horizon Crossing (r <= rs)
+        if (r <= rs && xi > 0.08) {
           ph.trapped = true;
           this.photonsTrappedTotal++;
-          ph.color.setRGB(0.98, 0.15, 0.05); // High-redshift dark crimson
+          ph.color.setRGB(0.85, 0.06, 0.06); // Infinite gravitational redshift -> dark crimson
         } else {
-          // Geodesic metric acceleration towards center (0,0,0)
-          const rCubed = Math.pow(r * r + 0.35, 1.5);
-          const accMag = M_eff / rCubed;
+          // Specific angular momentum L = |r x v|
+          const Lx = ph.pos.y * ph.vel.z - ph.pos.z * ph.vel.y;
+          const Ly = ph.pos.z * ph.vel.x - ph.pos.x * ph.vel.z;
+          const Lz = ph.pos.x * ph.vel.y - ph.pos.y * ph.vel.x;
+          const Lsq = Lx * Lx + Ly * Ly + Lz * Lz;
 
-          ph.vel.x -= ph.pos.x * accMag * dt;
-          ph.vel.y -= ph.pos.y * accMag * dt;
-          ph.vel.z -= ph.pos.z * accMag * dt;
+          // General Relativistic Binet Null Geodesic Acceleration:
+          // In Schwarzschild geometry: d²u/dφ² + u = (3/2) rs u² ==> a_null = - (3/2) * rs * L² / r⁵ * r
+          // (Photons have zero rest mass, curvature acts through null geodesic connection)
+          if (rs > 0.01 && r > 0.05) {
+            const r5 = Math.pow(r * r + 0.15, 2.5);
+            const accGeodesic = (1.5 * rs * Lsq) / r5;
 
-          // Frame dragging from fluid circulation Q
-          if (r < 7.0 && this.flowRate > 0.1) {
-            const dragCoeff = (0.28 * this.flowRate) / (r * r + 0.5);
-            ph.vel.z += ph.pos.x * dragCoeff * dt;
-            ph.vel.x -= ph.pos.z * dragCoeff * dt;
-          }
+            ph.vel.x -= ph.pos.x * accGeodesic * dt;
+            ph.vel.y -= ph.pos.y * accGeodesic * dt;
+            ph.vel.z -= ph.pos.z * accGeodesic * dt;
 
-          // Maintain photon speed = c
-          const curSpeed = ph.vel.length();
-          if (curSpeed > 0.001) {
-            ph.vel.multiplyScalar(c / curSpeed);
+            // Kerr metric frame-dragging / Lense-Thirring precession from circulation Q
+            if (this.flowRate > 0.1 && r < 8.0) {
+              const ltFactor = (0.35 * rs * this.flowRate) / Math.pow(r * r + 0.5, 1.5);
+              ph.vel.z += ph.pos.x * ltFactor * dt;
+              ph.vel.x -= ph.pos.z * ltFactor * dt;
+            }
+
+            // Photons always travel at constant speed c in local frames (ds² = 0)
+            const speed = ph.vel.length();
+            if (speed > 0.0001) {
+              ph.vel.multiplyScalar(c / speed);
+            }
           }
 
           ph.pos.addScaledVector(ph.vel, dt);
 
-          // Color transition based on gravitational field strength
-          if (r < rPhotonSphere && xi > 0.18) {
-            ph.color.setRGB(0.98, 0.65, 0.18); // Gold photon sphere lensing
-          } else if (xi > 0.25 && r < 3.2) {
-            ph.color.setRGB(0.35, 0.95, 0.75); // Lensing green-cyan
+          // Gravitational chromatic shift & photon sphere lensing
+          if (r < rPhotonSphere && xi > 0.15) {
+            ph.color.setRGB(0.98, 0.65, 0.18); // Gold photon sphere orbit
+          } else if (xi > 0.20 && r < bc + 0.8) {
+            ph.color.setRGB(0.35, 0.95, 0.75); // Relativistic deflection cyan-emerald
           } else {
-            ph.color.setRGB(0.22, 0.74, 0.97); // Laser cyan
+            ph.color.setRGB(0.22, 0.74, 0.97); // Laser sapphire
           }
 
           if (ph.pos.x > 26.0 || r > 35.0 || ph.life > 4.5) {
@@ -652,12 +804,14 @@ class FluidManifoldSimulation {
   // 4. Mathematical Wave Transmission & Emergence State Solver
   // --------------------------------------------------------------------------
   computeWaveState(t) {
+    const isStill = this.isStill;
+
     // Fundamental Wave Quantities
     const f = Math.max(0.01, this.frequency);
     const v = Math.max(0.1, this.velocity);
     const d = Math.max(0.5, this.distance);
-    const S = Math.max(0.0, this.entropy);
-    const kappa = this.coupling;
+    const S = isStill ? 0.0 : Math.max(0.0, this.entropy);
+    const kappa = isStill ? 0.0 : this.coupling;
 
     const omega = 2 * Math.PI * f;
     const lambda = v / f;
@@ -689,42 +843,41 @@ class FluidManifoldSimulation {
       const attenBwd = Math.exp(-dissipation * (totalHeight - Math.abs(z0)));
 
       // Superposition: real standing wave emerges when k*d matches harmonics!
-      const psiWave = Math.cos(phiFwd) * attenFwd + 0.85 * Math.cos(phiBwd) * attenBwd;
+      const psiWave = isStill ? 0.0 : (Math.cos(phiFwd) * attenFwd + 0.85 * Math.cos(phiBwd) * attenBwd);
 
       // Local mouse perturbation
       const distToMouseLayer = Math.abs(i - this.mouseLayerTarget);
-      const mouseDisplacement = Math.exp(-distToMouseLayer * 1.5) * this.mouseImpulse * 1.4;
+      const mouseDisplacement = isStill ? 0.0 : (Math.exp(-distToMouseLayer * 1.5) * this.mouseImpulse * 1.4);
 
       // Peristaltic vertical displacement
-      const yWave = (psiWave * 0.42 * (v / 4.4) + Math.cos(omega * 0.5 * t + i) * 0.15) + mouseDisplacement;
+      const yWave = isStill ? 0.0 : ((psiWave * 0.42 * (Math.min(v, 20.0) / 4.4) + Math.cos(omega * 0.5 * t + i) * 0.15) + mouseDisplacement);
       const y = z0 + yWave;
 
       // Constricted central throat nozzle profile (de Laval constriction at middle layers)
-      // When structure collapses to the 1/2 point (d -> 0.50), throat contracts towards event horizon!
       const xi = Math.max(0.0, Math.min(1.0, 1.0 - (d - 0.50) / 1.5));
       const throatFactor = (1.0 - 0.32 * Math.exp(- (z0 * z0) / (1.8 * d * d + 0.1)))
         * (1.0 - 0.58 * xi * Math.exp(- (z0 * z0) / (0.35 * d * d + 0.05)));
 
       // Radial wave undulation + breathing
-      const radialWave = 1.0 + psiWave * 0.22 * (1.0 / Math.max(0.18, throatFactor));
+      const radialWave = isStill ? 1.0 : (1.0 + psiWave * 0.22 * (1.0 / Math.max(0.18, throatFactor)));
       const r = this.R_BASE * throatFactor * radialWave;
 
       // Torsional Chiral Vortex Shear (coupled across layers via kappa)
       const chiralSign = isInv ? -1 : 1;
-      const chiralShear = chiralSign * kappa * Math.sin(omega * t - k * z0) * 0.45;
+      const chiralShear = isStill ? 0.0 : (chiralSign * kappa * Math.sin(omega * t - k * z0) * 0.45);
       const baseAngles = isInv ? [-Math.PI / 2, Math.PI / 6, 5 * Math.PI / 6] : [Math.PI / 2, 7 * Math.PI / 6, 11 * Math.PI / 6];
 
       // Multi-scale Entropy Phase Jitter (Kolmogorov turbulence when S is high)
-      const entropyJitterTheta = Math.sqrt(S) * (
+      const entropyJitterTheta = isStill ? 0.0 : (Math.sqrt(S) * (
         0.35 * Math.sin(2.3 * t + i * 1.4) +
         0.18 * Math.cos(4.7 * t - i * 2.1) +
         0.09 * Math.sin(8.1 * t + 3 * i)
-      );
+      ));
 
-      const entropyJitterR = Math.sqrt(S) * (
+      const entropyJitterR = isStill ? 0.0 : (Math.sqrt(S) * (
         0.28 * Math.sin(3.1 * t + i * 2.2) +
         0.12 * Math.cos(6.2 * t - i)
-      );
+      ));
 
       const verts = [];
       for (let j = 0; j < 3; j++) {
@@ -732,7 +885,7 @@ class FluidManifoldSimulation {
         const totalR = Math.max(0.5, r + entropyJitterR);
         verts.push(new THREE.Vector3(
           Math.cos(theta) * totalR,
-          y + Math.cos(3 * theta + omega * t) * 0.22 * Math.min(1.5, S + 0.2),
+          y + (isStill ? 0.0 : (Math.cos(3 * theta + omega * t) * 0.22 * Math.min(1.5, S + 0.2))),
           Math.sin(theta) * totalR
         ));
       }
@@ -744,10 +897,12 @@ class FluidManifoldSimulation {
         new THREE.Vector3().addVectors(verts[0], verts[1]).multiplyScalar(0.5)
       ];
 
-      // Surface tension meniscus fluid puff
-      for (let m = 0; m < 3; m++) {
-        const norm = new THREE.Vector3(mids[m].x, 0, mids[m].z).normalize();
-        mids[m].addScaledVector(norm, Math.sin(omega * t * 1.5 + i + m) * 0.24 * (1.0 + 0.3 * S));
+      // Surface tension meniscus fluid puff (active only during fluid mode)
+      if (!isStill) {
+        for (let m = 0; m < 3; m++) {
+          const norm = new THREE.Vector3(mids[m].x, 0, mids[m].z).normalize();
+          mids[m].addScaledVector(norm, Math.sin(omega * t * 1.5 + i + m) * 0.24 * (1.0 + 0.3 * S));
+        }
       }
 
       layerData.push({ verts, mids, y, z0, psiWave, r, throatFactor });
@@ -760,14 +915,19 @@ class FluidManifoldSimulation {
       ];
       layerCurves.push(new THREE.CatmullRomCurve3(loopPts, true, 'centripetal', 0.5));
 
-      // Update Node 3D positions & dynamic scale matching wave antinodes
-      const nodeScale = 1.0 + psiWave * 0.38;
+      // Update Node 3D positions & dynamic scale matching wave antinodes & gamma wave flashes
       for (let j = 0; j < 3; j++) {
+        const vIdx = (i * 3 + j) * 2;
+        const excV = this.nodeExcitation[vIdx] || 0;
+        const nodeScale = (isStill ? 1.0 : (1.0 + psiWave * 0.38)) + excV * 1.4;
         this.vertMeshes[i][j].position.copy(verts[j]);
         this.vertMeshes[i][j].scale.setScalar(Math.max(0.4, nodeScale));
 
+        const mIdx = vIdx + 1;
+        const excM = this.nodeExcitation[mIdx] || 0;
+        const midScale = (isStill ? 1.0 : (1.0 + psiWave * 0.28)) + excM * 1.4;
         this.midMeshes[i][j].position.copy(mids[j]);
-        this.midMeshes[i][j].scale.setScalar(Math.max(0.4, 1.0 + psiWave * 0.28));
+        this.midMeshes[i][j].scale.setScalar(Math.max(0.4, midScale));
       }
     }
 
@@ -775,9 +935,15 @@ class FluidManifoldSimulation {
     for (let h = 0; h < this.haloMeshes.length; h++) {
       const item = this.haloMeshes[h];
       item.halo.position.copy(item.target.position);
-      // Halo pulses with constructive wave antinodes
-      const haloPulse = item.baseScale * Math.max(0.5, item.target.scale.x);
+      const exc = this.nodeExcitation[h] || 0;
+      const haloPulse = item.baseScale * Math.max(0.5, item.target.scale.x) * (1.0 + exc * 1.2);
       item.halo.scale.set(haloPulse, haloPulse, 1);
+      if (exc > 0.05) {
+        item.halo.material.color.setRGB(1.0, 0.25 * (1.0 - exc), 0.95);
+      } else {
+        if (item.color === 'sapphire') item.halo.material.color.setRGB(0.22, 0.74, 0.97);
+        else item.halo.material.color.setRGB(0.96, 0.62, 0.15);
+      }
     }
 
     // Rotate orbital quantum rings at angular frequency omega
@@ -809,7 +975,10 @@ class FluidManifoldSimulation {
     const t = this.elapsed;
     const { layerData, layerCurves, deltaPhi, lambda, k, omega, S } = this.computeWaveState(t);
 
-    // Update Spacetime Photon Beam & Event Horizon Light Pulling
+    // Update Relativistic Gamma Wave Packet & Vertex Compton Scattering
+    this.updateGammaWave(delta);
+
+    // Update Spacetime Photon Beam & Event Horizon Null Geodesics
     this.updatePhotons(delta, t, this.distance);
 
     // 1. Update 90 Streamlines with Traveling Wave Packet Illumination
@@ -1049,25 +1218,54 @@ class FluidManifoldSimulation {
     const elBadge = document.getElementById('telemetry-state-badge');
     const elEntropy = document.getElementById('telemetry-entropy');
 
-    if (elWavelength) elWavelength.innerText = `${lambda.toFixed(2)} u`;
-    if (elWavenumber) elWavenumber.innerText = `${k.toFixed(2)} rad/u`;
-    if (elPhaseShift) elPhaseShift.innerHTML = `${(deltaPhi / Math.PI).toFixed(2)} &pi; (${ratio.toFixed(2)} &lambda;)`;
+    if (elWavelength) {
+      if (lambda >= 1e6) {
+        elWavelength.innerText = `${(lambda / 1e6).toFixed(3)} Mm`;
+      } else if (lambda >= 1e3) {
+        elWavelength.innerText = `${(lambda / 1e3).toFixed(2)} km`;
+      } else if (lambda < 0.001) {
+        elWavelength.innerText = `${(lambda * 1e9).toFixed(2)} nm`;
+      } else {
+        elWavelength.innerText = `${lambda.toFixed(2)} u`;
+      }
+    }
 
-    // Calculate simulated Shannon Entropy S_live across 6 layers
+    if (elWavenumber) {
+      if (k < 0.01) {
+        elWavenumber.innerText = `${k.toExponential(2)} rad/m`;
+      } else {
+        elWavenumber.innerText = `${k.toFixed(2)} rad/u`;
+      }
+    }
+
+    if (elPhaseShift) {
+      const piR = deltaPhi / Math.PI;
+      if (piR >= 1e4) {
+        elPhaseShift.innerHTML = `${piR.toExponential(2)} &pi; (${ratio.toExponential(2)} &lambda;)`;
+      } else {
+        elPhaseShift.innerHTML = `${piR.toFixed(2)} &pi; (${ratio.toFixed(2)} &lambda;)`;
+      }
+    }
+
+    // Shannon Entropy S_live across 6 layers
     let sLive = 0;
-    const layerProbs = [];
-    let probSum = 0;
-    for (let l = 0; l < this.LAYERS; l++) {
-      const z = (l - 2.5) * d;
-      const energy = 1.0 + Math.pow(Math.cos(2 * Math.PI * f - k * z), 2) + 0.2 * S;
-      layerProbs.push(energy);
-      probSum += energy;
+    if (this.isStill) {
+      sLive = 0.000;
+    } else {
+      const layerProbs = [];
+      let probSum = 0;
+      for (let l = 0; l < this.LAYERS; l++) {
+        const z = (l - 2.5) * d;
+        const energy = 1.0 + Math.pow(Math.cos(2 * Math.PI * Math.min(f, 20.0) - (k % (2 * Math.PI)) * z), 2) + 0.2 * S;
+        layerProbs.push(energy);
+        probSum += energy;
+      }
+      for (let l = 0; l < this.LAYERS; l++) {
+        const p = layerProbs[l] / probSum;
+        sLive -= p * Math.log(p);
+      }
+      sLive = sLive * (1.0 + 0.2 * S);
     }
-    for (let l = 0; l < this.LAYERS; l++) {
-      const p = layerProbs[l] / probSum;
-      sLive -= p * Math.log(p);
-    }
-    sLive = sLive * (1.0 + 0.2 * S);
     if (elEntropy) elEntropy.innerText = `${sLive.toFixed(3)} nats`;
 
     // Determine Emergent Physics State
@@ -1079,9 +1277,12 @@ class FluidManifoldSimulation {
       const roundThird = Math.round(ratio * 3);
       const isTriad = !isHarmonic && Math.abs(ratio * 3 - roundThird) < 0.08;
 
-      if (d <= 0.55) {
+      if (this.isStill) {
+        elBadge.classList.add('badge-resonance');
+        elBadge.innerText = '⚡ STATIC EQUILIBRIUM (STILL STRUCTURE)';
+      } else if (d <= 0.55) {
         elBadge.className = 'telemetry-badge badge-horizon';
-        elBadge.innerText = '🕳️ 1/2 EVENT HORIZON (PULLING LIGHT)';
+        elBadge.innerText = '🕳️ 1/2 EVENT HORIZON (NULL CONE CAPTURE)';
       } else if (isHarmonic && S < 1.0) {
         elBadge.classList.add('badge-resonance');
         elBadge.innerText = `STANDING WAVE SOLITON (${roundInt}.00 λ)`;
@@ -1100,30 +1301,30 @@ class FluidManifoldSimulation {
       }
     }
 
-    // Horizon & Light Deflection Telemetry
+    // Horizon & General Relativistic Null Geodesic Telemetry
     const elHorizon = document.getElementById('telemetry-horizon-state');
     const elLightPull = document.getElementById('telemetry-light-pull');
 
     const xi = Math.max(0.0, Math.min(1.0, 1.0 - (d - 0.50) / 1.5));
     if (elHorizon) {
       if (d <= 0.55) {
-        elHorizon.innerText = '🕳️ 1/2 EVENT HORIZON FORMED';
+        elHorizon.innerText = '🕳️ SCHWARZSCHILD NULL CONE (rs = 0.85)';
         elHorizon.style.color = '#ef4444';
       } else if (d <= 1.20) {
-        elHorizon.innerText = 'GRAVITATIONAL LENSING';
+        elHorizon.innerText = 'GRAVITATIONAL LENSING (bc = 2.60 rs)';
         elHorizon.style.color = '#f59e0b';
       } else {
-        elHorizon.innerText = 'LAMINAR SUB-HORIZON';
+        elHorizon.innerText = 'MINKOWSKI METRIC';
         elHorizon.style.color = '#38bdf8';
       }
     }
     if (elLightPull) {
       if (d <= 0.55) {
-        elLightPull.innerText = `PULLING LIGHT (${this.photonsTrappedTotal} SWALLOWED)`;
+        elLightPull.innerText = `NULL CONE CAPTURE (${this.photonsTrappedTotal} RAYS CAPTURED)`;
         elLightPull.style.color = '#ef4444';
       } else {
         const defAngle = (38.0 * xi).toFixed(1);
-        elLightPull.innerText = `${defAngle}° DEFLECTION`;
+        elLightPull.innerText = `EINSTEIN DEFLECTION (${defAngle}°)`;
         elLightPull.style.color = xi > 0.1 ? '#f59e0b' : '#94a3b8';
       }
     }
@@ -1133,8 +1334,28 @@ class FluidManifoldSimulation {
   // 7. Emergence Presets Handler
   // --------------------------------------------------------------------------
   applyPreset(presetKey) {
-    if (presetKey === 'event_horizon') {
-      // 1/2 Point Critical Collapse: forms event horizon and pulls passing light
+    if (presetKey === 'gamma_still') {
+      // Freeze structure into pristine 36-node static equilibrium and emit gamma wave
+      this.toggleStill(true);
+      this.distance = 4.40;
+      this.frequency = 144.0;
+      this.velocity = 299792458;
+      this.entropy = 0.00;
+      this.coupling = 0.35;
+      this.flowRate = 1.00;
+      this.emitGammaWave();
+    } else if (presetKey === 'lightspeed_144') {
+      // 144 Hz harmonic resonance at speed of light v = c
+      this.toggleStill(false);
+      this.distance = 4.40;
+      this.frequency = 144.0;
+      this.velocity = 299792458;
+      this.entropy = 0.10;
+      this.coupling = 0.35;
+      this.flowRate = 1.00;
+    } else if (presetKey === 'event_horizon') {
+      // 1/2 Point Critical Collapse: forms Schwarzschild horizon with null geodesics
+      this.toggleStill(false);
       this.entropy = 0.45;
       this.frequency = 1.00;
       this.velocity = 4.40;
@@ -1204,7 +1425,13 @@ class FluidManifoldSimulation {
     pairs.forEach(p => {
       const elNum = document.getElementById(p.idNum);
       const elRange = document.getElementById(p.idRange);
-      if (elNum) elNum.value = p.val.toFixed(p.dec);
+      if (elNum) {
+        if (p.val >= 10000 || (p.val < 0.01 && p.val > 0)) {
+          elNum.value = p.val.toExponential(2);
+        } else {
+          elNum.value = p.val.toFixed(p.dec);
+        }
+      }
       if (elRange) elRange.value = p.val;
     });
 
@@ -1293,7 +1520,7 @@ class FluidManifoldSimulation {
   }
 
   initUI() {
-    // 1. Two-way binding for numerical inputs & range sliders (Fluid typing & wide physical bounds)
+    // 1. Two-way binding for numerical inputs & range sliders (Unbound physical entry + scientific notation)
     const bindControl = (idNum, idRange, propName, minVal, maxVal, dec) => {
       const elNum = document.getElementById(idNum);
       const elRange = document.getElementById(idRange);
@@ -1305,16 +1532,22 @@ class FluidManifoldSimulation {
           let val = parseFloat(raw);
           if (isNaN(val)) return;
           this[propName] = val;
+          // Only clamp range slider visual representation, NEVER clamp user numerical value!
           if (elRange) elRange.value = Math.max(minVal, Math.min(maxVal, val));
           this.updateTelemetry();
         });
         elNum.addEventListener('change', (e) => {
           let val = parseFloat(e.target.value);
           if (isNaN(val)) val = minVal;
-          val = Math.max(minVal, Math.min(maxVal, val));
+          // Unclamped upper bound: allow 144 Hz, 299,792,458 m/s, or 10^20 Hz gamma waves
+          val = Math.max(0.000001, val);
           this[propName] = val;
-          elNum.value = val.toFixed(dec);
-          if (elRange) elRange.value = val;
+          if (val >= 10000 || (val < 0.01 && val > 0)) {
+            elNum.value = val.toExponential(2);
+          } else {
+            elNum.value = val.toFixed(dec);
+          }
+          if (elRange) elRange.value = Math.max(minVal, Math.min(maxVal, val));
           this.updateTelemetry();
         });
       }
@@ -1323,18 +1556,36 @@ class FluidManifoldSimulation {
         elRange.addEventListener('input', (e) => {
           const val = parseFloat(e.target.value);
           this[propName] = val;
-          if (elNum) elNum.value = val.toFixed(dec);
+          if (elNum) {
+            if (val >= 10000) elNum.value = val.toExponential(2);
+            else elNum.value = val.toFixed(dec);
+          }
           this.updateTelemetry();
         });
       }
     };
 
-    bindControl('manifold-entropy-input', 'manifold-entropy-slider', 'entropy', 0.00, 10.00, 2);
-    bindControl('manifold-freq-input', 'manifold-freq-slider', 'frequency', 0.00, 50.00, 2);
-    bindControl('manifold-vel-input', 'manifold-vel-slider', 'velocity', 0.10, 100.00, 2);
+    bindControl('manifold-entropy-input', 'manifold-entropy-slider', 'entropy', 0.00, 5.00, 2);
+    bindControl('manifold-freq-input', 'manifold-freq-slider', 'frequency', 0.05, 144.00, 2);
+    bindControl('manifold-vel-input', 'manifold-vel-slider', 'velocity', 0.50, 300.00, 2);
     bindControl('manifold-dist-input', 'manifold-dist-slider', 'distance', 0.50, 12.00, 2);
-    bindControl('manifold-coupling-input', 'manifold-coupling-slider', 'coupling', 0.00, 5.00, 2);
+    bindControl('manifold-coupling-input', 'manifold-coupling-slider', 'coupling', 0.00, 2.00, 2);
     bindControl('manifold-flow-input', 'manifold-flow-slider', 'flowRate', 0.00, 10.00, 2);
+
+    // Bind Still Structure and Gamma Wave Quick Actions
+    const stillBtn = document.getElementById('manifold-still-btn');
+    if (stillBtn) {
+      stillBtn.addEventListener('click', () => {
+        this.toggleStill();
+      });
+    }
+
+    const gammaBtn = document.getElementById('manifold-gamma-btn');
+    if (gammaBtn) {
+      gammaBtn.addEventListener('click', () => {
+        this.emitGammaWave();
+      });
+    }
 
     // 2. Emergence Presets Buttons
     const presetChips = document.querySelectorAll('.manifold-preset-chip');
