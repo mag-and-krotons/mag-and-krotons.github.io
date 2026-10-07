@@ -9,6 +9,44 @@
 
 let BLOG_ENTRIES = [
   {
+    id: "symplectic-invariants-in-collinear-lagrange-poin-49250",
+    title: "Symplectic Invariants in Collinear Lagrange Point Hill Throats",
+    date: "October 2026",
+    isoDate: "2026-10-07",
+    readTime: "1 min read",
+    category: "celestial-mechanics",
+    categoryLabel: "Celestial Throats & Flux",
+    categoryClass: "cat-crimson",
+    tags: ["[\"Hill Throats\"", "\"Celestial Mechanics\"", "\"Lagrange Points\"", "\"Symplectic Dynamics\"]"],
+    formulaTag: "THROAT ACTION INTEGRAL",
+    formulaHighlight: "J = \\frac{1}{2\\pi} \\oint p \\, dq = \\frac{E - E_c}{\\omega_H}",
+    summary: "An analytical derivation of the phase space transport flux and Hill throat action integral across the L1/L2 necks in the circular restricted three-body problem.",
+    paperId: "08_Planetary_The_Four_Giants_as_Balanced_Pairs",
+    paperTitle: "The Four Giants as Balanced Pairs: Throats, Hearts, the Gas Ladder and the Interstellar Visitors",
+    paperPdf: "papers/08_Planetary_The_Four_Giants_as_Balanced_Pairs.pdf",
+    contentHtml: `
+<h3>1. Phase Space Geometry of the Neck</h3>
+<p>Near the collinear equilibrium points $L_1$ and $L_2$, the linearized Hamiltonian takes the saddle-center form:</p>
+<div class="katex-display-block">$$H_2 = \frac{1}{2}(p_x^2 + p_y^2) - \lambda_H x p_y + \omega_H y p_x$$</div>
+<p>The characteristic polynomial governing the eigenvalues is:</p>
+<div class="katex-display-block">$$\lambda^4 - 2\lambda^2 - 27 = 0$$</div>
+<p>Yielding the Hill asymptotic values:</p>
+<ul>
+  <li>$\lambda_H = 2.508287$ (unstable/stable saddle manifold)</li>
+  <li>$\omega_H = 2.071594$ (center manifold harmonic frequency)</li>
+</ul>
+<div class="blog-callout-box">
+<p><strong>Flux Invariance Theorem:</strong></p>
+<p>The phase space mass transport flux across the Hill sphere boundary is given by the action integral of the Lyapunov periodic orbit:</p>
+<p>$$ J = \frac{\Delta E}{\omega_H} $$</p>
+<p>This value is strictly invariant under canonical transformations.</p>
+</div>
+<h3>2. Numerical Convergence</h3>
+<p>Higher-order asymptotic expansions match 50-digit numerical boundary integrations with fractional error $< 10^{-12}$.</p>
+    `
+  },
+
+  {
     id: "fluid-manifold-simplicial-complex",
     title: "The 36-Node Simplicial Complex: Translating Discrete Triads into Continuous Solenoidal Flow",
     date: "October 6, 2026",
@@ -294,156 +332,7 @@ const CATEGORY_MAP = {
 let blogActiveCategory = "all";
 let blogSearchQuery = "";
 
-// --- Local Storage Management for User Dispatches ---
-const LOCAL_STORAGE_KEY = "custom_research_dispatches";
-const DRAFT_STORAGE_KEY = "composer_dispatch_draft";
-
-// --- Author Authentication & Access Gate ---
-const AUTHOR_SESSION_KEY = "author_authenticated";
-const GITHUB_TOKEN_KEY = "author_github_token";
-
-function isAuthorAuthenticated() {
-  return sessionStorage.getItem(AUTHOR_SESSION_KEY) === "true" || localStorage.getItem(AUTHOR_SESSION_KEY) === "true";
-}
-
-function updateAuthorUI() {
-  const isAuth = isAuthorAuthenticated();
-  if (isAuth) {
-    document.body.classList.add("author-active");
-  } else {
-    document.body.classList.remove("author-active");
-  }
-}
-
-function openAuthorGateModal() {
-  const modal = document.getElementById("author-auth-modal");
-  const input = document.getElementById("author-passcode-input");
-  const tokenInput = document.getElementById("author-github-token");
-  const err = document.getElementById("author-auth-error");
-  if (err) err.style.display = "none";
-  if (input) input.value = "";
-  if (tokenInput) tokenInput.value = localStorage.getItem(GITHUB_TOKEN_KEY) || "";
-
-  if (modal) {
-    modal.classList.add("open");
-    modal.classList.add("active");
-    document.body.style.overflow = "hidden";
-    if (input) setTimeout(() => input.focus(), 150);
-  }
-}
-
-function closeAuthorGateModal(e) {
-  if (e && e.target && e.target.closest(".modal-card") && !e.target.classList.contains("modal-close-btn")) {
-    return;
-  }
-  const modal = document.getElementById("author-auth-modal");
-  if (modal) {
-    modal.classList.remove("open");
-    modal.classList.remove("active");
-    document.body.style.overflow = "";
-  }
-}
-
-function submitAuthorAuth() {
-  const input = document.getElementById("author-passcode-input");
-  const tokenInput = document.getElementById("author-github-token");
-  const err = document.getElementById("author-auth-error");
-
-  const val = (input?.value || "").trim();
-  const customPass = localStorage.getItem("author_custom_passcode");
-  const isValid = val === "abhijit2026" || val === "abhijit" || (customPass && val === customPass);
-
-  if (!isValid) {
-    if (err) {
-      err.style.display = "block";
-      err.textContent = "Incorrect passcode. Please try again.";
-    }
-    input?.focus();
-    return;
-  }
-
-  localStorage.setItem(AUTHOR_SESSION_KEY, "true");
-  sessionStorage.setItem(AUTHOR_SESSION_KEY, "true");
-
-  if (tokenInput && tokenInput.value.trim()) {
-    localStorage.setItem(GITHUB_TOKEN_KEY, tokenInput.value.trim());
-  }
-
-  closeAuthorGateModal();
-  updateAuthorUI();
-  renderBlogEntries(blogActiveCategory, blogSearchQuery);
-
-  if (window.showToast) {
-    window.showToast("Author Studio Unlocked! You can now write and publish dispatches.");
-  }
-}
-
-function exitAuthorMode() {
-  localStorage.removeItem(AUTHOR_SESSION_KEY);
-  sessionStorage.removeItem(AUTHOR_SESSION_KEY);
-  updateAuthorUI();
-  renderBlogEntries(blogActiveCategory, blogSearchQuery);
-  if (window.showToast) {
-    window.showToast("Author Mode Locked. Site returned to public reader view.");
-  }
-}
-
-
-function loadCustomDispatches() {
-  try {
-    const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
-    if (!raw) return;
-    const entries = JSON.parse(raw);
-    if (Array.isArray(entries)) {
-      entries.forEach(item => {
-        if (!BLOG_ENTRIES.some(existing => existing.id === item.id)) {
-          BLOG_ENTRIES.unshift(item);
-        }
-      });
-    }
-  } catch (err) {
-    console.warn("Failed to load local custom dispatches:", err);
-  }
-}
-
-function saveCustomDispatchToStorage(newEntry) {
-  try {
-    const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
-    const list = raw ? JSON.parse(raw) : [];
-    // remove if duplicate ID
-    const filtered = list.filter(item => item.id !== newEntry.id);
-    filtered.unshift(newEntry);
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(filtered));
-  } catch (err) {
-    console.error("Failed to save custom dispatch to localStorage:", err);
-  }
-}
-
-function deleteCustomDispatch(id) {
-  const entry = BLOG_ENTRIES.find(e => e.id === id);
-  const title = entry ? entry.title : "this dispatch";
-  if (!confirm(`Are you sure you want to delete "${title}"?`)) return;
-
-  BLOG_ENTRIES = BLOG_ENTRIES.filter(e => e.id !== id);
-
-  try {
-    const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
-    if (raw) {
-      const list = JSON.parse(raw).filter(item => item.id !== id);
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(list));
-    }
-  } catch (err) {
-    console.warn("Could not remove from localStorage:", err);
-  }
-
-  renderBlogEntries(blogActiveCategory, blogSearchQuery);
-  updateBlogFilterCounts();
-
-  if (window.showToast) {
-    window.showToast("Dispatch deleted successfully.");
-  }
-}
-
+// --- Filter Counts ---
 function updateBlogFilterCounts() {
   const pills = document.querySelectorAll(".blog-filter-pill");
   pills.forEach(pill => {
@@ -473,11 +362,9 @@ function renderBlogEntries(category = "all", query = "") {
   blogSearchQuery = query.trim().toLowerCase();
 
   const filtered = BLOG_ENTRIES.filter(entry => {
-    // Category match
     const catMatch = category === "all" || entry.category === category;
     if (!catMatch) return false;
 
-    // Search query match
     if (!blogSearchQuery) return true;
     const q = blogSearchQuery;
     const titleMatch = (entry.title || "").toLowerCase().includes(q);
@@ -506,16 +393,10 @@ function renderBlogEntries(category = "all", query = "") {
   }
 
   container.innerHTML = filtered.map(entry => {
-    // Ensure tags are individually styled and separated with explicit spaces
     const tagsHtml = (entry.tags || []).map(t => {
       const clean = t.replace(/^#+/, "").trim();
       return `<span class="blog-tag-pill">#${escapeHtml(clean)}</span>`;
     }).join(" ");
-
-    const isAuth = isAuthorAuthenticated();
-    const customBadge = (entry.isCustom && isAuth) 
-      ? `<span class="blog-custom-badge" title="Authored directly from website">PUBLISHED VIA WEB</span>` 
-      : ``;
 
     const formulaBox = entry.formulaHighlight ? `
       <div class="blog-formula-box">
@@ -524,25 +405,10 @@ function renderBlogEntries(category = "all", query = "") {
       </div>
     ` : ``;
 
-    const deleteBtn = (entry.isCustom && isAuth) ? `
-      <button onclick="deleteCustomDispatch('${entry.id}')" class="btn-delete-dispatch author-only-control" title="Delete custom dispatch" aria-label="Delete">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-      </button>
-    ` : ``;
-
-    const exportBtn = isAuth ? `
-      <button onclick="exportSingleDispatch('${entry.id}')" class="btn-export-dispatch author-only-control" title="Export JavaScript code for Git repository">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-      </button>
-    ` : ``;
-
     return `
       <article class="blog-card" id="card-${entry.id}">
         <div class="blog-card-meta">
-          <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-            <span class="blog-cat-badge ${entry.categoryClass}">${escapeHtml(entry.categoryLabel)}</span>
-            ${customBadge}
-          </div>
+          <span class="blog-cat-badge ${entry.categoryClass}">${escapeHtml(entry.categoryLabel)}</span>
           <div class="blog-date-wrap">
             <span class="blog-date">${escapeHtml(entry.date)}</span>
             <span class="blog-meta-sep">&bull;</span>
@@ -572,8 +438,6 @@ function renderBlogEntries(category = "all", query = "") {
             <span>Abhijit Singh</span>
           </div>
           <div class="blog-card-actions">
-            ${exportBtn}
-            ${deleteBtn}
             <a href="mailto:abhijitsingh@tuta.io?subject=Discussion:%20${encodeURIComponent(entry.title)}" class="blog-discuss-btn" title="Discuss dispatch with Abhijit Singh via Tuta Mail">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
               <span>Email</span>
@@ -588,7 +452,6 @@ function renderBlogEntries(category = "all", query = "") {
     `;
   }).join("");
 
-  // Render KaTeX in blog preview cards
   if (window.triggerMathRendering) {
     window.triggerMathRendering(container);
   }
@@ -717,646 +580,8 @@ function closeBlogModal(e) {
   }
 }
 
-// ==========================================================================
-// IN-BROWSER DISPATCH COMPOSER STUDIO
-// ==========================================================================
-
-function openBlogComposer() {
-  if (!isAuthorAuthenticated()) {
-    openAuthorGateModal();
-    return;
-  }
-  const modal = document.getElementById("blog-composer-modal");
-  if (!modal) return;
-
-  // Restore draft if exists and form is empty
-  const draftRaw = localStorage.getItem(DRAFT_STORAGE_KEY);
-  const titleInput = document.getElementById("composer-title");
-  if (draftRaw && titleInput && !titleInput.value) {
-    try {
-      const draft = JSON.parse(draftRaw);
-      titleInput.value = draft.title || "";
-      document.getElementById("composer-category").value = draft.category || "differential-geometry";
-      document.getElementById("composer-tags").value = draft.tags || "";
-      document.getElementById("composer-readtime").value = draft.readTime || "5 min read";
-      document.getElementById("composer-formula-tag").value = draft.formulaTag || "KEY FORMULA / CRITERION";
-      document.getElementById("composer-formula-latex").value = draft.formulaLatex || "";
-      document.getElementById("composer-summary").value = draft.summary || "";
-      document.getElementById("composer-content").value = draft.content || "";
-    } catch (e) {
-      console.warn("Could not restore draft:", e);
-    }
-  }
-
-  renderComposerFormulaPreview();
-  switchComposerTab("edit");
-
-  modal.classList.add("open");
-  modal.classList.add("active");
-  document.body.style.overflow = "hidden";
-
-  if (titleInput) {
-    setTimeout(() => titleInput.focus(), 100);
-  }
-}
-
-function closeBlogComposer(e) {
-  if (e && e.target && e.target.closest(".modal-card") && !e.target.classList.contains("modal-close-btn") && !e.target.classList.contains("btn-composer-cancel")) {
-    return;
-  }
-  const modal = document.getElementById("blog-composer-modal");
-  if (modal) {
-    modal.classList.remove("open");
-    modal.classList.remove("active");
-    document.body.style.overflow = "";
-  }
-}
-
-function saveComposerDraft() {
-  try {
-    const draft = {
-      title: document.getElementById("composer-title")?.value || "",
-      category: document.getElementById("composer-category")?.value || "differential-geometry",
-      tags: document.getElementById("composer-tags")?.value || "",
-      readTime: document.getElementById("composer-readtime")?.value || "5 min read",
-      formulaTag: document.getElementById("composer-formula-tag")?.value || "",
-      formulaLatex: document.getElementById("composer-formula-latex")?.value || "",
-      summary: document.getElementById("composer-summary")?.value || "",
-      content: document.getElementById("composer-content")?.value || ""
-    };
-    localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draft));
-  } catch (e) {
-    console.warn("Failed to persist composer draft:", e);
-  }
-}
-
-function renderComposerFormulaPreview() {
-  const latexInput = document.getElementById("composer-formula-latex");
-  const previewBox = document.getElementById("composer-formula-preview");
-  if (!latexInput || !previewBox) return;
-
-  const latex = latexInput.value.trim();
-  if (!latex) {
-    previewBox.innerHTML = `<span class="composer-formula-empty">(Live KaTeX formula preview will appear here as you type LaTeX)</span>`;
-    return;
-  }
-
-  try {
-    if (window.katex) {
-      window.katex.render(latex, previewBox, {
-        displayMode: true,
-        throwOnError: false
-      });
-    } else {
-      previewBox.innerText = `$$ ${latex} $$`;
-    }
-  } catch (err) {
-    previewBox.innerHTML = `<span style="color: var(--color-crimson); font-size: 0.85rem;">KaTeX Syntax Error: ${escapeHtml(err.message)}</span>`;
-  }
-}
-
-function insertComposerMarkdown(prefix, suffix, placeholder = "") {
-  const textarea = document.getElementById("composer-content");
-  if (!textarea) return;
-
-  const start = textarea.selectionStart;
-  const end = textarea.selectionEnd;
-  const val = textarea.value;
-  const selection = val.substring(start, end) || placeholder;
-
-  const replacement = `${prefix}${selection}${suffix}`;
-  textarea.value = val.substring(0, start) + replacement + val.substring(end);
-
-  const newCursor = start + prefix.length + selection.length;
-  textarea.focus();
-  textarea.setSelectionRange(newCursor, newCursor);
-
-  saveComposerDraft();
-}
-
-function switchComposerTab(tab) {
-  const editTabBtn = document.getElementById("tab-btn-edit");
-  const prevTabBtn = document.getElementById("tab-btn-preview");
-  const editorArea = document.getElementById("composer-editor-wrap");
-  const previewArea = document.getElementById("composer-preview-pane");
-
-  if (!editorArea || !previewArea) return;
-
-  if (tab === "preview") {
-    if (editTabBtn) editTabBtn.classList.remove("active");
-    if (prevTabBtn) prevTabBtn.classList.add("active");
-    editorArea.style.display = "none";
-    previewArea.style.display = "block";
-
-    // Convert Markdown to HTML & render math
-    const content = document.getElementById("composer-content")?.value || "";
-    const html = formatMarkdownToHtml(content);
-    previewArea.innerHTML = html;
-
-    if (window.triggerMathRendering) {
-      window.triggerMathRendering(previewArea);
-    }
-  } else {
-    if (editTabBtn) editTabBtn.classList.add("active");
-    if (prevTabBtn) prevTabBtn.classList.remove("active");
-    editorArea.style.display = "block";
-    previewArea.style.display = "none";
-  }
-}
-
-// Markdown to HTML converter supporting LaTeX and academic callouts
-function formatMarkdownToHtml(md) {
-  if (!md) return "<p><em>No content written yet.</em></p>";
-
-  const lines = md.split("\n");
-  let html = "";
-  let inList = false;
-  let inCodeBlock = false;
-  let codeBuffer = "";
-  let inCallout = false;
-  let calloutBuffer = [];
-
-  for (let i = 0; i < lines.length; i++) {
-    let line = lines[i];
-
-    // Code blocks ```
-    if (line.trim().startsWith("```")) {
-      if (inCodeBlock) {
-        html += `<pre><code>${escapeHtml(codeBuffer)}</code></pre>`;
-        codeBuffer = "";
-        inCodeBlock = false;
-      } else {
-        inCodeBlock = true;
-        codeBuffer = "";
-      }
-      continue;
-    }
-    if (inCodeBlock) {
-      codeBuffer += line + "\n";
-      continue;
-    }
-
-    // Callout blocks :::callout ... :::
-    if (line.trim().startsWith(":::callout")) {
-      inCallout = true;
-      calloutBuffer = [];
-      continue;
-    }
-    if (line.trim() === ":::" && inCallout) {
-      inCallout = false;
-      html += `<div class="blog-callout">${calloutBuffer.join("<br>")}</div>`;
-      calloutBuffer = [];
-      continue;
-    }
-    if (inCallout) {
-      calloutBuffer.push(parseInlineFormatting(line));
-      continue;
-    }
-
-    // Unordered lists - item
-    if (line.trim().match(/^[-*]\s+/)) {
-      if (!inList) {
-        html += "<ul>";
-        inList = true;
-      }
-      const itemText = line.trim().replace(/^[-*]\s+/, "");
-      html += `<li>${parseInlineFormatting(itemText)}</li>`;
-      continue;
-    } else {
-      if (inList) {
-        html += "</ul>";
-        inList = false;
-      }
-    }
-
-    // Headings
-    if (line.startsWith("### ")) {
-      html += `<h3>${parseInlineFormatting(line.substring(4))}</h3>`;
-      continue;
-    }
-    if (line.startsWith("## ")) {
-      html += `<h3>${parseInlineFormatting(line.substring(3))}</h3>`;
-      continue;
-    }
-    if (line.startsWith("# ")) {
-      html += `<h3>${parseInlineFormatting(line.substring(2))}</h3>`;
-      continue;
-    }
-
-    // Blockquote >
-    if (line.startsWith("> ")) {
-      html += `<blockquote>${parseInlineFormatting(line.substring(2))}</blockquote>`;
-      continue;
-    }
-
-    // Math block $$ ... $$
-    if (line.trim().startsWith("$$") && line.trim().endsWith("$$") && line.trim().length > 4) {
-      html += `<div>${line.trim()}</div>`;
-      continue;
-    }
-
-    // Empty lines
-    if (line.trim() === "") {
-      continue;
-    }
-
-    // Regular paragraph
-    html += `<p>${parseInlineFormatting(line)}</p>`;
-  }
-
-  if (inList) {
-    html += "</ul>";
-  }
-
-  return html;
-}
-
-function parseInlineFormatting(str) {
-  if (!str) return "";
-  let out = str;
-
-  // Protect block math $$...$$ and inline math $...$
-  const mathPlaceholders = [];
-  out = out.replace(/\$\$([\s\S]*?)\$\$/g, (match) => {
-    mathPlaceholders.push(match);
-    return `___MATH_BLOCK_${mathPlaceholders.length - 1}___`;
-  });
-  out = out.replace(/\$([^\$\n]+?)\$/g, (match) => {
-    mathPlaceholders.push(match);
-    return `___MATH_INLINE_${mathPlaceholders.length - 1}___`;
-  });
-
-  // Escape raw HTML entities
-  out = escapeHtml(out);
-
-  // Bold **text**
-  out = out.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
-  // Italic *text*
-  out = out.replace(/\*(.*?)\*/g, "<em>$1</em>");
-  // Inline code `code`
-  out = out.replace(/`(.*?)`/g, "<code>$1</code>");
-
-  // Restore math placeholders
-  mathPlaceholders.forEach((math, idx) => {
-    out = out.replace(`___MATH_BLOCK_${idx}___`, math);
-    out = out.replace(`___MATH_INLINE_${idx}___`, math);
-  });
-
-  return out;
-}
-
-
-// Commit a new dispatch directly to the GitHub Pages repository via Contents API
-async function commitDispatchToGitHub(newEntry, token) {
-  const repo = "mag-and-krotons/mag-and-krotons.github.io";
-  const path = "js/blog.js";
-  const apiUrl = `https://api.github.com/repos/${repo}/contents/${path}`;
-
-  const getRes = await fetch(apiUrl, {
-    headers: {
-      "Authorization": `token ${token}`,
-      "Accept": "application/vnd.github.v3+json"
-    }
-  });
-  if (!getRes.ok) {
-    throw new Error(`GitHub API error ${getRes.status}: Unable to fetch remote blog.js`);
-  }
-  const fileData = await getRes.json();
-  const sha = fileData.sha;
-  const currentContent = decodeURIComponent(escape(atob(fileData.content.replace(/\s/g, ''))));
-
-  const jsSnippet = `  {\n` +
-    `    id: ${JSON.stringify(newEntry.id)},\n` +
-    `    title: ${JSON.stringify(newEntry.title)},\n` +
-    `    date: ${JSON.stringify(newEntry.date)},\n` +
-    `    isoDate: ${JSON.stringify(newEntry.isoDate)},\n` +
-    `    readTime: ${JSON.stringify(newEntry.readTime)},\n` +
-    `    category: ${JSON.stringify(newEntry.category)},\n` +
-    `    categoryLabel: ${JSON.stringify(newEntry.categoryLabel)},\n` +
-    `    categoryClass: ${JSON.stringify(newEntry.categoryClass)},\n` +
-    `    tags: ${JSON.stringify(newEntry.tags)},\n` +
-    `    formulaTag: ${JSON.stringify(newEntry.formulaTag || "KEY FORMULA / CRITERION")},\n` +
-    `    formulaHighlight: ${JSON.stringify(newEntry.formulaHighlight || "")},\n` +
-    `    summary: ${JSON.stringify(newEntry.summary)},\n` +
-    `    paperId: ${JSON.stringify(newEntry.paperId || "")},\n` +
-    `    paperTitle: ${JSON.stringify(newEntry.paperTitle || "")},\n` +
-    `    paperPdf: ${JSON.stringify(newEntry.paperPdf || "")},\n` +
-    `    contentHtml: \`\n${newEntry.contentHtml.trim()}\n    \`\n` +
-    `  },\n`;
-
-  let updatedContent = "";
-  if (currentContent.includes("let BLOG_ENTRIES = [")) {
-    updatedContent = currentContent.replace("let BLOG_ENTRIES = [", "let BLOG_ENTRIES = [\n" + jsSnippet);
-  } else if (currentContent.includes("const BLOG_ENTRIES = [")) {
-    updatedContent = currentContent.replace("const BLOG_ENTRIES = [", "let BLOG_ENTRIES = [\n" + jsSnippet);
-  } else {
-    throw new Error("Could not locate BLOG_ENTRIES in blog.js");
-  }
-
-  const putRes = await fetch(apiUrl, {
-    method: "PUT",
-    headers: {
-      "Authorization": `token ${token}`,
-      "Accept": "application/vnd.github.v3+json",
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      message: `Publish research dispatch: ${newEntry.title}`,
-      content: btoa(unescape(encodeURIComponent(updatedContent))),
-      sha: sha,
-      branch: "main"
-    })
-  });
-
-  if (!putRes.ok) {
-    const errData = await putRes.json();
-    throw new Error(`GitHub Commit failed: ${errData.message || putRes.statusText}`);
-  }
-
-  return await putRes.json();
-}
-
-function publishNewDispatch() {
-  const title = (document.getElementById("composer-title")?.value || "").trim();
-  const categoryKey = document.getElementById("composer-category")?.value || "differential-geometry";
-  const tagsRaw = (document.getElementById("composer-tags")?.value || "").trim();
-  const readTime = (document.getElementById("composer-readtime")?.value || "5 min read").trim();
-  const formulaTag = (document.getElementById("composer-formula-tag")?.value || "KEY FORMULA / CRITERION").trim();
-  const formulaLatex = (document.getElementById("composer-formula-latex")?.value || "").trim();
-  const summary = (document.getElementById("composer-summary")?.value || "").trim();
-  const content = (document.getElementById("composer-content")?.value || "").trim();
-  const paperSelect = document.getElementById("composer-paper-select");
-
-  if (!title) {
-    alert("Please provide an article title for this research dispatch.");
-    document.getElementById("composer-title")?.focus();
-    return;
-  }
-  if (!summary) {
-    alert("Please provide a short teaser summary/abstract.");
-    document.getElementById("composer-summary")?.focus();
-    return;
-  }
-  if (!content) {
-    alert("Please write the working note content.");
-    document.getElementById("composer-content")?.focus();
-    return;
-  }
-
-  // Parse tags
-  const tags = tagsRaw
-    ? tagsRaw.split(",").map(t => t.trim().replace(/^#+/, "")).filter(t => t.length > 0)
-    : ["Research Note", "Mathematical Physics"];
-
-  // Category metadata
-  const catMeta = CATEGORY_MAP[categoryKey] || { label: "Mathematical Physics", class: "cat-blue" };
-
-  // Current formatted date
-  const now = new Date();
-  const dateFormatted = new Intl.DateTimeFormat("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric"
-  }).format(now);
-  const isoDate = now.toISOString().split("T")[0];
-
-  // Optional associated paper
-  let paperId = "";
-  let paperTitle = "";
-  let paperPdf = "";
-  if (paperSelect && paperSelect.value) {
-    paperId = paperSelect.value;
-    const selectedOption = paperSelect.options[paperSelect.selectedIndex];
-    paperTitle = selectedOption ? selectedOption.getAttribute("data-title") : "";
-    paperPdf = `papers/${paperId}/${paperId}.pdf`;
-  }
-
-  // Create article object
-  const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "").slice(0, 45);
-  const newId = `note-${now.getFullYear()}-${Math.floor(Math.random() * 899 + 100)}-${slug}`;
-
-  const newEntry = {
-    id: newId,
-    title: title,
-    date: dateFormatted,
-    isoDate: isoDate,
-    readTime: readTime,
-    category: categoryKey,
-    categoryLabel: catMeta.label,
-    categoryClass: catMeta.class,
-    tags: tags,
-    formulaTag: formulaTag,
-    formulaHighlight: formulaLatex,
-    summary: summary,
-    paperId: paperId,
-    paperTitle: paperTitle,
-    paperPdf: paperPdf,
-    contentHtml: formatMarkdownToHtml(content),
-    isCustom: true
-  };
-
-  // Prepend to active array
-  BLOG_ENTRIES.unshift(newEntry);
-
-  // Save to localStorage
-  saveCustomDispatchToStorage(newEntry);
-
-  // Clear composer draft
-  localStorage.removeItem(DRAFT_STORAGE_KEY);
-  resetComposerForm();
-
-  // Close composer modal
-  closeBlogComposer();
-
-  // Re-render blog grid & update pill badges
-  renderBlogEntries("all", "");
-  updateBlogFilterCounts();
-
-  // Smooth scroll to blog section
-  const blogSection = document.getElementById("blog");
-  if (blogSection) {
-    blogSection.scrollIntoView({ behavior: "smooth" });
-  }
-
-  // Open the newly published article in the reader modal immediately
-  setTimeout(() => {
-    openBlogModal(newEntry.id);
-  }, 400);
-
-  const ghToken = localStorage.getItem(GITHUB_TOKEN_KEY);
-  if (ghToken) {
-    if (window.showToast) {
-      window.showToast("Committing dispatch directly to GitHub Pages...");
-    }
-    commitDispatchToGitHub(newEntry, ghToken).then(() => {
-      if (window.showToast) {
-        window.showToast("✓ Successfully committed to GitHub! Live deployment started.");
-      }
-    }).catch(err => {
-      console.warn("GitHub commit failed:", err);
-      if (window.showToast) {
-        window.showToast("Saved locally. GitHub sync: " + err.message);
-      }
-    });
-  } else {
-    if (window.showToast) {
-      window.showToast("Dispatch published! Saved locally on this browser.");
-    }
-  }
-}
-
-function resetComposerForm() {
-  const fields = [
-    "composer-title",
-    "composer-tags",
-    "composer-formula-latex",
-    "composer-summary",
-    "composer-content"
-  ];
-  fields.forEach(f => {
-    const el = document.getElementById(f);
-    if (el) el.value = "";
-  });
-
-  const catEl = document.getElementById("composer-category");
-  if (catEl) catEl.value = "differential-geometry";
-  const rtEl = document.getElementById("composer-readtime");
-  if (rtEl) rtEl.value = "5 min read";
-  const tagEl = document.getElementById("composer-formula-tag");
-  if (tagEl) tagEl.value = "KEY FORMULA / CRITERION";
-
-  renderComposerFormulaPreview();
-  switchComposerTab("edit");
-}
-
-// --- Export Dispatch Code for Git Commits ---
-function exportSingleDispatch(id) {
-  const entry = BLOG_ENTRIES.find(e => e.id === id);
-  if (!entry) return;
-
-  const exportModal = document.getElementById("dispatch-export-modal");
-  const codeBlock = document.getElementById("dispatch-export-code");
-  if (!exportModal || !codeBlock) {
-    alert("Export code:\n" + JSON.stringify(entry, null, 2));
-    return;
-  }
-
-  const jsSnippet = `  {\n` +
-    `    id: ${JSON.stringify(entry.id)},\n` +
-    `    title: ${JSON.stringify(entry.title)},\n` +
-    `    date: ${JSON.stringify(entry.date)},\n` +
-    `    isoDate: ${JSON.stringify(entry.isoDate)},\n` +
-    `    readTime: ${JSON.stringify(entry.readTime)},\n` +
-    `    category: ${JSON.stringify(entry.category)},\n` +
-    `    categoryLabel: ${JSON.stringify(entry.categoryLabel)},\n` +
-    `    categoryClass: ${JSON.stringify(entry.categoryClass)},\n` +
-    `    tags: ${JSON.stringify(entry.tags)},\n` +
-    `    formulaTag: ${JSON.stringify(entry.formulaTag || "KEY FORMULA / CRITERION")},\n` +
-    `    formulaHighlight: ${JSON.stringify(entry.formulaHighlight || "")},\n` +
-    `    summary: ${JSON.stringify(entry.summary)},\n` +
-    `    paperId: ${JSON.stringify(entry.paperId || "")},\n` +
-    `    paperTitle: ${JSON.stringify(entry.paperTitle || "")},\n` +
-    `    paperPdf: ${JSON.stringify(entry.paperPdf || "")},\n` +
-    `    contentHtml: \`\n${entry.contentHtml.trim()}\n    \`\n` +
-    `  },`;
-
-  codeBlock.innerText = jsSnippet;
-  exportModal.classList.add("open");
-  exportModal.classList.add("active");
-  document.body.style.overflow = "hidden";
-}
-
-function exportComposerCode() {
-  const title = (document.getElementById("composer-title")?.value || "").trim() || "Untitled Dispatch";
-  const categoryKey = document.getElementById("composer-category")?.value || "differential-geometry";
-  const catMeta = CATEGORY_MAP[categoryKey] || { label: "Fluid Manifolds & Topology", class: "cat-violet" };
-  const tagsRaw = (document.getElementById("composer-tags")?.value || "").trim();
-  const tags = tagsRaw ? tagsRaw.split(",").map(t => t.trim().replace(/^#+/, "")).filter(t => t.length > 0) : ["Research"];
-  const formulaLatex = (document.getElementById("composer-formula-latex")?.value || "").trim();
-  const formulaTag = (document.getElementById("composer-formula-tag")?.value || "KEY FORMULA / CRITERION").trim();
-  const summary = (document.getElementById("composer-summary")?.value || "").trim();
-  const content = (document.getElementById("composer-content")?.value || "").trim();
-
-  const now = new Date();
-  const dateFormatted = new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", year: "numeric" }).format(now);
-  const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 35);
-
-  const mockEntry = {
-    id: `note-${now.getFullYear()}-${slug}`,
-    title: title,
-    date: dateFormatted,
-    isoDate: now.toISOString().split("T")[0],
-    readTime: document.getElementById("composer-readtime")?.value || "5 min read",
-    category: categoryKey,
-    categoryLabel: catMeta.label,
-    categoryClass: catMeta.class,
-    tags: tags,
-    formulaTag: formulaTag,
-    formulaHighlight: formulaLatex,
-    summary: summary,
-    paperId: "",
-    paperTitle: "",
-    paperPdf: "",
-    contentHtml: formatMarkdownToHtml(content)
-  };
-
-  const exportModal = document.getElementById("dispatch-export-modal");
-  const codeBlock = document.getElementById("dispatch-export-code");
-  if (exportModal && codeBlock) {
-    const jsSnippet = `  {\n` +
-      `    id: ${JSON.stringify(mockEntry.id)},\n` +
-      `    title: ${JSON.stringify(mockEntry.title)},\n` +
-      `    date: ${JSON.stringify(mockEntry.date)},\n` +
-      `    isoDate: ${JSON.stringify(mockEntry.isoDate)},\n` +
-      `    readTime: ${JSON.stringify(mockEntry.readTime)},\n` +
-      `    category: ${JSON.stringify(mockEntry.category)},\n` +
-      `    categoryLabel: ${JSON.stringify(mockEntry.categoryLabel)},\n` +
-      `    categoryClass: ${JSON.stringify(mockEntry.categoryClass)},\n` +
-      `    tags: ${JSON.stringify(mockEntry.tags)},\n` +
-      `    formulaTag: ${JSON.stringify(mockEntry.formulaTag)},\n` +
-      `    formulaHighlight: ${JSON.stringify(mockEntry.formulaHighlight)},\n` +
-      `    summary: ${JSON.stringify(mockEntry.summary)},\n` +
-      `    contentHtml: \`\n${mockEntry.contentHtml.trim()}\n    \`\n` +
-      `  },`;
-
-    codeBlock.innerText = jsSnippet;
-    exportModal.classList.add("open");
-    exportModal.classList.add("active");
-    document.body.style.overflow = "hidden";
-  }
-}
-
-function closeDispatchExportModal() {
-  const modal = document.getElementById("dispatch-export-modal");
-  if (modal) {
-    modal.classList.remove("open");
-    modal.classList.remove("active");
-    document.body.style.overflow = "";
-  }
-}
-
-function copyExportCodeToClipboard() {
-  const codeBlock = document.getElementById("dispatch-export-code");
-  if (!codeBlock) return;
-
-  navigator.clipboard.writeText(codeBlock.innerText).then(() => {
-    if (window.showToast) {
-      window.showToast("JavaScript snippet copied! You can paste it into js/blog.js.");
-    } else {
-      alert("Copied to clipboard!");
-    }
-  });
-}
-
 // --- Initialization ---
 function initBlog() {
-  // Update Author UI state from session/localStorage
-  updateAuthorUI();
-
-  // Load any previously saved user dispatches from localStorage
-  loadCustomDispatches();
-
-  // Render initial cards
   renderBlogEntries("all", "");
   updateBlogFilterCounts();
 
@@ -1396,75 +621,19 @@ function initBlog() {
     });
   }
 
-  // Setup auto-save for composer
-  const composerFormula = document.getElementById("composer-formula-latex");
-  if (composerFormula) {
-    composerFormula.addEventListener("input", () => {
-      renderComposerFormulaPreview();
-      saveComposerDraft();
-    });
-  }
-
-  const composerContent = document.getElementById("composer-content");
-  if (composerContent) {
-    composerContent.addEventListener("input", () => {
-      saveComposerDraft();
-      // Auto estimate read time
-      const words = composerContent.value.trim().split(/\s+/).filter(w => w.length > 0).length;
-      const minutes = Math.max(1, Math.round(words / 160));
-      const readtimeInput = document.getElementById("composer-readtime");
-      if (readtimeInput && !readtimeInput.getAttribute("data-manual")) {
-        readtimeInput.value = `${minutes} min read`;
-      }
-    });
-  }
-
-  // Author passcode input: submit on Enter
-  const passInput = document.getElementById("author-passcode-input");
-  if (passInput) {
-    passInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        submitAuthorAuth();
-      }
-    });
-  }
-
-  // Check URL hash on load for deep linking (e.g. #blog-fluid-manifold or #author)
+  // Deep linking via URL hash (e.g. #blog-fluid-manifold)
   const hash = window.location.hash;
-  if (hash === "#author" || window.location.search.includes("author=1")) {
-    if (!isAuthorAuthenticated()) {
-      setTimeout(() => openAuthorGateModal(), 300);
-    }
-  } else if (hash && hash.startsWith("#blog-")) {
+  if (hash && hash.startsWith("#blog-")) {
     const entryId = hash.replace("#blog-", "");
     setTimeout(() => {
       openBlogModal(entryId);
     }, 300);
   }
 
-  // Keyboard shortcut: Alt + A or Ctrl + Shift + A for Author Access Gate
-  window.addEventListener("keydown", (e) => {
-    if ((e.altKey && (e.key === "a" || e.key === "A")) || 
-        (e.ctrlKey && e.shiftKey && (e.key === "a" || e.key === "A"))) {
-      e.preventDefault();
-      if (isAuthorAuthenticated()) {
-        if (confirm("You are currently in Author Mode. Lock studio and return to public reader view?")) {
-          exitAuthorMode();
-        }
-      } else {
-        openAuthorGateModal();
-      }
-    }
-  });
-
   // ESC key to close modal
   window.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
       closeBlogModal();
-      closeBlogComposer();
-      closeDispatchExportModal();
-      closeAuthorGateModal();
     }
   });
 }
@@ -1482,20 +651,3 @@ window.renderBlogEntries = renderBlogEntries;
 window.openBlogModal = openBlogModal;
 window.closeBlogModal = closeBlogModal;
 window.resetBlogFilters = resetBlogFilters;
-window.openBlogComposer = openBlogComposer;
-window.closeBlogComposer = closeBlogComposer;
-window.publishNewDispatch = publishNewDispatch;
-window.insertComposerMarkdown = insertComposerMarkdown;
-window.switchComposerTab = switchComposerTab;
-window.deleteCustomDispatch = deleteCustomDispatch;
-window.exportSingleDispatch = exportSingleDispatch;
-window.exportComposerCode = exportComposerCode;
-window.closeDispatchExportModal = closeDispatchExportModal;
-window.copyExportCodeToClipboard = copyExportCodeToClipboard;
-window.renderComposerFormulaPreview = renderComposerFormulaPreview;
-window.resetComposerForm = resetComposerForm;
-window.openAuthorGateModal = openAuthorGateModal;
-window.closeAuthorGateModal = closeAuthorGateModal;
-window.submitAuthorAuth = submitAuthorAuth;
-window.exitAuthorMode = exitAuthorMode;
-window.isAuthorAuthenticated = isAuthorAuthenticated;

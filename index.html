@@ -70,18 +70,6 @@
     .blog-discuss-btn { font-family: 'Outfit', sans-serif; font-size: 0.82rem; font-weight: 700; color: #0F172A; border: 1.5px solid #0F172A; background: #FFFFFF; padding: 0.45rem 0.8rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.35rem; }
     .blog-discuss-btn:hover { background: #F1F5F9; border-color: #2563EB; color: #2563EB; }
     .blog-read-btn { font-size: 0.86rem; padding: 0.55rem 1.15rem; display: inline-flex; align-items: center; gap: 0.4rem; cursor: pointer; }
-    .btn-delete-dispatch { background: none; border: 1px solid transparent; color: #64748B; cursor: pointer; padding: 0.35rem 0.45rem; border-radius: 2px; display: inline-flex; align-items: center; justify-content: center; }
-    .btn-delete-dispatch:hover { color: #E11D48; background-color: #FEE2E2; border-color: #E11D48; }
-    .btn-export-dispatch { background: none; border: 1px solid #CBD5E1; color: #334155; cursor: pointer; padding: 0.35rem 0.45rem; border-radius: 2px; display: inline-flex; align-items: center; justify-content: center; }
-    .btn-export-dispatch:hover { color: #2563EB; background-color: #DBEAFE; border-color: #2563EB; }
-    .author-only-control { display: none !important; }
-    body.author-active .author-only-control { display: inline-flex !important; }
-    body.author-active .btn-compose-dispatch.author-only-control { display: inline-flex !important; }
-    .author-mode-badge { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; font-weight: 800; background: #FEF3C7; color: #92400E; border: 1.5px solid #F59E0B; padding: 0.25rem 0.55rem; letter-spacing: 0.05em; display: inline-flex; align-items: center; gap: 0.35rem; border-radius: 2px; }
-    .btn-author-lock { font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; font-weight: 700; background: #FFFFFF; color: #0F172A; border: 2px solid #0F172A; padding: 0.35rem 0.65rem; cursor: pointer; box-shadow: 2px 2px 0px #0F172A; }
-    .author-gate-link { background: none; border: none; font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: #94A3B8; cursor: pointer; text-decoration: underline; opacity: 0.6; }
-    .author-gate-link:hover { opacity: 1; color: #F59E0B; }
-    .author-auth-card { max-width: 520px !important; }
   </style>
 
   <!-- Import map for Three.js ES Modules -->
@@ -138,17 +126,6 @@
       </nav>
 
       <div class="nav-actions">
-        <span id="nav-author-badge" class="author-mode-badge author-only-control" title="Author Studio Active">
-          <span style="background: #D97706; width: 6px; height: 6px; border-radius: 50%; display: inline-block;"></span>
-          AUTHOR MODE
-        </span>
-        <button type="button" id="nav-compose-btn" class="btn-nav-compose author-only-control" onclick="openBlogComposer()" title="Write a new research dispatch">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-          <span>+ Write Note</span>
-        </button>
-        <button type="button" id="nav-author-lock-btn" class="btn-author-lock author-only-control" onclick="exitAuthorMode()" title="Exit Author Mode">
-          Lock 🔒
-        </button>
         <a href="#papers" class="btn-nav-action" title="View 12 original preprints">
           <span>12 Papers</span>
         </a>
@@ -632,10 +609,6 @@
               <input type="text" id="blog-search-input" class="blog-search-input" placeholder="Search dispatches by title, concept, or equation ($J, \Xi, \eta, L_1$)...">
               <button id="blog-clear-search-btn" class="blog-clear-btn" style="display: none;" title="Clear search">&times;</button>
             </div>
-            <button type="button" id="blog-compose-btn" class="btn-compose-dispatch author-only-control" onclick="openBlogComposer()" title="Write a new research dispatch or working note">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-              <span>+ Write New Dispatch</span>
-            </button>
           </div>
 
           <div class="blog-filter-pills" id="blog-filter-pills">
@@ -921,10 +894,7 @@
     <div class="footer-bottom-bar">
       <div class="container footer-bottom-flex">
         <span>&copy; 2026 Abhijit Singh. All rights reserved under CC BY 4.0.</span>
-        <span>
-          Static Research Platform &bull; Built for High-Performance Academic Dissemination &bull; 
-          <button type="button" class="author-gate-link" onclick="openAuthorGateModal()" title="Author Studio Access (Abhijit Singh)">Author Access 🔒</button>
-        </span>
+        <span>Static Research Platform &bull; Built for High-Performance Academic Dissemination</span>
       </div>
     </div>
   </footer>
@@ -1031,227 +1001,7 @@
     </div>
   </div>
 
-  <!-- Author Security Gate & Dispatch Studio Access Modal -->
-  <div id="author-auth-modal" class="modal-backdrop" onclick="closeAuthorGateModal(event)">
-    <div class="modal-card author-auth-card" onclick="event.stopPropagation()">
-      <div class="modal-header">
-        <div class="modal-header-text">
-          <span class="modal-tag">RESTRICTED ACCESS &bull; RESEARCH ARCHIVE</span>
-          <h3 class="modal-title" style="color: #FFFFFF;">Author Verification Gate</h3>
-        </div>
-        <button class="modal-close-btn" onclick="closeAuthorGateModal()" title="Close">&times;</button>
-      </div>
 
-      <div class="modal-body" style="padding: 1.5rem; display: flex; flex-direction: column; gap: 1.25rem;">
-        <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.6; margin: 0;">
-          Authoring and publishing tools are restricted exclusively to the researcher (Abhijit Singh). Enter your Author Passcode to enable blog authoring tools on this device.
-        </p>
-
-        <div class="composer-field">
-          <label class="composer-label" for="author-passcode-input">Author Passcode <span style="color: var(--color-crimson);">*</span></label>
-          <input type="password" id="author-passcode-input" class="composer-input" placeholder="Enter author passcode..." autocomplete="current-password">
-          <span id="author-auth-error" style="color: var(--color-crimson); font-size: 0.8rem; font-family: var(--font-mono); display: none; margin-top: 0.25rem;">Incorrect passcode. Please try again.</span>
-        </div>
-
-        <div class="composer-field">
-          <label class="composer-label" for="author-github-token">GitHub Personal Access Token (Optional &bull; For Direct Git Commits)</label>
-          <input type="password" id="author-github-token" class="composer-input" placeholder="ghp_... (enables 1-click live publish to GitHub Pages)">
-          <span style="font-size: 0.74rem; color: var(--text-muted); font-family: var(--font-mono); line-height: 1.4; margin-top: 0.25rem;">
-            Token is stored strictly in your local browser's storage and enables direct commits to <code>mag-and-krotons.github.io</code> without opening a terminal.
-          </span>
-        </div>
-      </div>
-
-      <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem;">
-        <button type="button" id="author-unlock-btn" class="btn-primary" onclick="submitAuthorAuth()">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          <span>Unlock Author Studio</span>
-        </button>
-        <button type="button" class="btn-secondary" onclick="closeAuthorGateModal()">Cancel</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- In-Browser Research Dispatch Composer Studio Modal -->
-  <div id="blog-composer-modal" class="modal-backdrop" onclick="closeBlogComposer(event)">
-    <div class="modal-card composer-modal-card" onclick="event.stopPropagation()">
-      <div class="modal-header composer-header">
-        <div class="modal-header-text">
-          <span class="modal-tag">IN-BROWSER RESEARCH STUDIO &bull; DIRECT CLIENT-SIDE AUTHORING</span>
-          <h3 class="modal-title" style="color: #FFFFFF; margin-top: 0.2rem;">Write Research Dispatch &amp; Working Note</h3>
-          <p style="font-size: 0.8rem; color: #94A3B8; margin: 0.25rem 0 0 0;">
-            Compose working notes, geometric derivations, and LaTeX formulas. Dispatches publish instantly to your live feed and persist in browser storage.
-          </p>
-        </div>
-        <button class="modal-close-btn" onclick="closeBlogComposer()" title="Close Composer">&times;</button>
-      </div>
-
-      <div class="modal-body composer-body">
-        <!-- Title Input -->
-        <div class="composer-field">
-          <label class="composer-label" for="composer-title">Dispatch Title <span style="color: var(--color-crimson);">*</span></label>
-          <input type="text" id="composer-title" class="composer-input composer-input-lg" placeholder="e.g. Asymptotic Boundary Conditions in Collinear Lagrange Point Invariance" required>
-        </div>
-
-        <!-- Metadata Grid: Category, Tags, Estimated Read Time -->
-        <div class="composer-form-grid-3">
-          <div class="composer-field">
-            <label class="composer-label" for="composer-category">Research Domain / Category</label>
-            <select id="composer-category" class="composer-select">
-              <option value="differential-geometry">Fluid Manifolds &amp; Topology</option>
-              <option value="number-theory">Number Theory &amp; Zeros</option>
-              <option value="celestial-mechanics">Celestial Throats &amp; Flux</option>
-              <option value="quantum-physics">Quantum Negativity &amp; Coherence</option>
-              <option value="cortical-networks">Cortical &amp; Ternary Networks</option>
-              <option value="general-physics">Mathematical Physics &amp; Balance</option>
-            </select>
-          </div>
-
-          <div class="composer-field">
-            <label class="composer-label" for="composer-tags">Tags (Comma-Separated)</label>
-            <input type="text" id="composer-tags" class="composer-input" placeholder="e.g. #Topology, #Phase Space, #Lagrange">
-          </div>
-
-          <div class="composer-field">
-            <label class="composer-label" for="composer-readtime">Reading Time</label>
-            <input type="text" id="composer-readtime" class="composer-input" value="5 min read" placeholder="e.g. 5 min read">
-          </div>
-        </div>
-
-        <!-- Key Formula / LaTeX Criterion Section with Real-Time Preview -->
-        <div class="composer-formula-studio">
-          <div class="composer-form-grid-2">
-            <div class="composer-field">
-              <label class="composer-label" for="composer-formula-tag">Formula Box Tag / Label</label>
-              <input type="text" id="composer-formula-tag" class="composer-input" value="KEY FORMULA / CRITERION" placeholder="e.g. SOLENOIDAL CONTINUITY CRITERION">
-            </div>
-            <div class="composer-field">
-              <label class="composer-label" for="composer-formula-latex">Key LaTeX Formula (Rendered Live Below)</label>
-              <input type="text" id="composer-formula-latex" class="composer-input" placeholder="e.g. \nabla \cdot \mathbf{J} = 0 \iff \oint_{\partial \Omega} \mathbf{v} \cdot \hat{n} \, dS = 0">
-            </div>
-          </div>
-          <div class="composer-field">
-            <span class="composer-label">Live Formula KaTeX Preview</span>
-            <div id="composer-formula-preview" class="composer-formula-preview-box">
-              <span class="composer-formula-empty">(Live KaTeX formula preview will appear here as you type LaTeX)</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Summary / Abstract -->
-        <div class="composer-field">
-          <label class="composer-label" for="composer-summary">Executive Summary / Card Abstract <span style="color: var(--color-crimson);">*</span></label>
-          <textarea id="composer-summary" class="composer-textarea" rows="2" placeholder="2-3 sentence teaser summary of this note to display on the article card (supports inline math like $J = \text{const}$)..." required></textarea>
-        </div>
-
-        <!-- Working Note Content Studio -->
-        <div class="composer-field">
-          <label class="composer-label">Working Note Body (Markdown &amp; LaTeX) <span style="color: var(--color-crimson);">*</span></label>
-          <div class="composer-editor-box">
-            <div class="composer-toolbar">
-              <div class="composer-tools-group">
-                <button type="button" class="composer-tool-btn" onclick="insertComposerMarkdown('**', '**', 'bold text')" title="Bold">B</button>
-                <button type="button" class="composer-tool-btn" onclick="insertComposerMarkdown('*', '*', 'italic text')" title="Italic"><em>I</em></button>
-                <button type="button" class="composer-tool-btn" onclick="insertComposerMarkdown('### ', '', 'Section Heading')" title="Heading 3">H3</button>
-                <button type="button" class="composer-tool-btn" onclick="insertComposerMarkdown('$', '$', 'E = mc^2')" title="Inline LaTeX Math">$ Math $</button>
-                <button type="button" class="composer-tool-btn" onclick="insertComposerMarkdown('$$\n', '\n$$', '\\int f(x) dx')" title="Display LaTeX Math">$$ Block $$</button>
-                <button type="button" class="composer-tool-btn" onclick="insertComposerMarkdown(':::callout\n<strong>Lemma / Note:</strong>\n', '\n:::', 'Key theoretical result here')" title="Callout Box">Callout</button>
-                <button type="button" class="composer-tool-btn" onclick="insertComposerMarkdown('> ', '', 'Quoted academic remark')" title="Quote">Quote</button>
-                <button type="button" class="composer-tool-btn" onclick="insertComposerMarkdown('- ', '', 'List item')" title="Bullet List">&bull; List</button>
-                <button type="button" class="composer-tool-btn" onclick="insertComposerMarkdown('```\n', '\n```', 'code block')" title="Code Block">&lt;/&gt;</button>
-              </div>
-              <div class="composer-tabs">
-                <button type="button" id="tab-btn-edit" class="composer-tab-btn active" onclick="switchComposerTab('edit')">Editor</button>
-                <button type="button" id="tab-btn-preview" class="composer-tab-btn" onclick="switchComposerTab('preview')">Live KaTeX Preview</button>
-              </div>
-            </div>
-
-            <div id="composer-editor-wrap">
-              <textarea id="composer-content" class="composer-textarea-content" rows="12" placeholder="Write full working note in Markdown and LaTeX. 
-
-### 1. Mathematical Formulation
-State your analytical premises, theorems, and definitions.
-
-$$ \nabla \cdot \mathbf{J} = 0 $$
-
-:::callout
-<strong>Physical Consequence:</strong> The throat flux maintains invariance under symplectic transformations.
-:::
-
-- Point 1
-- Point 2
-"></textarea>
-            </div>
-
-            <div id="composer-preview-pane" class="composer-preview-pane blog-modal-prose" style="display: none;">
-              <!-- Rendered preview appears here -->
-            </div>
-          </div>
-        </div>
-
-        <!-- Optional Preprint Association -->
-        <div class="composer-field">
-          <label class="composer-label" for="composer-paper-select">Link to Accompanying Preprint (Optional)</label>
-          <select id="composer-paper-select" class="composer-select">
-            <option value="">-- No linked preprint --</option>
-            <option value="01_Mathematics_Pair_Balance_and_the_Riemann_Zeros" data-title="Pair Balance and the Riemann Zeros: The Signed Current, the Mirror and the Merge, and the Prime Two">Paper 01: Pair Balance and the Riemann Zeros</option>
-            <option value="02_Physics_Pair_Balance_and_the_Universal_Spectrum" data-title="Pair Balance and the Universal Spectrum: The Signed Current and the Wigner Positivity of Riemann States">Paper 02: Universal Spectrum &amp; Wigner Positivity</option>
-            <option value="03_Quantum_The_Riemann_Kernel_as_a_Quantum_State" data-title="The Riemann Kernel as a Quantum State: Wigner Negativity, Decoherence at the Thirds and Lee-Yang Zeros">Paper 03: Riemann Kernel as a Quantum State</option>
-            <option value="04_Computer_Science_Pair_Balanced_Network_Flow" data-title="Pair-Balanced Network Flow: The Signed Current as an Admissibility Criterion for Quantum Routing">Paper 04: Quantum Routing &amp; Admissibility</option>
-            <option value="05_Biology_Excitation_Inhibition_Balance_in_Cortical_Networks" data-title="Excitation-Inhibition Balance in Cortical Networks: The Signed Current as an Order Parameter for Neural Excitability">Paper 05: Cortical Networks E/I Balance</option>
-            <option value="06_Algorithms_Three_Is_Enough" data-title="Three Is Enough: Radix Economy, Balanced-Ternary Arithmetic and Ternary-Weight Networks">Paper 06: Radix Economy &amp; Balanced Ternary</option>
-            <option value="07_Astrobiology_The_Enceladus_Subsurface_Ocean" data-title="The Enceladus Subsurface Ocean: A Coupled Hydrothermal-Electrochemical Model of Metabolic Energy Availability">Paper 07: Enceladus Ocean Hydrothermal Model</option>
-            <option value="08_Planetary_The_Four_Giants_as_Balanced_Pairs" data-title="The Four Giants as Balanced Pairs: Throats, Hearts, the Gas Ladder and the Interstellar Visitors">Paper 08: The Four Giants as Balanced Pairs</option>
-            <option value="09_Neural_Networks_Pair_Balanced_Graph_Attention_Networks" data-title="Pair-Balanced Graph Attention Networks: Sign-Preserving Message Passing for Quantum Circuit Graphs">Paper 09: Graph Attention Networks</option>
-            <option value="10_Energy_Pair_Balanced_State_of_Charge_Estimation" data-title="Pair-Balanced State-of-Charge Estimation in Multicell Battery Packs: Thermodynamic Current Bounds">Paper 10: Multicell Battery State-of-Charge</option>
-            <option value="11_Topology_Balance_and_Duality_in_Topological_Quantum_Systems" data-title="Balance and Duality in Topological Quantum Systems: Majorana Modes, Anyons and Braiding">Paper 11: Balance &amp; Duality in Topological Systems</option>
-            <option value="12_Synthesis_The_Geometry_of_Balance" data-title="The Geometry of Balance: A Unifying Principle Across Mathematics, Physics and Biology">Paper 12: The Geometry of Balance (Synthesis)</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="modal-footer composer-footer">
-        <div class="composer-footer-left">
-          <button type="button" class="btn-primary composer-publish-btn" onclick="publishNewDispatch()">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            <span>Publish Dispatch to Site</span>
-          </button>
-          <button type="button" class="btn-secondary" onclick="exportComposerCode()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            <span>Export Code for Git</span>
-          </button>
-          <button type="button" class="btn-outline" onclick="resetComposerForm()">Clear Form</button>
-        </div>
-        <button type="button" class="btn-secondary btn-composer-cancel" onclick="closeBlogComposer()">Cancel</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- JavaScript Code Export Lightbox Modal -->
-  <div id="dispatch-export-modal" class="modal-backdrop" onclick="closeDispatchExportModal()">
-    <div class="modal-card export-modal-card" onclick="event.stopPropagation()">
-      <div class="modal-header">
-        <div class="modal-header-text">
-          <span class="modal-tag">GIT REPOSITORY INTEGRATION</span>
-          <h3 class="modal-title">Export Dispatch Code for Repository</h3>
-          <p style="font-size: 0.8rem; color: #94A3B8; margin: 0.25rem 0 0 0;">
-            Copy this JavaScript object and paste it into the <code>BLOG_ENTRIES</code> array in <code>js/blog.js</code> to commit it permanently to your GitHub repository.
-          </p>
-        </div>
-        <button class="modal-close-btn" onclick="closeDispatchExportModal()">&times;</button>
-      </div>
-      <div class="modal-body">
-        <pre id="dispatch-export-code" class="export-code-block"></pre>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn-primary" onclick="copyExportCodeToClipboard()">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
-          <span>Copy Snippet to Clipboard</span>
-        </button>
-        <button type="button" class="btn-secondary" onclick="closeDispatchExportModal()" style="margin-left: 0.75rem;">Close</button>
-      </div>
-    </div>
-  </div>
 
   <!-- Toast Notification Container -->
   <div id="app-toast" class="toast-notice"></div>
