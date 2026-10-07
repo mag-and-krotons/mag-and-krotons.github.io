@@ -4,9 +4,213 @@
  */
 
 // --- Research Papers Data ---
-const RESEARCH_PAPERS = [];
+const RESEARCH_PAPERS = [
+  {
+    id: "01_Mathematics_Pair_Balance_and_the_Riemann_Zeros",
+    title: "Mathematics: Pair Balance and the Riemann Zeros",
+    authors: "Abhijit Singh",
+    venue: "Preprint",
+    year: "2026",
+    category: "number-theory",
+    doi: "",
+    arxiv: "",
+    pdf: "papers/01_Mathematics_Pair_Balance_and_the_Riemann_Zeros/01_Mathematics_Pair_Balance_and_the_Riemann_Zeros.pdf",
+    github: "https://github.com/mag-and-krotons",
+    license: "CC-BY 4.0",
+    licenseType: "open-access",
+    abstract: "A study on Pair Balance and the Riemann Zeros.",
+    bibtex: "@article{singh2026_01,\n  title={Mathematics: Pair Balance and the Riemann Zeros},\n  author={Singh, Abhijit},\n  year={2026}\n}"
+  },
+  {
+    id: "02_Physics_The_Reversible_Half_and_the_Third_Body",
+    title: "Physics: The Reversible Half and the Third Body",
+    authors: "Abhijit Singh",
+    venue: "Preprint",
+    year: "2026",
+    category: "quantum-networks",
+    doi: "",
+    arxiv: "",
+    pdf: "papers/02_Physics_The_Reversible_Half_and_the_Third_Body/02_Physics_The_Reversible_Half_and_the_Third_Body.pdf",
+    github: "https://github.com/mag-and-krotons",
+    license: "CC-BY 4.0",
+    licenseType: "open-access",
+    abstract: "A study on The Reversible Half and the Third Body.",
+    bibtex: "@article{singh2026_02,\n  title={Physics: The Reversible Half and the Third Body},\n  author={Singh, Abhijit},\n  year={2026}\n}"
+  },
+  {
+    id: "03_Quantum_The_Riemann_Kernel_as_a_Quantum_State",
+    title: "Quantum: The Riemann Kernel as a Quantum State",
+    authors: "Abhijit Singh",
+    venue: "Preprint",
+    year: "2026",
+    category: "number-theory",
+    doi: "",
+    arxiv: "",
+    pdf: "papers/03_Quantum_The_Riemann_Kernel_as_a_Quantum_State/03_Quantum_The_Riemann_Kernel_as_a_Quantum_State.pdf",
+    github: "https://github.com/mag-and-krotons",
+    license: "CC-BY 4.0",
+    licenseType: "open-access",
+    abstract: "A study on The Riemann Kernel as a Quantum State.",
+    bibtex: "@article{singh2026_03,\n  title={Quantum: The Riemann Kernel as a Quantum State},\n  author={Singh, Abhijit},\n  year={2026}\n}"
+  },
+  {
+    id: "04_Chemistry_Which_Member_Carries",
+    title: "Chemistry: Which Member Carries",
+    authors: "Abhijit Singh",
+    venue: "Preprint",
+    year: "2026",
+    category: "quantum-networks",
+    doi: "",
+    arxiv: "",
+    pdf: "papers/04_Chemistry_Which_Member_Carries/04_Chemistry_Which_Member_Carries.pdf",
+    github: "https://github.com/mag-and-krotons",
+    license: "CC-BY 4.0",
+    licenseType: "open-access",
+    abstract: "A study on Which Member Carries.",
+    bibtex: "@article{singh2026_04,\n  title={Chemistry: Which Member Carries},\n  author={Singh, Abhijit},\n  year={2026}\n}"
+  },
+  {
+    id: "05_Neuroscience_The_Balanced_Pair_in_Excitable_Tissue",
+    title: "Neuroscience: The Balanced Pair in Excitable Tissue",
+    authors: "Abhijit Singh",
+    venue: "Preprint",
+    year: "2026",
+    category: "quantum-networks",
+    doi: "",
+    arxiv: "",
+    pdf: "papers/05_Neuroscience_The_Balanced_Pair_in_Excitable_Tissue/05_Neuroscience_The_Balanced_Pair_in_Excitable_Tissue.pdf",
+    github: "https://github.com/mag-and-krotons",
+    license: "CC-BY 4.0",
+    licenseType: "open-access",
+    abstract: "A study on The Balanced Pair in Excitable Tissue.",
+    bibtex: "@article{singh2026_05,\n  title={Neuroscience: The Balanced Pair in Excitable Tissue},\n  author={Singh, Abhijit},\n  year={2026}\n}"
+  },
+  {
+    id: "06_Algorithms_Three_Is_Enough",
+    title: "Algorithms: Three Is Enough",
+    authors: "Abhijit Singh",
+    venue: "Preprint",
+    year: "2026",
+    category: "number-theory",
+    doi: "",
+    arxiv: "",
+    pdf: "papers/06_Algorithms_Three_Is_Enough/06_Algorithms_Three_Is_Enough.pdf",
+    github: "https://github.com/mag-and-krotons",
+    license: "CC-BY 4.0",
+    licenseType: "open-access",
+    abstract: "A study on Three Is Enough.",
+    bibtex: "@article{singh2026_06,\n  title={Algorithms: Three Is Enough},\n  author={Singh, Abhijit},\n  year={2026}\n}"
+  },
+  {
+    id: "07_Planetary_Science_The_Four_Giants_as_Balanced_Pairs",
+    title: "Planetary Science: The Four Giants as Balanced Pairs",
+    authors: "Abhijit Singh",
+    venue: "Preprint",
+    year: "2026",
+    category: "quantum-networks",
+    doi: "",
+    arxiv: "",
+    pdf: "papers/07_Planetary_Science_The_Four_Giants_as_Balanced_Pairs/07_Planetary_Science_The_Four_Giants_as_Balanced_Pairs.pdf",
+    github: "https://github.com/mag-and-krotons",
+    license: "CC-BY 4.0",
+    licenseType: "open-access",
+    abstract: "A study on The Four Giants as Balanced Pairs.",
+    bibtex: "@article{singh2026_07,\n  title={Planetary Science: The Four Giants as Balanced Pairs},\n  author={Singh, Abhijit},\n  year={2026}\n}"
+  },
+  {
+    id: "08_Synthesis_What_a_Zero_Is",
+    title: "Synthesis: What a Zero Is",
+    authors: "Abhijit Singh",
+    venue: "Preprint",
+    year: "2026",
+    category: "number-theory",
+    doi: "",
+    arxiv: "",
+    pdf: "papers/08_Synthesis_What_a_Zero_Is/08_Synthesis_What_a_Zero_Is.pdf",
+    github: "https://github.com/mag-and-krotons",
+    license: "CC-BY 4.0",
+    licenseType: "open-access",
+    abstract: "A study on What a Zero Is.",
+    bibtex: "@article{singh2026_08,\n  title={Synthesis: What a Zero Is},\n  author={Singh, Abhijit},\n  year={2026}\n}"
+  },
+  {
+    id: "09_The_Remaining_Step",
+    title: "The Remaining Step",
+    authors: "Abhijit Singh",
+    venue: "Preprint",
+    year: "2026",
+    category: "number-theory",
+    doi: "",
+    arxiv: "",
+    pdf: "papers/09_The_Remaining_Step/09_The_Remaining_Step.pdf",
+    github: "https://github.com/mag-and-krotons",
+    license: "CC-BY 4.0",
+    licenseType: "open-access",
+    abstract: "A study on The Remaining Step.",
+    bibtex: "@article{singh2026_09,\n  title={The Remaining Step},\n  author={Singh, Abhijit},\n  year={2026}\n}"
+  },
+  {
+    id: "10_The_Balance_of_the_Count",
+    title: "The Balance of the Count",
+    authors: "Abhijit Singh",
+    venue: "Preprint",
+    year: "2026",
+    category: "number-theory",
+    doi: "",
+    arxiv: "",
+    pdf: "papers/10_The_Balance_of_the_Count/10_The_Balance_of_the_Count.pdf",
+    github: "https://github.com/mag-and-krotons",
+    license: "CC-BY 4.0",
+    licenseType: "open-access",
+    abstract: "A study on The Balance of the Count.",
+    bibtex: "@article{singh2026_10,\n  title={The Balance of the Count},\n  author={Singh, Abhijit},\n  year={2026}\n}"
+  },
+  {
+    id: "11_The_Square_Root_Horizon",
+    title: "The Square Root Horizon",
+    authors: "Abhijit Singh",
+    venue: "Preprint",
+    year: "2026",
+    category: "number-theory",
+    doi: "",
+    arxiv: "",
+    pdf: "papers/11_The_Square_Root_Horizon/11_The_Square_Root_Horizon.pdf",
+    github: "https://github.com/mag-and-krotons",
+    license: "CC-BY 4.0",
+    licenseType: "open-access",
+    abstract: "A study on The Square Root Horizon.",
+    bibtex: "@article{singh2026_11,\n  title={The Square Root Horizon},\n  author={Singh, Abhijit},\n  year={2026}\n}"
+  },
+  {
+    id: "Nothing_Binds_a_Twin",
+    title: "Nothing Binds a Twin",
+    authors: "Abhijit Singh",
+    venue: "Preprint",
+    year: "2026",
+    category: "number-theory",
+    doi: "",
+    arxiv: "",
+    pdf: "papers/Nothing_Binds_a_Twin/Nothing_Binds_a_Twin.pdf",
+    github: "https://github.com/mag-and-krotons",
+    license: "CC-BY 4.0",
+    licenseType: "open-access",
+    abstract: "A study on Nothing Binds a Twin.",
+    bibtex: "@article{singh2026_twin,\n  title={Nothing Binds a Twin},\n  author={Singh, Abhijit},\n  year={2026}\n}"
+  }
+];
 
-const DEMO_REPOSITORIES = [];
+const DEMO_REPOSITORIES = [
+  {
+    name: "GAT",
+    description: "Graph Attention Networks / Quantum Networks Codebase",
+    html_url: "https://github.com/mag-and-krotons/GAT",
+    language: "Python",
+    langColor: "#3572A5",
+    stargazers_count: 0,
+    forks_count: 0,
+    license: "Open Access"
+  }
+];
 
 // --- 80s Perspective Canvas & Quantum Particles Animation ---
 function initBackgroundCanvas() {
@@ -55,8 +259,8 @@ function initBackgroundCanvas() {
     gridOffset = (gridOffset + 0.6) % 36;
 
     ctx.save();
-    ctx.strokeStyle = "rgba(0, 240, 255, 0.12)";
-    ctx.lineWidth = 1;
+    ctx.strokeStyle = "rgba(0, 0, 0, 0.4)";
+    ctx.lineWidth = 2;
 
     // Horizontal perspective lines
     for (let i = 0; i < 18; i++) {
@@ -83,16 +287,15 @@ function initBackgroundCanvas() {
 
     // Horizon glowing laser line
     const horizonGrad = ctx.createLinearGradient(0, horizonY, width, horizonY);
-    horizonGrad.addColorStop(0, "rgba(255, 42, 133, 0)");
-    horizonGrad.addColorStop(0.3, "rgba(255, 42, 133, 0.4)");
-    horizonGrad.addColorStop(0.5, "rgba(0, 240, 255, 0.8)");
-    horizonGrad.addColorStop(0.7, "rgba(255, 42, 133, 0.4)");
-    horizonGrad.addColorStop(1, "rgba(255, 42, 133, 0)");
+    horizonGrad.addColorStop(0, "rgba(255, 0, 127, 0)");
+    horizonGrad.addColorStop(0.3, "rgba(255, 0, 127, 0.8)");
+    horizonGrad.addColorStop(0.5, "rgba(0, 68, 255, 1)");
+    horizonGrad.addColorStop(0.7, "rgba(255, 0, 127, 0.8)");
+    horizonGrad.addColorStop(1, "rgba(255, 0, 127, 0)");
 
     ctx.strokeStyle = horizonGrad;
-    ctx.lineWidth = 2;
-    ctx.shadowBlur = 15;
-    ctx.shadowColor = "#00f0ff";
+    ctx.lineWidth = 4;
+    ctx.shadowBlur = 0;
     ctx.beginPath();
     ctx.moveTo(0, horizonY);
     ctx.lineTo(width, horizonY);
@@ -110,13 +313,12 @@ function initBackgroundCanvas() {
       if (p.y < 0) p.y = height;
       if (p.y > height) p.y = 0;
 
-      const alpha = 0.25 + 0.35 * Math.sin(p.phase);
-      ctx.fillStyle = p.color + alpha + ")";
-      ctx.shadowBlur = 8;
-      ctx.shadowColor = p.color === "rgba(0, 240, 255, " ? "#00f0ff" : "#ff2a85";
+      ctx.fillStyle = p.color + "1)"; // Solid color for punk
+      ctx.shadowBlur = 0;
 
       ctx.beginPath();
-      ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+      // Draw as rough squares instead of perfect circles for a brutalist feel
+      ctx.rect(p.x - p.radius, p.y - p.radius, p.radius*2.5, p.radius*2.5);
       ctx.fill();
     });
 
@@ -185,25 +387,20 @@ function initBlochSphere() {
 
     ctx.clearRect(0, 0, w, h);
 
-    // Glowing Sphere Background Circle
-    const sphereGrad = ctx.createRadialGradient(cx - 30, cy - 30, 10, cx, cy, R);
-    sphereGrad.addColorStop(0, "rgba(35, 25, 70, 0.6)");
-    sphereGrad.addColorStop(0.8, "rgba(10, 8, 25, 0.85)");
-    sphereGrad.addColorStop(1, "rgba(0, 240, 255, 0.35)");
-
-    ctx.fillStyle = sphereGrad;
+    // Solid Sphere Background Circle
+    ctx.fillStyle = "#FFEA00"; // yellow
     ctx.beginPath();
     ctx.arc(cx, cy, R, 0, Math.PI * 2);
     ctx.fill();
 
     // Outer border
-    ctx.strokeStyle = "rgba(0, 240, 255, 0.4)";
-    ctx.lineWidth = 1.5;
+    ctx.strokeStyle = "#111";
+    ctx.lineWidth = 3;
     ctx.stroke();
 
     // Equator ring (perspective ellipse)
     ctx.save();
-    ctx.strokeStyle = "rgba(255, 42, 133, 0.35)";
+    ctx.strokeStyle = "#111";
     ctx.setLineDash([4, 4]);
     ctx.beginPath();
     ctx.ellipse(cx, cy, R, R * 0.32, 0, 0, Math.PI * 2);
@@ -211,8 +408,8 @@ function initBlochSphere() {
     ctx.restore();
 
     // Central Axes
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.2)";
-    ctx.lineWidth = 1;
+    ctx.strokeStyle = "#111";
+    ctx.lineWidth = 2;
     // Z axis (vertical)
     ctx.beginPath();
     ctx.moveTo(cx, cy - R - 12);
@@ -220,17 +417,13 @@ function initBlochSphere() {
     ctx.stroke();
 
     // Labels |0> and |1>
-    ctx.fillStyle = "#00f0ff";
-    ctx.font = "bold 12px JetBrains Mono, monospace";
-    ctx.fillText("|0⟩ (|z+⟩)", cx - 25, cy - R - 16);
-    ctx.fillStyle = "#ff2a85";
-    ctx.fillText("|1⟩ (|z-⟩)", cx - 25, cy + R + 24);
+    ctx.fillStyle = "#FF007F";
+    ctx.font = "bold 14px JetBrains Mono, monospace";
+    ctx.fillText("|0⟩ (|z+⟩)", cx - 35, cy - R - 16);
+    ctx.fillStyle = "#0044FF";
+    ctx.fillText("|1⟩ (|z-⟩)", cx - 35, cy + R + 24);
 
     // State Vector calculation:
-    // spherical coordinates on unit sphere:
-    // x = R * sin(theta) * cos(phi)
-    // y = R * sin(theta) * sin(phi) (tilted perspective)
-    // z = R * cos(theta) (upward)
     const t = quantumState.theta;
     const p = quantumState.phi;
 
@@ -239,26 +432,19 @@ function initBlochSphere() {
 
     // Vector line
     ctx.save();
-    ctx.shadowBlur = 14;
-    ctx.shadowColor = "#00f0ff";
-    ctx.strokeStyle = "#00f0ff";
-    ctx.lineWidth = 3;
+    ctx.strokeStyle = "#FF007F";
+    ctx.lineWidth = 4;
     ctx.beginPath();
     ctx.moveTo(cx, cy);
     ctx.lineTo(px, py);
     ctx.stroke();
 
     // Tip point
-    ctx.fillStyle = "#ffffff";
+    ctx.fillStyle = "#0044FF";
     ctx.beginPath();
-    ctx.arc(px, py, 5, 0, Math.PI * 2);
+    // draw a brutalist square tip
+    ctx.rect(px-6, py-6, 12, 12);
     ctx.fill();
-
-    // Neon Halo
-    ctx.strokeStyle = "#ff2a85";
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.arc(px, py, 9, 0, Math.PI * 2);
     ctx.stroke();
     ctx.restore();
   }
