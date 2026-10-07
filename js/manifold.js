@@ -1,5 +1,8 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 
 // ============================================================================
 // 36-NODE SIMPLICIAL COMPLEX: 6D FLUID MANIFOLD SIMULATION
@@ -110,6 +113,23 @@ class FluidManifoldSimulation {
     this.controls.maxDistance = 140;
     this.controls.minDistance = 6;
 
+    // Bloom Post-Processing Pipeline
+    try {
+      this.composer = new EffectComposer(this.renderer);
+      this.renderPass = new RenderPass(this.scene, this.camera);
+      this.composer.addPass(this.renderPass);
+      this.bloomPass = new UnrealBloomPass(
+        new THREE.Vector2(w, h),
+        1.6, // bloom strength
+        0.5, // radius
+        0.12 // threshold
+      );
+      this.composer.addPass(this.bloomPass);
+    } catch (err) {
+      console.warn('[FluidManifoldSimulation] Bloom post-processing unavailable, falling back to direct WebGL render.', err);
+      this.composer = null;
+    }
+
     // Complex Cinematic Lighting
     this.scene.add(new THREE.AmbientLight(0x0f172a, 2.4));
 
@@ -181,16 +201,17 @@ class FluidManifoldSimulation {
     const texSapphire = this.createGlowTexture('rgba(56, 189, 248, 0.95)', 0.4);
     const texAmber = this.createGlowTexture('rgba(245, 158, 11, 0.92)', 0.4);
 
-    // 1. 36 Nodes: 18 Primary Vertices (Sapphire) + 18 Midpoints (Amber)
-    const vertGeo = new THREE.SphereGeometry(0.48, 32, 32);
-    const midGeo = new THREE.SphereGeometry(0.36, 28, 28);
+    // 1. 36 Spacetime String Vertices: 18 Primary Micro-String Loops (Sapphire) + 18 Midpoint Micro-String Loops (Amber)
+    // Strictly NO zero-dimensional solid sphere nodes or stick balls! Formulated as continuous closed string loops!
+    const vertGeo = new THREE.TorusGeometry(0.38, 0.045, 16, 36);
+    const midGeo = new THREE.TorusGeometry(0.28, 0.035, 14, 32);
 
     this.matVert = new THREE.MeshPhysicalMaterial({
-      color: 0x0284c7,
-      emissive: 0x0369a1,
-      emissiveIntensity: 0.85,
-      roughness: 0.06,
-      metalness: 0.15,
+      color: 0x38bdf8,
+      emissive: 0x0284c7,
+      emissiveIntensity: 1.1,
+      roughness: 0.1,
+      metalness: 0.3,
       clearcoat: 1.0,
       clearcoatRoughness: 0.05
     });
@@ -963,12 +984,20 @@ class FluidManifoldSimulation {
         const nodeScale = (isStill ? 1.0 : (1.0 + psiWave * 0.38)) + excV * 1.4;
         this.vertMeshes[i][j].position.copy(verts[j]);
         this.vertMeshes[i][j].scale.setScalar(Math.max(0.4, nodeScale));
+        if (!isStill) {
+          this.vertMeshes[i][j].rotation.x += 0.02 * Math.min(10.0, this.frequency);
+          this.vertMeshes[i][j].rotation.z += 0.015;
+        }
 
         const mIdx = vIdx + 1;
         const excM = this.nodeExcitation[mIdx] || 0;
         const midScale = (isStill ? 1.0 : (1.0 + psiWave * 0.28)) + excM * 1.4;
         this.midMeshes[i][j].position.copy(mids[j]);
         this.midMeshes[i][j].scale.setScalar(Math.max(0.4, midScale));
+        if (!isStill) {
+          this.midMeshes[i][j].rotation.y -= 0.025 * Math.min(10.0, this.frequency);
+          this.midMeshes[i][j].rotation.x += 0.012;
+        }
       }
     }
 
@@ -1009,7 +1038,11 @@ class FluidManifoldSimulation {
 
     const delta = Math.min(0.08, this.clock.getDelta());
     this.stepPhysics(delta);
-    this.renderer.render(this.scene, this.camera);
+    if (this.composer) {
+      this.composer.render();
+    } else {
+      this.renderer.render(this.scene, this.camera);
+    }
   }
 
   stepPhysics(delta = 0.016) {
@@ -1610,6 +1643,9 @@ class FluidManifoldSimulation {
     this.camera.aspect = w / h;
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(w, h);
+    if (this.composer) {
+      this.composer.setSize(w, h);
+    }
   }
 
   initObserver() {

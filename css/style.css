@@ -2268,6 +2268,7 @@ body {
   position: relative;
   overflow: hidden;
   margin-top: 2rem;
+  scroll-margin-top: 85px;
 }
 
 .manifold-hud-top {
