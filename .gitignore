@@ -1,0 +1,10 @@
+# Temporary scripts
+scratch/
+
+# LaTeX build artifacts
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz
+*.bak
