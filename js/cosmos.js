@@ -1,5 +1,23 @@
 /**
- * THE GAME OF COSMOS: CONTINUOUS STRING-QUANTUM 36-NODE EMERGENCE & MONAD REINCARNATION
+ * THE GAME OF COSMOS: PURE EMERGENCE & CONTINUOUS STRING-QUANTUM 36-NODE DYNAMICS
+ * Authentically derived from Papers 01-12 & Nothing Binds a Twin but Exclusion (Abhijit Singh, 2026)
+ * 
+ * - Pure Emergence: Universal Native Vibration omega_0 = 14.134725 (First Riemann zero gamma_1) is the sole fixed constant.
+ * - Monads carry Atomic Number Z (emergent from phase-resonant fusion at 120° Z3 and 180° Laplace lock).
+ * - Multi-Node Geometric Morphing:
+ *     - Z=1: Monomer (Fermion/Lepton excitation)
+ *     - Z=2: Diatomic Hydrogen (^1H₂ — Prime 2 Duality)
+ *     - Z=3: Triad Nucleon / Helium-3 (^3He — Prime 3 Contact Trigon)
+ *     - Z=4: Helium-4 Alpha Nucleus (^4He — 2² Tetrahedral Singlet)
+ *     - Z=5: Pentagonal Boron-10 (^10B — Prime 5 Ribose Core)
+ *     - Z=6: Carbon-12 Ring (^12C — Hexagonal Benzene Aromatic)
+ *     - Z=7: Nitrogen-14 Branch (^14N — Prime 7 Peptide Bridge)
+ *     - Z=8: Oxygen-16 Complex (^16O — 2³ Cube of Prime 2, True Knowledge 1/2)
+ *     - Z=9..25: Polymeric Macromolecule (Prebiotic Foldamer Chain & 36-Node Complex)
+ *     - Z=26: Iron Peak (Navier-Stokes Zero-Velocity Singularity Bound -> Core-Collapse Supernova)
+ *     - Z=54: Xenon Mega-Cluster (^131Xe — Rapid R-Process Synthesis Fragment)
+ * - Event Horizon Duality: 0.50 (Side A) + 0.50 (Side B) = 1.00 Complete Knowledge.
+ * - Quantum Reincarnation Loop ("The Egg") across spacetime.
  * Authentically derived from Papers 01-12 & Nothing Binds a Twin but Exclusion (Abhijit Singh, 2026)
  * 
  * - Continuous R^3 Spacetime Continuum (NO fixed grids, organic random distribution)
@@ -75,8 +93,11 @@ export function toRoman(num) {
 
 // Autonomous Continuous 36-Node String-Quantum Monad
 class CosmicStructure {
-  constructor(id, x, y, z, rho = 2.5, theta = null, monadId = null, incarnation = 1, reincarnationLog = null) {
+  constructor(id, x, y, z, rho = 2.5, theta = null, monadId = null, incarnation = 1, reincarnationLog = null, z_num = 1) {
     this.id = id;
+    this.Z = z_num || 1;
+    this.isSupernova = false;
+    this.supernovaTimer = 0.0;
     this.monadId = monadId || `Monad-${MONAD_PREFIXES[id % MONAD_PREFIXES.length]}-${id}`;
     this.incarnation = incarnation;
     this.reincarnationLog = reincarnationLog || [
@@ -123,6 +144,141 @@ class CosmicStructure {
     this.generation = 0;
     this.age = 0.0;
   }
+}
+
+
+// ----------------------------------------------------------------------------
+// Procedural Multi-Node Geometric Morphing Function for Atomic Number Z
+// ----------------------------------------------------------------------------
+function getNodeOffsetsForZ(Z, height, baseRadius, throatScale, phase) {
+  const offsets = [];
+
+  if (Z === 1) {
+    // Z=1: Monomer (Fermion/Lepton) - central core + 5 chiral orbital cloud nodes + 30 vacuum background
+    offsets.push(new THREE.Vector3(0, 0, 0));
+    for (let k = 0; k < 5; k++) {
+      const th = k * (Math.PI * 2.0 / 5.0) + phase;
+      offsets.push(new THREE.Vector3(Math.cos(th) * 0.85, Math.sin(th) * 0.85, 0));
+    }
+    for (let k = 6; k < 36; k++) {
+      const th = k * (Math.PI * 2.0 / 30.0);
+      const r = 1.6 + (k % 3) * 0.4;
+      offsets.push(new THREE.Vector3(Math.cos(th) * r, Math.sin(th) * r, Math.sin(k) * 0.6));
+    }
+  } else if (Z === 2) {
+    // Z=2: Diatomic Hydrogen (^1H₂) - 2 resonant nuclei along axis + 4 rotating electron cloud nodes
+    offsets.push(new THREE.Vector3(0, 0, -0.95));
+    offsets.push(new THREE.Vector3(0, 0, 0.95));
+    for (let k = 0; k < 4; k++) {
+      const th = k * (Math.PI * 0.5) + phase * 2.0;
+      offsets.push(new THREE.Vector3(Math.cos(th) * 0.9, Math.sin(th) * 0.9, 0));
+    }
+    for (let k = 6; k < 36; k++) {
+      const th = k * 0.35;
+      offsets.push(new THREE.Vector3(Math.cos(th) * 1.8, Math.sin(th) * 1.8, (k % 5 - 2) * 0.5));
+    }
+  } else if (Z === 3) {
+    // Z=3: Contact Trigon / Helium-3 (^3He) - 3 nuclei in equilateral triangle
+    for (let k = 0; k < 3; k++) {
+      const th = k * (Math.PI * 2.0 / 3.0) + phase;
+      offsets.push(new THREE.Vector3(Math.cos(th) * 1.15, Math.sin(th) * 1.15, 0));
+    }
+    for (let k = 3; k < 6; k++) {
+      const th = (k - 3) * (Math.PI * 2.0 / 3.0) + phase + Math.PI / 3.0;
+      offsets.push(new THREE.Vector3(Math.cos(th) * 1.6, Math.sin(th) * 1.6, 0.4));
+    }
+    for (let k = 6; k < 36; k++) {
+      offsets.push(new THREE.Vector3(Math.cos(k) * 2.2, Math.sin(k) * 2.2, (k % 4 - 1.5) * 0.6));
+    }
+  } else if (Z === 4) {
+    // Z=4: Helium-4 Alpha Nucleus (^4He) - 4 nuclei forming regular tetrahedron
+    const tetra = [
+      new THREE.Vector3(1, 1, 1).normalize().multiplyScalar(1.2),
+      new THREE.Vector3(1, -1, -1).normalize().multiplyScalar(1.2),
+      new THREE.Vector3(-1, 1, -1).normalize().multiplyScalar(1.2),
+      new THREE.Vector3(-1, -1, 1).normalize().multiplyScalar(1.2)
+    ];
+    for (let k = 0; k < 4; k++) offsets.push(tetra[k]);
+    for (let k = 0; k < 4; k++) offsets.push(tetra[k].clone().multiplyScalar(-0.6));
+    for (let k = 8; k < 36; k++) {
+      offsets.push(new THREE.Vector3(Math.cos(k) * 2.0, Math.sin(k) * 2.0, Math.sin(k * 2) * 0.8));
+    }
+  } else if (Z === 5) {
+    // Z=5: Pentagonal Boron-10 (^10B) - 5 nodes in planar pentagon ring
+    for (let k = 0; k < 5; k++) {
+      const th = k * (Math.PI * 2.0 / 5.0) + phase;
+      offsets.push(new THREE.Vector3(Math.cos(th) * 1.3, Math.sin(th) * 1.3, 0));
+    }
+    for (let k = 5; k < 10; k++) {
+      const th = (k - 5) * (Math.PI * 2.0 / 5.0) + phase + Math.PI / 5.0;
+      offsets.push(new THREE.Vector3(Math.cos(th) * 1.8, Math.sin(th) * 1.8, (k % 2 === 0 ? 0.4 : -0.4)));
+    }
+    for (let k = 10; k < 36; k++) {
+      offsets.push(new THREE.Vector3(Math.cos(k) * 2.3, Math.sin(k) * 2.3, (k % 5 - 2) * 0.4));
+    }
+  } else if (Z === 6) {
+    // Z=6: Carbon-12 Ring (^12C) - 6 nodes in planar regular hexagon + 6 delocalized pi-cloud nodes
+    for (let k = 0; k < 6; k++) {
+      const th = k * (Math.PI / 3.0) + phase;
+      offsets.push(new THREE.Vector3(Math.cos(th) * 1.45, Math.sin(th) * 1.45, 0));
+    }
+    for (let k = 0; k < 6; k++) {
+      const th = k * (Math.PI / 3.0) + phase + Math.PI / 6.0;
+      const zPi = (k % 2 === 0) ? 0.65 : -0.65;
+      offsets.push(new THREE.Vector3(Math.cos(th) * 1.1, Math.sin(th) * 1.1, zPi));
+    }
+    for (let k = 12; k < 36; k++) {
+      offsets.push(new THREE.Vector3(Math.cos(k) * 2.4, Math.sin(k) * 2.4, (k % 6 - 2.5) * 0.4));
+    }
+  } else if (Z === 7) {
+    // Z=7: Nitrogen-14 Branch (^14N) - 7 nodes in branched peptide bridge
+    offsets.push(new THREE.Vector3(0, 0, 0));
+    for (let k = 0; k < 3; k++) {
+      const th = k * (Math.PI * 2.0 / 3.0) + phase;
+      offsets.push(new THREE.Vector3(Math.cos(th) * 1.25, Math.sin(th) * 1.25, 0.3));
+      offsets.push(new THREE.Vector3(Math.cos(th) * 1.85, Math.sin(th) * 1.85, -0.4));
+    }
+    for (let k = 7; k < 36; k++) {
+      offsets.push(new THREE.Vector3(Math.cos(k) * 2.4, Math.sin(k) * 2.4, (k % 5 - 2) * 0.5));
+    }
+  } else if (Z === 8) {
+    // Z=8: Oxygen-16 Cube (^16O) - 8 nodes forming 3D cube (2^3 geometry, True Knowledge 1/2)
+    const c = 0.82;
+    for (let dx of [-c, c]) {
+      for (let dy of [-c, c]) {
+        for (let dz of [-c, c]) {
+          offsets.push(new THREE.Vector3(dx, dy, dz));
+        }
+      }
+    }
+    for (let k = 8; k < 36; k++) {
+      offsets.push(new THREE.Vector3(Math.cos(k) * 2.3, Math.sin(k) * 2.3, Math.sin(k * 3) * 0.7));
+    }
+  } else if (Z >= 26 || Z === 54) {
+    // Z>=26: Supernova Core / Xenon Mega-Cluster (^131Xe) - nested polyhedral shell
+    for (let k = 0; k < 12; k++) {
+      const th = k * (Math.PI * 2.0 / 12.0) + phase;
+      offsets.push(new THREE.Vector3(Math.cos(th) * 1.6, Math.sin(th) * 1.6, Math.sin(th * 2) * 0.9));
+    }
+    for (let k = 12; k < 36; k++) {
+      const th = k * (Math.PI * 2.0 / 24.0) - phase;
+      offsets.push(new THREE.Vector3(Math.cos(th) * 2.3, Math.sin(th) * 2.3, Math.cos(th * 2) * 1.1));
+    }
+  } else {
+    // 9 <= Z < 26: Full 36-Node Simplicial Complex (6 layers x 6 nodes, C3 ⋊ Z2 dihedral symmetry)
+    for (let l = 0; l < 6; l++) {
+      const zL = (l - 2.5) * (height / 5.0);
+      const waistFactor = (l - 2.5) / 2.5;
+      const rL = baseRadius * (1.0 + 0.32 * waistFactor * waistFactor * throatScale);
+      const phaseSign = (l % 2 === 0) ? 1.0 : -1.0;
+      const angleOffset = phaseSign * 0.25;
+      for (let k = 0; k < 6; k++) {
+        const theta = k * (Math.PI / 3.0) + angleOffset + phase * 0.2;
+        offsets.push(new THREE.Vector3(Math.cos(theta) * rL, Math.sin(theta) * rL, zL));
+      }
+    }
+  }
+  return offsets;
 }
 
 export class GameOfCosmos {
@@ -805,8 +961,40 @@ export class GameOfCosmos {
           netFlux += Math.abs(forceMag);
         }
 
-        // C. Combine (Bonding into complex molecular / chemical structures)
-        if (dist < 6.8 && L_ij > 0.60) {
+        // C. Resonant Fusion & Chemical Bonding
+        const fuseDist = 2.4 + Math.log10(s1.Z) + Math.log10(s2.Z);
+        const isLaplaceLock = Math.abs(dTheta_ij - Math.PI) < 0.32; // 180°
+        const isZ3Resonance = Math.abs(dTheta_ij - 2.0 * Math.PI / 3.0) < 0.32 || Math.abs(dTheta_ij - 4.0 * Math.PI / 3.0) < 0.32; // 120°
+        const isPrimordialH = (s1.Z === 1 && s2.Z === 1 && L_ij > 0.55 && Math.random() < 0.12);
+
+        if (dist < fuseDist && (isLaplaceLock || isZ3Resonance || isPrimordialH) && !s1.isSupernova && !s2.isSupernova) {
+          // Pure Emergent Fusion!
+          const newZ = s1.Z + s2.Z;
+          s1.Z = newZ;
+          s1.vel.multiplyScalar(s1.Z - s2.Z).addScaledVector(s2.vel, s2.Z).divideScalar(newZ);
+          s1.energy = Math.min(38.0, s1.energy + s2.energy * 0.85 + 0.6);
+          s1.properTime += 0.2;
+          s1.phase = (s1.phase + s2.phase) * 0.5;
+
+          // Check Iron Peak (Z >= 26) Navier-Stokes Zero-Velocity Singularity Bound
+          if (newZ >= 26 && !s1.isSupernova) {
+            s1.vel.set(0, 0, 0); // Core stops cold!
+            s1.isSupernova = true;
+            s1.supernovaTimer = 0.9;
+            s1.energy = 32.0;
+            this.supernovaeTotal++;
+          }
+
+          // Unlink s2 bonds and splice s2
+          s2.bonds.forEach(bId => {
+            const nb = this.structures.find(item => item.id === bId);
+            if (nb) nb.bonds.delete(s2.id);
+          });
+          this.structures.splice(j, 1);
+          j--;
+          N = this.structures.length;
+          continue;
+        } else if (dist < 6.8 && L_ij > 0.60) {
           s1.bonds.add(s2.id);
           s2.bonds.add(s1.id);
 
@@ -843,6 +1031,57 @@ export class GameOfCosmos {
         s.vel.addScaledVector(s.pos.clone().normalize(), -pull * dt);
       }
       s.vel.multiplyScalar(0.988);
+
+      // Supernova Detonation & Rapid R-Process Synthesis (Navier-Stokes zero-velocity bound)
+      if (s.isSupernova) {
+        s.supernovaTimer -= dt;
+        s.vel.set(0, 0, 0); // Core strictly halted at zero velocity!
+        if (s.supernovaTimer <= 0) {
+          s.isSupernova = false;
+          // Core collapses to compact remnant: Black Hole singularity at d = 0.50
+          s.distance = 0.50;
+          s.energy = 22.0;
+          this.blackHolesTotal++;
+
+          // Supernova Detonation & Rapid R-Process Synthesis:
+          // Synthesizes heavy fragment (Z = 54 Xenon isotope) and high-velocity ejecta
+          if (this.structures.length < this.maxStructures - 2) {
+            maxId++;
+            const heavy = new CosmicStructure(
+              maxId,
+              s.pos.x + (Math.random() - 0.5) * 5.0,
+              s.pos.y + (Math.random() - 0.5) * 5.0,
+              s.pos.z + (Math.random() - 0.5) * 5.0,
+              15.0,
+              s.phase,
+              null,
+              1,
+              null,
+              54 // Z = 54 Xenon isotope
+            );
+            heavy.vel.set((Math.random() - 0.5) * 2.2, (Math.random() - 0.5) * 2.2, (Math.random() - 0.5) * 2.2);
+            spawned.push(heavy);
+
+            for (let ej = 0; ej < 2; ej++) {
+              maxId++;
+              const light = new CosmicStructure(
+                maxId,
+                s.pos.x + (Math.random() - 0.5) * 8.0,
+                s.pos.y + (Math.random() - 0.5) * 8.0,
+                s.pos.z + (Math.random() - 0.5) * 8.0,
+                2.2,
+                Math.random() * Math.PI * 2.0,
+                null,
+                1,
+                null,
+                1
+              );
+              light.vel.set((Math.random() - 0.5) * 3.0, (Math.random() - 0.5) * 3.0, (Math.random() - 0.5) * 3.0);
+              spawned.push(light);
+            }
+          }
+        }
+      }
 
       // Dissolution at Horizon ("The Egg" Quantum Slip)
       if (s.isDissolving) {
@@ -1027,15 +1266,40 @@ export class GameOfCosmos {
       const comp = compounds[c];
       const sz = comp.length;
       let cName = 'Monomer (Fermion/Lepton)';
-      if (sz === 1) cName = 'Monomer (Fermion/Lepton excitation)';
-      else if (sz === 2) cName = 'Diatomic Hydrogen (^1H₂ — Prime 2 Duality)';
-      else if (sz === 3) cName = 'Triad Nucleon / Helium-3 (^3He — Prime 3 Contact Trigon)';
-      else if (sz === 4) cName = 'Helium-4 Alpha Nucleus (^4He — 2² Tetrahedral Singlet)';
-      else if (sz === 5) cName = 'Pentagonal Boron-10 (^10B — Prime 5 Ribose Core)';
-      else if (sz === 6) cName = 'Carbon-12 Ring (^12C — Hexagonal Benzene Aromatic)';
-      else if (sz === 7) cName = 'Nitrogen-14 Branch (^14N — Prime 7 Peptide Bridge)';
-      else if (sz === 8) cName = 'Oxygen-16 Complex (^16O — 2³ Cube of Prime 2, True Knowledge 1/2)';
-      else if (sz >= 9) cName = `Polymeric Macromolecule (${sz} Units — 3² Prebiotic Foldamer)`;
+      let maxZ = 1;
+      for (let k = 0; k < comp.length; k++) {
+        const item = structMap.get(comp[k]);
+        if (item && item.Z > maxZ) maxZ = item.Z;
+      }
+
+      if (maxZ === 1) {
+        if (sz === 1) cName = 'Monomer (Fermion/Lepton excitation)';
+        else if (sz === 2) cName = 'Diatomic Hydrogen (^1H₂ — Prime 2 Duality)';
+        else if (sz === 3) cName = 'Triad Nucleon / Helium-3 (^3He — Prime 3 Contact Trigon)';
+        else cName = `Hydrogen Polymer (${sz} Units — Subatomic Cluster)`;
+      } else if (maxZ === 2) {
+        cName = 'Diatomic Hydrogen (^1H₂ — Prime 2 Duality)';
+      } else if (maxZ === 3) {
+        cName = 'Helium-3 Nucleon (^3He — Prime 3 Contact Trigon)';
+      } else if (maxZ === 4) {
+        cName = 'Helium-4 Alpha Nucleus (^4He — 2² Tetrahedral Singlet)';
+      } else if (maxZ === 5) {
+        cName = 'Pentagonal Boron-10 (^10B — Prime 5 Ribose Core)';
+      } else if (maxZ === 6) {
+        cName = 'Carbon-12 Ring (^12C — Hexagonal Benzene Aromatic)';
+      } else if (maxZ === 7) {
+        cName = 'Nitrogen-14 Branch (^14N — Prime 7 Peptide Bridge)';
+      } else if (maxZ === 8) {
+        cName = 'Oxygen-16 Complex (^16O — 2³ Cube of Prime 2, True Knowledge 1/2)';
+      } else if (maxZ === 26) {
+        cName = 'Iron-56 Core (Navier-Stokes Zero-Velocity Singularity Peak)';
+      } else if (maxZ === 54) {
+        cName = 'Xenon-131 Mega-Cluster (^131Xe — Rapid R-Process Synthesis)';
+      } else if (maxZ > 26) {
+        cName = `Superheavy R-Process Nucleus (Z=${maxZ} — Relativistic Heavy Cluster)`;
+      } else if (sz >= 9 || maxZ >= 9) {
+        cName = `Polymeric Macromolecule (Z=${maxZ}, ${sz} Units — Prebiotic Foldamer)`;
+      }
 
       let anyTx = false;
       for (let k = 0; k < comp.length; k++) {
@@ -1084,11 +1348,12 @@ export class GameOfCosmos {
     const coh = s.coherence;
     const bondCount = s.bonds.size;
 
+    if (s.isSupernova) return STATE_SUPERNOVA;
     if (e < 0.28) return STATE_VACUUM;
     if (d <= 0.50) return STATE_BLACK_HOLE;
-    if (e > 24.0) return STATE_SUPERNOVA;
+    if (e > 24.0 || s.Z >= 26) return STATE_SUPERNOVA;
     if (d <= 1.00 && e > 12.0) return STATE_PULSAR;
-    if (e > 11.0 && d <= 1.80) return STATE_STAR;
+    if (e > 11.0 && (d <= 1.80 || s.Z >= 20)) return STATE_STAR;
 
     let hasStarBond = false;
     let hasOrganicBond = false;
@@ -1160,34 +1425,29 @@ export class GameOfCosmos {
 
       if (st === STATE_CIVILIZATION) civPositions.push(center);
 
-      // 36 Node Coordinates
+      // Multi-Node Coordinates Emergent from Z
       const unitNodeVecs = [];
-      for (let l = 0; l < 6; l++) {
-        const zL = (l - 2.5) * (height / 5.0);
-        const waistFactor = (l - 2.5) / 2.5;
-        const rL = layerRadiusBase * (1.0 + 0.32 * waistFactor * waistFactor * throatScale);
-        const phaseSign = (l % 2 === 0) ? 1.0 : -1.0;
-        const angleOffset = phaseSign * params.phi * 0.25;
+      const offsets = getNodeOffsetsForZ(s.Z, height, layerRadiusBase, throatScale, localPhase);
 
-        for (let k = 0; k < 6; k++) {
-          const nodeGlobalIdx = l * 6 + k;
-          const theta = k * (Math.PI / 3.0) + angleOffset + localPhase * 0.2;
-          const nx = center.x + Math.cos(theta) * rL;
-          const ny = center.y + Math.sin(theta) * rL;
-          const nz = center.z + zL;
-          const v = new THREE.Vector3(nx, ny, nz);
-          unitNodeVecs.push(v);
+      for (let nodeGlobalIdx = 0; nodeGlobalIdx < 36; nodeGlobalIdx++) {
+        const off = offsets[nodeGlobalIdx] || new THREE.Vector3(0, 0, 0);
+        const v = new THREE.Vector3(center.x + off.x, center.y + off.y, center.z + off.z);
+        unitNodeVecs.push(v);
 
-          // Instanced Node Spheres
-          if (nodeIdx < this.maxStructures * 36) {
-            dummy.position.copy(v);
-            const isNodeActive = (nodeGlobalIdx < reach) || (reach === 36);
-            let nScale = (isNodeActive ? 0.38 : 0.18);
-            if (s.isTransmitting && (l === 2 || l === 3)) nScale *= 1.45;
-            if (s.isDissolving) nScale *= Math.max(0.05, s.opacity); // Fade out as it slips into horizon
-            dummy.scale.setScalar(nScale);
-            dummy.updateMatrix();
-            this.instancedNodes.setMatrixAt(nodeIdx, dummy.matrix);
+        const l = Math.floor(nodeGlobalIdx / 6);
+
+        // Instanced Node Spheres
+        if (nodeIdx < this.maxStructures * 36) {
+          dummy.position.copy(v);
+          const isNodeActive = (nodeGlobalIdx < reach) || (reach === 36) || (s.Z >= 2 && nodeGlobalIdx < s.Z * 2);
+          let nScale = (isNodeActive ? 0.40 : 0.15);
+          if (s.Z === 1 && nodeGlobalIdx === 0) nScale = 0.58;
+          if (s.isTransmitting && (l === 2 || l === 3)) nScale *= 1.45;
+          if (s.isSupernova) nScale *= (1.5 + Math.sin(t * 12.0) * 0.4);
+          if (s.isDissolving) nScale *= Math.max(0.05, s.opacity);
+          dummy.scale.setScalar(nScale);
+          dummy.updateMatrix();
+          this.instancedNodes.setMatrixAt(nodeIdx, dummy.matrix);
 
             // Node Color Palette
             if (s.totalKnowledge >= 0.98) {
@@ -1224,7 +1484,7 @@ export class GameOfCosmos {
         }
       }
 
-      // Internal Layer Rings & Ruled Hyperbolic Chords
+      // Emergent Geometric Bond Struts (Tailored to Atomic Number Z & 36-Node Complex)
       if (bondVertIdx < 118000) {
         let bR = 0.22, bG = 0.74, bB = 0.97;
         if (s.totalKnowledge >= 0.98) { bR = 1.0; bG = 1.0; bB = 1.0; }
@@ -1232,32 +1492,68 @@ export class GameOfCosmos {
         else if (st === STATE_CIVILIZATION) { bR = 0.98; bG = 0.80; bB = 0.08; }
         else if (st === STATE_BIOSPHERE) { bR = 0.06; bG = 0.72; bB = 0.50; }
         else if (st === STATE_STAR) { bR = 0.99; bG = 0.94; bB = 0.54; }
+        else if (s.Z === 6) { bR = 0.20; bG = 0.90; bB = 0.40; } // Benzene green
+        else if (s.Z === 8) { bR = 0.90; bG = 0.30; bB = 0.80; } // Oxygen cube magenta
 
-        for (let l = 0; l < 6; l++) {
-          const sIdx = l * 6;
-          for (let k = 0; k < 6; k++) {
-            const p1 = unitNodeVecs[sIdx + k];
-            const p2 = unitNodeVecs[sIdx + ((k + 1) % 6)];
-            bondPos[bondVertIdx * 3]     = p1.x; bondPos[bondVertIdx * 3 + 1] = p1.y; bondPos[bondVertIdx * 3 + 2] = p1.z;
-            bondPos[(bondVertIdx + 1) * 3] = p2.x; bondPos[(bondVertIdx + 1) * 3 + 1] = p2.y; bondPos[(bondVertIdx + 1) * 3 + 2] = p2.z;
-            bondCol[bondVertIdx * 3]     = bR; bondCol[bondVertIdx * 3 + 1] = bG; bondCol[bondVertIdx * 3 + 2] = bB;
-            bondCol[(bondVertIdx + 1) * 3] = bR; bondCol[(bondVertIdx + 1) * 3 + 1] = bG; bondCol[(bondVertIdx + 1) * 3 + 2] = bB;
-            bondVertIdx += 2;
+        const addBondLine = (i1, i2, alpha = 1.0) => {
+          if (bondVertIdx >= 118000) return;
+          const p1 = unitNodeVecs[i1];
+          const p2 = unitNodeVecs[i2];
+          if (!p1 || !p2) return;
+          bondPos[bondVertIdx * 3]     = p1.x; bondPos[bondVertIdx * 3 + 1] = p1.y; bondPos[bondVertIdx * 3 + 2] = p1.z;
+          bondPos[(bondVertIdx + 1) * 3] = p2.x; bondPos[(bondVertIdx + 1) * 3 + 1] = p2.y; bondPos[(bondVertIdx + 1) * 3 + 2] = p2.z;
+          bondCol[bondVertIdx * 3]     = bR * alpha; bondCol[bondVertIdx * 3 + 1] = bG * alpha; bondCol[bondVertIdx * 3 + 2] = bB * alpha;
+          bondCol[(bondVertIdx + 1) * 3] = bR * alpha; bondCol[(bondVertIdx + 1) * 3 + 1] = bG * alpha; bondCol[(bondVertIdx + 1) * 3 + 2] = bB * alpha;
+          bondVertIdx += 2;
+        };
+
+        if (s.Z === 1) {
+          // Z=1: Central nucleus to chiral orbital cloud spokes
+          for (let k = 1; k <= 5; k++) addBondLine(0, k, 0.45);
+        } else if (s.Z === 2) {
+          // Z=2: Covalent diatomic bond between node 0 and node 1
+          addBondLine(0, 1, 1.0);
+          for (let k = 2; k < 6; k++) addBondLine(0, k, 0.35);
+        } else if (s.Z === 3) {
+          // Z=3: Equilateral Contact Trigon (nodes 0, 1, 2)
+          addBondLine(0, 1, 1.0);
+          addBondLine(1, 2, 1.0);
+          addBondLine(2, 0, 1.0);
+        } else if (s.Z === 4) {
+          // Z=4: Regular Tetrahedron edges (all 6 pairs of 0, 1, 2, 3)
+          addBondLine(0, 1, 1.0); addBondLine(0, 2, 1.0); addBondLine(0, 3, 1.0);
+          addBondLine(1, 2, 1.0); addBondLine(2, 3, 1.0); addBondLine(3, 1, 1.0);
+        } else if (s.Z === 5) {
+          // Z=5: Pentagonal ring
+          for (let k = 0; k < 5; k++) addBondLine(k, (k + 1) % 5, 1.0);
+        } else if (s.Z === 6) {
+          // Z=6: Hexagonal Benzene Ring
+          for (let k = 0; k < 6; k++) addBondLine(k, (k + 1) % 6, 1.0);
+          for (let k = 0; k < 6; k++) addBondLine(k, k + 6, 0.5);
+        } else if (s.Z === 7) {
+          // Z=7: Nitrogen branched peptide arms
+          addBondLine(0, 1, 1.0); addBondLine(1, 2, 0.8);
+          addBondLine(0, 3, 1.0); addBondLine(3, 4, 0.8);
+          addBondLine(0, 5, 1.0); addBondLine(5, 6, 0.8);
+        } else if (s.Z === 8) {
+          // Z=8: 3D Cube (12 edge struts)
+          addBondLine(0, 1, 1.0); addBondLine(1, 3, 1.0); addBondLine(3, 2, 1.0); addBondLine(2, 0, 1.0);
+          addBondLine(4, 5, 1.0); addBondLine(5, 7, 1.0); addBondLine(7, 6, 1.0); addBondLine(6, 4, 1.0);
+          addBondLine(0, 4, 1.0); addBondLine(1, 5, 1.0); addBondLine(2, 6, 1.0); addBondLine(3, 7, 1.0);
+        } else {
+          // 9 <= Z < 26: 36-Node Simplicial Complex (6 layer rings + hyperbolic chords)
+          for (let l = 0; l < 6; l++) {
+            const sIdx = l * 6;
+            for (let k = 0; k < 6; k++) {
+              addBondLine(sIdx + k, sIdx + ((k + 1) % 6), 1.0);
+            }
           }
-        }
-
-        // Ruled hyperboloid diagonals
-        for (let l = 0; l < 5; l++) {
-          const s1 = l * 6;
-          const s2 = (l + 1) * 6;
-          for (let k = 0; k < 6; k += 2) {
-            const p1 = unitNodeVecs[s1 + k];
-            const p2 = unitNodeVecs[s2 + ((k + 1) % 6)];
-            bondPos[bondVertIdx * 3]     = p1.x; bondPos[bondVertIdx * 3 + 1] = p1.y; bondPos[bondVertIdx * 3 + 2] = p1.z;
-            bondPos[(bondVertIdx + 1) * 3] = p2.x; bondPos[(bondVertIdx + 1) * 3 + 1] = p2.y; bondPos[(bondVertIdx + 1) * 3 + 2] = p2.z;
-            bondCol[bondVertIdx * 3]     = bR * 0.6; bondCol[bondVertIdx * 3 + 1] = bG * 0.6; bondCol[bondVertIdx * 3 + 2] = bB * 0.6;
-            bondCol[(bondVertIdx + 1) * 3] = bR * 0.6; bondCol[(bondVertIdx + 1) * 3 + 1] = bG * 0.6; bondCol[(bondVertIdx + 1) * 3 + 2] = bB * 0.6;
-            bondVertIdx += 2;
+          for (let l = 0; l < 5; l++) {
+            const s1 = l * 6;
+            const s2 = (l + 1) * 6;
+            for (let k = 0; k < 6; k += 2) {
+              addBondLine(s1 + k, s2 + ((k + 1) % 6), 0.6);
+            }
           }
         }
       }
@@ -2001,6 +2297,7 @@ export class GameOfCosmos {
         <span class="cosmos-hover-incarnation">INCARNATION ${toRoman(s.incarnation)}</span>
       </div>
       <div class="cosmos-hover-compound">${s.compoundType}</div>
+      <div style="color: #38bdf8; font-size: 0.72rem; font-weight: 700; margin-bottom: 4px;">Atomic Number Z = ${s.Z} &bull; Native ω₀ = 14.134725 &bull; Chiral Spin</div>
       <div class="cosmos-hover-knowledge">
         <div class="cosmos-hover-knowledge-label">
           <span>Knowledge Quotient (0.5+0.5):</span>
