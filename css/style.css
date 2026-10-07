@@ -3760,3 +3760,25 @@ body {
   border: 1px solid rgba(239, 68, 68, 0.55);
   box-shadow: 0 0 12px rgba(239, 68, 68, 0.35);
 }
+
+.telemetry-badge.badge-civ {
+  background: rgba(250, 204, 21, 0.22);
+  color: #FACC15;
+  border: 1px solid rgba(250, 204, 21, 0.60);
+  box-shadow: 0 0 16px rgba(250, 204, 21, 0.35);
+}
+
+.telemetry-badge.badge-biosphere {
+  background: rgba(16, 185, 129, 0.25);
+  color: #10B981;
+  border: 1px solid rgba(16, 185, 129, 0.60);
+  box-shadow: 0 0 14px rgba(16, 185, 129, 0.35);
+}
+
+.telemetry-badge.badge-star {
+  background: rgba(254, 240, 138, 0.22);
+  color: #FEF08A;
+  border: 1px solid rgba(254, 240, 138, 0.60);
+  box-shadow: 0 0 14px rgba(254, 240, 138, 0.35);
+}
+
