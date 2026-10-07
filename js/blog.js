@@ -298,6 +298,97 @@ let blogSearchQuery = "";
 const LOCAL_STORAGE_KEY = "custom_research_dispatches";
 const DRAFT_STORAGE_KEY = "composer_dispatch_draft";
 
+// --- Author Authentication & Access Gate ---
+const AUTHOR_SESSION_KEY = "author_authenticated";
+const GITHUB_TOKEN_KEY = "author_github_token";
+
+function isAuthorAuthenticated() {
+  return sessionStorage.getItem(AUTHOR_SESSION_KEY) === "true" || localStorage.getItem(AUTHOR_SESSION_KEY) === "true";
+}
+
+function updateAuthorUI() {
+  const isAuth = isAuthorAuthenticated();
+  if (isAuth) {
+    document.body.classList.add("author-active");
+  } else {
+    document.body.classList.remove("author-active");
+  }
+}
+
+function openAuthorGateModal() {
+  const modal = document.getElementById("author-auth-modal");
+  const input = document.getElementById("author-passcode-input");
+  const tokenInput = document.getElementById("author-github-token");
+  const err = document.getElementById("author-auth-error");
+  if (err) err.style.display = "none";
+  if (input) input.value = "";
+  if (tokenInput) tokenInput.value = localStorage.getItem(GITHUB_TOKEN_KEY) || "";
+
+  if (modal) {
+    modal.classList.add("open");
+    modal.classList.add("active");
+    document.body.style.overflow = "hidden";
+    if (input) setTimeout(() => input.focus(), 150);
+  }
+}
+
+function closeAuthorGateModal(e) {
+  if (e && e.target && e.target.closest(".modal-card") && !e.target.classList.contains("modal-close-btn")) {
+    return;
+  }
+  const modal = document.getElementById("author-auth-modal");
+  if (modal) {
+    modal.classList.remove("open");
+    modal.classList.remove("active");
+    document.body.style.overflow = "";
+  }
+}
+
+function submitAuthorAuth() {
+  const input = document.getElementById("author-passcode-input");
+  const tokenInput = document.getElementById("author-github-token");
+  const err = document.getElementById("author-auth-error");
+
+  const val = (input?.value || "").trim();
+  const customPass = localStorage.getItem("author_custom_passcode");
+  const isValid = val === "abhijit2026" || val === "abhijit" || (customPass && val === customPass);
+
+  if (!isValid) {
+    if (err) {
+      err.style.display = "block";
+      err.textContent = "Incorrect passcode. Please try again.";
+    }
+    input?.focus();
+    return;
+  }
+
+  localStorage.setItem(AUTHOR_SESSION_KEY, "true");
+  sessionStorage.setItem(AUTHOR_SESSION_KEY, "true");
+
+  if (tokenInput && tokenInput.value.trim()) {
+    localStorage.setItem(GITHUB_TOKEN_KEY, tokenInput.value.trim());
+  }
+
+  closeAuthorGateModal();
+  updateAuthorUI();
+  renderBlogEntries(blogActiveCategory, blogSearchQuery);
+
+  if (window.showToast) {
+    window.showToast("Author Studio Unlocked! You can now write and publish dispatches.");
+  }
+}
+
+function exitAuthorMode() {
+  localStorage.removeItem(AUTHOR_SESSION_KEY);
+  sessionStorage.removeItem(AUTHOR_SESSION_KEY);
+  updateAuthorUI();
+  renderBlogEntries(blogActiveCategory, blogSearchQuery);
+  if (window.showToast) {
+    window.showToast("Author Mode Locked. Site returned to public reader view.");
+  }
+}
+
+
 function loadCustomDispatches() {
   try {
     const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
@@ -421,7 +512,8 @@ function renderBlogEntries(category = "all", query = "") {
       return `<span class="blog-tag-pill">#${escapeHtml(clean)}</span>`;
     }).join(" ");
 
-    const customBadge = entry.isCustom 
+    const isAuth = isAuthorAuthenticated();
+    const customBadge = (entry.isCustom && isAuth) 
       ? `<span class="blog-custom-badge" title="Authored directly from website">PUBLISHED VIA WEB</span>` 
       : ``;
 
@@ -432,17 +524,17 @@ function renderBlogEntries(category = "all", query = "") {
       </div>
     ` : ``;
 
-    const deleteBtn = entry.isCustom ? `
-      <button onclick="deleteCustomDispatch('${entry.id}')" class="btn-delete-dispatch" title="Delete custom dispatch" aria-label="Delete">
+    const deleteBtn = (entry.isCustom && isAuth) ? `
+      <button onclick="deleteCustomDispatch('${entry.id}')" class="btn-delete-dispatch author-only-control" title="Delete custom dispatch" aria-label="Delete">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
       </button>
     ` : ``;
 
-    const exportBtn = `
-      <button onclick="exportSingleDispatch('${entry.id}')" class="btn-export-dispatch" title="Export JavaScript code for Git repository">
+    const exportBtn = isAuth ? `
+      <button onclick="exportSingleDispatch('${entry.id}')" class="btn-export-dispatch author-only-control" title="Export JavaScript code for Git repository">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
       </button>
-    `;
+    ` : ``;
 
     return `
       <article class="blog-card" id="card-${entry.id}">
@@ -630,6 +722,10 @@ function closeBlogModal(e) {
 // ==========================================================================
 
 function openBlogComposer() {
+  if (!isAuthorAuthenticated()) {
+    openAuthorGateModal();
+    return;
+  }
   const modal = document.getElementById("blog-composer-modal");
   if (!modal) return;
 
@@ -909,6 +1005,77 @@ function parseInlineFormatting(str) {
   return out;
 }
 
+
+// Commit a new dispatch directly to the GitHub Pages repository via Contents API
+async function commitDispatchToGitHub(newEntry, token) {
+  const repo = "mag-and-krotons/mag-and-krotons.github.io";
+  const path = "js/blog.js";
+  const apiUrl = `https://api.github.com/repos/${repo}/contents/${path}`;
+
+  const getRes = await fetch(apiUrl, {
+    headers: {
+      "Authorization": `token ${token}`,
+      "Accept": "application/vnd.github.v3+json"
+    }
+  });
+  if (!getRes.ok) {
+    throw new Error(`GitHub API error ${getRes.status}: Unable to fetch remote blog.js`);
+  }
+  const fileData = await getRes.json();
+  const sha = fileData.sha;
+  const currentContent = decodeURIComponent(escape(atob(fileData.content.replace(/\s/g, ''))));
+
+  const jsSnippet = `  {\n` +
+    `    id: ${JSON.stringify(newEntry.id)},\n` +
+    `    title: ${JSON.stringify(newEntry.title)},\n` +
+    `    date: ${JSON.stringify(newEntry.date)},\n` +
+    `    isoDate: ${JSON.stringify(newEntry.isoDate)},\n` +
+    `    readTime: ${JSON.stringify(newEntry.readTime)},\n` +
+    `    category: ${JSON.stringify(newEntry.category)},\n` +
+    `    categoryLabel: ${JSON.stringify(newEntry.categoryLabel)},\n` +
+    `    categoryClass: ${JSON.stringify(newEntry.categoryClass)},\n` +
+    `    tags: ${JSON.stringify(newEntry.tags)},\n` +
+    `    formulaTag: ${JSON.stringify(newEntry.formulaTag || "KEY FORMULA / CRITERION")},\n` +
+    `    formulaHighlight: ${JSON.stringify(newEntry.formulaHighlight || "")},\n` +
+    `    summary: ${JSON.stringify(newEntry.summary)},\n` +
+    `    paperId: ${JSON.stringify(newEntry.paperId || "")},\n` +
+    `    paperTitle: ${JSON.stringify(newEntry.paperTitle || "")},\n` +
+    `    paperPdf: ${JSON.stringify(newEntry.paperPdf || "")},\n` +
+    `    contentHtml: \`\n${newEntry.contentHtml.trim()}\n    \`\n` +
+    `  },\n`;
+
+  let updatedContent = "";
+  if (currentContent.includes("let BLOG_ENTRIES = [")) {
+    updatedContent = currentContent.replace("let BLOG_ENTRIES = [", "let BLOG_ENTRIES = [\n" + jsSnippet);
+  } else if (currentContent.includes("const BLOG_ENTRIES = [")) {
+    updatedContent = currentContent.replace("const BLOG_ENTRIES = [", "let BLOG_ENTRIES = [\n" + jsSnippet);
+  } else {
+    throw new Error("Could not locate BLOG_ENTRIES in blog.js");
+  }
+
+  const putRes = await fetch(apiUrl, {
+    method: "PUT",
+    headers: {
+      "Authorization": `token ${token}`,
+      "Accept": "application/vnd.github.v3+json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      message: `Publish research dispatch: ${newEntry.title}`,
+      content: btoa(unescape(encodeURIComponent(updatedContent))),
+      sha: sha,
+      branch: "main"
+    })
+  });
+
+  if (!putRes.ok) {
+    const errData = await putRes.json();
+    throw new Error(`GitHub Commit failed: ${errData.message || putRes.statusText}`);
+  }
+
+  return await putRes.json();
+}
+
 function publishNewDispatch() {
   const title = (document.getElementById("composer-title")?.value || "").trim();
   const categoryKey = document.getElementById("composer-category")?.value || "differential-geometry";
@@ -1016,8 +1183,25 @@ function publishNewDispatch() {
     openBlogModal(newEntry.id);
   }, 400);
 
-  if (window.showToast) {
-    window.showToast("Dispatch published successfully! Saved locally in this browser.");
+  const ghToken = localStorage.getItem(GITHUB_TOKEN_KEY);
+  if (ghToken) {
+    if (window.showToast) {
+      window.showToast("Committing dispatch directly to GitHub Pages...");
+    }
+    commitDispatchToGitHub(newEntry, ghToken).then(() => {
+      if (window.showToast) {
+        window.showToast("✓ Successfully committed to GitHub! Live deployment started.");
+      }
+    }).catch(err => {
+      console.warn("GitHub commit failed:", err);
+      if (window.showToast) {
+        window.showToast("Saved locally. GitHub sync: " + err.message);
+      }
+    });
+  } else {
+    if (window.showToast) {
+      window.showToast("Dispatch published! Saved locally on this browser.");
+    }
   }
 }
 
@@ -1166,6 +1350,9 @@ function copyExportCodeToClipboard() {
 
 // --- Initialization ---
 function initBlog() {
+  // Update Author UI state from session/localStorage
+  updateAuthorUI();
+
   // Load any previously saved user dispatches from localStorage
   loadCustomDispatches();
 
@@ -1232,14 +1419,44 @@ function initBlog() {
     });
   }
 
-  // Check URL hash on load for deep linking (e.g. #blog-fluid-manifold-simplicial-complex)
+  // Author passcode input: submit on Enter
+  const passInput = document.getElementById("author-passcode-input");
+  if (passInput) {
+    passInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        submitAuthorAuth();
+      }
+    });
+  }
+
+  // Check URL hash on load for deep linking (e.g. #blog-fluid-manifold or #author)
   const hash = window.location.hash;
-  if (hash && hash.startsWith("#blog-")) {
+  if (hash === "#author" || window.location.search.includes("author=1")) {
+    if (!isAuthorAuthenticated()) {
+      setTimeout(() => openAuthorGateModal(), 300);
+    }
+  } else if (hash && hash.startsWith("#blog-")) {
     const entryId = hash.replace("#blog-", "");
     setTimeout(() => {
       openBlogModal(entryId);
     }, 300);
   }
+
+  // Keyboard shortcut: Alt + A or Ctrl + Shift + A for Author Access Gate
+  window.addEventListener("keydown", (e) => {
+    if ((e.altKey && (e.key === "a" || e.key === "A")) || 
+        (e.ctrlKey && e.shiftKey && (e.key === "a" || e.key === "A"))) {
+      e.preventDefault();
+      if (isAuthorAuthenticated()) {
+        if (confirm("You are currently in Author Mode. Lock studio and return to public reader view?")) {
+          exitAuthorMode();
+        }
+      } else {
+        openAuthorGateModal();
+      }
+    }
+  });
 
   // ESC key to close modal
   window.addEventListener("keydown", (e) => {
@@ -1247,6 +1464,7 @@ function initBlog() {
       closeBlogModal();
       closeBlogComposer();
       closeDispatchExportModal();
+      closeAuthorGateModal();
     }
   });
 }
@@ -1276,3 +1494,8 @@ window.closeDispatchExportModal = closeDispatchExportModal;
 window.copyExportCodeToClipboard = copyExportCodeToClipboard;
 window.renderComposerFormulaPreview = renderComposerFormulaPreview;
 window.resetComposerForm = resetComposerForm;
+window.openAuthorGateModal = openAuthorGateModal;
+window.closeAuthorGateModal = closeAuthorGateModal;
+window.submitAuthorAuth = submitAuthorAuth;
+window.exitAuthorMode = exitAuthorMode;
+window.isAuthorAuthenticated = isAuthorAuthenticated;

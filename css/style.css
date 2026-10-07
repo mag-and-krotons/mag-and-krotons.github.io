@@ -3720,6 +3720,80 @@ body {
   }
 }
 
+/* ==========================================================================
+   AUTHOR AUTHENTICATION & RESTRICTED ACCESS GATE
+   ========================================================================== */
+
+.author-only-control {
+  display: none !important;
+}
+
+body.author-active .author-only-control {
+  display: inline-flex !important;
+}
+
+body.author-active .btn-compose-dispatch.author-only-control {
+  display: inline-flex !important;
+}
+
+.author-mode-badge {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 800;
+  background: #FEF3C7;
+  color: #92400E;
+  border: 1.5px solid #F59E0B;
+  padding: 0.25rem 0.55rem;
+  letter-spacing: 0.05em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border-radius: 2px;
+}
+
+.btn-author-lock {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 700;
+  background: #FFFFFF;
+  color: var(--text-main);
+  border: var(--border-thick);
+  padding: 0.35rem 0.65rem;
+  cursor: pointer;
+  box-shadow: 2px 2px 0px var(--border-color);
+  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+}
+
+.btn-author-lock:hover {
+  background: #FEE2E2;
+  color: var(--color-crimson);
+  border-color: var(--color-crimson);
+}
+
+.author-gate-link {
+  background: none;
+  border: none;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  cursor: pointer;
+  text-decoration: underline;
+  opacity: 0.55;
+  transition: opacity var(--transition-fast), color var(--transition-fast);
+  padding: 0 0.25rem;
+}
+
+.author-gate-link:hover {
+  opacity: 1;
+  color: var(--color-amber-light);
+}
+
+.author-auth-card {
+  max-width: 540px !important;
+}
+
 
 
 
