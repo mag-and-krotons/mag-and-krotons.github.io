@@ -13,6 +13,11 @@ export const STATE_VACUUM = 0;
 export const STATE_ALIVE_36 = 1;
 export const STATE_SUPERNOVA = 2;
 export const STATE_BLACK_HOLE = 3;
+export const STATE_FERMION = 4;
+export const STATE_BARYON = 5;
+export const STATE_HADRON = 6;
+export const STATE_HYDROGEN = 7;
+export const STATE_HELIUM = 8;
 
 export class GameOfCosmos {
   constructor(containerId = 'cosmos-canvas-container') {
@@ -22,8 +27,8 @@ export class GameOfCosmos {
       return;
     }
 
-    // 3D Cellular Lattice Dimensions (6x6x6 = 216 sites)
-    this.GRID = 6;
+    // 3D Cellular Lattice Dimensions (10x10x10 = 1000 sites)
+    this.GRID = 10;
     this.LAYERS = 6;            // 6 layers x 6 vertices = 36 vertices per complex
     this.SPACING_X = 7.6;
     this.SPACING_Y = 8.6;
@@ -320,249 +325,253 @@ export class GameOfCosmos {
       for (let y = 0; y < G; y++) {
         this.unitVisuals[x][y] = [];
         for (let z = 0; z < G; z++) {
-          const center = this.getCellCenter(x, y, z);
-
-          const group = new THREE.Group();
-          group.position.copy(center);
-          group.visible = false;
-
-          // A. 5 Inter-Layer Continuous Ruled Ribbon Strip Sheets S(u, v)
-          const outerRibbons = [];
-          const uSegs = 36;
-          const vSegs = 6;
-          const vCount = (uSegs + 1) * (vSegs + 1);
-
-          for (let l = 0; l < this.LAYERS - 1; l++) {
-            const positions = new Float32Array(vCount * 3);
-            const colors = new Float32Array(vCount * 3);
-            const indices = [];
-
-            for (let v = 0; v < vSegs; v++) {
-              for (let u = 0; u < uSegs; u++) {
-                const r1 = v * (uSegs + 1);
-                const r2 = (v + 1) * (uSegs + 1);
-                indices.push(r1 + u, r2 + u, r1 + u + 1);
-                indices.push(r1 + u + 1, r2 + u, r2 + u + 1);
-              }
-            }
-
-            const geo = new THREE.BufferGeometry();
-            geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-            geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-            geo.setIndex(indices);
-
-            const mat = new THREE.MeshStandardMaterial({
-              vertexColors: true,
-              roughness: 0.18,
-              metalness: 0.65,
-              side: THREE.DoubleSide,
-              transparent: true,
-              opacity: 0.82,
-              blending: THREE.NormalBlending,
-              depthWrite: false
-            });
-
-            const mesh = new THREE.Mesh(geo, mat);
-            group.add(mesh);
-            outerRibbons.push({ mesh, geo, mat, positions, colors });
-          }
-
-          // B. 6 Closed Undulating String Loops (Connecting 6 vertices per layer = 36 vertices total)
-          const stringLoops = [];
-          for (let l = 0; l < this.LAYERS; l++) {
-            const loopGeo = new THREE.BufferGeometry();
-            const loopPos = new Float32Array(37 * 3);
-            const loopCol = new Float32Array(37 * 3);
-            loopGeo.setAttribute('position', new THREE.BufferAttribute(loopPos, 3));
-            loopGeo.setAttribute('color', new THREE.BufferAttribute(loopCol, 3));
-
-            const isGold = (l % 2 === 0);
-            const baseCol = isGold ? new THREE.Color(0xf59e0b) : new THREE.Color(0x38bdf8);
-
-            const loopMat = new THREE.LineBasicMaterial({
-              vertexColors: true,
-              linewidth: 2.5,
-              transparent: true,
-              opacity: 0.95,
-              blending: THREE.AdditiveBlending
-            });
-
-            const lineLoop = new THREE.LineLoop(loopGeo, loopMat);
-            group.add(lineLoop);
-            stringLoops.push({ lineLoop, loopGeo, loopPos, loopCol, baseCol });
-          }
-
-          // C. K3,3 Bipartite Helicoid Ribbon Strips (Cross-Throat Worldsheets)
-          const k33Group = new THREE.Group();
-          const k33Strips = [];
-          for (let c = 0; c < 18; c++) {
-            const stripGeo = new THREE.BufferGeometry();
-            const stripPos = new Float32Array(16 * 2 * 3);
-            const stripCol = new Float32Array(16 * 2 * 3);
-            const stripIndices = [];
-            for (let i = 0; i < 15; i++) {
-              const r1 = i * 2, r2 = (i + 1) * 2;
-              stripIndices.push(r1, r2, r1 + 1);
-              stripIndices.push(r1 + 1, r2, r2 + 1);
-            }
-            stripGeo.setAttribute('position', new THREE.BufferAttribute(stripPos, 3));
-            stripGeo.setAttribute('color', new THREE.BufferAttribute(stripCol, 3));
-            stripGeo.setIndex(stripIndices);
-
-            const stripMat = new THREE.MeshBasicMaterial({
-              vertexColors: true,
-              side: THREE.DoubleSide,
-              transparent: true,
-              opacity: 0.65,
-              blending: THREE.AdditiveBlending
-            });
-            const stripMesh = new THREE.Mesh(stripGeo, stripMat);
-            k33Group.add(stripMesh);
-            k33Strips.push({ mesh: stripMesh, geo: stripGeo, pos: stripPos, col: stripCol });
-          }
-          group.add(k33Group);
-
-          // D. Relativistic Black Hole Singularity Elements (for d <= 0.52)
-          // 1. Central Event Horizon Dark Shadow Sphere (rs = 0.85)
-          const bhSphereGeo = new THREE.SphereGeometry(0.85, 28, 28);
-          const bhSphereMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
-          const bhSphere = new THREE.Mesh(bhSphereGeo, bhSphereMat);
-          bhSphere.visible = false;
-          group.add(bhSphere);
-
-          // 2. Swirling Logarithmic Relativistic Accretion Disk (Spiral Ribbons)
-          const accretionDiskGroup = new THREE.Group();
-          accretionDiskGroup.visible = false;
-
-          const diskArmCount = 2;
-          const diskPtsPerArm = 32;
-          for (let arm = 0; arm < diskArmCount; arm++) {
-            const armGeo = new THREE.BufferGeometry();
-            const armPos = new Float32Array(diskPtsPerArm * 2 * 3);
-            const armCol = new Float32Array(diskPtsPerArm * 2 * 3);
-            const armIndices = [];
-
-            for (let i = 0; i < diskPtsPerArm - 1; i++) {
-              const r1 = i * 2;
-              const r2 = (i + 1) * 2;
-              armIndices.push(r1, r2, r1 + 1);
-              armIndices.push(r1 + 1, r2, r2 + 1);
-            }
-            armGeo.setAttribute('position', new THREE.BufferAttribute(armPos, 3));
-            armGeo.setAttribute('color', new THREE.BufferAttribute(armCol, 3));
-            armGeo.setIndex(armIndices);
-
-            const armMat = new THREE.MeshBasicMaterial({
-              vertexColors: true,
-              side: THREE.DoubleSide,
-              transparent: true,
-              opacity: 0.90,
-              blending: THREE.AdditiveBlending
-            });
-            const armMesh = new THREE.Mesh(armGeo, armMat);
-            accretionDiskGroup.add(armMesh);
-          }
-          group.add(accretionDiskGroup);
-
-          // 3. Einstein Photon Sphere Ring (r = 1.5 rs = 1.28)
-          const ringGeo = new THREE.RingGeometry(0.88, 1.48, 36);
-          const ringMat = new THREE.MeshBasicMaterial({
-            color: 0x38bdf8,
-            side: THREE.DoubleSide,
-            transparent: true,
-            opacity: 0.92,
-            blending: THREE.AdditiveBlending
-          });
-          const photonRing = new THREE.Mesh(ringGeo, ringMat);
-          photonRing.rotation.x = Math.PI / 2;
-          photonRing.visible = false;
-          group.add(photonRing);
-
-          // 4. Slender Collimated Relativistic Polar String Jets (shooting along +/- y)
-          const jetGroup = new THREE.Group();
-          jetGroup.visible = false;
-
-          const jetGeo = new THREE.CylinderGeometry(0.05, 0.26, 7.5, 14, 1, true);
-          const jetMat = new THREE.MeshBasicMaterial({
-            color: 0xc084fc,
-            transparent: true,
-            opacity: 0.92,
-            blending: THREE.AdditiveBlending,
-            side: THREE.DoubleSide
-          });
-
-          const jetPlus = new THREE.Mesh(jetGeo, jetMat);
-          jetPlus.position.y = 3.75;
-          jetGroup.add(jetPlus);
-
-          const jetMinus = new THREE.Mesh(jetGeo, jetMat);
-          jetMinus.position.y = -3.75;
-          jetMinus.rotation.x = Math.PI;
-          jetGroup.add(jetMinus);
-
-          group.add(jetGroup);
-
-          // E. Supernova Volumetric Core-Collapse Shockwave Shell
-          const snGroup = new THREE.Group();
-          snGroup.visible = false;
-
-          const snRing1Geo = new THREE.RingGeometry(0.8, 1.40, 36);
-          const snRing1Mat = new THREE.MeshBasicMaterial({
-            color: 0xf43f5e,
-            side: THREE.DoubleSide,
-            transparent: true,
-            opacity: 0.88,
-            blending: THREE.AdditiveBlending
-          });
-          const snRing1 = new THREE.Mesh(snRing1Geo, snRing1Mat);
-          snRing1.rotation.x = Math.PI / 2;
-          snGroup.add(snRing1);
-
-          const snRing2Geo = new THREE.RingGeometry(0.8, 1.40, 36);
-          const snRing2Mat = new THREE.MeshBasicMaterial({
-            color: 0xf59e0b,
-            side: THREE.DoubleSide,
-            transparent: true,
-            opacity: 0.88,
-            blending: THREE.AdditiveBlending
-          });
-          const snRing2 = new THREE.Mesh(snRing2Geo, snRing2Mat);
-          snRing2.rotation.y = Math.PI / 2;
-          snGroup.add(snRing2);
-
-          const snRing3Geo = new THREE.RingGeometry(0.8, 1.40, 36);
-          const snRing3Mat = new THREE.MeshBasicMaterial({
-            color: 0x38bdf8,
-            side: THREE.DoubleSide,
-            transparent: true,
-            opacity: 0.88,
-            blending: THREE.AdditiveBlending
-          });
-          const snRing3 = new THREE.Mesh(snRing3Geo, snRing3Mat);
-          snRing3.rotation.z = Math.PI / 4;
-          snGroup.add(snRing3);
-
-          group.add(snGroup);
-
-          this.mainGroup.add(group);
-
-          this.unitVisuals[x][y][z] = {
-            group,
-            outerRibbons,
-            stringLoops,
-            k33Strips,
-            bhSphere,
-            photonRing,
-            accretionDiskGroup,
-            jetGroup,
-            snGroup,
-            snRing1Mat,
-            snRing2Mat,
-            snRing3Mat
-          };
+          this.unitVisuals[x][y][z] = { isBuilt: false, group: null };
         }
       }
     }
+  }
+
+  buildCellVisuals(x, y, z) {
+    const center = this.getCellCenter(x, y, z);
+    const group = new THREE.Group();
+    group.position.copy(center);
+    group.visible = false;
+
+    // A. 5 Inter-Layer Continuous Ruled Ribbon Strip Sheets S(u, v)
+    const outerRibbons = [];
+    const uSegs = 36;
+    const vSegs = 6;
+    const vCount = (uSegs + 1) * (vSegs + 1);
+
+    for (let l = 0; l < this.LAYERS - 1; l++) {
+      const positions = new Float32Array(vCount * 3);
+      const colors = new Float32Array(vCount * 3);
+      const indices = [];
+
+      for (let v = 0; v < vSegs; v++) {
+        for (let u = 0; u < uSegs; u++) {
+          const r1 = v * (uSegs + 1);
+          const r2 = (v + 1) * (uSegs + 1);
+          indices.push(r1 + u, r2 + u, r1 + u + 1);
+          indices.push(r1 + u + 1, r2 + u, r2 + u + 1);
+        }
+      }
+
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+      geo.setIndex(indices);
+
+      const mat = new THREE.MeshStandardMaterial({
+        vertexColors: true,
+        roughness: 0.18,
+        metalness: 0.65,
+        side: THREE.DoubleSide,
+        transparent: true,
+        opacity: 0.82,
+        blending: THREE.NormalBlending,
+        depthWrite: false
+      });
+
+      const mesh = new THREE.Mesh(geo, mat);
+      group.add(mesh);
+      outerRibbons.push({ mesh, geo, mat, positions, colors });
+    }
+
+    // B. 6 Closed Undulating String Loops (Connecting 6 vertices per layer = 36 vertices total)
+    const stringLoops = [];
+    for (let l = 0; l < this.LAYERS; l++) {
+      const loopGeo = new THREE.BufferGeometry();
+      const loopPos = new Float32Array(37 * 3);
+      const loopCol = new Float32Array(37 * 3);
+      loopGeo.setAttribute('position', new THREE.BufferAttribute(loopPos, 3));
+      loopGeo.setAttribute('color', new THREE.BufferAttribute(loopCol, 3));
+
+      const isGold = (l % 2 === 0);
+      const baseCol = isGold ? new THREE.Color(0xf59e0b) : new THREE.Color(0x38bdf8);
+
+      const loopMat = new THREE.LineBasicMaterial({
+        vertexColors: true,
+        linewidth: 2.5,
+        transparent: true,
+        opacity: 0.95,
+        blending: THREE.AdditiveBlending
+      });
+
+      const lineLoop = new THREE.LineLoop(loopGeo, loopMat);
+      group.add(lineLoop);
+      stringLoops.push({ lineLoop, loopGeo, loopPos, loopCol, baseCol });
+    }
+
+    // C. K3,3 Bipartite Helicoid Ribbon Strips (Cross-Throat Worldsheets)
+    const k33Group = new THREE.Group();
+    const k33Strips = [];
+    for (let c = 0; c < 18; c++) {
+      const stripGeo = new THREE.BufferGeometry();
+      const stripPos = new Float32Array(16 * 2 * 3);
+      const stripCol = new Float32Array(16 * 2 * 3);
+      const stripIndices = [];
+      for (let i = 0; i < 15; i++) {
+        const r1 = i * 2, r2 = (i + 1) * 2;
+        stripIndices.push(r1, r2, r1 + 1);
+        stripIndices.push(r1 + 1, r2, r2 + 1);
+      }
+      stripGeo.setAttribute('position', new THREE.BufferAttribute(stripPos, 3));
+      stripGeo.setAttribute('color', new THREE.BufferAttribute(stripCol, 3));
+      stripGeo.setIndex(stripIndices);
+
+      const stripMat = new THREE.MeshBasicMaterial({
+        vertexColors: true,
+        side: THREE.DoubleSide,
+        transparent: true,
+        opacity: 0.65,
+        blending: THREE.AdditiveBlending
+      });
+      const stripMesh = new THREE.Mesh(stripGeo, stripMat);
+      k33Group.add(stripMesh);
+      k33Strips.push({ mesh: stripMesh, geo: stripGeo, pos: stripPos, col: stripCol });
+    }
+    group.add(k33Group);
+
+    // D. Relativistic Black Hole Singularity Elements (for d <= 0.52)
+    // 1. Central Event Horizon Dark Shadow Sphere (rs = 0.85)
+    const bhSphereGeo = new THREE.SphereGeometry(0.85, 28, 28);
+    const bhSphereMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
+    const bhSphere = new THREE.Mesh(bhSphereGeo, bhSphereMat);
+    bhSphere.visible = false;
+    group.add(bhSphere);
+
+    // 2. Swirling Logarithmic Relativistic Accretion Disk (Spiral Ribbons)
+    const accretionDiskGroup = new THREE.Group();
+    accretionDiskGroup.visible = false;
+
+    const diskArmCount = 2;
+    const diskPtsPerArm = 32;
+    for (let arm = 0; arm < diskArmCount; arm++) {
+      const armGeo = new THREE.BufferGeometry();
+      const armPos = new Float32Array(diskPtsPerArm * 2 * 3);
+      const armCol = new Float32Array(diskPtsPerArm * 2 * 3);
+      const armIndices = [];
+
+      for (let i = 0; i < diskPtsPerArm - 1; i++) {
+        const r1 = i * 2;
+        const r2 = (i + 1) * 2;
+        armIndices.push(r1, r2, r1 + 1);
+        armIndices.push(r1 + 1, r2, r2 + 1);
+      }
+      armGeo.setAttribute('position', new THREE.BufferAttribute(armPos, 3));
+      armGeo.setAttribute('color', new THREE.BufferAttribute(armCol, 3));
+      armGeo.setIndex(armIndices);
+
+      const armMat = new THREE.MeshBasicMaterial({
+        vertexColors: true,
+        side: THREE.DoubleSide,
+        transparent: true,
+        opacity: 0.90,
+        blending: THREE.AdditiveBlending
+      });
+      const armMesh = new THREE.Mesh(armGeo, armMat);
+      accretionDiskGroup.add(armMesh);
+    }
+    group.add(accretionDiskGroup);
+
+    // 3. Einstein Photon Sphere Ring (r = 1.5 rs = 1.28)
+    const ringGeo = new THREE.RingGeometry(0.88, 1.48, 36);
+    const ringMat = new THREE.MeshBasicMaterial({
+      color: 0x38bdf8,
+      side: THREE.DoubleSide,
+      transparent: true,
+      opacity: 0.92,
+      blending: THREE.AdditiveBlending
+    });
+    const photonRing = new THREE.Mesh(ringGeo, ringMat);
+    photonRing.rotation.x = Math.PI / 2;
+    photonRing.visible = false;
+    group.add(photonRing);
+
+    // 4. Slender Collimated Relativistic Polar String Jets (shooting along +/- y)
+    const jetGroup = new THREE.Group();
+    jetGroup.visible = false;
+
+    const jetGeo = new THREE.CylinderGeometry(0.05, 0.26, 7.5, 14, 1, true);
+    const jetMat = new THREE.MeshBasicMaterial({
+      color: 0xc084fc,
+      transparent: true,
+      opacity: 0.92,
+      blending: THREE.AdditiveBlending,
+      side: THREE.DoubleSide
+    });
+
+    const jetPlus = new THREE.Mesh(jetGeo, jetMat);
+    jetPlus.position.y = 3.75;
+    jetGroup.add(jetPlus);
+
+    const jetMinus = new THREE.Mesh(jetGeo, jetMat);
+    jetMinus.position.y = -3.75;
+    jetMinus.rotation.x = Math.PI;
+    jetGroup.add(jetMinus);
+
+    group.add(jetGroup);
+
+    // E. Supernova Volumetric Core-Collapse Shockwave Shell
+    const snGroup = new THREE.Group();
+    snGroup.visible = false;
+
+    const snRing1Geo = new THREE.RingGeometry(0.8, 1.40, 36);
+    const snRing1Mat = new THREE.MeshBasicMaterial({
+      color: 0xf43f5e,
+      side: THREE.DoubleSide,
+      transparent: true,
+      opacity: 0.88,
+      blending: THREE.AdditiveBlending
+    });
+    const snRing1 = new THREE.Mesh(snRing1Geo, snRing1Mat);
+    snRing1.rotation.x = Math.PI / 2;
+    snGroup.add(snRing1);
+
+    const snRing2Geo = new THREE.RingGeometry(0.8, 1.40, 36);
+    const snRing2Mat = new THREE.MeshBasicMaterial({
+      color: 0xf59e0b,
+      side: THREE.DoubleSide,
+      transparent: true,
+      opacity: 0.88,
+      blending: THREE.AdditiveBlending
+    });
+    const snRing2 = new THREE.Mesh(snRing2Geo, snRing2Mat);
+    snRing2.rotation.y = Math.PI / 2;
+    snGroup.add(snRing2);
+
+    const snRing3Geo = new THREE.RingGeometry(0.8, 1.40, 36);
+    const snRing3Mat = new THREE.MeshBasicMaterial({
+      color: 0x38bdf8,
+      side: THREE.DoubleSide,
+      transparent: true,
+      opacity: 0.88,
+      blending: THREE.AdditiveBlending
+    });
+    const snRing3 = new THREE.Mesh(snRing3Geo, snRing3Mat);
+    snRing3.rotation.z = Math.PI / 4;
+    snGroup.add(snRing3);
+
+    group.add(snGroup);
+
+    this.mainGroup.add(group);
+
+    this.unitVisuals[x][y][z] = {
+      isBuilt: true,
+      group,
+      outerRibbons,
+      stringLoops,
+      k33Strips,
+      bhSphere,
+      photonRing,
+      accretionDiskGroup,
+      jetGroup,
+      snGroup,
+      snRing1Mat,
+      snRing2Mat,
+      snRing3Mat
+    };
   }
 
   // --------------------------------------------------------------------------
@@ -757,7 +766,7 @@ export class GameOfCosmos {
               next = STATE_VACUUM;
             }
           }
-          else if (cur === STATE_ALIVE_36) {
+          else if (cur === STATE_ALIVE_36 || cur >= STATE_FERMION) {
             // 1. SPONTANEOUS METRIC COLLAPSE TO BLACK HOLE:
             // When local metric contracts to d <= 0.60 under high core pressure (n >= 7),
             // forging an authentic Schwarzschild event horizon dynamically without manual placement!
@@ -773,9 +782,31 @@ export class GameOfCosmos {
               this.blastRadius[x][y][z] = 1.0;
               this.supernovaeTotal++;
             }
-            // 3. CARTER BAYS S(4-6) HARMONIC BALANCE:
+            // 3. CARTER BAYS S(4-6) HARMONIC BALANCE + PARTICLE EMERGENCE:
             else if (n >= 4 && n <= 6) {
-              next = STATE_ALIVE_36;
+              const elF = document.getElementById('cosmos-freq-input');
+              const elS = document.getElementById('cosmos-entropy-input');
+              const elPhi = document.getElementById('cosmos-phase-input');
+              
+              const f = elF ? parseFloat(elF.value) : 144.0;
+              const S = elS ? parseFloat(elS.value) : 0.5;
+              const phi = elPhi ? parseFloat(elPhi.value) : 1.0;
+              
+              const twist = Math.abs((f * S) * phi);
+              
+              if (twist > 1000000) {
+                 next = STATE_HELIUM;
+              } else if (twist >= 10000) {
+                 next = STATE_HYDROGEN;
+              } else if (twist >= 1000) {
+                 next = STATE_HADRON;
+              } else if (twist >= 100) {
+                 next = STATE_BARYON;
+              } else if (twist >= 10) {
+                 next = STATE_FERMION;
+              } else {
+                 next = STATE_ALIVE_36;
+              }
             }
             // 4. Underpopulation or extreme overpopulation void
             else {
@@ -995,7 +1026,14 @@ export class GameOfCosmos {
             const wavePsi = Math.cos(t * 3.2 - l * 0.85);
             const rLayer = this.R_BASE * throat * (1.0 + (isBlackHole ? 0.08 : 0.22 * wavePsi));
 
-            const chiralAngle = (isInv ? -1 : 1) * 0.35 * Math.sin(t * 2.4 + l * 0.6);
+            let phaseMultiplier = 1.0;
+            if (st === STATE_HELIUM) phaseMultiplier = 8.0;
+            else if (st === STATE_HYDROGEN) phaseMultiplier = 5.0;
+            else if (st === STATE_HADRON) phaseMultiplier = 3.5;
+            else if (st === STATE_BARYON) phaseMultiplier = 2.5;
+            else if (st === STATE_FERMION) phaseMultiplier = 1.5;
+
+            const chiralAngle = (isInv ? -1 : 1) * 0.35 * phaseMultiplier * Math.sin(t * 2.4 + l * 0.6);
             const baseTheta = isInv ? -Math.PI / 2 : Math.PI / 2;
 
             const loopPts = [];
@@ -1078,6 +1116,26 @@ export class GameOfCosmos {
                   rItem.colors[idx * 3]     = 0.98;
                   rItem.colors[idx * 3 + 1] = 0.35;
                   rItem.colors[idx * 3 + 2] = 0.22;
+                } else if (st === STATE_HELIUM) {
+                  rItem.colors[idx * 3]     = 1.0;
+                  rItem.colors[idx * 3 + 1] = 0.85;
+                  rItem.colors[idx * 3 + 2] = 0.2;
+                } else if (st === STATE_HYDROGEN) {
+                  rItem.colors[idx * 3]     = 0.2;
+                  rItem.colors[idx * 3 + 1] = 0.4;
+                  rItem.colors[idx * 3 + 2] = 1.0;
+                } else if (st === STATE_HADRON) {
+                  rItem.colors[idx * 3]     = 0.1;
+                  rItem.colors[idx * 3 + 1] = 0.9;
+                  rItem.colors[idx * 3 + 2] = 0.3;
+                } else if (st === STATE_BARYON) {
+                  rItem.colors[idx * 3]     = 0.9;
+                  rItem.colors[idx * 3 + 1] = 0.1;
+                  rItem.colors[idx * 3 + 2] = 0.6;
+                } else if (st === STATE_FERMION) {
+                  rItem.colors[idx * 3]     = 0.6;
+                  rItem.colors[idx * 3 + 1] = 0.6;
+                  rItem.colors[idx * 3 + 2] = 1.0;
                 } else {
                   rItem.colors[idx * 3]     = 0.22 + 0.70 * (l / 5.0);
                   rItem.colors[idx * 3 + 1] = 0.74 + 0.15 * Math.sin(t * 2.0);
