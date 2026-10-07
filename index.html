@@ -1485,7 +1485,9 @@
         switchVisualizerTab('manifold');
       }
     }
+    syncHashTab();
     window.addEventListener('DOMContentLoaded', syncHashTab);
+    window.addEventListener('load', syncHashTab);
     window.addEventListener('hashchange', syncHashTab);
   </script>
 </body>
