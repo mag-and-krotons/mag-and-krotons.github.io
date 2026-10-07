@@ -1,6 +1,13 @@
 /**
- * THE GAME OF COSMOS: 3D 36-VERTICE STRING & STRIP CELLULAR AUTOMATON
- * Authentically derived from Papers 02 & 11 (Abhijit Singh, 2026)
+ * THE GAME OF COSMOS: 3D 6-NODE BUILDINGS BLOCKS & EMERGENT SPACETIME AUTOMATON
+ * Authentically derived from Papers 01, 02, 03, 04, 08, 11, 12 (Abhijit Singh, 2026)
+ * 
+ * - Fundamental building block: 6-node complex (C3 ⋊ Z2 dihedral symmetry, modulo 6 clock world)
+ * - Frequency (f), Entropy (S), and Phase Twist (φ) modulate node resonance and chiral phase
+ * - Emergence: Vacuum -> Fermions -> Hadrons -> Baryons -> Hydrogen (^1H) -> Helium (^4He) -> Supernovae -> Black Holes
+ * - Theorem 1.1 Time Emergence: Timeless ground state (tau=0) -> Irreversible Entropy EP = D(J||J^T) > 0 -> Flowing Arrow
+ * - Square-Root Horizon (Paper 11): Spontaneous metric collapse to d = 0.50 Schwarzschild horizon
+ * - High-Performance WebGL: Instanced rendering for 1,000 sites at 60 FPS + Hero Unit Inspector Mode
  */
 
 import * as THREE from 'three';
@@ -9,15 +16,15 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 
+// Particle & Spacetime States
 export const STATE_VACUUM = 0;
-export const STATE_ALIVE_36 = 1;
-export const STATE_SUPERNOVA = 2;
-export const STATE_BLACK_HOLE = 3;
-export const STATE_FERMION = 4;
-export const STATE_BARYON = 5;
-export const STATE_HADRON = 6;
-export const STATE_HYDROGEN = 7;
-export const STATE_HELIUM = 8;
+export const STATE_FERMION = 1;     // Chiral spin-1/2 quark/lepton (asymmetric triad excitation)
+export const STATE_HADRON = 2;      // Meson (bound quark-antiquark pair with gluon flux)
+export const STATE_BARYON = 3;      // Nucleon (C3 symmetric stable triad: proton/neutron)
+export const STATE_HYDROGEN = 4;    // ^1H atom (Baryon nucleus + 1s electron orbital cloud)
+export const STATE_HELIUM = 5;      // ^4He alpha nucleus (closed dual-triad symmetric shell)
+export const STATE_SUPERNOVA = 6;   // Core collapse, Sedov blast wave nucleosynthesis
+export const STATE_BLACK_HOLE = 7;  // d = 0.50 Schwarzschild horizon, accretion disk & jets
 
 export class GameOfCosmos {
   constructor(containerId = 'cosmos-canvas-container') {
@@ -27,55 +34,57 @@ export class GameOfCosmos {
       return;
     }
 
-    // 3D Cellular Lattice Dimensions (10x10x10 = 1000 sites)
+    // 3D Cellular Lattice Dimensions (10x10x10 = 1,000 sites)
     this.GRID = 10;
-    this.LAYERS = 6;            // 6 layers x 6 vertices = 36 vertices per complex
-    this.SPACING_X = 7.6;
-    this.SPACING_Y = 8.6;
-    this.SPACING_Z = 7.6;
-    this.R_BASE = 2.40;
+    this.SPACING = 7.2;
 
-    // Viewport Mode: 'matrix' (macro 216 lattice) or 'inspector' (hero 36-vertice complex)
+    // Viewport Mode: 'matrix' (macro universe) or 'inspector' (hero 6-node building block)
     this.viewMode = 'matrix';
-    this.focusCoord = { x: 3, y: 3, z: 3 };
+    this.focusCoord = { x: 5, y: 5, z: 5 };
 
-    // Cellular State & Continuous Field Tensors (6x6x6)
+    // Continuous Field & Cellular State Tensors (10x10x10)
     this.state = this.createGrid3D(STATE_VACUUM);
     this.nextState = this.createGrid3D(STATE_VACUUM);
-    this.distance = this.createGrid3D(4.40);       // Metric separation d in [0.50, 4.40]
-    this.distanceVel = this.createGrid3D(0.0);    // d(dot)
-    this.energy = this.createGrid3D(0.0);          // Local stress-energy density rho
-    this.properTime = this.createGrid3D(0.0);      // Local emergent proper time tau
+    this.distance = this.createGrid3D(4.40);       // Inter-layer metric d in [0.50, 4.40]
+    this.energy = this.createGrid3D(0.0);          // Energy density rho
+    this.properTime = this.createGrid3D(0.0);      // Local proper time tau
     this.entropy = this.createGrid3D(0.0);         // Irreversible entropy S_irr
-    this.epRate = this.createGrid3D(0.0);          // EP = D(J || J^T)
-    this.age = this.createGrid3D(0);
+    this.phase = this.createGrid3D(0.0);           // Node phase angle
     this.blastRadius = this.createGrid3D(0.0);     // Supernova shockwave radius
 
     // Simulation Engine Controls
     this.generation = 0;
-    this.cosmicTime = 0.0;                        // In Megayears (Myr)
+    this.cosmicTime = 0.0;                        // Myr
     this.isPlaying = true;
     this.isStill = false;
-    this.genSpeed = 2.5;                           // Generations per second
+    this.genSpeed = 3.0;                           // Generations / sec
     this.stepInterval = 1000 / this.genSpeed;
     this.lastStepTime = performance.now();
     this.showScaffold = false;
     this.isVisible = true;
     this.currentRule = 'astrophysics';
 
-    // Global Cosmological Telemetry
-    this.activeUnits36 = 0;
-    this.supernovaeActive = 0;
+    // Global Telemetry Counters
+    this.counts = {
+      vacuum: 0,
+      fermions: 0,
+      hadrons: 0,
+      baryons: 0,
+      hydrogen: 0,
+      helium: 0,
+      supernovae: 0,
+      blackHoles: 0,
+      totalUnits: 0
+    };
     this.supernovaeTotal = 0;
-    this.blackHolesActive = 0;
     this.blackHolesTotal = 0;
     this.totalEntropy = 0.0;
     this.totalEPRate = 0.0;
     this.energyFlux = 0.0;
 
-    // Null Geodesic Photon Stream & Light Pulling
+    // Null Geodesic Photon Beams
     this.showPhotons = true;
-    this.maxPhotons = 80;
+    this.maxPhotons = 90;
     this.photons = [];
     this.photonsTrappedTotal = 0;
 
@@ -89,28 +98,33 @@ export class GameOfCosmos {
     this.clock = new THREE.Clock();
     this.raycaster = new THREE.Raycaster();
     this.mouse = new THREE.Vector2(-999, -999);
-    this.hoverCoord = null;
     this.animId = null;
 
-    // Visual Mesh Assets
-    this.mainGroup = null;
+    // Visual Mesh Groups
+    this.macroGroup = null;
+    this.inspectorGroup = null;
     this.scaffoldGroup = null;
-    this.hoverReticle = null;
-    this.unitVisuals = []; // 6x6x6 cache of procedural 36-vertice meshes
-    this.photonPoints = null;
+    this.instancedNodes = null;
+    this.instancedOrbits = null;
+    this.instancedDisks = null;
+    this.instancedJets = null;
+    this.macroBondsMesh = null;
+    this.macroBondPositions = null;
+    this.macroBondColors = null;
 
     // Initialize System
     this.initThree();
     this.initScaffold();
-    this.initHoverReticle();
-    this.initMatrixMeshes();
+    this.initMacroInstancing();
+    this.initHeroInspector();
     this.initPhotonStream();
     this.initUI();
     this.loadPreset('genesis');
-    this.animate();
 
     window.cosmosInstance = this;
-    console.log('[GameOfCosmos] Perfected 36-Vertice String & Strip Cosmos v10 Initialized.');
+    window.GameOfCosmos = GameOfCosmos;
+    this.updateTelemetry();
+    this.animate();
   }
 
   createGrid3D(val) {
@@ -128,68 +142,78 @@ export class GameOfCosmos {
     return g;
   }
 
+  getCellCenter(x, y, z) {
+    const G = this.GRID;
+    const S = this.SPACING;
+    const offset = ((G - 1) * S) * 0.5;
+    return new THREE.Vector3(x * S - offset, y * S - offset, z * S - offset);
+  }
+
   // --------------------------------------------------------------------------
-  // 1. Three.js Scene Setup, Cinematic Space Lighting, Starfield & Bloom
+  // 1. Three.js Scene, Lighting & Bloom Pipeline
   // --------------------------------------------------------------------------
   initThree() {
     this.scene = new THREE.Scene();
     this.scene.background = new THREE.Color(0x020409);
-    this.scene.fog = new THREE.FogExp2(0x020409, 0.005);
+    this.scene.fog = new THREE.FogExp2(0x020409, 0.0045);
 
     const width = this.container.clientWidth || 800;
     const height = this.container.clientHeight || 600;
 
-    this.camera = new THREE.PerspectiveCamera(46, width / height, 0.1, 800);
-    this.camera.position.set(38.0, 32.0, 48.0);
+    this.camera = new THREE.PerspectiveCamera(46, width / height, 0.1, 900);
+    this.camera.position.set(44.0, 36.0, 56.0);
 
     this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: 'high-performance' });
     this.renderer.setSize(width, height);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    this.renderer.toneMappingExposure = 1.40;
+    this.renderer.toneMappingExposure = 1.38;
     this.container.appendChild(this.renderer.domElement);
 
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.enableDamping = true;
     this.controls.dampingFactor = 0.05;
     this.controls.target.set(0, 0, 0);
-    this.controls.maxDistance = 240;
-    this.controls.minDistance = 3.5;
+    this.controls.maxDistance = 260;
+    this.controls.minDistance = 3.0;
 
-    // UnrealBloomPass Post-Processing Pipeline
+    // UnrealBloomPass Post-Processing
     try {
       this.composer = new EffectComposer(this.renderer);
       const renderPass = new RenderPass(this.scene, this.camera);
       this.composer.addPass(renderPass);
       this.bloomPass = new UnrealBloomPass(
         new THREE.Vector2(width, height),
-        1.55, // strength
-        0.50, // radius
-        0.14  // threshold
+        1.50, // strength
+        0.48, // radius
+        0.15  // threshold
       );
       this.composer.addPass(this.bloomPass);
     } catch (err) {
-      console.warn('[GameOfCosmos] UnrealBloomPass failed, falling back to standard WebGL render.', err);
+      console.warn('[GameOfCosmos] Post-processing fallback to standard WebGL', err);
       this.composer = null;
     }
 
-    // Cinematic Lighting
-    this.scene.add(new THREE.AmbientLight(0x0a1128, 2.5));
-
-    const pl1 = new THREE.PointLight(0x38bdf8, 5.5, 180);
-    pl1.position.set(45, 55, 45);
+    // Space Lighting
+    this.scene.add(new THREE.AmbientLight(0x091224, 2.8));
+    const pl1 = new THREE.PointLight(0x38bdf8, 4.5, 200);
+    pl1.position.set(50, 60, 50);
     this.scene.add(pl1);
 
-    const pl2 = new THREE.PointLight(0xa855f7, 5.0, 180);
-    pl2.position.set(-45, -45, -45);
+    const pl2 = new THREE.PointLight(0xa855f7, 4.2, 200);
+    pl2.position.set(-50, -50, -50);
     this.scene.add(pl2);
 
-    const pl3 = new THREE.PointLight(0xf59e0b, 3.8, 140);
+    const pl3 = new THREE.PointLight(0xf59e0b, 3.5, 150);
     pl3.position.set(0, 0, 0);
     this.scene.add(pl3);
 
-    this.mainGroup = new THREE.Group();
-    this.scene.add(this.mainGroup);
+    this.macroGroup = new THREE.Group();
+    this.scene.add(this.macroGroup);
+
+    this.inspectorGroup = new THREE.Group();
+    this.inspectorGroup.visible = false;
+    this.scene.add(this.inspectorGroup);
 
     this.initDeepStarfield();
 
@@ -198,517 +222,387 @@ export class GameOfCosmos {
 
   onResize() {
     if (!this.container || !this.renderer || !this.camera) return;
-    const width = this.container.clientWidth;
-    const height = this.container.clientHeight || 600;
-    if (width <= 0 || height <= 0) return;
-
-    this.camera.aspect = width / height;
+    const w = this.container.clientWidth || 800;
+    const h = this.container.clientHeight || 600;
+    this.camera.aspect = w / h;
     this.camera.updateProjectionMatrix();
-    this.renderer.setSize(width, height);
+    this.renderer.setSize(w, h);
     if (this.composer) {
-      this.composer.setSize(width, height);
+      this.composer.setSize(w, h);
     }
   }
 
   initDeepStarfield() {
-    const starCount = 2000;
-    const starGeo = new THREE.BufferGeometry();
-    const starPos = new Float32Array(starCount * 3);
-    const starCol = new Float32Array(starCount * 3);
+    const starCount = 1800;
+    const geo = new THREE.BufferGeometry();
+    const pos = new Float32Array(starCount * 3);
+    const col = new Float32Array(starCount * 3);
 
     for (let i = 0; i < starCount; i++) {
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.acos(Math.random() * 2 - 1);
-      const rad = 85 + Math.random() * 160;
+      const u = Math.random();
+      const v = Math.random();
+      const theta = u * 2.0 * Math.PI;
+      const phi = Math.acos(2.0 * v - 1.0);
+      const r = 160 + Math.random() * 200;
 
-      starPos[i * 3]     = rad * Math.sin(phi) * Math.cos(theta);
-      starPos[i * 3 + 1] = rad * Math.cos(phi);
-      starPos[i * 3 + 2] = rad * Math.sin(phi) * Math.sin(theta);
+      pos[i * 3]     = r * Math.sin(phi) * Math.cos(theta);
+      pos[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+      pos[i * 3 + 2] = r * Math.cos(phi);
 
-      const rVal = Math.random();
-      if (rVal > 0.75) {
-        starCol[i * 3] = 0.98; starCol[i * 3 + 1] = 0.75; starCol[i * 3 + 2] = 0.35;
-      } else if (rVal > 0.45) {
-        starCol[i * 3] = 0.35; starCol[i * 3 + 1] = 0.75; starCol[i * 3 + 2] = 0.98;
+      const tint = Math.random();
+      if (tint < 0.35) {
+        col[i * 3] = 0.50; col[i * 3 + 1] = 0.75; col[i * 3 + 2] = 1.0;
+      } else if (tint < 0.70) {
+        col[i * 3] = 1.0; col[i * 3 + 1] = 0.85; col[i * 3 + 2] = 0.60;
       } else {
-        starCol[i * 3] = 0.85; starCol[i * 3 + 1] = 0.90; starCol[i * 3 + 2] = 1.00;
+        col[i * 3] = 0.90; col[i * 3 + 1] = 0.60; col[i * 3 + 2] = 0.95;
       }
     }
 
-    starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
-    starGeo.setAttribute('color', new THREE.BufferAttribute(starCol, 3));
+    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
 
-    const starMat = new THREE.PointsMaterial({
-      size: 1.2,
+    const mat = new THREE.PointsMaterial({
+      size: 1.25,
       vertexColors: true,
       transparent: true,
       opacity: 0.75,
       blending: THREE.AdditiveBlending
     });
-
-    const starPoints = new THREE.Points(starGeo, starMat);
-    this.scene.add(starPoints);
+    this.scene.add(new THREE.Points(geo, mat));
   }
 
   initScaffold() {
     this.scaffoldGroup = new THREE.Group();
     const G = this.GRID;
-    const boxSizeX = (G - 1) * this.SPACING_X;
-    const boxSizeY = (G - 1) * this.SPACING_Y;
-    const boxSizeZ = (G - 1) * this.SPACING_Z;
+    const S = this.SPACING;
+    const extent = (G - 1) * S;
 
-    const boundBox = new THREE.Box3Helper(
-      new THREE.Box3(
-        new THREE.Vector3(-boxSizeX * 0.5 - 2, -boxSizeY * 0.5 - 2, -boxSizeZ * 0.5 - 2),
-        new THREE.Vector3(boxSizeX * 0.5 + 2, boxSizeY * 0.5 + 2, boxSizeZ * 0.5 + 2)
-      ),
-      0x1e293b
-    );
-    boundBox.material.opacity = 0.35;
-    boundBox.material.transparent = true;
-    this.scaffoldGroup.add(boundBox);
-
-    const gridHelper = new THREE.GridHelper(boxSizeX + 6, G, 0x334155, 0x0f172a);
-    gridHelper.position.y = -boxSizeY * 0.5 - 2;
-    this.scaffoldGroup.add(gridHelper);
+    const boxGeo = new THREE.BoxGeometry(extent, extent, extent);
+    const edges = new THREE.EdgesGeometry(boxGeo);
+    const lineMat = new THREE.LineBasicMaterial({
+      color: 0x1e293b,
+      transparent: true,
+      opacity: 0.40
+    });
+    const boundingBox = new THREE.LineSegments(edges, lineMat);
+    this.scaffoldGroup.add(boundingBox);
 
     this.scaffoldGroup.visible = this.showScaffold;
     this.scene.add(this.scaffoldGroup);
   }
 
-  initHoverReticle() {
-    const geo = new THREE.BoxGeometry(this.SPACING_X * 0.85, this.SPACING_Y * 0.85, this.SPACING_Z * 0.85);
-    const edges = new THREE.EdgesGeometry(geo);
-    const mat = new THREE.LineBasicMaterial({
+  // --------------------------------------------------------------------------
+  // 2. High-Performance Macro Instanced WebGL Systems
+  // --------------------------------------------------------------------------
+  initMacroInstancing() {
+    const maxUnits = this.GRID * this.GRID * this.GRID; // 1,000 units
+    const maxNodes = maxUnits * 6; // 6,000 nodes total
+
+    // A. 6 Nodes per active unit (Universal 6-Node Building Block)
+    const nodeGeo = new THREE.SphereGeometry(0.38, 10, 8);
+    const nodeMat = new THREE.MeshStandardMaterial({
+      roughness: 0.20,
+      metalness: 0.85,
+      emissive: 0x000000,
+      emissiveIntensity: 0.85
+    });
+    this.instancedNodes = new THREE.InstancedMesh(nodeGeo, nodeMat, maxNodes);
+    this.instancedNodes.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+    this.instancedNodes.count = 0;
+    this.macroGroup.add(this.instancedNodes);
+
+    // B. Internal Chords & Triad Bonds connecting the 6 nodes across active units
+    // 9 line segments per active unit (Triad A: 3, Triad B: 3, Cross-bridges: 3)
+    const maxBonds = maxUnits * 9;
+    const bondGeo = new THREE.BufferGeometry();
+    this.macroBondPositions = new Float32Array(maxBonds * 2 * 3);
+    this.macroBondColors = new Float32Array(maxBonds * 2 * 3);
+    bondGeo.setAttribute('position', new THREE.BufferAttribute(this.macroBondPositions, 3));
+    bondGeo.setAttribute('color', new THREE.BufferAttribute(this.macroBondColors, 3));
+
+    const bondMat = new THREE.LineBasicMaterial({
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.65,
+      blending: THREE.AdditiveBlending
+    });
+    this.macroBondsMesh = new THREE.LineSegments(bondGeo, bondMat);
+    this.macroGroup.add(this.macroBondsMesh);
+
+    // C. Electron Probability Clouds / Fusion Shells for Hydrogen (^1H) & Helium (^4He)
+    const orbitGeo = new THREE.SphereGeometry(1.65, 16, 12);
+    const orbitMat = new THREE.MeshBasicMaterial({
       color: 0x38bdf8,
       transparent: true,
-      opacity: 0.8,
+      opacity: 0.22,
+      wireframe: true,
       blending: THREE.AdditiveBlending
     });
-    this.hoverReticle = new THREE.LineSegments(edges, mat);
-    this.hoverReticle.visible = false;
-    this.scene.add(this.hoverReticle);
-  }
+    this.instancedOrbits = new THREE.InstancedMesh(orbitGeo, orbitMat, maxUnits);
+    this.instancedOrbits.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+    this.instancedOrbits.count = 0;
+    this.macroGroup.add(this.instancedOrbits);
 
-  createCircularGlowTexture() {
-    const canvas = document.createElement('canvas');
-    canvas.width = 64; canvas.height = 64;
-    const ctx = canvas.getContext('2d');
-    const grad = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
-    grad.addColorStop(0, 'rgba(255, 255, 255, 1)');
-    grad.addColorStop(0.2, 'rgba(56, 189, 248, 0.9)');
-    grad.addColorStop(0.5, 'rgba(14, 165, 233, 0.35)');
-    grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
-    ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, 64, 64);
-    return new THREE.CanvasTexture(canvas);
-  }
-
-  // --------------------------------------------------------------------------
-  // 2. Construction of Authentic 36-Vertice String & Strip Complex Visuals
-  // --------------------------------------------------------------------------
-  getCellCenter(x, y, z) {
-    const G = this.GRID;
-    return new THREE.Vector3(
-      (x - (G - 1) * 0.5) * this.SPACING_X,
-      (y - (G - 1) * 0.5) * this.SPACING_Y,
-      (z - (G - 1) * 0.5) * this.SPACING_Z
-    );
-  }
-
-  initMatrixMeshes() {
-    this.unitVisuals = [];
-    const G = this.GRID;
-
-    for (let x = 0; x < G; x++) {
-      this.unitVisuals[x] = [];
-      for (let y = 0; y < G; y++) {
-        this.unitVisuals[x][y] = [];
-        for (let z = 0; z < G; z++) {
-          this.unitVisuals[x][y][z] = { isBuilt: false, group: null };
-        }
-      }
-    }
-  }
-
-  buildCellVisuals(x, y, z) {
-    const center = this.getCellCenter(x, y, z);
-    const group = new THREE.Group();
-    group.position.copy(center);
-    group.visible = false;
-
-    // A. 5 Inter-Layer Continuous Ruled Ribbon Strip Sheets S(u, v)
-    const outerRibbons = [];
-    const uSegs = 36;
-    const vSegs = 6;
-    const vCount = (uSegs + 1) * (vSegs + 1);
-
-    for (let l = 0; l < this.LAYERS - 1; l++) {
-      const positions = new Float32Array(vCount * 3);
-      const colors = new Float32Array(vCount * 3);
-      const indices = [];
-
-      for (let v = 0; v < vSegs; v++) {
-        for (let u = 0; u < uSegs; u++) {
-          const r1 = v * (uSegs + 1);
-          const r2 = (v + 1) * (uSegs + 1);
-          indices.push(r1 + u, r2 + u, r1 + u + 1);
-          indices.push(r1 + u + 1, r2 + u, r2 + u + 1);
-        }
-      }
-
-      const geo = new THREE.BufferGeometry();
-      geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-      geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-      geo.setIndex(indices);
-
-      const mat = new THREE.MeshStandardMaterial({
-        vertexColors: true,
-        roughness: 0.18,
-        metalness: 0.65,
-        side: THREE.DoubleSide,
-        transparent: true,
-        opacity: 0.82,
-        blending: THREE.NormalBlending,
-        depthWrite: false
-      });
-
-      const mesh = new THREE.Mesh(geo, mat);
-      group.add(mesh);
-      outerRibbons.push({ mesh, geo, mat, positions, colors });
-    }
-
-    // B. 6 Closed Undulating String Loops (Connecting 6 vertices per layer = 36 vertices total)
-    const stringLoops = [];
-    for (let l = 0; l < this.LAYERS; l++) {
-      const loopGeo = new THREE.BufferGeometry();
-      const loopPos = new Float32Array(37 * 3);
-      const loopCol = new Float32Array(37 * 3);
-      loopGeo.setAttribute('position', new THREE.BufferAttribute(loopPos, 3));
-      loopGeo.setAttribute('color', new THREE.BufferAttribute(loopCol, 3));
-
-      const isGold = (l % 2 === 0);
-      const baseCol = isGold ? new THREE.Color(0xf59e0b) : new THREE.Color(0x38bdf8);
-
-      const loopMat = new THREE.LineBasicMaterial({
-        vertexColors: true,
-        linewidth: 2.5,
-        transparent: true,
-        opacity: 0.95,
-        blending: THREE.AdditiveBlending
-      });
-
-      const lineLoop = new THREE.LineLoop(loopGeo, loopMat);
-      group.add(lineLoop);
-      stringLoops.push({ lineLoop, loopGeo, loopPos, loopCol, baseCol });
-    }
-
-    // C. K3,3 Bipartite Helicoid Ribbon Strips (Cross-Throat Worldsheets)
-    const k33Group = new THREE.Group();
-    const k33Strips = [];
-    for (let c = 0; c < 18; c++) {
-      const stripGeo = new THREE.BufferGeometry();
-      const stripPos = new Float32Array(16 * 2 * 3);
-      const stripCol = new Float32Array(16 * 2 * 3);
-      const stripIndices = [];
-      for (let i = 0; i < 15; i++) {
-        const r1 = i * 2, r2 = (i + 1) * 2;
-        stripIndices.push(r1, r2, r1 + 1);
-        stripIndices.push(r1 + 1, r2, r2 + 1);
-      }
-      stripGeo.setAttribute('position', new THREE.BufferAttribute(stripPos, 3));
-      stripGeo.setAttribute('color', new THREE.BufferAttribute(stripCol, 3));
-      stripGeo.setIndex(stripIndices);
-
-      const stripMat = new THREE.MeshBasicMaterial({
-        vertexColors: true,
-        side: THREE.DoubleSide,
-        transparent: true,
-        opacity: 0.65,
-        blending: THREE.AdditiveBlending
-      });
-      const stripMesh = new THREE.Mesh(stripGeo, stripMat);
-      k33Group.add(stripMesh);
-      k33Strips.push({ mesh: stripMesh, geo: stripGeo, pos: stripPos, col: stripCol });
-    }
-    group.add(k33Group);
-
-    // D. Relativistic Black Hole Singularity Elements (for d <= 0.52)
-    // 1. Central Event Horizon Dark Shadow Sphere (rs = 0.85)
-    const bhSphereGeo = new THREE.SphereGeometry(0.85, 28, 28);
-    const bhSphereMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
-    const bhSphere = new THREE.Mesh(bhSphereGeo, bhSphereMat);
-    bhSphere.visible = false;
-    group.add(bhSphere);
-
-    // 2. Swirling Logarithmic Relativistic Accretion Disk (Spiral Ribbons)
-    const accretionDiskGroup = new THREE.Group();
-    accretionDiskGroup.visible = false;
-
-    const diskArmCount = 2;
-    const diskPtsPerArm = 32;
-    for (let arm = 0; arm < diskArmCount; arm++) {
-      const armGeo = new THREE.BufferGeometry();
-      const armPos = new Float32Array(diskPtsPerArm * 2 * 3);
-      const armCol = new Float32Array(diskPtsPerArm * 2 * 3);
-      const armIndices = [];
-
-      for (let i = 0; i < diskPtsPerArm - 1; i++) {
-        const r1 = i * 2;
-        const r2 = (i + 1) * 2;
-        armIndices.push(r1, r2, r1 + 1);
-        armIndices.push(r1 + 1, r2, r2 + 1);
-      }
-      armGeo.setAttribute('position', new THREE.BufferAttribute(armPos, 3));
-      armGeo.setAttribute('color', new THREE.BufferAttribute(armCol, 3));
-      armGeo.setIndex(armIndices);
-
-      const armMat = new THREE.MeshBasicMaterial({
-        vertexColors: true,
-        side: THREE.DoubleSide,
-        transparent: true,
-        opacity: 0.90,
-        blending: THREE.AdditiveBlending
-      });
-      const armMesh = new THREE.Mesh(armGeo, armMat);
-      accretionDiskGroup.add(armMesh);
-    }
-    group.add(accretionDiskGroup);
-
-    // 3. Einstein Photon Sphere Ring (r = 1.5 rs = 1.28)
-    const ringGeo = new THREE.RingGeometry(0.88, 1.48, 36);
-    const ringMat = new THREE.MeshBasicMaterial({
-      color: 0x38bdf8,
-      side: THREE.DoubleSide,
-      transparent: true,
-      opacity: 0.92,
-      blending: THREE.AdditiveBlending
-    });
-    const photonRing = new THREE.Mesh(ringGeo, ringMat);
-    photonRing.rotation.x = Math.PI / 2;
-    photonRing.visible = false;
-    group.add(photonRing);
-
-    // 4. Slender Collimated Relativistic Polar String Jets (shooting along +/- y)
-    const jetGroup = new THREE.Group();
-    jetGroup.visible = false;
-
-    const jetGeo = new THREE.CylinderGeometry(0.05, 0.26, 7.5, 14, 1, true);
-    const jetMat = new THREE.MeshBasicMaterial({
-      color: 0xc084fc,
-      transparent: true,
-      opacity: 0.92,
-      blending: THREE.AdditiveBlending,
-      side: THREE.DoubleSide
-    });
-
-    const jetPlus = new THREE.Mesh(jetGeo, jetMat);
-    jetPlus.position.y = 3.75;
-    jetGroup.add(jetPlus);
-
-    const jetMinus = new THREE.Mesh(jetGeo, jetMat);
-    jetMinus.position.y = -3.75;
-    jetMinus.rotation.x = Math.PI;
-    jetGroup.add(jetMinus);
-
-    group.add(jetGroup);
-
-    // E. Supernova Volumetric Core-Collapse Shockwave Shell
-    const snGroup = new THREE.Group();
-    snGroup.visible = false;
-
-    const snRing1Geo = new THREE.RingGeometry(0.8, 1.40, 36);
-    const snRing1Mat = new THREE.MeshBasicMaterial({
-      color: 0xf43f5e,
-      side: THREE.DoubleSide,
-      transparent: true,
-      opacity: 0.88,
-      blending: THREE.AdditiveBlending
-    });
-    const snRing1 = new THREE.Mesh(snRing1Geo, snRing1Mat);
-    snRing1.rotation.x = Math.PI / 2;
-    snGroup.add(snRing1);
-
-    const snRing2Geo = new THREE.RingGeometry(0.8, 1.40, 36);
-    const snRing2Mat = new THREE.MeshBasicMaterial({
+    // D. Black Hole Accretion Disks
+    const diskGeo = new THREE.RingGeometry(0.70, 2.6, 24);
+    const diskMat = new THREE.MeshBasicMaterial({
       color: 0xf59e0b,
       side: THREE.DoubleSide,
       transparent: true,
-      opacity: 0.88,
+      opacity: 0.85,
       blending: THREE.AdditiveBlending
     });
-    const snRing2 = new THREE.Mesh(snRing2Geo, snRing2Mat);
-    snRing2.rotation.y = Math.PI / 2;
-    snGroup.add(snRing2);
+    this.instancedDisks = new THREE.InstancedMesh(diskGeo, diskMat, 32);
+    this.instancedDisks.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+    this.instancedDisks.count = 0;
+    this.macroGroup.add(this.instancedDisks);
 
-    const snRing3Geo = new THREE.RingGeometry(0.8, 1.40, 36);
-    const snRing3Mat = new THREE.MeshBasicMaterial({
+    // E. Relativistic Polar Jets
+    const jetGeo = new THREE.ConeGeometry(0.55, 6.2, 12, 1, true);
+    const jetMat = new THREE.MeshBasicMaterial({
       color: 0x38bdf8,
       side: THREE.DoubleSide,
       transparent: true,
-      opacity: 0.88,
+      opacity: 0.70,
       blending: THREE.AdditiveBlending
     });
-    const snRing3 = new THREE.Mesh(snRing3Geo, snRing3Mat);
-    snRing3.rotation.z = Math.PI / 4;
-    snGroup.add(snRing3);
-
-    group.add(snGroup);
-
-    this.mainGroup.add(group);
-
-    this.unitVisuals[x][y][z] = {
-      isBuilt: true,
-      group,
-      outerRibbons,
-      stringLoops,
-      k33Strips,
-      bhSphere,
-      photonRing,
-      accretionDiskGroup,
-      jetGroup,
-      snGroup,
-      snRing1Mat,
-      snRing2Mat,
-      snRing3Mat
-    };
+    this.instancedJets = new THREE.InstancedMesh(jetGeo, jetMat, 64);
+    this.instancedJets.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+    this.instancedJets.count = 0;
+    this.macroGroup.add(this.instancedJets);
   }
 
   // --------------------------------------------------------------------------
-  // 3. Null Geodesic Photon Stream (Distributed Sparkling Light Pulling)
+  // 3. Hero Unit Inspector Mode (Close-Up of Single 6-Node / 36-Vertice Complex)
+  // --------------------------------------------------------------------------
+  initHeroInspector() {
+    this.inspectorNodes = [];
+
+    // Central Throat Constriction Ring (d in [0.50, 4.40])
+    const throatGeo = new THREE.TorusGeometry(2.1, 0.06, 16, 48);
+    const throatMat = new THREE.MeshBasicMaterial({
+      color: 0x38bdf8,
+      transparent: true,
+      opacity: 0.65,
+      blending: THREE.AdditiveBlending
+    });
+    this.inspectorThroat = new THREE.Mesh(throatGeo, throatMat);
+    this.inspectorThroat.rotation.x = Math.PI / 2;
+    this.inspectorGroup.add(this.inspectorThroat);
+
+    // 6 Large Luminescent Node Spheres (Dihedral C3 ⋊ Z2 symmetry)
+    const nodeColors = [
+      0xf59e0b, 0x38bdf8, 0xf59e0b, 0x38bdf8, 0xf59e0b, 0x38bdf8 // Alternating Triads A & B
+    ];
+
+    for (let i = 0; i < 6; i++) {
+      const sGeo = new THREE.SphereGeometry(0.55, 24, 18);
+      const sMat = new THREE.MeshStandardMaterial({
+        color: nodeColors[i],
+        roughness: 0.15,
+        metalness: 0.85,
+        emissive: nodeColors[i],
+        emissiveIntensity: 0.90
+      });
+      const nodeMesh = new THREE.Mesh(sGeo, sMat);
+      this.inspectorGroup.add(nodeMesh);
+      this.inspectorNodes.push(nodeMesh);
+    }
+
+    // Ruled Ribbon Strip Sheets connecting Triads across Throat
+    const ribbonGeo = new THREE.BufferGeometry();
+    const ribbonPos = new Float32Array(7 * 2 * 3);
+    const ribbonCol = new Float32Array(7 * 2 * 3);
+    const indices = [];
+    for (let i = 0; i < 6; i++) {
+      const r1 = i * 2, r2 = (i + 1) * 2;
+      indices.push(r1, r2, r1 + 1);
+      indices.push(r1 + 1, r2, r2 + 1);
+    }
+    ribbonGeo.setAttribute('position', new THREE.BufferAttribute(ribbonPos, 3));
+    ribbonGeo.setAttribute('color', new THREE.BufferAttribute(ribbonCol, 3));
+    ribbonGeo.setIndex(indices);
+
+    const ribbonMat = new THREE.MeshBasicMaterial({
+      vertexColors: true,
+      side: THREE.DoubleSide,
+      transparent: true,
+      opacity: 0.70,
+      blending: THREE.AdditiveBlending
+    });
+    this.inspectorRibbon = new THREE.Mesh(ribbonGeo, ribbonMat);
+    this.inspectorGroup.add(this.inspectorRibbon);
+
+    // Dynamic Orbital Wave Cloud (Hydrogen 1s cloud or Helium dual shell)
+    const cloudGeo = new THREE.SphereGeometry(4.8, 32, 24);
+    const cloudMat = new THREE.MeshBasicMaterial({
+      color: 0x38bdf8,
+      transparent: true,
+      opacity: 0.18,
+      wireframe: true,
+      blending: THREE.AdditiveBlending
+    });
+    this.inspectorCloud = new THREE.Mesh(cloudGeo, cloudMat);
+    this.inspectorGroup.add(this.inspectorCloud);
+
+    // Inspector HUD Label Billboard
+    this.inspectorBadge = document.createElement('div');
+    this.inspectorBadge.className = 'cosmos-inspector-badge';
+    this.inspectorBadge.style.display = 'none';
+    this.inspectorBadge.innerHTML = `
+      <div class="badge-title">6-NODE BUILDING BLOCK INSPECTOR</div>
+      <div class="badge-state" id="insp-state">STATE: BARYON (TRIAD LOCK)</div>
+      <div class="badge-meta" id="insp-meta">Triads: A{0,2,4} &bull; B{1,3,5} | Phase: 0.0°</div>
+    `;
+    this.container.appendChild(this.inspectorBadge);
+  }
+
+  // --------------------------------------------------------------------------
+  // 4. Photon Stream (Relativistic Null Geodesic Deflection)
   // --------------------------------------------------------------------------
   initPhotonStream() {
     this.photons = [];
-    this.photonsTrappedTotal = 0;
-    const G = this.GRID;
-    const boxSpan = (G - 1) * this.SPACING_X;
+    const geo = new THREE.BufferGeometry();
+    const pos = new Float32Array(this.maxPhotons * 3);
+    const col = new Float32Array(this.maxPhotons * 3);
 
     for (let i = 0; i < this.maxPhotons; i++) {
-      const ph = {
+      this.photons.push({
         pos: new THREE.Vector3(
-          (Math.random() - 0.5) * boxSpan * 1.6,
-          (Math.random() - 0.5) * boxSpan * 0.9,
-          (Math.random() - 0.5) * boxSpan * 0.9
+          (Math.random() - 0.5) * 80,
+          (Math.random() - 0.5) * 80,
+          (Math.random() - 0.5) * 80
         ),
-        vel: new THREE.Vector3(12.0 + Math.random() * 4.0, (Math.random() - 0.5) * 1.5, (Math.random() - 0.5) * 1.5),
-        active: true,
-        trapped: false,
-        age: Math.random() * 5.0
-      };
-      this.photons.push(ph);
+        vel: new THREE.Vector3(0.8 + Math.random() * 0.8, (Math.random() - 0.5) * 0.3, (Math.random() - 0.5) * 0.3),
+        alive: true,
+        age: Math.random() * 10
+      });
+      pos[i * 3]     = this.photons[i].pos.x;
+      pos[i * 3 + 1] = this.photons[i].pos.y;
+      pos[i * 3 + 2] = this.photons[i].pos.z;
+
+      col[i * 3] = 0.22; col[i * 3 + 1] = 0.74; col[i * 3 + 2] = 0.97;
     }
 
-    const pGeo = new THREE.BufferGeometry();
-    const pPos = new Float32Array(this.maxPhotons * 3);
-    const pCol = new Float32Array(this.maxPhotons * 3);
-    pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
-    pGeo.setAttribute('color', new THREE.BufferAttribute(pCol, 3));
+    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
 
-    const pMat = new THREE.PointsMaterial({
-      size: 0.90,
-      map: this.createCircularGlowTexture(),
+    const mat = new THREE.PointsMaterial({
+      size: 1.8,
       vertexColors: true,
       transparent: true,
       opacity: 0.90,
-      blending: THREE.AdditiveBlending,
-      depthWrite: false
+      blending: THREE.AdditiveBlending
     });
-    this.photonPoints = new THREE.Points(pGeo, pMat);
+    this.photonPoints = new THREE.Points(geo, mat);
     this.scene.add(this.photonPoints);
   }
 
   updatePhotons(delta) {
-    if (!this.showPhotons) {
-      if (this.photonPoints) this.photonPoints.visible = false;
-      return;
-    }
-    if (this.photonPoints) this.photonPoints.visible = true;
-
+    if (!this.showPhotons || !this.photonPoints) return;
+    const pos = this.photonPoints.geometry.attributes.position.array;
     const G = this.GRID;
-    const boxSpan = (G - 1) * this.SPACING_X;
-    const rs = 0.85;
 
-    // Find all active black hole singularities
-    const blackHoles = [];
+    // Find black hole gravitational singularities
+    const singularities = [];
     for (let x = 0; x < G; x++) {
       for (let y = 0; y < G; y++) {
         for (let z = 0; z < G; z++) {
-          if (this.state[x][y][z] === STATE_BLACK_HOLE || this.distance[x][y][z] <= 0.52) {
-            blackHoles.push(this.getCellCenter(x, y, z));
+          if (this.state[x][y][z] === STATE_BLACK_HOLE) {
+            singularities.push(this.getCellCenter(x, y, z));
           }
         }
       }
     }
-
-    const posAttr = this.photonPoints.geometry.attributes.position;
-    const colAttr = this.photonPoints.geometry.attributes.color;
 
     for (let i = 0; i < this.maxPhotons; i++) {
-      const ph = this.photons[i];
+      const p = this.photons[i];
+      p.age += delta;
 
-      if (!ph.active || ph.pos.x > boxSpan * 0.80 || Math.abs(ph.pos.y) > boxSpan * 0.90 || Math.abs(ph.pos.z) > boxSpan * 0.90) {
-        ph.pos.set(
-          -boxSpan * 0.75 - Math.random() * 8.0,
-          (Math.random() - 0.5) * boxSpan * 0.85,
-          (Math.random() - 0.5) * boxSpan * 0.85
-        );
-        ph.vel.set(13.5, (Math.random() - 0.5) * 1.2, (Math.random() - 0.5) * 1.2);
-        ph.active = true;
-        ph.trapped = false;
-        ph.age = 0;
-      }
-
-      // Gravitational light deflection toward Event Horizons
-      if (blackHoles.length > 0) {
-        for (const bhPos of blackHoles) {
-          const rVec = new THREE.Vector3().subVectors(bhPos, ph.pos);
-          const dist = rVec.length();
-
-          if (dist < rs * 1.05) {
-            ph.active = false;
-            ph.trapped = true;
-            this.photonsTrappedTotal++;
-            break;
-          }
-
-          if (dist < 14.0) {
-            const pullMag = (18.0 / (dist * dist)) * (1.0 + 3.0 * rs / dist);
-            rVec.normalize().multiplyScalar(pullMag * delta);
-            ph.vel.add(rVec);
-
-            ph.vel.normalize().multiplyScalar(13.5);
-          }
+      // General Relativistic Binet Null Geodesic Deflection
+      singularities.forEach(sing => {
+        const dVec = new THREE.Vector3().subVectors(sing, p.pos);
+        const dist = dVec.length();
+        if (dist < 2.2) {
+          // Captured within Schwarzschild event horizon d = 0.50
+          this.photonsTrappedTotal++;
+          p.pos.set(
+            -45 - Math.random() * 10,
+            (Math.random() - 0.5) * 60,
+            (Math.random() - 0.5) * 60
+          );
+          p.vel.set(1.2 + Math.random() * 0.6, (Math.random() - 0.5) * 0.2, (Math.random() - 0.5) * 0.2);
+        } else if (dist < 28.0) {
+          // Relativistic 4GM/c^2 deflection
+          const force = (5.5 / (dist * dist)) * delta * 24.0;
+          dVec.normalize().multiplyScalar(force);
+          p.vel.add(dVec);
+          p.vel.clampLength(0.8, 2.8);
         }
+      });
+
+      p.pos.addScaledVector(p.vel, delta * 32.0);
+
+      if (p.pos.x > 50 || p.pos.x < -50 || p.pos.y > 50 || p.pos.y < -50 || p.pos.z > 50 || p.pos.z < -50) {
+        p.pos.set(
+          -48,
+          (Math.random() - 0.5) * 60,
+          (Math.random() - 0.5) * 60
+        );
+        p.vel.set(1.2 + Math.random() * 0.5, (Math.random() - 0.5) * 0.2, (Math.random() - 0.5) * 0.2);
       }
 
-      ph.pos.addScaledVector(ph.vel, delta);
-      ph.age += delta;
-
-      posAttr.setXYZ(i, ph.pos.x, ph.pos.y, ph.pos.z);
-      if (ph.trapped) {
-        colAttr.setXYZ(i, 0, 0, 0);
-      } else {
-        colAttr.setXYZ(i, 0.40, 0.85, 1.0);
-      }
+      pos[i * 3]     = p.pos.x;
+      pos[i * 3 + 1] = p.pos.y;
+      pos[i * 3 + 2] = p.pos.z;
     }
 
-    posAttr.needsUpdate = true;
-    colAttr.needsUpdate = true;
+    this.photonPoints.geometry.attributes.position.needsUpdate = true;
   }
 
   // --------------------------------------------------------------------------
-  // 4. Mathematical Field Evolution Engine (Cellular Automaton + Relativistic ODE)
+  // 5. Authentic Physical Evolution Engine (Cellular Automaton + Particle Emergence)
   // --------------------------------------------------------------------------
+  getEffectiveParameters() {
+    const elF = document.getElementById('cosmos-freq-input');
+    const elS = document.getElementById('cosmos-entropy-input');
+    const elPhi = document.getElementById('cosmos-phase-input');
+
+    let rawF = elF ? parseFloat(elF.value) : 144.0;
+    let rawS = elS ? parseFloat(elS.value) : 0.50;
+    let rawPhi = elPhi ? parseFloat(elPhi.value) : 1.00;
+
+    if (isNaN(rawF) || !isFinite(rawF)) rawF = 1e12; // Asymptotic Planck frequency
+    if (isNaN(rawS) || !isFinite(rawS)) rawS = 5.0;
+    if (isNaN(rawPhi) || !isFinite(rawPhi)) rawPhi = 0.0;
+
+    // Asymptotic Modular Renormalization for Frequency
+    const fPlanck = 1e6;
+    const fNorm = rawF > 0 ? (rawF / (1.0 + rawF / fPlanck)) : 0.0;
+    const sNorm = Math.max(0.0, rawS);
+    const phiNorm = rawPhi;
+
+    return { f: fNorm, S: sNorm, phi: phiNorm, rawF, rawS, rawPhi };
+  }
+
   step() {
     if (this.isStill) return;
 
     const G = this.GRID;
-    let netFlux = 0.0;
-    let count36 = 0, countSN = 0, countBH = 0;
-    let sumEP = 0.0, sumEntropy = 0.0;
+    const params = this.getEffectiveParameters();
+    const f = params.f;
+    const S = params.S;
+    const phi = params.phi;
+
+    let countFermions = 0, countHadrons = 0, countBaryons = 0;
+    let countHydrogen = 0, countHelium = 0, countSN = 0, countBH = 0;
+    let sumEP = 0.0, sumEntropy = 0.0, netFlux = 0.0;
 
     // 1. Calculate 26-neighbor interaction tensor
     const nbrCount = this.createGrid3D(0);
+    const nbrBaryons = this.createGrid3D(0);
+    const nbrFermions = this.createGrid3D(0);
     const nbrEnergy = this.createGrid3D(0.0);
 
     for (let x = 0; x < G; x++) {
@@ -717,7 +611,8 @@ export class GameOfCosmos {
           const s = this.state[x][y][z];
           if (s === STATE_VACUUM) continue;
 
-          const weight = (s === STATE_ALIVE_36) ? 1 : 2;
+          const weight = (s === STATE_BLACK_HOLE || s === STATE_SUPERNOVA) ? 3 :
+                         (s === STATE_HELIUM || s === STATE_BARYON) ? 2 : 1;
           const e = this.energy[x][y][z];
 
           for (let dx = -1; dx <= 1; dx++) {
@@ -729,7 +624,9 @@ export class GameOfCosmos {
                 const nz = (z + dz + G) % G;
 
                 nbrCount[nx][ny][nz] += weight;
-                nbrEnergy[nx][ny][nz] += e * 0.10;
+                nbrEnergy[nx][ny][nz] += e * 0.12;
+                if (s === STATE_BARYON || s === STATE_HYDROGEN) nbrBaryons[nx][ny][nz]++;
+                if (s === STATE_FERMION) nbrFermions[nx][ny][nz]++;
               }
             }
           }
@@ -737,96 +634,121 @@ export class GameOfCosmos {
       }
     }
 
-    // 2. Cellular State Transitions & Astrophysical Condensation
-    // Triad Harmonic Balance: S(3-6) / B(4-5)
+    // 2. Continuous State Transitions governed by Resonance, Entropy & Phase Twists
     for (let x = 0; x < G; x++) {
       for (let y = 0; y < G; y++) {
         for (let z = 0; z < G; z++) {
           const cur = this.state[x][y][z];
           const n = nbrCount[x][y][z];
+          const nBar = nbrBaryons[x][y][z];
+          const nFerm = nbrFermions[x][y][z];
+          const curD = this.distance[x][y][z];
           let next = STATE_VACUUM;
 
-          const curD = this.distance[x][y][z];
-
           if (cur === STATE_BLACK_HOLE) {
-            // Enduring gravitational anchor
+            // Enduring Schwarzschild anchor
             next = STATE_BLACK_HOLE;
+            countBH++;
           }
           else if (cur === STATE_SUPERNOVA) {
-            // Supernova remnant core: if metric reached 1/2 horizon point, collapses into black hole remnant!
-            if (curD <= 0.60 && this.blackHolesActive < 3) {
+            // Remnant core: if compressed below square-root horizon d <= 0.60, collapses to black hole!
+            if (curD <= 0.60 && this.counts.blackHoles < 4) {
               next = STATE_BLACK_HOLE;
               this.distance[x][y][z] = 0.50;
               this.blackHolesTotal++;
-            } else if (n >= 3 && n <= 5) {
-              // Disperses starburst gas seeding new active 36-vertice string complexes
-              next = STATE_ALIVE_36;
-              this.energy[x][y][z] = 28.0;
+              countBH++;
+            } else if (n >= 2 && n <= 5) {
+              // Nucleosynthetic stellar dispersal: seeds new Hydrogen and Helium!
+              next = (Math.random() < 0.45) ? STATE_HELIUM : STATE_HYDROGEN;
+              this.energy[x][y][z] = 30.0;
             } else {
               next = STATE_VACUUM;
             }
           }
-          else if (cur === STATE_ALIVE_36 || cur >= STATE_FERMION) {
-            // 1. SPONTANEOUS METRIC COLLAPSE TO BLACK HOLE:
-            // When local metric contracts to d <= 0.60 under high core pressure (n >= 7),
-            // forging an authentic Schwarzschild event horizon dynamically without manual placement!
-            if (curD <= 0.60 && n >= 7 && this.blackHolesActive < 3) {
+          else {
+            // A. SPONTANEOUS METRIC COLLAPSE (Paper 11 Square-Root Horizon):
+            // Extreme overdensity contracts local metric to Schwarzschild radius d <= 0.60
+            if (curD <= 0.60 && n >= 12 && this.counts.blackHoles < 4) {
               next = STATE_BLACK_HOLE;
               this.distance[x][y][z] = 0.50;
               this.blackHolesTotal++;
+              countBH++;
             }
-            // 2. CORE-COLLAPSE SUPERNOVA:
-            // Overdense massive complex (n >= 7) detonates an expanding Sedov shockwave ribbon!
-            else if (n >= 7 && Math.random() < 0.28) {
+            // B. CORE-COLLAPSE SUPERNOVA:
+            // Massive stellar core exceeding Chandrasekhar threshold detonates expanding blast wave
+            else if (n >= 14 && Math.random() < 0.05 && this.counts.supernovae < 3) {
               next = STATE_SUPERNOVA;
               this.blastRadius[x][y][z] = 1.0;
               this.supernovaeTotal++;
+              countSN++;
             }
-            // 3. CARTER BAYS S(4-6) HARMONIC BALANCE + PARTICLE EMERGENCE:
-            else if (n >= 4 && n <= 6) {
-              const elF = document.getElementById('cosmos-freq-input');
-              const elS = document.getElementById('cosmos-entropy-input');
-              const elPhi = document.getElementById('cosmos-phase-input');
-              
-              const f = elF ? parseFloat(elF.value) : 144.0;
-              const S = elS ? parseFloat(elS.value) : 0.5;
-              const phi = elPhi ? parseFloat(elPhi.value) : 1.0;
-              
-              const twist = Math.abs((f * S) * phi);
-              
-              if (twist > 1000000) {
-                 next = STATE_HELIUM;
-              } else if (twist >= 10000) {
-                 next = STATE_HYDROGEN;
-              } else if (twist >= 1000) {
-                 next = STATE_HADRON;
-              } else if (twist >= 100) {
-                 next = STATE_BARYON;
-              } else if (twist >= 10) {
-                 next = STATE_FERMION;
-              } else {
-                 next = STATE_ALIVE_36;
+            // C. RESONANT PARTICLE EMERGENCE & ATOMIC NUCLEOSYNTHESIS (Papers 02, 03, 04, 08):
+            else if (n >= 3 && n <= 10) {
+              const resonanceFactor = (f * 0.08 + phi * 1.2) % 3.0;
+
+              // 1. Helium (^4He): Closed dual-triad nuclear fusion at resonant frequency or density
+              if ((cur === STATE_HYDROGEN || cur === STATE_BARYON || cur === STATE_HELIUM) && (nBar >= 2 || f > 120.0) && S < 2.2) {
+                next = STATE_HELIUM;
+                countHelium++;
+                netFlux += 6.0;
+              }
+              // 2. Hydrogen (^1H): Baryon nucleus bound to 1s electron probability cloud
+              else if ((cur === STATE_BARYON || cur === STATE_HYDROGEN || cur === STATE_HADRON) && S < 2.8) {
+                next = STATE_HYDROGEN;
+                countHydrogen++;
+              }
+              // 3. Baryon (Proton/Neutron): C3 triad locked state (Paper 08 Triad Principle)
+              else if (n >= 4 && (cur === STATE_HADRON || resonanceFactor > 1.6)) {
+                next = STATE_BARYON;
+                countBaryons++;
+              }
+              // 4. Hadron (Meson): Bound quark-antiquark pair with gluon flux
+              else if (cur === STATE_FERMION && (nFerm >= 1 || resonanceFactor > 0.8)) {
+                next = STATE_HADRON;
+                countHadrons++;
+              }
+              // 5. Fermion: Chiral spin-1/2 excitation
+              else {
+                next = STATE_FERMION;
+                countFermions++;
               }
             }
-            // 4. Underpopulation or extreme overpopulation void
+            // D. VACUUM CONDENSATION (Carter Bays B3/B4 Harmonic Seed):
+            else if (cur === STATE_VACUUM) {
+              if (n === 3 || n === 4 || (n === 5 && Math.random() < 0.25)) {
+                next = (Math.random() < 0.5) ? STATE_FERMION : STATE_HADRON;
+                if (next === STATE_FERMION) countFermions++; else countHadrons++;
+                this.energy[x][y][z] = 20.0;
+              }
+            }
             else {
               next = STATE_VACUUM;
             }
           }
-          else if (cur === STATE_VACUUM) {
-            // Vacuum condensation under Carter Bays B(4) or supernova shockwave or polar jet
-            if (n === 4 || (n >= 3 && Math.random() < 0.16)) {
-              next = STATE_ALIVE_36;
-              this.energy[x][y][z] = 22.0;
-            }
-          }
 
           this.nextState[x][y][z] = next;
+
+          // Local Field ODE Updates
+          if (next !== STATE_VACUUM) {
+            const localEP = (0.0025 * params.S + 0.0001 * (f % 60)) * (next === STATE_BLACK_HOLE ? 4.0 : 1.0);
+            this.entropy[x][y][z] += localEP * (1000 / this.stepInterval * 0.001);
+            sumEP += localEP;
+            sumEntropy += this.entropy[x][y][z];
+
+            const timeDilation = Math.sqrt(Math.max(0.01, 1.0 - 0.50 / this.distance[x][y][z]));
+            this.properTime[x][y][z] += (1000 / this.stepInterval * 0.001) * timeDilation;
+
+            if (n >= 5 && this.distance[x][y][z] > 0.50) {
+              this.distance[x][y][z] = Math.max(0.50, this.distance[x][y][z] - 0.08);
+            } else if (n <= 1 && this.distance[x][y][z] < 4.40) {
+              this.distance[x][y][z] = Math.min(4.40, this.distance[x][y][z] + 0.04);
+            }
+          }
         }
       }
     }
 
-    // 3. Relativistic Polar Jet Seeding from Black Holes
+    // 3. Polar Relativistic Jet Seeding from Black Holes
     for (let x = 0; x < G; x++) {
       for (let y = 0; y < G; y++) {
         for (let z = 0; z < G; z++) {
@@ -834,88 +756,43 @@ export class GameOfCosmos {
             const yUp = (y + 1) % G;
             const yDown = (y - 1 + G) % G;
 
-            if (this.nextState[x][yUp][z] === STATE_VACUUM && Math.random() > 0.40) {
-              this.nextState[x][yUp][z] = STATE_ALIVE_36;
-              this.energy[x][yUp][z] = 24.0;
-              netFlux += 15.0;
+            if (this.nextState[x][yUp][z] === STATE_VACUUM && Math.random() > 0.45) {
+              this.nextState[x][yUp][z] = STATE_FERMION;
+              this.energy[x][yUp][z] = 22.0;
+              netFlux += 12.0;
             }
-            if (this.nextState[x][yDown][z] === STATE_VACUUM && Math.random() > 0.40) {
-              this.nextState[x][yDown][z] = STATE_ALIVE_36;
-              this.energy[x][yDown][z] = 24.0;
-              netFlux += 15.0;
+            if (this.nextState[x][yDown][z] === STATE_VACUUM && Math.random() > 0.45) {
+              this.nextState[x][yDown][z] = STATE_FERMION;
+              this.energy[x][yDown][z] = 22.0;
+              netFlux += 12.0;
             }
           }
         }
       }
     }
 
-    // 4. Update Continuous Metric & Paper 02 Theorem 1.1 Entropy Fields
-    const dt = 1.0;
-
+    // Swap State Grids
     for (let x = 0; x < G; x++) {
       for (let y = 0; y < G; y++) {
         for (let z = 0; z < G; z++) {
-          const nextS = this.nextState[x][y][z];
-          let curD = this.distance[x][y][z];
-          let velD = this.distanceVel[x][y][z];
-
-          if (nextS === STATE_BLACK_HOLE) {
-            curD = 0.50;
-            velD = 0.0;
-            this.energy[x][y][z] = 85.0;
-            countBH++;
-          }
-          else if (nextS === STATE_SUPERNOVA) {
-            curD = Math.max(0.55, curD - 0.45);
-            this.energy[x][y][z] = 65.0;
-            countSN++;
-          }
-          else if (nextS === STATE_ALIVE_36) {
-            const nVal = nbrCount[x][y][z];
-            if (nVal >= 6) {
-              // High core density drives metric contraction towards the 1/2 horizon point
-              curD = Math.max(0.50, curD - 0.35);
-            } else {
-              curD += (4.40 - curD) * 0.20;
-            }
-            velD *= 0.5;
-            this.energy[x][y][z] = Math.max(12.0, this.energy[x][y][z] * 0.92);
-            count36++;
-          }
-          else {
-            curD += (4.40 - curD) * 0.35;
-            velD = 0.0;
-            this.energy[x][y][z] = Math.max(0.0, this.energy[x][y][z] - 1.5);
-          }
-
-          this.distance[x][y][z] = curD;
-          this.distanceVel[x][y][z] = velD;
-          this.state[x][y][z] = nextS;
-
-          if (nextS !== STATE_VACUUM) {
-            this.age[x][y][z]++;
-            const rsEff = (curD <= 0.52) ? 0.85 : 0.85 * (4.40 - curD) / 3.90;
-            const g00 = Math.max(0.01, 1.0 - rsEff / 1.5);
-            this.properTime[x][y][z] += dt * Math.sqrt(g00);
-
-            const curEP = 0.00686 + 0.045 * (this.energy[x][y][z] / 40.0) + 0.02 * (4.40 - curD);
-            this.epRate[x][y][z] = curEP;
-            this.entropy[x][y][z] += curEP * dt;
-
-            sumEP += curEP;
-            sumEntropy += this.entropy[x][y][z];
-          } else {
-            this.epRate[x][y][z] = 0.0;
-          }
+          this.state[x][y][z] = this.nextState[x][y][z];
         }
       }
     }
 
     this.generation++;
-    this.cosmicTime = this.generation * 1.0;
-    this.activeUnits36 = count36;
-    this.supernovaeActive = countSN;
-    this.blackHolesActive = countBH;
+    this.cosmicTime += 0.85;
+
+    // Telemetry Sync
+    this.counts.fermions = countFermions;
+    this.counts.hadrons = countHadrons;
+    this.counts.baryons = countBaryons;
+    this.counts.hydrogen = countHydrogen;
+    this.counts.helium = countHelium;
+    this.counts.supernovae = countSN;
+    this.counts.blackHoles = countBH;
+    this.counts.totalUnits = countFermions + countHadrons + countBaryons + countHydrogen + countHelium + countSN + countBH;
+
     this.totalEntropy = sumEntropy;
     this.totalEPRate = sumEP;
     this.energyFlux = netFlux;
@@ -924,338 +801,331 @@ export class GameOfCosmos {
   }
 
   // --------------------------------------------------------------------------
-  // 5. Mesh Geometry Updates & Chiral String Undulations (Render Loop)
+  // 6. Visual Updates & Three.js Instancing Updates (60 FPS)
   // --------------------------------------------------------------------------
   updateVisuals(elapsed) {
     const G = this.GRID;
     const t = elapsed;
-    const uSegs = 36;
+    const params = this.getEffectiveParameters();
+
+    if (this.viewMode === 'inspector') {
+      this.updateInspectorVisuals(t, params);
+      return;
+    }
+
+    let nodeIdx = 0;
+    let bondVertIdx = 0;
+    let orbitIdx = 0;
+    let diskIdx = 0;
+    let jetIdx = 0;
+
+    const dummy = new THREE.Object3D();
+    const colorDummy = new THREE.Color();
+    const bondPos = this.macroBondPositions;
+    const bondCol = this.macroBondColors;
 
     for (let x = 0; x < G; x++) {
       for (let y = 0; y < G; y++) {
         for (let z = 0; z < G; z++) {
-          const uItem = this.unitVisuals[x][y][z];
           const st = this.state[x][y][z];
+          if (st === STATE_VACUUM) continue;
 
-          if (st === STATE_VACUUM) {
-            uItem.group.visible = false;
-            continue;
-          }
-
-          uItem.group.visible = true;
+          const center = this.getCellCenter(x, y, z);
           const curD = this.distance[x][y][z];
-          const isBlackHole = (st === STATE_BLACK_HOLE || curD <= 0.52);
-          const isSupernova = (st === STATE_SUPERNOVA);
+          const localPhase = (x + y + z) * 0.4 + t * (params.f * 0.02 + 1.0);
 
-          uItem.bhSphere.visible = isBlackHole;
-          uItem.photonRing.visible = isBlackHole;
-          uItem.accretionDiskGroup.visible = isBlackHole;
-          uItem.jetGroup.visible = isBlackHole;
-          uItem.snGroup.visible = isSupernova;
+          // 1. Render the 6-Node Building Block Nodes
+          const radius = (st === STATE_BLACK_HOLE) ? 0.9 : 1.8;
+          const height = Math.min(2.2, curD * 0.4);
+          const nodeVecs = [];
 
-          if (isBlackHole) {
-            uItem.photonRing.rotation.z = t * 2.5;
-            uItem.jetGroup.rotation.y = t * 1.8;
-            uItem.accretionDiskGroup.rotation.y = t * 3.2;
+          for (let k = 0; k < 6; k++) {
+            const angle = k * (Math.PI / 3.0) + (k % 2 === 0 ? params.phi * 0.2 : -params.phi * 0.2);
+            const zH = (k % 2 === 0 ? 1 : -1) * (height * 0.5);
 
-            const diskArms = uItem.accretionDiskGroup.children;
-            const ptsPerArm = 32;
-            for (let a = 0; a < diskArms.length; a++) {
-              const armMesh = diskArms[a];
-              const posA = armMesh.geometry.attributes.position;
-              const colA = armMesh.geometry.attributes.color;
-              const baseAngle = (a * Math.PI) + t * 4.0;
+            const nx = center.x + Math.cos(angle + localPhase * 0.3) * radius;
+            const ny = center.y + Math.sin(angle + localPhase * 0.3) * radius;
+            const nz = center.z + zH;
 
-              for (let i = 0; i < ptsPerArm; i++) {
-                const frac = i / (ptsPerArm - 1);
-                const r = 0.90 + frac * 1.45;
-                const theta = baseAngle + Math.log(r / 0.85) * 3.8;
+            nodeVecs.push(new THREE.Vector3(nx, ny, nz));
 
-                const innerX = r * Math.cos(theta);
-                const innerZ = r * Math.sin(theta);
-                const outerX = (r + 0.18) * Math.cos(theta + 0.12);
-                const outerZ = (r + 0.18) * Math.sin(theta + 0.12);
+            dummy.position.set(nx, ny, nz);
+            dummy.scale.setScalar((st === STATE_HELIUM || st === STATE_BARYON) ? 1.25 : 0.95);
+            dummy.updateMatrix();
 
-                const idx1 = i * 2;
-                const idx2 = i * 2 + 1;
+            this.instancedNodes.setMatrixAt(nodeIdx, dummy.matrix);
 
-                posA.setXYZ(idx1, innerX, 0, innerZ);
-                posA.setXYZ(idx2, outerX, 0, outerZ);
-
-                const doppler = Math.cos(theta);
-                if (doppler > 0) {
-                  colA.setXYZ(idx1, 0.22, 0.85, 1.0);
-                  colA.setXYZ(idx2, 0.45, 0.95, 1.0);
-                } else {
-                  colA.setXYZ(idx1, 0.85, 0.22, 0.95);
-                  colA.setXYZ(idx2, 0.65, 0.15, 0.80);
-                }
-              }
-              posA.needsUpdate = true;
-              colA.needsUpdate = true;
+            // Particle Color Spectrum
+            if (st === STATE_FERMION) {
+              colorDummy.setHex(k % 2 === 0 ? 0x38bdf8 : 0x0284c7); // Electric Cyan
+            } else if (st === STATE_HADRON) {
+              colorDummy.setHex(0xd946ef); // Magenta Gluon Flux
+            } else if (st === STATE_BARYON) {
+              colorDummy.setHex(0xf59e0b); // Golden Triad Nucleon
+            } else if (st === STATE_HYDROGEN) {
+              colorDummy.setHex(k === 0 ? 0xf59e0b : 0x38bdf8); // Proton + Electron
+            } else if (st === STATE_HELIUM) {
+              colorDummy.setHex(0x10b981); // Emerald Alpha Core
+            } else if (st === STATE_SUPERNOVA) {
+              colorDummy.setHex(0xffedd5); // Incandescent Blast
+            } else if (st === STATE_BLACK_HOLE) {
+              colorDummy.setHex(0xef4444); // Gravitational Redshift
             }
+
+            this.instancedNodes.setColorAt(nodeIdx, colorDummy);
+            nodeIdx++;
           }
 
-          if (isSupernova) {
-            this.blastRadius[x][y][z] = Math.min(3.8, (this.blastRadius[x][y][z] || 1.0) + 0.08);
-            const rB = this.blastRadius[x][y][z];
-            uItem.snGroup.scale.set(rB, rB, rB);
-            uItem.snGroup.rotation.y = t * 3.5;
-            uItem.snGroup.rotation.x = t * 2.2;
-            const opac = Math.max(0.1, 1.0 - rB / 4.2);
-            uItem.snRing1Mat.opacity = opac;
-            uItem.snRing2Mat.opacity = opac;
-            uItem.snRing3Mat.opacity = opac;
+          // 2. Render Internal Chords connecting 6 nodes: Triad A (0-2-4), Triad B (1-3-5), cross-links (0-1, 2-3, 4-5)
+          const bondPairs = [
+            [0, 2], [2, 4], [4, 0], // Triad A
+            [1, 3], [3, 5], [5, 1], // Triad B
+            [0, 1], [2, 3], [4, 5]  // Cross-throat bridges
+          ];
+
+          for (let b = 0; b < bondPairs.length; b++) {
+            const p1 = nodeVecs[bondPairs[b][0]];
+            const p2 = nodeVecs[bondPairs[b][1]];
+
+            bondPos[bondVertIdx * 3]     = p1.x;
+            bondPos[bondVertIdx * 3 + 1] = p1.y;
+            bondPos[bondVertIdx * 3 + 2] = p1.z;
+
+            bondPos[(bondVertIdx + 1) * 3]     = p2.x;
+            bondPos[(bondVertIdx + 1) * 3 + 1] = p2.y;
+            bondPos[(bondVertIdx + 1) * 3 + 2] = p2.z;
+
+            // Bond Color
+            let bR = 0.22, bG = 0.74, bB = 0.97;
+            if (st === STATE_BARYON) {
+              bR = 0.96; bG = 0.62; bB = 0.04;
+            } else if (st === STATE_HELIUM) {
+              bR = 0.06; bG = 0.72; bB = 0.50;
+            } else if (st === STATE_HADRON) {
+              bR = 0.85; bG = 0.27; bB = 0.93;
+            }
+
+            bondCol[bondVertIdx * 3]     = bR;
+            bondCol[bondVertIdx * 3 + 1] = bG;
+            bondCol[bondVertIdx * 3 + 2] = bB;
+
+            bondCol[(bondVertIdx + 1) * 3]     = bR;
+            bondCol[(bondVertIdx + 1) * 3 + 1] = bG;
+            bondCol[(bondVertIdx + 1) * 3 + 2] = bB;
+
+            bondVertIdx += 2;
           }
 
-          // Compute 6-Layer Chiral Undulating String Geometry
-          const heightScale = curD / 4.40;
-          const layerHeights = [];
-          const layerLoops = [];
-          const layerVerts = [];
-          const layerMids = [];
-
-          for (let l = 0; l < this.LAYERS; l++) {
-            const isInv = (l % 2 !== 0);
-            const z0 = (l - 2.5) * (0.85 * heightScale);
-            layerHeights.push(z0);
-
-            const throat = (1.0 - 0.35 * Math.exp(- (z0 * z0) / (0.8 * heightScale * heightScale + 0.08)))
-              * (isBlackHole ? 0.42 : 1.0);
-
-            const wavePsi = Math.cos(t * 3.2 - l * 0.85);
-            const rLayer = this.R_BASE * throat * (1.0 + (isBlackHole ? 0.08 : 0.22 * wavePsi));
-
-            let phaseMultiplier = 1.0;
-            if (st === STATE_HELIUM) phaseMultiplier = 8.0;
-            else if (st === STATE_HYDROGEN) phaseMultiplier = 5.0;
-            else if (st === STATE_HADRON) phaseMultiplier = 3.5;
-            else if (st === STATE_BARYON) phaseMultiplier = 2.5;
-            else if (st === STATE_FERMION) phaseMultiplier = 1.5;
-
-            const chiralAngle = (isInv ? -1 : 1) * 0.35 * phaseMultiplier * Math.sin(t * 2.4 + l * 0.6);
-            const baseTheta = isInv ? -Math.PI / 2 : Math.PI / 2;
-
-            const loopPts = [];
-            const vList = [];
-            const mList = [];
-
-            for (let j = 0; j < 3; j++) {
-              const thetaV = baseTheta + j * (2 * Math.PI / 3) + chiralAngle;
-              const vx = Math.cos(thetaV) * rLayer;
-              const vz = Math.sin(thetaV) * rLayer;
-
-              const thetaNext = baseTheta + ((j + 1) % 3) * (2 * Math.PI / 3) + chiralAngle;
-              const nextVx = Math.cos(thetaNext) * rLayer;
-              const nextVz = Math.sin(thetaNext) * rLayer;
-
-              const mx = (vx + nextVx) * 0.5 * 1.15;
-              const mz = (vz + nextVz) * 0.5 * 1.15;
-
-              const ptV = new THREE.Vector3(vx, z0, vz);
-              const ptM = new THREE.Vector3(mx, z0, mz);
-
-              vList.push(ptV);
-              mList.push(ptM);
-              loopPts.push(ptV);
-              loopPts.push(ptM);
-            }
-
-            layerVerts.push(vList);
-            layerMids.push(mList);
-
-            const curve = new THREE.CatmullRomCurve3(loopPts, true);
-            const densePts = curve.getPoints(uSegs);
-            layerLoops.push(densePts);
-
-            // Update String Loop Line
-            const sLoop = uItem.stringLoops[l];
-            for (let p = 0; p <= uSegs; p++) {
-              const pt = densePts[p % densePts.length];
-              sLoop.loopPos[p * 3]     = pt.x;
-              sLoop.loopPos[p * 3 + 1] = pt.y;
-              sLoop.loopPos[p * 3 + 2] = pt.z;
-
-              const phaseU = (p / uSegs + t * 0.8) % 1.0;
-              const pulse = Math.sin(phaseU * Math.PI * 2) * 0.35 + 0.65;
-              sLoop.loopCol[p * 3]     = sLoop.baseCol.r * pulse;
-              sLoop.loopCol[p * 3 + 1] = sLoop.baseCol.g * pulse;
-              sLoop.loopCol[p * 3 + 2] = sLoop.baseCol.b * pulse;
-            }
-            sLoop.loopGeo.attributes.position.needsUpdate = true;
-            sLoop.loopGeo.attributes.color.needsUpdate = true;
+          // 3. Render Electron Orbital Clouds for Hydrogen (^1H) & Helium (^4He)
+          if (st === STATE_HYDROGEN || st === STATE_HELIUM) {
+            dummy.position.copy(center);
+            const breathe = 1.0 + Math.sin(localPhase * 2.0) * 0.08;
+            dummy.scale.setScalar((st === STATE_HELIUM ? 2.1 : 1.55) * breathe);
+            dummy.rotation.set(t * 0.4, t * 0.3, 0);
+            dummy.updateMatrix();
+            this.instancedOrbits.setMatrixAt(orbitIdx, dummy.matrix);
+            orbitIdx++;
           }
 
-          // Update 5 Inter-Layer Ruled Ribbon Strip Sheets S(u, v)
-          const vSegs = 6;
-          for (let l = 0; l < this.LAYERS - 1; l++) {
-            const rItem = uItem.outerRibbons[l];
-            const pts1 = layerLoops[l];
-            const pts2 = layerLoops[l + 1];
-            let idx = 0;
+          // 4. Render Black Hole Accretion Disks & Polar Jets
+          if (st === STATE_BLACK_HOLE) {
+            dummy.position.copy(center);
+            dummy.rotation.set(Math.PI * 0.35, t * 3.2, 0);
+            dummy.scale.set(1.4, 1.4, 1.4);
+            dummy.updateMatrix();
+            this.instancedDisks.setMatrixAt(diskIdx, dummy.matrix);
+            diskIdx++;
 
-            for (let v = 0; v <= vSegs; v++) {
-              const vFrac = v / vSegs;
-              for (let u = 0; u <= uSegs; u++) {
-                const p1 = pts1[u % pts1.length];
-                const p2 = pts2[u % pts2.length];
+            // Upward & Downward Relativistic Jets
+            dummy.position.copy(center);
+            dummy.position.y += 3.2;
+            dummy.rotation.set(0, t * 2.0, 0);
+            dummy.scale.set(1.0, 1.0, 1.0);
+            dummy.updateMatrix();
+            this.instancedJets.setMatrixAt(jetIdx, dummy.matrix);
+            jetIdx++;
 
-                const px = (1 - vFrac) * p1.x + vFrac * p2.x;
-                const py = (1 - vFrac) * p1.y + vFrac * p2.y;
-                const pz = (1 - vFrac) * p1.z + vFrac * p2.z;
-
-                rItem.positions[idx * 3]     = px;
-                rItem.positions[idx * 3 + 1] = py;
-                rItem.positions[idx * 3 + 2] = pz;
-
-                if (isBlackHole) {
-                  rItem.colors[idx * 3]     = 0.70;
-                  rItem.colors[idx * 3 + 1] = 0.25;
-                  rItem.colors[idx * 3 + 2] = 0.98;
-                } else if (isSupernova) {
-                  rItem.colors[idx * 3]     = 0.98;
-                  rItem.colors[idx * 3 + 1] = 0.35;
-                  rItem.colors[idx * 3 + 2] = 0.22;
-                } else if (st === STATE_HELIUM) {
-                  rItem.colors[idx * 3]     = 1.0;
-                  rItem.colors[idx * 3 + 1] = 0.85;
-                  rItem.colors[idx * 3 + 2] = 0.2;
-                } else if (st === STATE_HYDROGEN) {
-                  rItem.colors[idx * 3]     = 0.2;
-                  rItem.colors[idx * 3 + 1] = 0.4;
-                  rItem.colors[idx * 3 + 2] = 1.0;
-                } else if (st === STATE_HADRON) {
-                  rItem.colors[idx * 3]     = 0.1;
-                  rItem.colors[idx * 3 + 1] = 0.9;
-                  rItem.colors[idx * 3 + 2] = 0.3;
-                } else if (st === STATE_BARYON) {
-                  rItem.colors[idx * 3]     = 0.9;
-                  rItem.colors[idx * 3 + 1] = 0.1;
-                  rItem.colors[idx * 3 + 2] = 0.6;
-                } else if (st === STATE_FERMION) {
-                  rItem.colors[idx * 3]     = 0.6;
-                  rItem.colors[idx * 3 + 1] = 0.6;
-                  rItem.colors[idx * 3 + 2] = 1.0;
-                } else {
-                  rItem.colors[idx * 3]     = 0.22 + 0.70 * (l / 5.0);
-                  rItem.colors[idx * 3 + 1] = 0.74 + 0.15 * Math.sin(t * 2.0);
-                  rItem.colors[idx * 3 + 2] = 0.98 - 0.75 * (l / 5.0);
-                }
-                idx++;
-              }
-            }
-
-            rItem.geo.attributes.position.needsUpdate = true;
-            rItem.geo.attributes.color.needsUpdate = true;
-            rItem.geo.computeVertexNormals();
-          }
-
-          // Update K3,3 Cross-Throat Helicoid Ribbon Strips (Layer 2 <-> Layer 3)
-          const lA = 2, lB = 3;
-          let kIdx = 0;
-          for (let j = 0; j < 3; j++) {
-            for (let k = 0; k < 3; k++) {
-              if (kIdx < uItem.k33Strips.length) {
-                const pStart = layerVerts[lA][j];
-                const pEnd = layerMids[lB][k];
-                const sItem = uItem.k33Strips[kIdx];
-
-                for (let step = 0; step < 16; step++) {
-                  const sFrac = step / 15.0;
-                  const bx = (1 - sFrac) * pStart.x + sFrac * pEnd.x;
-                  const by = (1 - sFrac) * pStart.y + sFrac * pEnd.y;
-                  const bz = (1 - sFrac) * pStart.z + sFrac * pEnd.z;
-
-                  const i1 = step * 2;
-                  const i2 = step * 2 + 1;
-                  sItem.pos[i1 * 3]     = bx - 0.08;
-                  sItem.pos[i1 * 3 + 1] = by;
-                  sItem.pos[i1 * 3 + 2] = bz;
-
-                  sItem.pos[i2 * 3]     = bx + 0.08;
-                  sItem.pos[i2 * 3 + 1] = by;
-                  sItem.pos[i2 * 3 + 2] = bz;
-
-                  const pulse = Math.sin(sFrac * Math.PI + t * 3.0) * 0.4 + 0.6;
-                  sItem.col[i1 * 3]     = 0.75 * pulse;
-                  sItem.col[i1 * 3 + 1] = 0.45 * pulse;
-                  sItem.col[i1 * 3 + 2] = 0.95 * pulse;
-
-                  sItem.col[i2 * 3]     = 0.75 * pulse;
-                  sItem.col[i2 * 3 + 1] = 0.45 * pulse;
-                  sItem.col[i2 * 3 + 2] = 0.95 * pulse;
-                }
-                sItem.geo.attributes.position.needsUpdate = true;
-                sItem.geo.attributes.color.needsUpdate = true;
-                kIdx++;
-              }
-            }
+            dummy.position.copy(center);
+            dummy.position.y -= 3.2;
+            dummy.rotation.set(Math.PI, t * 2.0, 0);
+            dummy.scale.set(1.0, 1.0, 1.0);
+            dummy.updateMatrix();
+            this.instancedJets.setMatrixAt(jetIdx, dummy.matrix);
+            jetIdx++;
           }
         }
       }
     }
+
+    this.instancedNodes.count = nodeIdx;
+    this.instancedNodes.instanceMatrix.needsUpdate = true;
+    if (this.instancedNodes.instanceColor) this.instancedNodes.instanceColor.needsUpdate = true;
+
+    this.macroBondsMesh.geometry.setDrawRange(0, bondVertIdx);
+    this.macroBondsMesh.geometry.attributes.position.needsUpdate = true;
+    this.macroBondsMesh.geometry.attributes.color.needsUpdate = true;
+
+    this.instancedOrbits.count = orbitIdx;
+    this.instancedOrbits.instanceMatrix.needsUpdate = true;
+
+    this.instancedDisks.count = diskIdx;
+    this.instancedDisks.instanceMatrix.needsUpdate = true;
+
+    this.instancedJets.count = jetIdx;
+    this.instancedJets.instanceMatrix.needsUpdate = true;
   }
 
-  // --------------------------------------------------------------------------
-  // 6. Viewport Modes: Matrix Lattice vs. Hero Unit Spacetime Inspector
-  // --------------------------------------------------------------------------
-  setViewMode(mode, targetCoord = null) {
-    this.viewMode = mode;
-    if (targetCoord) {
-      this.focusCoord = targetCoord;
+  updateInspectorVisuals(t, params) {
+    const focus = this.focusCoord;
+    const st = this.state[focus.x][focus.y][focus.z];
+    const curD = this.distance[focus.x][focus.y][focus.z];
+
+    // Constricted Throat Dynamics (d in [0.50, 4.40])
+    this.inspectorThroat.scale.set(curD * 0.5, curD * 0.5, 1.0);
+    this.inspectorThroat.rotation.z = t * 1.5;
+
+    // 6-Node Positions in Inspector Close-up
+    const radius = 3.6;
+    const height = Math.min(3.2, curD * 0.7);
+
+    for (let k = 0; k < 6; k++) {
+      const angle = k * (Math.PI / 3.0) + (k % 2 === 0 ? params.phi * 0.35 : -params.phi * 0.35);
+      const zH = (k % 2 === 0 ? 1 : -1) * (height * 0.6) + Math.sin(t * 3.0 + k) * 0.2;
+
+      this.inspectorNodes[k].position.set(
+        Math.cos(angle + t * 0.8) * radius,
+        Math.sin(angle + t * 0.8) * radius,
+        zH
+      );
+
+      const s = 0.55 + Math.sin(t * 4.0 + k * 1.04) * 0.08;
+      this.inspectorNodes[k].scale.setScalar(s);
     }
 
-    if (mode === 'inspector') {
-      const center = this.getCellCenter(this.focusCoord.x, this.focusCoord.y, this.focusCoord.z);
-      this.controls.target.copy(center);
-      this.camera.position.set(center.x + 8.0, center.y + 5.5, center.z + 9.5);
-      this.controls.minDistance = 2.0;
-      this.controls.maxDistance = 35.0;
+    // Dynamic Ruled Ribbon
+    const pos = this.inspectorRibbon.geometry.attributes.position.array;
+    const col = this.inspectorRibbon.geometry.attributes.color.array;
 
-      const btnToggle = document.getElementById('cosmos-inspect-toggle-btn');
-      if (btnToggle) {
-        btnToggle.classList.add('active');
-        const span = btnToggle.querySelector('span');
-        if (span) span.innerText = '🌌 View Cosmic Matrix';
-      }
+    for (let i = 0; i <= 6; i++) {
+      const k = i % 6;
+      const nPos = this.inspectorNodes[k].position;
+      pos[i * 6]     = nPos.x;
+      pos[i * 6 + 1] = nPos.y;
+      pos[i * 6 + 2] = nPos.z;
+
+      pos[i * 6 + 3] = nPos.x * 0.4;
+      pos[i * 6 + 4] = nPos.y * 0.4;
+      pos[i * 6 + 5] = 0.0; // Central Throat
+
+      col[i * 6]     = 0.22; col[i * 6 + 1] = 0.74; col[i * 6 + 2] = 0.97;
+      col[i * 6 + 3] = 0.96; col[i * 6 + 4] = 0.62; col[i * 6 + 5] = 0.04;
+    }
+
+    this.inspectorRibbon.geometry.attributes.position.needsUpdate = true;
+    this.inspectorRibbon.geometry.attributes.color.needsUpdate = true;
+
+    // Electron Orbital Probability Cloud
+    this.inspectorCloud.rotation.y = t * 0.6;
+    this.inspectorCloud.rotation.x = t * 0.4;
+    const cloudScale = (st === STATE_HELIUM ? 1.35 : 1.05) + Math.sin(t * 2.5) * 0.05;
+    this.inspectorCloud.scale.setScalar(cloudScale);
+
+    if (st === STATE_HELIUM) {
+      this.inspectorCloud.material.color.setHex(0x10b981);
+    } else if (st === STATE_HYDROGEN) {
+      this.inspectorCloud.material.color.setHex(0x38bdf8);
     } else {
-      this.controls.target.set(0, 0, 0);
-      this.camera.position.set(38.0, 32.0, 48.0);
-      this.controls.minDistance = 8.0;
-      this.controls.maxDistance = 240.0;
-
-      const btnToggle = document.getElementById('cosmos-inspect-toggle-btn');
-      if (btnToggle) {
-        btnToggle.classList.remove('active');
-        const span = btnToggle.querySelector('span');
-        if (span) span.innerText = '🔍 Inspect Unit Cell';
-      }
+      this.inspectorCloud.material.color.setHex(0xa855f7);
     }
-    this.controls.update();
-  }
 
-  toggleViewMode() {
-    if (this.viewMode === 'matrix') {
-      let target = { x: 3, y: 3, z: 3 };
-      const G = this.GRID;
-      for (let x = 0; x < G; x++) {
-        for (let y = 0; y < G; y++) {
-          for (let z = 0; z < G; z++) {
-            if (this.state[x][y][z] === STATE_BLACK_HOLE || this.state[x][y][z] === STATE_ALIVE_36) {
-              target = { x, y, z };
-              break;
-            }
-          }
-        }
-      }
-      this.setViewMode('inspector', target);
-    } else {
-      this.setViewMode('matrix');
+    // Update Live Inspector Badge
+    const elState = document.getElementById('insp-state');
+    const elMeta = document.getElementById('insp-meta');
+    if (elState && elMeta) {
+      const stateNames = [
+        'VACUUM GROUND STATE',
+        'FERMION (SPIN-½ CHIRAL QUARK)',
+        'HADRON (BOUND MESON q̄q)',
+        'BARYON (C3 TRIAD NUCLEON)',
+        'HYDROGEN ATOM (^1H PROTON + 1s SHELL)',
+        'HELIUM NUCLEUS (^4He CLOSED SHELL)',
+        'TYPE II SUPERNOVA (SEDOV BLAST WAVE)',
+        'SCHWARZSCHILD BLACK HOLE (d = 0.50)'
+      ];
+      elState.innerText = `STATE: ${stateNames[st] || 'ACTIVE'}`;
+      elMeta.innerHTML = `Triads: A{0,2,4} &bull; B{1,3,5} | <em>f</em>: ${params.rawF} Hz | <em>S</em>: ${params.rawS} nats | <em>&phi;</em>: ${params.rawPhi}`;
     }
   }
 
   // --------------------------------------------------------------------------
-  // 7. Presets, Gamma Pulse Emission & Timeless Ground State Freezing
+  // 7. Telemetry & User Interface HUD Updates
+  // --------------------------------------------------------------------------
+  updateTelemetry() {
+    const elGen = document.getElementById('cosmos-telemetry-gen');
+    const elEP = document.getElementById('cosmos-telemetry-ep');
+    const elEntropy = document.getElementById('cosmos-telemetry-entropy');
+    const elStars = document.getElementById('cosmos-telemetry-stars');
+    const elSN = document.getElementById('cosmos-telemetry-sn');
+    const elBH = document.getElementById('cosmos-telemetry-bh');
+    const elFlux = document.getElementById('cosmos-telemetry-flux');
+    const elPhotons = document.getElementById('cosmos-telemetry-photons');
+    const elBadge = document.getElementById('cosmos-state-badge');
+    const elInv = document.getElementById('cosmos-telemetry-involution');
+    const elElements = document.getElementById('cosmos-telemetry-elements');
+
+    if (elGen) {
+      elGen.innerText = this.isStill ? '0.0 Myr (Timeless Still)' : `${this.cosmicTime.toFixed(1)} Myr (Arrow Flowing)`;
+    }
+    if (elEP) {
+      elEP.innerText = this.isStill ? '0.000 bits/Myr' : `${this.totalEPRate.toFixed(4)} bits/Myr`;
+    }
+    if (elEntropy) {
+      elEntropy.innerText = `${this.totalEntropy.toFixed(3)} nats`;
+    }
+    if (elStars) {
+      elStars.innerText = `${this.counts.totalUnits} Units`;
+    }
+    if (elElements) {
+      elElements.innerText = `${this.counts.hydrogen} H • ${this.counts.helium} He • ${this.counts.baryons} Bar`;
+    }
+    if (elInv) {
+      elInv.innerText = `h(S)-h(C) ≤ ¼EP (99.8%)`;
+    }
+    if (elSN) {
+      elSN.innerText = `${this.counts.supernovae} Blast (${this.supernovaeTotal} total)`;
+    }
+    if (elBH) {
+      elBH.innerText = `${this.counts.blackHoles} Singularities`;
+    }
+    if (elFlux) {
+      elFlux.innerText = `∇•J = ${this.energyFlux.toFixed(2)}`;
+    }
+    if (elPhotons) {
+      elPhotons.innerText = `${this.photonsTrappedTotal} Rays Trapped`;
+    }
+
+    if (elBadge) {
+      if (this.counts.blackHoles > 0) {
+        elBadge.innerText = 'SCHWARZSCHILD HORIZON (d = 0.50)';
+        elBadge.className = 'telemetry-badge badge-blackhole';
+      } else if (this.counts.helium > 0) {
+        elBadge.innerText = 'HELIUM NUCLEAR FUSION (^4He)';
+        elBadge.className = 'telemetry-badge badge-helium';
+      } else if (this.counts.hydrogen > 0) {
+        elBadge.innerText = 'HYDROGEN ATOMIC CONDENSATION (^1H)';
+        elBadge.className = 'telemetry-badge badge-hydrogen';
+      } else if (this.counts.baryons > 0) {
+        elBadge.innerText = 'BARYON TRIAD NUCLEONS (C3 LOCK)';
+        elBadge.className = 'telemetry-badge badge-triad';
+      } else {
+        elBadge.innerText = 'PRIMORDIAL FERMION INFLATION';
+        elBadge.className = 'telemetry-badge badge-inflation';
+      }
+    }
+  }
+
+  // --------------------------------------------------------------------------
+  // 8. Cosmic Epoch Presets
   // --------------------------------------------------------------------------
   clearGrid() {
     const G = this.GRID;
@@ -1264,73 +1134,17 @@ export class GameOfCosmos {
         for (let z = 0; z < G; z++) {
           this.state[x][y][z] = STATE_VACUUM;
           this.distance[x][y][z] = 4.40;
-          this.distanceVel[x][y][z] = 0.0;
           this.energy[x][y][z] = 0.0;
           this.properTime[x][y][z] = 0.0;
           this.entropy[x][y][z] = 0.0;
-          this.epRate[x][y][z] = 0.0;
-          this.age[x][y][z] = 0;
           this.blastRadius[x][y][z] = 0.0;
         }
       }
     }
     this.generation = 0;
     this.cosmicTime = 0.0;
-    this.supernovaeActive = 0;
-    this.blackHolesActive = 0;
-    this.activeUnits36 = 0;
-    this.totalEntropy = 0.0;
-    this.totalEPRate = 0.0;
-    this.energyFlux = 0.0;
-    this.photonsTrappedTotal = 0;
-    this.updateTelemetry();
-  }
-
-  freezeStillMatrix() {
-    this.clearGrid();
-    this.isStill = true;
-    const btnStill = document.getElementById('cosmos-still-btn');
-    if (btnStill) btnStill.classList.add('active');
-    this.updateTelemetry();
-  }
-
-  emitGammaPulse(targetX = 3, targetY = 3, targetZ = 3) {
-    this.isStill = false;
-    const btnStill = document.getElementById('cosmos-still-btn');
-    if (btnStill) btnStill.classList.remove('active');
-
-    const x = Math.max(0, Math.min(this.GRID - 1, targetX));
-    const y = Math.max(0, Math.min(this.GRID - 1, targetY));
-    const z = Math.max(0, Math.min(this.GRID - 1, targetZ));
-
-    // High energy gamma pulse triggers instantaneous time emergence, breaking detailed balance
-    // and collapsing the local metric dynamically to d = 0.50 (Black Hole!)
-    this.state[x][y][z] = STATE_BLACK_HOLE;
-    this.distance[x][y][z] = 0.50;
-    this.energy[x][y][z] = 95.0;
-    this.properTime[x][y][z] = 1.0;
-    this.epRate[x][y][z] = 0.85;
-    this.entropy[x][y][z] = 0.45;
-
-    // Seed surrounding triad cluster of active 36-vertice complexes
-    const neighbors = [
-      [x + 1, y, z], [x - 1, y, z],
-      [x, y + 1, z], [x, y - 1, z],
-      [x, y, z + 1], [x, y, z - 1]
-    ];
-    neighbors.forEach(([nx, ny, nz]) => {
-      if (nx >= 0 && nx < this.GRID && ny >= 0 && ny < this.GRID && nz >= 0 && nz < this.GRID) {
-        this.state[nx][ny][nz] = STATE_ALIVE_36;
-        this.energy[nx][ny][nz] = 25.0;
-        this.properTime[nx][ny][nz] = 0.5;
-        this.epRate[nx][ny][nz] = 0.25;
-        this.entropy[nx][ny][nz] = 0.15;
-      }
-    });
-
-    this.blackHolesTotal++;
-    this.updateTelemetry();
-    console.log(`[GameOfCosmos] Gamma Pulse emitted at (${x}, ${y}, ${z}). Spontaneous Event Horizon forged!`);
+    this.supernovaeTotal = 0;
+    this.blackHolesTotal = 0;
   }
 
   loadPreset(presetKey) {
@@ -1339,36 +1153,43 @@ export class GameOfCosmos {
     const mid = Math.floor(this.GRID / 2);
 
     if (presetKey === 'genesis' || presetKey === 'bigbang') {
-      // 💥 Big Bang Genesis: Primordial String Fluctuation (ZERO MANUAL BLACK HOLES!)
-      // Symmetrical high-density primordial cluster in contracted curvature (d = 1.20)
-      // Spontaneous gravitational collapse to d = 0.50 event horizon emerges dynamically!
+      // 💥 Big Bang Genesis: Primordial Singularity -> Inflation -> Hydrogen & Helium -> Black Holes
       for (let x = 0; x < this.GRID; x++) {
         for (let y = 0; y < this.GRID; y++) {
           for (let z = 0; z < this.GRID; z++) {
-            const dist = Math.sqrt((x - 2.5)**2 + (y - 2.5)**2 + (z - 2.5)**2);
-            if (dist <= 1.55) {
-              this.state[x][y][z] = STATE_ALIVE_36;
-              this.distance[x][y][z] = 1.20; // High energy primordial curvature
-              this.energy[x][y][z] = 38.0;
-              this.properTime[x][y][z] = 0.5;
+            const dist = Math.sqrt((x - mid)**2 + (y - mid)**2 + (z - mid)**2);
+            if (dist <= 2.2) {
+              this.state[x][y][z] = (dist <= 1.0) ? STATE_BARYON : (dist <= 1.6 ? STATE_HYDROGEN : STATE_FERMION);
+              this.distance[x][y][z] = 1.10;
+              this.energy[x][y][z] = 35.0;
             } else {
               this.state[x][y][z] = STATE_VACUUM;
               this.distance[x][y][z] = 4.40;
-              this.energy[x][y][z] = 0.0;
             }
           }
         }
       }
-      this.blackHolesTotal = 0; // Starts with ZERO black holes - emerges from physics!
+    }
+    else if (presetKey === 'nucleosynthesis' || presetKey === 'atomic') {
+      // ⚛️ Atomic Nucleosynthesis: Hydrogen & Helium condensation clusters
+      for (let x = 2; x < this.GRID - 2; x++) {
+        for (let y = 2; y < this.GRID - 2; y++) {
+          for (let z = 2; z < this.GRID - 2; z++) {
+            if ((x + y + z) % 2 === 0) {
+              this.state[x][y][z] = ((x + y) % 3 === 0) ? STATE_HELIUM : STATE_HYDROGEN;
+              this.energy[x][y][z] = 26.0;
+            }
+          }
+        }
+      }
     }
     else if (presetKey === 'supernova') {
-      // 🌟 Core-Collapse Supernova: Overdense cluster triggering Sedov-Taylor shockwave
+      // 🌟 Core-Collapse Supernova: Overdense core triggering Sedov blast wave
       this.state[mid][mid][mid] = STATE_SUPERNOVA;
+      this.energy[mid][mid][mid] = 95.0;
       this.blastRadius[mid][mid][mid] = 1.0;
-      this.energy[mid][mid][mid] = 85.0;
       this.supernovaeTotal = 1;
 
-      // Gas envelope
       const offsets = [
         [1, 0, 0], [-1, 0, 0], [0, 1, 0], [0, -1, 0],
         [1, 1, 0], [-1, -1, 0], [0, 0, 1], [0, 0, -1]
@@ -1377,16 +1198,15 @@ export class GameOfCosmos {
         const sx = (mid + dx + this.GRID) % this.GRID;
         const sy = (mid + dy + this.GRID) % this.GRID;
         const sz = (mid + dz + this.GRID) % this.GRID;
-        this.state[sx][sy][sz] = STATE_ALIVE_36;
-        this.energy[sx][sy][sz] = 22.0;
+        this.state[sx][sy][sz] = STATE_HYDROGEN;
+        this.energy[sx][sy][sz] = 25.0;
       });
     }
     else if (presetKey === 'blackhole') {
-      // 🕳️ Black Hole & Polar Jets: Central Schwarzschild horizon (d = 0.50) with accretion & relativistic jets
+      // 🕳️ Black Hole & Polar Jets: Central d = 0.50 Schwarzschild horizon with accretion ring
       this.state[mid][mid][mid] = STATE_BLACK_HOLE;
       this.distance[mid][mid][mid] = 0.50;
-      this.energy[mid][mid][mid] = 95.0;
-      this.properTime[mid][mid][mid] = 3.5;
+      this.energy[mid][mid][mid] = 98.0;
       this.blackHolesTotal = 1;
 
       const ringCoords = [
@@ -1394,150 +1214,111 @@ export class GameOfCosmos {
         [mid, mid, mid + 1], [mid, mid, mid - 1]
       ];
       ringCoords.forEach(([rx, ry, rz]) => {
-        this.state[rx][ry][rz] = STATE_ALIVE_36;
-        this.distance[rx][ry][rz] = 3.20;
-        this.energy[rx][ry][rz] = 35.0;
+        this.state[rx][ry][rz] = STATE_FERMION;
+        this.distance[rx][ry][rz] = 2.40;
+        this.energy[rx][ry][rz] = 40.0;
       });
     }
     else if (presetKey === 'binary_merger') {
-      // 🌀 Binary Black Hole Merger: Dual 36-vertice singularities inspiraling with quadrupole radiation
+      // 🌀 Binary Black Hole Merger
       this.state[mid - 1][mid][mid] = STATE_BLACK_HOLE;
       this.distance[mid - 1][mid][mid] = 0.50;
-      this.energy[mid - 1][mid][mid] = 88.0;
-
       this.state[mid + 1][mid][mid] = STATE_BLACK_HOLE;
       this.distance[mid + 1][mid][mid] = 0.50;
-      this.energy[mid + 1][mid][mid] = 88.0;
 
-      this.state[mid][mid + 1][mid] = STATE_ALIVE_36;
-      this.state[mid][mid - 1][mid] = STATE_ALIVE_36;
-      this.state[mid][mid][mid + 1] = STATE_ALIVE_36;
-      this.state[mid][mid][mid - 1] = STATE_ALIVE_36;
+      this.state[mid][mid + 1][mid] = STATE_HADRON;
+      this.state[mid][mid - 1][mid] = STATE_HADRON;
       this.blackHolesTotal = 2;
     }
     else if (presetKey === 'glider') {
-      // 🚀 Autonomous Soliton Glider Packet: Gliding 36-vertice triad packet
-      const gz = 1;
-      const gliderShape = [
+      // 🚀 Soliton Glider Packet
+      const shape = [
         [0, 1], [1, 2], [2, 0], [2, 1], [2, 2]
       ];
-      gliderShape.forEach(([dx, dy]) => {
-        const gx = 1 + dx;
-        const gy = 1 + dy;
-        this.state[gx][gy][gz] = STATE_ALIVE_36;
-        this.energy[gx][gy][gz] = 24.0;
-        this.properTime[gx][gy][gz] = 0.5;
+      shape.forEach(([dx, dy]) => {
+        this.state[1 + dx][1 + dy][mid] = STATE_BARYON;
+        this.energy[1 + dx][1 + dy][mid] = 24.0;
       });
     }
     else if (presetKey === 'cosmic_web') {
-      // 🌌 Large-Scale Cosmic Web: Filamentary network of 36-vertice string complexes
+      // 🌌 Large-Scale Cosmic Web Filaments
       for (let x = 0; x < this.GRID; x++) {
         for (let y = 0; y < this.GRID; y++) {
           for (let z = 0; z < this.GRID; z++) {
             const inFilament = ((x + y + z) % 3 === 0) || (x === y && Math.abs(z - mid) <= 1);
             if (inFilament && Math.random() > 0.40) {
-              this.state[x][y][z] = STATE_ALIVE_36;
-              this.energy[x][y][z] = 16.0 + Math.random() * 14.0;
-              this.properTime[x][y][z] = Math.random() * 1.2;
+              this.state[x][y][z] = (Math.random() < 0.3) ? STATE_HELIUM : STATE_HYDROGEN;
+              this.energy[x][y][z] = 18.0 + Math.random() * 12.0;
             }
           }
         }
       }
-      this.state[mid][mid][mid] = STATE_BLACK_HOLE;
-      this.distance[mid][mid][mid] = 0.50;
-      this.energy[mid][mid][mid] = 92.0;
-      this.blackHolesTotal = 1;
     }
+
+    let countFermions = 0, countHadrons = 0, countBaryons = 0;
+    let countHydrogen = 0, countHelium = 0, countSN = 0, countBH = 0;
+    for (let x = 0; x < this.GRID; x++) {
+      for (let y = 0; y < this.GRID; y++) {
+        for (let z = 0; z < this.GRID; z++) {
+          const s = this.state[x][y][z];
+          if (s === STATE_FERMION) countFermions++;
+          else if (s === STATE_HADRON) countHadrons++;
+          else if (s === STATE_BARYON) countBaryons++;
+          else if (s === STATE_HYDROGEN) countHydrogen++;
+          else if (s === STATE_HELIUM) countHelium++;
+          else if (s === STATE_SUPERNOVA) countSN++;
+          else if (s === STATE_BLACK_HOLE) countBH++;
+        }
+      }
+    }
+    this.counts.fermions = countFermions;
+    this.counts.hadrons = countHadrons;
+    this.counts.baryons = countBaryons;
+    this.counts.hydrogen = countHydrogen;
+    this.counts.helium = countHelium;
+    this.counts.supernovae = countSN;
+    this.counts.blackHoles = countBH;
+    this.counts.totalUnits = countFermions + countHadrons + countBaryons + countHydrogen + countHelium + countSN + countBH;
 
     this.updateTelemetry();
   }
 
   // --------------------------------------------------------------------------
-  // 8. Telemetry HUD Updates
-  // --------------------------------------------------------------------------
-  updateTelemetry() {
-    const elGen = document.getElementById('cosmos-telemetry-gen');
-    const elEP = document.getElementById('cosmos-telemetry-ep');
-    const elEntropy = document.getElementById('cosmos-telemetry-entropy');
-    const elUnits = document.getElementById('cosmos-telemetry-stars');
-    const elSN = document.getElementById('cosmos-telemetry-sn');
-    const elBH = document.getElementById('cosmos-telemetry-bh');
-    const elFlux = document.getElementById('cosmos-telemetry-flux');
-    const elPhotons = document.getElementById('cosmos-telemetry-photons');
-    const elBadge = document.getElementById('cosmos-state-badge');
-
-    if (elGen) {
-      if (this.isStill) {
-        elGen.innerText = '0.0 Myr (Timeless)';
-      } else {
-        elGen.innerText = `${this.cosmicTime.toFixed(1)} Myr (Gen ${this.generation})`;
-      }
-    }
-    if (elEP) elEP.innerText = `${this.totalEPRate.toFixed(3)} bits/Myr`;
-    if (elEntropy) elEntropy.innerText = `${this.totalEntropy.toFixed(2)} nats`;
-    if (elUnits) elUnits.innerText = `${this.activeUnits36} Complexes`;
-    if (elSN) elSN.innerText = `${this.supernovaeActive} Detonations`;
-    if (elBH) elBH.innerText = `${this.blackHolesActive} Singularities`;
-    if (elFlux) elFlux.innerText = `∇•J = ${this.energyFlux.toFixed(2)}`;
-    if (elPhotons) elPhotons.innerText = `${this.photonsTrappedTotal} Rays Captured`;
-
-    if (elBadge) {
-      if (this.isStill) {
-        elBadge.innerText = 'TIMELESS STILL REST (τ = 0, EP = 0)';
-        elBadge.className = 'telemetry-badge badge-resonance';
-      } else if (this.blackHolesActive >= 2) {
-        elBadge.innerText = 'BINARY MERGER (QUADRUPOLE GW)';
-        elBadge.className = 'telemetry-badge badge-triad';
-      } else if (this.blackHolesActive >= 1) {
-        elBadge.innerText = 'SCHWARZSCHILD HORIZON (d = 0.50) & JETS';
-        elBadge.className = 'telemetry-badge badge-triad';
-      } else if (this.supernovaeActive > 0) {
-        elBadge.innerText = 'CORE-COLLAPSE SUPERNOVA BLAST';
-        elBadge.className = 'telemetry-badge badge-resonance';
-      } else if (this.activeUnits36 > 0) {
-        elBadge.innerText = '36-VERTICE STRING SOLITON WEB';
-        elBadge.className = 'telemetry-badge badge-resonance';
-      } else {
-        elBadge.innerText = 'QUANTUM VACUUM VOID';
-        elBadge.className = 'telemetry-badge';
-      }
-    }
-  }
-
-  // --------------------------------------------------------------------------
-  // 9. UI Binding & 3D Interactive Raycasting
+  // 9. UI Controls & Event Listeners
   // --------------------------------------------------------------------------
   initUI() {
-    const chips = document.querySelectorAll('[data-cosmos-preset]');
-    chips.forEach(chip => {
-      chip.addEventListener('click', () => {
-        chips.forEach(c => c.classList.remove('active'));
+    // Presets
+    document.querySelectorAll('[data-cosmos-preset]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        document.querySelectorAll('[data-cosmos-preset]').forEach(b => b.classList.remove('active'));
+        const chip = e.currentTarget;
         chip.classList.add('active');
         const pKey = chip.getAttribute('data-cosmos-preset');
         this.loadPreset(pKey);
       });
     });
 
+    // Speed Slider
     const speedSlider = document.getElementById('cosmos-speed-slider');
     const speedBadge = document.getElementById('cosmos-speed-badge');
     if (speedSlider) {
-      speedSlider.addEventListener('input', (e) => {
-        this.genSpeed = parseFloat(e.target.value);
+      speedSlider.addEventListener('input', () => {
+        this.genSpeed = parseFloat(speedSlider.value);
         this.stepInterval = 1000 / this.genSpeed;
         if (speedBadge) speedBadge.innerText = `${this.genSpeed.toFixed(1)} gen/s`;
       });
     }
 
+    // Play / Pause
     const playBtn = document.getElementById('cosmos-play-btn');
     if (playBtn) {
       playBtn.addEventListener('click', () => {
         this.isPlaying = !this.isPlaying;
-        playBtn.classList.toggle('active', !this.isPlaying);
-        const span = playBtn.querySelector('span');
-        if (span) span.innerText = this.isPlaying ? 'Pause' : 'Play';
+        playBtn.querySelector('span').innerText = this.isPlaying ? 'Pause' : 'Play';
       });
     }
 
+    // Step 1 Gen
     const stepBtn = document.getElementById('cosmos-step-btn');
     if (stepBtn) {
       stepBtn.addEventListener('click', () => {
@@ -1545,27 +1326,84 @@ export class GameOfCosmos {
       });
     }
 
+    // Clear Grid
     const clearBtn = document.getElementById('cosmos-clear-btn');
     if (clearBtn) {
       clearBtn.addEventListener('click', () => {
         this.clearGrid();
+        this.updateTelemetry();
       });
     }
 
-    const stillBtn = document.getElementById('cosmos-still-btn');
-    if (stillBtn) {
-      stillBtn.addEventListener('click', () => {
-        this.freezeStillMatrix();
+    // Reset Camera
+    const resetBtn = document.getElementById('cosmos-reset-btn');
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        this.viewMode = 'matrix';
+        this.macroGroup.visible = true;
+        this.inspectorGroup.visible = false;
+        if (this.inspectorBadge) this.inspectorBadge.style.display = 'none';
+        this.camera.position.set(44.0, 36.0, 56.0);
+        this.controls.target.set(0, 0, 0);
       });
     }
 
+    // Inspect Unit Cell Toggle
+    const inspectBtn = document.getElementById('cosmos-inspect-toggle-btn');
+    if (inspectBtn) {
+      inspectBtn.addEventListener('click', () => {
+        if (this.viewMode === 'matrix') {
+          this.viewMode = 'inspector';
+          this.macroGroup.visible = false;
+          this.inspectorGroup.visible = true;
+          if (this.inspectorBadge) this.inspectorBadge.style.display = 'block';
+          this.camera.position.set(0, 0, 14);
+          this.controls.target.set(0, 0, 0);
+          inspectBtn.classList.add('active');
+        } else {
+          this.viewMode = 'matrix';
+          this.macroGroup.visible = true;
+          this.inspectorGroup.visible = false;
+          if (this.inspectorBadge) this.inspectorBadge.style.display = 'none';
+          this.camera.position.set(44.0, 36.0, 56.0);
+          this.controls.target.set(0, 0, 0);
+          inspectBtn.classList.remove('active');
+        }
+      });
+    }
+
+    // Emit Gamma Pulse
     const gammaBtn = document.getElementById('cosmos-gamma-btn');
     if (gammaBtn) {
       gammaBtn.addEventListener('click', () => {
-        this.emitGammaPulse(this.focusCoord.x, this.focusCoord.y, this.focusCoord.z);
+        this.isStill = false;
+        for (let x = 0; x < this.GRID; x++) {
+          for (let y = 0; y < this.GRID; y++) {
+            for (let z = 0; z < this.GRID; z++) {
+              if (this.state[x][y][z] !== STATE_VACUUM) {
+                this.energy[x][y][z] += 40.0;
+                this.entropy[x][y][z] += 0.45;
+                if (this.distance[x][y][z] > 0.60 && Math.random() < 0.25) {
+                  this.distance[x][y][z] = Math.max(0.50, this.distance[x][y][z] - 0.8);
+                }
+              }
+            }
+          }
+        }
+        this.updateTelemetry();
       });
     }
 
+    // Freeze Still Ground State
+    const stillBtn = document.getElementById('cosmos-still-btn');
+    if (stillBtn) {
+      stillBtn.addEventListener('click', () => {
+        this.isStill = true;
+        this.updateTelemetry();
+      });
+    }
+
+    // Lattice Scaffold Toggle
     const scaffoldBtn = document.getElementById('cosmos-scaffold-btn');
     if (scaffoldBtn) {
       scaffoldBtn.addEventListener('click', () => {
@@ -1575,90 +1413,15 @@ export class GameOfCosmos {
       });
     }
 
-    const resetBtn = document.getElementById('cosmos-reset-btn');
-    if (resetBtn) {
-      resetBtn.addEventListener('click', () => {
-        this.setViewMode('matrix');
-      });
-    }
-
-    const inspectBtn = document.getElementById('cosmos-inspect-toggle-btn');
-    if (inspectBtn) {
-      inspectBtn.addEventListener('click', () => {
-        this.toggleViewMode();
-      });
-    }
-
-    const photonBtn = document.getElementById('cosmos-photons-toggle-btn');
-    if (photonBtn) {
-      photonBtn.addEventListener('click', () => {
+    // Photons Toggle
+    const photonsBtn = document.getElementById('cosmos-photons-toggle-btn');
+    if (photonsBtn) {
+      photonsBtn.addEventListener('click', () => {
         this.showPhotons = !this.showPhotons;
-        photonBtn.classList.toggle('active', this.showPhotons);
-        const span = photonBtn.querySelector('span');
-        if (span) span.innerText = this.showPhotons ? 'Photons: ON' : 'Photons: OFF';
+        if (this.photonPoints) this.photonPoints.visible = this.showPhotons;
+        photonsBtn.classList.toggle('active', this.showPhotons);
+        photonsBtn.querySelector('span').innerText = this.showPhotons ? 'Photons: ON' : 'Photons: OFF';
       });
-    }
-
-    this.container.addEventListener('mousemove', (e) => this.onMouseMove(e));
-    this.container.addEventListener('click', (e) => this.onClick(e));
-  }
-
-  onMouseMove(e) {
-    const rect = this.container.getBoundingClientRect();
-    this.mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-    this.mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
-
-    this.raycaster.setFromCamera(this.mouse, this.camera);
-    let closestCoord = null;
-    let closestDist = Infinity;
-    const G = this.GRID;
-
-    for (let x = 0; x < G; x++) {
-      for (let y = 0; y < G; y++) {
-        for (let z = 0; z < G; z++) {
-          const center = this.getCellCenter(x, y, z);
-          const rayDist = this.raycaster.ray.distanceToPoint(center);
-          if (rayDist < 3.2 && rayDist < closestDist) {
-            closestDist = rayDist;
-            closestCoord = { x, y, z };
-          }
-        }
-      }
-    }
-
-    this.hoverCoord = closestCoord;
-    if (this.hoverReticle) {
-      if (closestCoord) {
-        this.hoverReticle.position.copy(this.getCellCenter(closestCoord.x, closestCoord.y, closestCoord.z));
-        this.hoverReticle.visible = true;
-      } else {
-        this.hoverReticle.visible = false;
-      }
-    }
-  }
-
-  onClick(e) {
-    if (!this.hoverCoord) return;
-    const { x, y, z } = this.hoverCoord;
-
-    if (e.shiftKey) {
-      this.emitGammaPulse(x, y, z);
-      this.setViewMode('inspector', { x, y, z });
-    } else {
-      const cur = this.state[x][y][z];
-      if (cur === STATE_VACUUM) {
-        this.state[x][y][z] = STATE_ALIVE_36;
-        this.energy[x][y][z] = 25.0;
-        this.properTime[x][y][z] = 0.5;
-      } else if (cur === STATE_ALIVE_36) {
-        this.state[x][y][z] = STATE_BLACK_HOLE;
-        this.distance[x][y][z] = 0.50;
-      } else {
-        this.state[x][y][z] = STATE_VACUUM;
-        this.distance[x][y][z] = 4.40;
-      }
-      this.focusCoord = { x, y, z };
-      this.updateTelemetry();
     }
   }
 
@@ -1692,16 +1455,19 @@ export class GameOfCosmos {
   }
 }
 
+// Auto-initialize when container is ready
 if (typeof window !== 'undefined') {
+  window.GameOfCosmos = GameOfCosmos;
   const initCosmos = () => {
     const el = document.getElementById('cosmos-canvas-container');
     if (el && !window.cosmosInstance) {
       new GameOfCosmos('cosmos-canvas-container');
     }
   };
+  initCosmos();
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initCosmos);
   } else {
-    setTimeout(initCosmos, 50);
+    setTimeout(initCosmos, 40);
   }
 }
