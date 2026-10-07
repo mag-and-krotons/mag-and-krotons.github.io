@@ -237,7 +237,7 @@
           <button id="tab-btn-cosmos" class="topology-tab-btn" onclick="switchVisualizerTab('cosmos')">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/><circle cx="12" cy="12" r="3"/></svg>
             <span>The Game of Cosmos</span>
-            <span class="tab-chip chip-amber">3D $K_{3,3}$ Cellular Automaton</span>
+            <span class="tab-chip chip-amber">3D 36-Vertice String Matrix</span>
           </button>
         </div>
 
@@ -523,16 +523,16 @@
         <!-- End manifold-viewport-panel -->
       </div>
 
-      <!-- Panel 2: The Game of Cosmos (3D K3,3 Astrophysical Automaton) -->
+      <!-- Panel 2: The Game of Cosmos (3D 36-Vertice String & Strip Matrix) -->
       <div id="cosmos-viewport-panel" class="visualizer-panel" style="display: none;">
           <div class="section-heading">
             <div class="heading-meta">
-              <span class="section-tag">RELATIVISTIC ASTROPHYSICAL AUTOMATON &bull; 3D NON-PLANAR SPACETIME</span>
-              <span class="section-count">343 <em>K</em><sub>3,3</sub> UNITS &bull; SUPERNOVAE &amp; BLACK HOLE EMERGENCE</span>
+              <span class="section-tag">RELATIVISTIC STRING &amp; STRIP AUTOMATON &bull; 3D SPACETIME MATRIX</span>
+              <span class="section-count">27 36-VERTICE UNITS &bull; CONTINUOUS RULED RIBBON STRIPS &bull; NO NODES OR STICK LINES</span>
             </div>
-            <h2 class="section-title">The Game of Cosmos: Astrophysical 3D <em>K</em><sub>3,3</sub> Automaton</h2>
+            <h2 class="section-title">The Game of Cosmos: 3D 36-Vertice String &amp; Strip Matrix</h2>
             <p class="section-desc">
-              Real cosmological evolution from the primordial Big Bang singularity across a 3D non-planar lattice. Unlike scalar toy grids, each cell is a complete bipartite <em>K</em><sub>3,3</sub> simplicial complex ($3+3=6$ vertices, 9 bipartite chords) undergoing relativistic stellar life cycles: primordial plasma inflation, protostellar condensation, Chandrasekhar core-collapse supernovae with relativistic blast waves, and Schwarzschild black hole emergence with incandescent accretion disks and polar relativistic jets.
+              The fundamental unit of 3D spacetime is the complete <strong>36-vertice simplicial complex</strong> formulated through continuous strings and ruled ribbon strip structures (no point nodes or stick lines). Watch authentic cosmological emergence: primordial string inflation, spontaneous condensation of luminous 36-vertice string/strip manifolds across 6 alternating layers, core-collapse supernovae with expanding Sedov-Taylor shockwave ribbons, and Schwarzschild black holes collapsed to the 1/2 event horizon ($d = 0.50$) with swirling string accretion disks and collimated polar relativistic string jets.
             </p>
           </div>
 
@@ -542,18 +542,18 @@
             <div class="manifold-hud-top">
               <div class="manifold-status-chip">
                 <span class="live-dot-pulse"></span>
-                <span class="status-label">ACTIVE 3D <em>K</em><sub>3,3</sub> ASTROPHYSICAL COSMOS</span>
+                <span class="status-label">ACTIVE 3D 36-VERTICE STRING &amp; STRIP MATRIX</span>
               </div>
 
               <!-- Rule Selector -->
               <div class="cosmos-rules-selector-wrap">
                 <span class="preset-label">RULE:</span>
                 <select id="cosmos-rule-select" class="cosmos-select">
-                  <option value="astrophysics" selected>Relativistic Astrophysics (Sedov Blast, Chandrasekhar Collapse, Schwarzschild Horizons) [Default]</option>
-                  <option value="supernova_cascade">Runaway Supernova Cascade (Shock-Induced Starburst)</option>
-                  <option value="blackhole_growth">Supermassive Black Hole Accretion &amp; Relativistic Jets</option>
-                  <option value="inflation">Primordial Inflationary Expansion (High H(t) Hubble Parameter)</option>
-                  <option value="bays4555">Carter Bays 3D Life (B4,5 / S4,5 &bull; 26-Moore Classical Web)</option>
+                  <option value="astrophysics" selected>Relativistic String Astrophysics (Sedov Shockwave Ribbons, 1/2 Horizon Collapse d = 0.50) [Default]</option>
+                  <option value="supernova_cascade">Runaway Supernova Cascade (Shockwave-Induced Condensation)</option>
+                  <option value="blackhole_growth">Supermassive Black Hole String Accretion &amp; Polar Jets</option>
+                  <option value="inflation">Primordial Hagedorn String Inflation (High H(t) Expansion)</option>
+                  <option value="bays4555">Carter Bays 3D String Lattice (B4,5 / S4,5 Topological Mode)</option>
                 </select>
               </div>
 
@@ -588,19 +588,19 @@
               <!-- Cosmic Seeds Presets Bar -->
               <div class="manifold-presets-bar">
                 <span class="preset-label">COSMIC EPOCHS:</span>
-                <button class="cosmos-preset-chip active" data-cosmos-preset="genesis" title="Big Bang Genesis: Primordial Singularity -> Cosmic Inflation -> Protostellar Ignition -> Supernovae Detonations -> Black Hole Formation">
+                <button class="cosmos-preset-chip active" data-cosmos-preset="genesis" title="Big Bang Genesis: Primordial Singularity -> String Inflation -> 36-Vertice String Manifolds -> Supernovae Detonations -> Black Hole Formation">
                   <span>💥 Big Bang Genesis (Full Epoch)</span>
                 </button>
-                <button class="cosmos-preset-chip" data-cosmos-preset="supernova" title="Core-Collapse Supernova: Massive stellar core collapses past Chandrasekhar limit, detonating a relativistic blast wave that triggers shock-induced starbursts">
+                <button class="cosmos-preset-chip" data-cosmos-preset="supernova" title="Core-Collapse Supernova: Massive 36-vertice structure detonates an expanding Sedov-Taylor shockwave ribbon that triggers secondary condensation">
                   <span>🌟 Core-Collapse Supernova</span>
                 </button>
-                <button class="cosmos-preset-chip" data-cosmos-preset="blackhole" title="Black Hole Singularity: Deep gravitational well with Schwarzschild event horizon, incandescent accretion disk, and relativistic polar plasma jets">
+                <button class="cosmos-preset-chip" data-cosmos-preset="blackhole" title="Black Hole Singularity: 36-vertice structure collapses to 1/2 event horizon (d = 0.50), forming Schwarzschild string shadow, accretion disk, and polar jets">
                   <span>🕳️ Black Hole &amp; Polar Jets</span>
                 </button>
-                <button class="cosmos-preset-chip" data-cosmos-preset="binary_merger" title="Binary Black Hole Inspiral &amp; Merger: Two orbiting black holes emitting gravitational quadrupole radiation, plunging and coalescing with ringdown">
+                <button class="cosmos-preset-chip" data-cosmos-preset="binary_merger" title="Binary Black Hole Inspiral &amp; Merger: Two orbiting 36-vertice black holes emitting gravitational quadrupole radiation, plunging and coalescing">
                   <span>🌀 Binary Black Hole Merger</span>
                 </button>
-                <button class="cosmos-preset-chip" data-cosmos-preset="cosmic_web" title="Cosmic Web Filaments: Large-scale gravitational clustering along K3,3 topological conduits connecting galactic superclusters">
+                <button class="cosmos-preset-chip" data-cosmos-preset="cosmic_web" title="Cosmic Web Filaments: Large-scale gravitational clustering of 36-vertice string/strip manifolds along topological conduits">
                   <span>🌌 Cosmic Web &amp; Galaxies</span>
                 </button>
               </div>
@@ -616,9 +616,9 @@
                   <div class="hud-range-bounds"><span>0.5 gen/s (Slow Motion)</span><span>15.0 gen/s (Fast Forward)</span></div>
                 </div>
                 <div class="cosmos-legend-strip">
-                  <span class="telemetry-item"><span class="telemetry-dot dot-sapphire"></span> <span class="telemetry-label">Stars:</span> <span class="telemetry-val">Fusion Cores</span></span>
-                  <span class="telemetry-item"><span class="telemetry-dot dot-amber"></span> <span class="telemetry-label">Supernovae:</span> <span class="telemetry-val">Blast Waves</span></span>
-                  <span class="telemetry-item"><span class="telemetry-dot dot-rose"></span> <span class="telemetry-label">Black Holes:</span> <span class="telemetry-val">Accretion &amp; Jets</span></span>
+                  <span class="telemetry-item"><span class="telemetry-dot dot-sapphire"></span> <span class="telemetry-label">36-Vertice Units:</span> <span class="telemetry-val">Ruled Ribbon Strips</span></span>
+                  <span class="telemetry-item"><span class="telemetry-dot dot-amber"></span> <span class="telemetry-label">Supernovae:</span> <span class="telemetry-val">Sedov Shockwave Ribbons</span></span>
+                  <span class="telemetry-item"><span class="telemetry-dot dot-rose"></span> <span class="telemetry-label">Black Holes:</span> <span class="telemetry-val">1/2 Event Horizon (d = 0.50) &amp; Jets</span></span>
                 </div>
               </div>
 
@@ -631,8 +631,8 @@
                 </div>
                 <div class="telemetry-item">
                   <span class="telemetry-dot dot-sapphire"></span>
-                  <span class="telemetry-label">Active Stars:</span>
-                  <span id="cosmos-telemetry-stars" class="telemetry-val">0 Cores</span>
+                  <span class="telemetry-label">36-Vertice Units:</span>
+                  <span id="cosmos-telemetry-stars" class="telemetry-val">0 Complexes</span>
                 </div>
                 <div class="telemetry-item">
                   <span class="telemetry-dot dot-amber"></span>
@@ -663,13 +663,13 @@
             <div class="manifold-card">
               <div class="manifold-card-header">
                 <span class="manifold-card-num">01</span>
-                <h3>$K_{3,3}$ Non-Planar Unit of 3D Spacetime</h3>
+                <h3>36-Vertice String &amp; Strip Spacetime Unit</h3>
               </div>
               <p>
-                In standard cellular automata, units are flat 2D scalar squares. In The Game of Cosmos, the fundamental atom of space is the complete bipartite graph $K_{3,3}$ ($3+3=6$ vertices, 9 internal chords)—the minimal non-planar graph forbidden from the 2D plane by Kuratowski's theorem. Each unit cell couples two complementary triads ($A_1, A_2, A_3$ and $B_1, B_2, B_3$) across 3D space.
+                In standard cellular automata, units are flat 2D scalar squares. In The Game of Cosmos, the fundamental atom of space is the authentic <strong>36-vertice simplicial complex</strong> (6 layers &times; 6 vertices = 36 vertices), synthesized purely as continuous ruled ribbon strip sheets $S(u, v)$ and closed bounding strings—strictly without zero-dimensional point nodes or wireframe stick lines. Each transition between alternating triad layers ($A_l \leftrightarrow B_{l+1}$) embodies the complete bipartite coupling $K_{3,3}$, yielding 45 internal helicoid ribbon strips spanning across the central throat.
               </p>
               <div class="manifold-card-formula">
-                $$V(K_{3,3}) = A \cup B, \quad |A| = 3, \; |B| = 3, \quad E(K_{3,3}) = A \times B \quad (|E| = 9)$$
+                $$S_l(u, v) = (1 - v) C_l(u) + v C_{l+1}(u) + \vec{n} \cdot \Delta, \quad |V| = 6 \times 6 = 36, \quad d \in [0.50, 4.40]$$
               </div>
             </div>
 
