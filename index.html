@@ -25,6 +25,16 @@
 
   <!-- Custom Stylesheet -->
   <link rel="stylesheet" href="css/style.css">
+
+  <!-- Import map for Three.js ES Modules -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
 </head>
 <body>
 
@@ -52,6 +62,7 @@
 
       <nav>
         <ul class="nav-menu">
+          <li><a href="#manifold" class="nav-link">Fluid Manifold</a></li>
           <li><a href="#papers" class="nav-link">Research Papers</a></li>
           <li><a href="#lab" class="nav-link">Quantum Lab</a></li>
           <li><a href="#github" class="nav-link">GitHub Repos</a></li>
@@ -92,13 +103,17 @@
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
               Explore 12 Research Papers
             </a>
+            <a href="#manifold" class="btn-secondary" style="border-color: #2563EB; color: #1D4ED8;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>
+              36-Node Fluid Manifold
+            </a>
             <a href="#lab" class="btn-secondary">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
-              Interactive Bloch Lab
+              Bloch Lab
             </a>
             <a href="https://github.com/mag-and-krotons" target="_blank" rel="noopener noreferrer" class="btn-outline">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-              GitHub @mag-and-krotons
+              GitHub
             </a>
           </div>
 
@@ -145,6 +160,165 @@
           <div class="card-footer-strip">
             <span>AUTHOR: ABHIJIT SINGH</span>
             <a href="https://orcid.org/0009-0002-7161-1805" target="_blank" rel="noopener noreferrer">ORCiD PROFILE ↗</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 36-Node Simplicial Complex & 6D Fluid Manifold Section -->
+    <section id="manifold" class="manifold-section">
+      <div class="container">
+        <div class="section-heading">
+          <div class="heading-meta">
+            <span class="section-tag">TOPOLOGICAL DYNAMICS &bull; 6D SIMPLICIAL PROJECTION</span>
+            <span class="section-count">36 NODES &bull; INCOMPRESSIBLE FLUID</span>
+          </div>
+          <h2 class="section-title">36-Node Simplicial Complex: 6D Fluid Manifold</h2>
+          <p class="section-desc">
+            Continuous projective embedding of coupled dual 18-node simplicial structures across 6 alternating 3D layers. Formulated as an incompressible harmonic fluid in projective space, exhibiting peristaltic wave breathing, torsional vortex shear, and dynamic streamline circulation ($\nabla \cdot \mathbf{J} = 0$).
+          </p>
+        </div>
+
+        <!-- 3D Interactive Fluid Stage Card -->
+        <div id="manifold-viewport-stage" class="manifold-stage-card">
+          <!-- Top Floating Bar: Status, Modes & Presets -->
+          <div class="manifold-hud-top">
+            <div class="manifold-status-chip">
+              <span class="live-dot-pulse"></span>
+              <span class="status-label">ACTIVE 3D FLUID SIMULATION</span>
+            </div>
+
+            <div class="manifold-mode-pills" id="manifold-mode-selector">
+              <button class="manifold-pill active" data-manifold-mode="fluid" title="Full fluid ribbons, curved streamlines, and advection quanta">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                <span>Dynamic Fluid Flow</span>
+              </button>
+              <button class="manifold-pill" data-manifold-mode="geodesic" title="Inspect the 18 primary vertices, 18 L/2 midpoints, and geodesic cross-lattice">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/></svg>
+                <span>Simplicial Geodesics</span>
+              </button>
+              <button class="manifold-pill" data-manifold-mode="vortex" title="High-vorticity streamline tubes and accelerated circulation">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21.54 15H17a2 2 0 0 0-2 2v4.54"/><path d="M7 3.34V5a3 3 0 0 0 3 3v0a2 2 0 0 1 2 2v0c0 1.1.9 2 2 2v0a2 2 0 0 0 2-2v0c0-1.1.9-2 2-2h3.17"/><path d="M11 21.95V18a2 2 0 0 0-2-2v0a2 2 0 0 1-2-2v-1a2 2 0 0 0-2-2H2.05"/></svg>
+                <span>Vortex Streamlines</span>
+              </button>
+            </div>
+
+            <div class="manifold-view-presets">
+              <span class="preset-label">VIEW:</span>
+              <button class="preset-btn active" data-manifold-view="perspective" title="Perspective Orbit">Perspective</button>
+              <button class="preset-btn" data-manifold-view="top" title="Axial Throat Eye (Top-Down)">Throat Eye</button>
+              <button class="preset-btn" data-manifold-view="side" title="Equatorial Profile (Side)">Profile</button>
+            </div>
+
+            <div class="manifold-quick-actions">
+              <button id="manifold-play-btn" class="icon-tool-btn" title="Pause / Resume Animation">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                <span>Pause</span>
+              </button>
+              <button id="manifold-reset-btn" class="icon-tool-btn" title="Reset Camera View">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+              </button>
+              <button id="manifold-fullscreen-btn" class="icon-tool-btn" title="Toggle Fullscreen">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- WebGL Three.js Canvas Container -->
+          <div id="manifold-canvas-container" class="manifold-canvas-wrap"></div>
+
+          <!-- Bottom Floating Bar: Sliders & Live Telemetry -->
+          <div class="manifold-hud-bottom">
+            <div class="manifold-sliders-wrap">
+              <div class="hud-slider-group">
+                <div class="hud-slider-label-row">
+                  <span class="hud-slider-title">Circulation Flow Speed</span>
+                  <span id="manifold-speed-badge" class="hud-slider-badge">1.0x</span>
+                </div>
+                <input type="range" id="manifold-speed-slider" class="hud-range" min="0.2" max="2.5" step="0.1" value="1.0">
+              </div>
+
+              <div class="hud-slider-group">
+                <div class="hud-slider-label-row">
+                  <span class="hud-slider-title">Wave Undulation / Surge</span>
+                  <span id="manifold-wave-badge" class="hud-slider-badge">1.0x</span>
+                </div>
+                <input type="range" id="manifold-wave-slider" class="hud-range" min="0.0" max="2.0" step="0.1" value="1.0">
+              </div>
+
+              <div class="hud-slider-group">
+                <div class="hud-slider-label-row">
+                  <span class="hud-slider-title">Torsional Vorticity Shear</span>
+                  <span id="manifold-twist-badge" class="hud-slider-badge">1.0x</span>
+                </div>
+                <input type="range" id="manifold-twist-slider" class="hud-range" min="0.0" max="2.0" step="0.1" value="1.0">
+              </div>
+            </div>
+
+            <div class="manifold-telemetry-strip">
+              <div class="telemetry-item">
+                <span class="telemetry-dot dot-sapphire"></span>
+                <span class="telemetry-label">18 Primary Vertices:</span>
+                <span class="telemetry-val">Sapphire Droplets</span>
+              </div>
+              <div class="telemetry-item">
+                <span class="telemetry-dot dot-amber"></span>
+                <span class="telemetry-label">18 Edge Midpoints:</span>
+                <span class="telemetry-val">L/2 Intersections</span>
+              </div>
+              <div class="telemetry-item">
+                <span class="telemetry-dot dot-indigo"></span>
+                <span class="telemetry-label">90 Fluid Streamlines:</span>
+                <span class="telemetry-val">Cubic Splines</span>
+              </div>
+              <div class="telemetry-item">
+                <span class="telemetry-dot dot-cyan"></span>
+                <span class="telemetry-label">Flux Conservation:</span>
+                <span class="telemetry-val">&nabla; &bull; J = 0</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Explanatory Swiss Architecture Cards -->
+        <div class="manifold-details-grid">
+          <div class="manifold-card">
+            <div class="manifold-card-header">
+              <span class="manifold-card-num">01</span>
+              <h3>6-Layer Simplicial Topology</h3>
+            </div>
+            <p>
+              The complex couples two dual 18-node structures across six alternating horizontal planes. Each plane houses an equilateral triangle with $C_3$ rotational symmetry. Consecutive layers undergo spatial inversion ($\theta \to -\theta$), establishing alternating angular sets $[-90^\circ, 30^\circ, 150^\circ]$ and $[90^\circ, 210^\circ, 330^\circ]$.
+            </p>
+            <div class="manifold-card-formula">
+              $$\theta_k^{(l)} = \theta_k^{(0)} + \pi \cdot (l \bmod 2) + \Delta \theta_{\text{shear}}(y, t)$$
+            </div>
+          </div>
+
+          <div class="manifold-card">
+            <div class="manifold-card-header">
+              <span class="manifold-card-num">02</span>
+              <h3>Hydrodynamic Streamlines &amp; Meniscus</h3>
+            </div>
+            <p>
+              Every vertex in layer $l$ is connected to all edge midpoints of layer $l+1$ via parametric Catmull-Rom streamlines ($90$ cross-filaments total). Rather than rigid chords, intermediate control points bow outward with local fluid vorticity, tracing the direction of mass transport flux through the central throat.
+            </p>
+            <div class="manifold-card-formula">
+              $$\mathbf{P}_{\text{mid}} = \frac{V_{l, j} + M_{l+1, k}}{2} + \mathbf{n}_{\text{vortex}} \cdot d_{\text{bow}}(t)$$
+            </div>
+          </div>
+
+          <div class="manifold-card">
+            <div class="manifold-card-header">
+              <span class="manifold-card-num">03</span>
+              <h3>Interactive 3D Manipulation Guide</h3>
+            </div>
+            <ul class="manifold-guide-list">
+              <li><strong>Orbit &amp; Rotate:</strong> Click and drag with left mouse button (or swipe on touch screens).</li>
+              <li><strong>Zoom In / Out:</strong> Scroll mouse wheel or pinch on mobile to inspect fluid throat depth.</li>
+              <li><strong>Pan Camera:</strong> Right-click and drag to adjust the vertical center of the manifold.</li>
+              <li><strong>Hydrodynamic Wake:</strong> Move the cursor over the fluid body to inject localized fluid ripples.</li>
+            </ul>
           </div>
         </div>
       </div>
@@ -636,5 +810,7 @@
 
   <!-- Application Script -->
   <script src="js/app.js"></script>
+  <!-- 36-Node 6D Fluid Manifold Simulation -->
+  <script type="module" src="js/manifold.js"></script>
 </body>
 </html>
