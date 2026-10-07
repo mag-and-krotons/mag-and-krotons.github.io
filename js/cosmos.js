@@ -719,6 +719,7 @@ class GameOfCosmosSimulation {
     if (!this.container || !this.renderer || !this.camera) return;
     const w = this.container.clientWidth;
     const h = this.container.clientHeight || 650;
+    if (w <= 0 || h <= 0) return;
     this.camera.aspect = w / h;
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(w, h);

@@ -332,7 +332,7 @@
               <div class="hud-slider-group">
                 <div class="hud-slider-label-row">
                   <div class="hud-slider-title-wrap">
-                    <span class="hud-slider-title">Entropy ($S$)</span>
+                    <span class="hud-slider-title">Entropy (<em>S</em>)</span>
                     <span class="hud-unit-tag">nats</span>
                   </div>
                   <input type="number" id="manifold-entropy-input" class="hud-num-input" min="0.00" max="5.00" step="0.01" value="0.20" aria-label="Entropy value">
@@ -345,7 +345,7 @@
               <div class="hud-slider-group">
                 <div class="hud-slider-label-row">
                   <div class="hud-slider-title-wrap">
-                    <span class="hud-slider-title">Frequency ($f$)</span>
+                    <span class="hud-slider-title">Frequency (<em>f</em>)</span>
                     <span class="hud-unit-tag">Hz</span>
                   </div>
                   <input type="number" id="manifold-freq-input" class="hud-num-input" min="0.05" max="5.00" step="0.01" value="1.00" aria-label="Frequency value">
@@ -358,7 +358,7 @@
               <div class="hud-slider-group">
                 <div class="hud-slider-label-row">
                   <div class="hud-slider-title-wrap">
-                    <span class="hud-slider-title">Velocity ($v$)</span>
+                    <span class="hud-slider-title">Velocity (<em>v</em>)</span>
                     <span class="hud-unit-tag">u/s</span>
                   </div>
                   <input type="number" id="manifold-vel-input" class="hud-num-input" min="0.50" max="20.00" step="0.10" value="4.40" aria-label="Velocity of transmission">
@@ -371,7 +371,7 @@
               <div class="hud-slider-group">
                 <div class="hud-slider-label-row">
                   <div class="hud-slider-title-wrap">
-                    <span class="hud-slider-title">Distance ($d$)</span>
+                    <span class="hud-slider-title">Distance (<em>d</em>)</span>
                     <span class="hud-unit-tag">units</span>
                   </div>
                   <input type="number" id="manifold-dist-input" class="hud-num-input" min="1.50" max="8.00" step="0.05" value="4.40" aria-label="Inter-layer distance">
@@ -384,7 +384,7 @@
               <div class="hud-slider-group">
                 <div class="hud-slider-label-row">
                   <div class="hud-slider-title-wrap">
-                    <span class="hud-slider-title">Coupling ($\kappa$)</span>
+                    <span class="hud-slider-title">Coupling (<em>&kappa;</em>)</span>
                     <span class="hud-unit-tag">merge</span>
                   </div>
                   <input type="number" id="manifold-coupling-input" class="hud-num-input" min="0.00" max="2.00" step="0.01" value="0.35" aria-label="Triad coupling">
@@ -397,7 +397,7 @@
               <div class="hud-slider-group">
                 <div class="hud-slider-label-row">
                   <div class="hud-slider-title-wrap">
-                    <span class="hud-slider-title">Circulation ($Q$)</span>
+                    <span class="hud-slider-title">Circulation (<em>Q</em>)</span>
                     <span class="hud-unit-tag">flux</span>
                   </div>
                   <input type="number" id="manifold-flow-input" class="hud-num-input" min="0.10" max="3.00" step="0.10" value="1.00" aria-label="Circulation flow rate">
@@ -411,17 +411,17 @@
             <div class="manifold-telemetry-strip">
               <div class="telemetry-item">
                 <span class="telemetry-dot dot-cyan"></span>
-                <span class="telemetry-label">Wavelength ($\lambda = v/f$):</span>
+                <span class="telemetry-label">Wavelength (<em>&lambda; = v/f</em>):</span>
                 <span id="telemetry-wavelength" class="telemetry-val">4.40 u</span>
               </div>
               <div class="telemetry-item">
                 <span class="telemetry-dot dot-sapphire"></span>
-                <span class="telemetry-label">Wavenumber ($k = 2\pi/\lambda$):</span>
+                <span class="telemetry-label">Wavenumber (<em>k = 2&pi;/&lambda;</em>):</span>
                 <span id="telemetry-wavenumber" class="telemetry-val">1.43 rad/u</span>
               </div>
               <div class="telemetry-item">
                 <span class="telemetry-dot dot-amber"></span>
-                <span class="telemetry-label">Phase Shift ($\Delta\phi = kd$):</span>
+                <span class="telemetry-label">Phase Shift (<em>&Delta;&phi; = kd</em>):</span>
                 <span id="telemetry-phaseshift" class="telemetry-val">2.00 &pi; (1.00 &lambda;)</span>
               </div>
               <div class="telemetry-item">
@@ -431,7 +431,7 @@
               </div>
               <div class="telemetry-item">
                 <span class="telemetry-dot dot-emerald"></span>
-                <span class="telemetry-label">Live Shannon $S$:</span>
+                <span class="telemetry-label">Live Shannon <em>S</em>:</span>
                 <span id="telemetry-entropy" class="telemetry-val">0.201 nats</span>
               </div>
               <div class="telemetry-item">
@@ -485,17 +485,18 @@
           </div>
         </div>
         <!-- End manifold-viewport-panel -->
+      </div>
 
-        <!-- Panel 2: The Game of Cosmos (3D K3,3 Cellular Automaton) -->
-        <div id="cosmos-viewport-panel" class="visualizer-panel" style="display: none;">
+      <!-- Panel 2: The Game of Cosmos (3D K3,3 Cellular Automaton) -->
+      <div id="cosmos-viewport-panel" class="visualizer-panel" style="display: none;">
           <div class="section-heading">
             <div class="heading-meta">
               <span class="section-tag">TOPOLOGICAL AUTOMATA &bull; DISCRETE 3D SPACETIME</span>
-              <span class="section-count">343 $K_{3,3}$ UNITS &bull; CONWAY EMERGENCE</span>
+              <span class="section-count">343 <em>K</em><sub>3,3</sub> UNITS &bull; CONWAY EMERGENCE</span>
             </div>
-            <h2 class="section-title">The Game of Cosmos: 3D $K_{3,3}$ Cellular Automaton</h2>
+            <h2 class="section-title">The Game of Cosmos: 3D <em>K</em><sub>3,3</sub> Cellular Automaton</h2>
             <p class="section-desc">
-              Discrete cosmological evolution on a 3D non-planar lattice. Instead of flat 2D pixels, each cell in space is a complete bipartite $K_{3,3}$ simplicial complex—coupling two triads ($3+3=6$ vertices, 9 bipartite bonds). Genesis, soliton propagation, and stable galactic filaments emerge from local triad flux conservation.
+              Discrete cosmological evolution on a 3D non-planar lattice. Instead of flat 2D pixels, each cell in space is a complete bipartite <em>K</em><sub>3,3</sub> simplicial complex—coupling two triads ($3+3=6$ vertices, 9 bipartite bonds). Genesis, soliton propagation, and stable galactic filaments emerge from local triad flux conservation.
             </p>
           </div>
 
@@ -505,7 +506,7 @@
             <div class="manifold-hud-top">
               <div class="manifold-status-chip">
                 <span class="live-dot-pulse"></span>
-                <span class="status-label">ACTIVE 3D $K_{3,3}$ COSMIC AUTOMATON</span>
+                <span class="status-label">ACTIVE 3D <em>K</em><sub>3,3</sub> COSMIC AUTOMATON</span>
               </div>
 
               <!-- Rule Selector -->
@@ -595,7 +596,7 @@
                 </div>
                 <div class="telemetry-item">
                   <span class="telemetry-dot dot-sapphire"></span>
-                  <span class="telemetry-label">Active $K_{3,3}$ Units:</span>
+                  <span class="telemetry-label">Active <em>K</em><sub>3,3</sub> Units:</span>
                   <span id="cosmos-telemetry-pop" class="telemetry-val">7 / 343 (2.0%)</span>
                 </div>
                 <div class="telemetry-item">
@@ -610,7 +611,7 @@
                 </div>
                 <div class="telemetry-item">
                   <span class="telemetry-dot dot-violet"></span>
-                  <span class="telemetry-label">Spatial Entropy ($S$):</span>
+                  <span class="telemetry-label">Spatial Entropy (<em>S</em>):</span>
                   <span id="cosmos-telemetry-entropy" class="telemetry-val">0.000 nats</span>
                 </div>
                 <div class="telemetry-item">
@@ -1315,7 +1316,8 @@
         if (cosmosPanel) cosmosPanel.style.display = 'none';
         if (window.fluidManifoldInstance) {
           window.fluidManifoldInstance.isVisible = true;
-          window.fluidManifoldInstance.onResize();
+          requestAnimationFrame(() => window.fluidManifoldInstance && window.fluidManifoldInstance.onResize());
+          setTimeout(() => window.fluidManifoldInstance && window.fluidManifoldInstance.onResize(), 60);
         }
         if (window.cosmosInstance) window.cosmosInstance.isVisible = false;
         if (window.history && window.history.replaceState) {
@@ -1329,7 +1331,8 @@
         if (window.fluidManifoldInstance) window.fluidManifoldInstance.isVisible = false;
         if (window.cosmosInstance) {
           window.cosmosInstance.isVisible = true;
-          window.cosmosInstance.onResize();
+          requestAnimationFrame(() => window.cosmosInstance && window.cosmosInstance.onResize());
+          setTimeout(() => window.cosmosInstance && window.cosmosInstance.onResize(), 60);
         }
         if (window.history && window.history.replaceState) {
           window.history.replaceState(null, null, '#cosmos');
@@ -1341,12 +1344,16 @@
     }
     window.switchVisualizerTab = switchVisualizerTab;
 
-    // Check URL hash on page load
-    window.addEventListener('DOMContentLoaded', () => {
+    // Check URL hash on page load and on hash change
+    function syncHashTab() {
       if (window.location.hash === '#cosmos') {
         switchVisualizerTab('cosmos');
+      } else if (window.location.hash === '#manifold') {
+        switchVisualizerTab('manifold');
       }
-    });
+    }
+    window.addEventListener('DOMContentLoaded', syncHashTab);
+    window.addEventListener('hashchange', syncHashTab);
   </script>
 </body>
 </html>

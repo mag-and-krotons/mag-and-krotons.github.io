@@ -2538,6 +2538,14 @@ body {
   color: #E2E8F0;
 }
 
+.hud-slider-title em,
+.telemetry-label em {
+  font-family: 'JetBrains Mono', monospace;
+  font-style: italic;
+  font-weight: 600;
+  color: #38BDF8;
+}
+
 .hud-unit-tag {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.68rem;
