@@ -223,7 +223,33 @@ const RESEARCH_PAPERS = [
   }
 ];
 
-// Curated Fallback Repositories for @mag-and-krotons
+// Standard macros defined across Abhijit Singh's research manuscripts
+const KATEX_MACROS = {
+  "\\dd": "\\,\\mathrm{d}",
+  "\\e": "\\mathrm{e}",
+  "\\R": "\\mathbb{R}",
+  "\\C": "\\mathbb{C}",
+  "\\N": "\\mathbb{N}",
+  "\\Z": "\\mathbb{Z}",
+  "\\fr": "\\{#1\\}",
+  "\\Num": "\\mathrm{Num}",
+  "\\Den": "\\mathrm{Den}",
+  "\\Re": "\\operatorname{Re}",
+  "\\Im": "\\operatorname{Im}",
+  "\\T": "\\mathrm{T}",
+  "\\sgn": "\\operatorname{sgn}",
+  "\\NH": "\\mathrm{NH_3}",
+  "\\HS": "\\mathrm{H_2S}",
+  "\\NHSH": "\\mathrm{NH_4SH}",
+  "\\Hw": "\\mathrm{H_2O}",
+  "\\CH": "\\mathrm{CH_4}",
+  "\\muH": "\\,\\mu\\mathrm{Hz}",
+  "\\li": "\\operatorname{li}",
+  "\\Li": "\\operatorname{Li}",
+  "\\Tr": "\\operatorname{Tr}"
+};
+
+// Curated Repositories for @mag-and-krotons
 const CURATED_REPOS = [
   {
     name: "GAT",
@@ -247,10 +273,18 @@ const CURATED_REPOS = [
   }
 ];
 
+// Helper to escape HTML characters so math inequalities like < and > are never treated as HTML tags
+function escapeHtml(str) {
+  if (!str) return "";
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
 // State for papers search and filter
 let activeCategory = "all";
 let searchQuery = "";
-let expandedAbstracts = new Set();
 
 // --- Papers Rendering & KaTeX Integration ---
 function renderPapers() {
@@ -286,45 +320,41 @@ function renderPapers() {
   }
 
   container.innerHTML = filtered.map(paper => {
-    const isExpanded = expandedAbstracts.has(paper.id);
-    const hasLongAbstract = paper.abstract.length > 320;
-    
-    let abstractText = paper.abstract;
-    if (!isExpanded && hasLongAbstract) {
-      abstractText = paper.abstract.substring(0, 320) + "...";
-    }
+    const safeAbstract = escapeHtml(paper.abstract);
+    const hasLongAbstract = paper.abstract.length > 300;
 
     return `
       <article class="paper-card" id="card-${paper.id}" data-category="${paper.category}">
         <div class="paper-top-meta">
-          <span class="paper-cat-badge badge-${paper.category}">${paper.categoryLabel}</span>
-          <span class="paper-date-badge">${paper.date}</span>
+          <span class="paper-cat-badge badge-${paper.category}">${escapeHtml(paper.categoryLabel)}</span>
+          <span class="paper-date-badge">${escapeHtml(paper.date)}</span>
           <span class="paper-license-pill">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            ${paper.license}
+            ${escapeHtml(paper.license)}
           </span>
         </div>
 
-        <h3 class="paper-title">${paper.title}</h3>
+        <h3 class="paper-title">${escapeHtml(paper.title)}</h3>
         <div class="paper-author-line">
-          <span class="author-name">${paper.authors}</span>
+          <span class="author-name">${escapeHtml(paper.authors)}</span>
           <span class="venue-separator">&bull;</span>
           <span class="venue-tag">Preprint Compendium</span>
         </div>
 
-        <div class="paper-abstract-wrap">
+        <div class="paper-abstract-wrap ${hasLongAbstract ? 'collapsed' : 'expanded'}" id="wrap-${paper.id}">
           <div class="abstract-content" id="abstract-${paper.id}">
-            ${abstractText}
+            ${safeAbstract}
           </div>
           ${hasLongAbstract ? `
-            <button class="btn-toggle-abstract" onclick="toggleAbstract('${paper.id}')">
-              ${isExpanded ? "▲ Collapse Abstract" : "▼ Read Full Abstract & Math"}
+            <div class="abstract-fade-overlay"></div>
+            <button class="btn-toggle-abstract" id="btn-toggle-${paper.id}" onclick="toggleAbstract('${paper.id}')">
+              ▼ Read Full Abstract & Math
             </button>
           ` : ""}
         </div>
 
         <div class="paper-actions-bar">
-          <a href="${paper.pdf}" target="_blank" rel="noopener noreferrer" class="paper-btn btn-pdf">
+          <a href="${escapeHtml(paper.pdf)}" target="_blank" rel="noopener noreferrer" class="paper-btn btn-pdf">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
             Download PDF
           </a>
@@ -332,7 +362,7 @@ function renderPapers() {
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
             BibTeX Citation
           </button>
-          <a href="${paper.github}" target="_blank" rel="noopener noreferrer" class="paper-btn btn-code">
+          <a href="${escapeHtml(paper.github)}" target="_blank" rel="noopener noreferrer" class="paper-btn btn-code">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
             Code
           </a>
@@ -341,10 +371,10 @@ function renderPapers() {
     `;
   }).join("");
 
-  renderMath();
+  triggerMathRendering();
 }
 
-function renderMath() {
+function triggerMathRendering() {
   if (window.renderMathInElement) {
     try {
       renderMathInElement(document.getElementById("papers-container"), {
@@ -354,21 +384,33 @@ function renderMath() {
           { left: "\\(", right: "\\)", display: false },
           { left: "\\[", right: "\\]", display: true }
         ],
+        macros: KATEX_MACROS,
         throwOnError: false
       });
     } catch (e) {
       console.warn("KaTeX rendering notice:", e);
     }
+  } else {
+    // Retry once scripts finish initializing
+    setTimeout(triggerMathRendering, 80);
   }
 }
 
 window.toggleAbstract = function(id) {
-  if (expandedAbstracts.has(id)) {
-    expandedAbstracts.delete(id);
+  const wrap = document.getElementById(`wrap-${id}`);
+  const btn = document.getElementById(`btn-toggle-${id}`);
+  if (!wrap || !btn) return;
+
+  const isCollapsed = wrap.classList.contains("collapsed");
+  if (isCollapsed) {
+    wrap.classList.remove("collapsed");
+    wrap.classList.add("expanded");
+    btn.innerHTML = "▲ Collapse Abstract";
   } else {
-    expandedAbstracts.add(id);
+    wrap.classList.remove("expanded");
+    wrap.classList.add("collapsed");
+    btn.innerHTML = "▼ Read Full Abstract & Math";
   }
-  renderPapers();
 };
 
 window.resetFilters = function() {
@@ -456,9 +498,9 @@ function initBlochLab() {
     if (formulaElem && window.katex) {
       try {
         window.katex.render(
-          `|\\psi\\rangle = ${cosVal}|0\\rangle + ${sinVal}e^{i ${phiDeg}^\\circ}|1\\rangle`,
+          `|\\psi\\rangle = ${cosVal}|0\\rangle + ${sinVal}\\mathrm{e}^{i ${phiDeg}^\\circ}|1\\rangle`,
           formulaElem,
-          { throwOnError: false, displayMode: true }
+          { throwOnError: false, displayMode: true, macros: KATEX_MACROS }
         );
       } catch (e) {
         formulaElem.innerText = `|ψ⟩ = ${cosVal}|0⟩ + ${sinVal}e^(i${phiDeg}°)|1⟩`;
@@ -643,15 +685,15 @@ function renderRepoCards(repos) {
       <div class="repo-top">
         <a href="${r.html_url}" target="_blank" rel="noopener noreferrer" class="repo-name-link">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-          ${r.name}
+          ${escapeHtml(r.name)}
         </a>
-        <span class="repo-license-tag">${r.license}</span>
+        <span class="repo-license-tag">${escapeHtml(r.license)}</span>
       </div>
-      <p class="repo-desc">${r.description}</p>
+      <p class="repo-desc">${escapeHtml(r.description)}</p>
       <div class="repo-bottom">
         <span class="repo-lang">
           <span class="lang-color-dot" style="background: ${r.langColor || '#1D4ED8'};"></span>
-          ${r.language}
+          ${escapeHtml(r.language)}
         </span>
         <a href="${r.html_url}" target="_blank" rel="noopener noreferrer" class="repo-view-link">
           View Repository ↗
@@ -815,16 +857,16 @@ function initHeroFormulas() {
         window.katex.render(
           "J = 2\\partial_y |\\Xi(x+iy)|^2 = \\frac{1}{4} \\int Q(p,x)\\, p \\sinh(yp)\\, dp",
           f1,
-          { throwOnError: false, displayMode: true }
+          { throwOnError: false, displayMode: true, macros: KATEX_MACROS }
         );
       } catch (e) {}
     }
     if (f2) {
       try {
         window.katex.render(
-          "p = \\frac{1}{1 + e^{\\varepsilon}} = \\frac{1}{2} + \\delta, \\quad \\delta = -\\frac{1}{2}\\tanh\\frac{\\varepsilon}{2}",
+          "p = \\frac{1}{1 + \\mathrm{e}^{\\varepsilon}} = \\frac{1}{2} + \\delta, \\quad \\delta = -\\frac{1}{2}\\tanh\\frac{\\varepsilon}{2}",
           f2,
-          { throwOnError: false, displayMode: true }
+          { throwOnError: false, displayMode: true, macros: KATEX_MACROS }
         );
       } catch (e) {}
     }
@@ -839,5 +881,5 @@ document.addEventListener("DOMContentLoaded", () => {
   initGitHubRepos();
   initLicensingSuite();
   initModals();
-  setTimeout(initHeroFormulas, 200);
+  setTimeout(initHeroFormulas, 150);
 });

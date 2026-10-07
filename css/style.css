@@ -738,33 +738,90 @@ body {
 .paper-abstract-wrap {
   background-color: var(--bg-page);
   border: 1px solid #CBD5E1;
-  padding: 1.25rem;
+  padding: 1.4rem;
   margin-bottom: 1.5rem;
-  font-size: 0.95rem;
-  line-height: 1.7;
+  font-size: 0.96rem;
+  line-height: 1.78;
   color: var(--text-secondary);
+  position: relative;
+}
+
+.paper-abstract-wrap.collapsed .abstract-content {
+  max-height: 155px;
+  overflow: hidden;
+  position: relative;
+}
+
+.paper-abstract-wrap.collapsed .abstract-fade-overlay {
+  display: block;
+  position: absolute;
+  bottom: 2.8rem;
+  left: 0;
+  right: 0;
+  height: 65px;
+  background: linear-gradient(to bottom, rgba(251, 251, 250, 0), rgba(251, 251, 250, 1) 90%);
+  pointer-events: none;
+}
+
+.paper-abstract-wrap.expanded .abstract-content {
+  max-height: none;
+}
+
+.paper-abstract-wrap.expanded .abstract-fade-overlay {
+  display: none;
 }
 
 .abstract-content {
   overflow-wrap: break-word;
+  word-break: normal;
 }
 
 .btn-toggle-abstract {
-  margin-top: 0.8rem;
-  background: none;
-  border: none;
+  margin-top: 0.85rem;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  box-shadow: 2px 2px 0px var(--border-color);
   font-family: var(--font-mono);
   font-size: 0.78rem;
   font-weight: 700;
   color: var(--color-blue);
   cursor: pointer;
-  padding: 0.2rem 0;
-  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all var(--transition-fast);
+  position: relative;
+  z-index: 2;
 }
 
 .btn-toggle-abstract:hover {
-  text-decoration: underline;
-  color: var(--color-blue-dark);
+  background-color: var(--color-blue);
+  color: #FFFFFF;
+  box-shadow: 3px 3px 0px var(--border-color);
+}
+
+/* KaTeX Mathematical Typography */
+.katex {
+  font-size: 1.04em !important;
+  color: var(--text-main);
+  text-rendering: geometricPrecision;
+}
+
+.katex-display {
+  margin: 1.25rem 0 !important;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.75rem 1rem;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  box-shadow: 2px 2px 0px var(--border-color);
+}
+
+.katex-error {
+  color: var(--color-crimson) !important;
+  font-family: var(--font-mono);
+  font-size: 0.88em;
 }
 
 .paper-actions-bar {
