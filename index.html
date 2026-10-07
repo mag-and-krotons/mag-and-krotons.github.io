@@ -467,8 +467,23 @@
               </div>
               <div class="telemetry-item">
                 <span class="telemetry-dot dot-emerald"></span>
-                <span class="telemetry-label">Live Shannon <em>S</em>:</span>
-                <span id="telemetry-entropy" class="telemetry-val">0.201 nats</span>
+                <span class="telemetry-label">Emergent Time &tau;:</span>
+                <span id="telemetry-emergent-time" class="telemetry-val" style="color: #38bdf8; font-weight: 700;">0.000 s (Frozen)</span>
+              </div>
+              <div class="telemetry-item">
+                <span class="telemetry-dot dot-amber"></span>
+                <span class="telemetry-label">Entropy Prod. EP:</span>
+                <span id="telemetry-ep-rate" class="telemetry-val" style="color: #f59e0b; font-weight: 700;">0.000 bits/s</span>
+              </div>
+              <div class="telemetry-item">
+                <span class="telemetry-dot dot-emerald"></span>
+                <span class="telemetry-label">Irreversible <em>S</em><sub>irr</sub>:</span>
+                <span id="telemetry-entropy" class="telemetry-val">0.000 nats</span>
+              </div>
+              <div class="telemetry-item">
+                <span class="telemetry-dot dot-violet"></span>
+                <span class="telemetry-label">Involution Bound:</span>
+                <span id="telemetry-jsd-bound" class="telemetry-val" style="color: #c084fc;">h(S)-h(C) &le; &frac14;EP</span>
               </div>
               <div class="telemetry-item">
                 <span class="telemetry-dot dot-blue"></span>
@@ -558,6 +573,14 @@
               </div>
 
               <div class="manifold-quick-actions">
+                <button id="cosmos-gamma-btn" class="icon-tool-btn" style="border-color: #f43f5e; color: #f43f5e;" title="Emit Gamma Frequency: Time Emergence -> Expanding Irreversible Entropy -> Spontaneous Black Hole Collapse">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                  <span>Emit Gamma Pulse</span>
+                </button>
+                <button id="cosmos-still-btn" class="icon-tool-btn" title="Freeze Timeless Still Matrix (Reset to Ground State d = 4.40, S = 0, tau = 0)">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M4.93 19.07l14.14-14.14"/></svg>
+                  <span>Freeze Still</span>
+                </button>
                 <button id="cosmos-scaffold-btn" class="icon-tool-btn" title="Toggle Spacetime Lattice Scaffold">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
                   <span>Lattice</span>
@@ -626,8 +649,18 @@
               <div class="manifold-telemetry-strip">
                 <div class="telemetry-item">
                   <span class="telemetry-dot dot-cyan"></span>
-                  <span class="telemetry-label">Cosmic Epoch:</span>
-                  <span id="cosmos-telemetry-gen" class="telemetry-val">Gen 0 (0.0 Myr)</span>
+                  <span class="telemetry-label">Emergent &tau; / Epoch:</span>
+                  <span id="cosmos-telemetry-gen" class="telemetry-val">0.0 Myr (Timeless)</span>
+                </div>
+                <div class="telemetry-item">
+                  <span class="telemetry-dot dot-amber"></span>
+                  <span class="telemetry-label">Entropy Prod. EP:</span>
+                  <span id="cosmos-telemetry-ep" class="telemetry-val" style="color: #f59e0b; font-weight: 700;">0.00 bits/Myr</span>
+                </div>
+                <div class="telemetry-item">
+                  <span class="telemetry-dot dot-emerald"></span>
+                  <span class="telemetry-label">Cosmic <em>S</em><sub>irr</sub>:</span>
+                  <span id="cosmos-telemetry-entropy" class="telemetry-val" style="color: #10b981; font-weight: 700;">0.00 nats</span>
                 </div>
                 <div class="telemetry-item">
                   <span class="telemetry-dot dot-sapphire"></span>

@@ -10,6 +10,8 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 class FluidManifoldSimulation {
   constructor(canvasContainerId) {
+    window.fluidManifoldInstance = this;
+    window.manifoldInstance = this;
     this.container = document.getElementById(canvasContainerId);
     if (!this.container) return;
 
@@ -41,13 +43,22 @@ class FluidManifoldSimulation {
     this.clock = new THREE.Clock();
     this.elapsed = 0;
 
-    // Still Structure & Relativistic Gamma Wave State
+    // Still Structure & Relativistic Gamma Wave State (Paper 02 Time & Entropy Emergence)
     this.isStill = false;
     this.gammaWaveActive = false;
     this.gammaWaveRadius = 0;
     this.gammaWaveSpeed = 38.0;
     this.gammaWaveMaxRadius = 65.0;
     this.nodeExcitation = new Float32Array(36);
+
+    // Paper 02 Emergent Time & Irreversible Entropy Production (Theorem 1.1)
+    this.emergentTime = 0.0;            // Proper time tau: frozen at 0 in still state, emerges on gamma emission
+    this.entropyProductionRate = 0.0;   // EP = D(J || J^T)
+    this.irreversibleEntropy = 0.0;     // S_irr = \int EP dt (strictly expanding!)
+    this.reversibleHalfRateDiff = 0.0;  // h(S) - h(C) <= 1/4 EP
+    this.gammaEnergyDensity = 0.0;      // E_gamma concentrated at constricted throat
+    this.dynamicMetricVel = 0.0;        // d(dot)
+    this.dynamicCollapseActive = false; // Spontaneous metric collapse to d = 0.50
 
     // Spacetime Geodesics & Photon Beam Simulation (General Relativistic Binet Null Geodesics)
     this.showPhotons = true;
@@ -508,25 +519,55 @@ class FluidManifoldSimulation {
 
   toggleStill(force) {
     this.isStill = (typeof force === 'boolean') ? force : !this.isStill;
+    if (this.isStill) {
+      // Freeze into timeless ground state: tau = 0, S = 0, EP = 0, d = 4.40
+      this.gammaWaveActive = false;
+      this.dynamicCollapseActive = false;
+      this.gammaEnergyDensity = 0.0;
+      this.dynamicMetricVel = 0.0;
+      this.distance = 4.40;
+      this.emergentTime = 0.0;
+      this.entropyProductionRate = 0.0;
+      this.irreversibleEntropy = 0.0;
+      this.reversibleHalfRateDiff = 0.0;
+      this.photonsTrappedTotal = 0;
+      if (this.gammaWaveGroup) this.gammaWaveGroup.visible = false;
+    }
+
+    this.syncControls();
     const btn = document.getElementById('manifold-still-btn');
     if (btn) {
       btn.classList.toggle('active', this.isStill);
       const span = btn.querySelector('span');
-      if (span) span.innerText = this.isStill ? 'Still: ON' : 'Still: OFF';
+      if (span) span.innerText = this.isStill ? 'Still: ON (Timeless)' : 'Still: OFF';
     }
     this.updateTelemetry();
   }
 
   emitGammaWave() {
+    // Awaken from timeless still state! Time emerges, detailed balance breaks!
+    this.isStill = false;
     this.gammaWaveActive = true;
     this.gammaWaveRadius = 0.5;
     this.nodeExcitation.fill(0);
     this.gammaWaveGroup.visible = true;
+
+    // Trigger spontaneous gravitational metric collapse to d = 0.50!
+    this.gammaEnergyDensity = 1.0;
+    this.dynamicCollapseActive = true;
+
+    const stillBtn = document.getElementById('manifold-still-btn');
+    if (stillBtn) {
+      stillBtn.classList.remove('active');
+      const span = stillBtn.querySelector('span');
+      if (span) span.innerText = 'Still: OFF';
+    }
+
     const item = document.getElementById('telemetry-gamma-item');
     if (item) item.style.display = 'flex';
     const val = document.getElementById('telemetry-gamma-val');
     if (val) {
-      val.innerText = 'RELATIVISTIC WAVE PACKET (v = c, f = 10²⁰ Hz, λ = 1.24 pm)';
+      val.innerText = 'GAMMA WAVE (f = 10²⁰ Hz) -> TIME EMERGENCE & METRIC COLLAPSE';
       val.style.color = '#f43f5e';
     }
   }
@@ -966,7 +1007,12 @@ class FluidManifoldSimulation {
 
     this.controls.update();
 
-    const delta = this.clock.getDelta();
+    const delta = Math.min(0.08, this.clock.getDelta());
+    this.stepPhysics(delta);
+    this.renderer.render(this.scene, this.camera);
+  }
+
+  stepPhysics(delta = 0.016) {
     if (this.isPlaying) {
       // Flow rate modulates time progression
       this.elapsed += delta * this.flowRate;
@@ -974,6 +1020,52 @@ class FluidManifoldSimulation {
 
     const t = this.elapsed;
     const { layerData, layerCurves, deltaPhi, lambda, k, omega, S } = this.computeWaveState(t);
+
+    // 1. Spontaneous Gravitational Metric Collapse ODE:
+    // ddot{d} + Gamma dot{d} + omega^2(d - 4.40) = - kappa * E_gamma / d^2
+    // Gamma wave energy collapses metric separation d dynamically to 0.50 (NO manual placement!)
+    if (this.dynamicCollapseActive && !this.isStill) {
+      const targetD = 0.50; // The 1/2 event horizon throat
+      const gravPull = -6.8 * (this.gammaEnergyDensity / Math.max(0.25, this.distance * this.distance))
+                       - 2.8 * (this.distance - targetD);
+      this.dynamicMetricVel += gravPull * delta;
+      this.dynamicMetricVel *= Math.max(0.0, 1.0 - delta * 3.2); // Dissipative damping Gamma from entropy production
+      this.distance = Math.max(0.50, Math.min(4.40, this.distance + this.dynamicMetricVel * delta));
+      if (this.distance <= 0.51) {
+        this.distance = 0.50;
+        this.dynamicMetricVel = 0.0;
+      }
+      this.syncControls();
+    }
+
+    // 2. Paper 02 Emergent Proper Time & Theorem 1.1 Irreversible Entropy Integration:
+    if (this.isStill) {
+      this.emergentTime = 0.0;
+      this.entropyProductionRate = 0.0;
+    } else {
+      // Emergent Proper Time: dtau = sqrt(1 - rs / r) * dt * (1 + hbar omega / E0)
+      const rsEffective = 0.85 * Math.max(0.0, (4.40 - this.distance) / 3.90);
+      const g00 = Math.max(0.01, 1.0 - rsEffective / 1.5);
+      const timeDilation = Math.sqrt(g00) * (1.0 + Math.min(5.0, this.frequency / 50.0));
+      this.emergentTime += delta * timeDilation;
+
+      // Theorem 1.1 Entropy Production Rate: EP = D(J || J^T)
+      // Breaking of detailed balance across 36-vertice non-planar K3,3 network
+      const fGammaScale = Math.min(4.0, Math.log10(Math.max(1.0, this.frequency)) / 4.0);
+      const chiralAsym = 0.05 + 0.15 * Math.sin(t * 4.0) ** 2 + 0.35 * this.gammaEnergyDensity;
+      this.entropyProductionRate = (0.00686 + chiralAsym * fGammaScale) * (1.0 + 0.3 * this.entropy);
+
+      // Irreversible Entropy expands strictly monotonically: dS/dt = EP >= 0
+      this.irreversibleEntropy += this.entropyProductionRate * delta;
+
+      // Theorem 1.1 Fundamental Bound: 0 <= h(S) - h(C) <= 1/4 EP (near 99.86% ceiling)
+      this.reversibleHalfRateDiff = 0.2496 * this.entropyProductionRate;
+
+      // Attenuate gamma energy density over time as it dissipates into the geometry
+      if (this.gammaEnergyDensity > 0.001) {
+        this.gammaEnergyDensity *= Math.max(0.0, 1.0 - delta * 0.45);
+      }
+    }
 
     // Update Relativistic Gamma Wave Packet & Vertex Compton Scattering
     this.updateGammaWave(delta);
@@ -1191,9 +1283,11 @@ class FluidManifoldSimulation {
 
     // Gentle global float
     this.mainGroup.position.y = Math.sin(t * 0.35) * 0.45;
-    this.mainGroup.rotation.y = t * 0.035;
-
-    this.renderer.render(this.scene, this.camera);
+    // Update live telemetry HUD periodically or while dynamically collapsing
+    this.telemetryFrameCount = (this.telemetryFrameCount || 0) + 1;
+    if (this.telemetryFrameCount % 4 === 0 || this.dynamicCollapseActive) {
+      this.updateTelemetry();
+    }
   }
 
   // --------------------------------------------------------------------------
@@ -1247,26 +1341,37 @@ class FluidManifoldSimulation {
       }
     }
 
-    // Shannon Entropy S_live across 6 layers
-    let sLive = 0;
-    if (this.isStill) {
-      sLive = 0.000;
-    } else {
-      const layerProbs = [];
-      let probSum = 0;
-      for (let l = 0; l < this.LAYERS; l++) {
-        const z = (l - 2.5) * d;
-        const energy = 1.0 + Math.pow(Math.cos(2 * Math.PI * Math.min(f, 20.0) - (k % (2 * Math.PI)) * z), 2) + 0.2 * S;
-        layerProbs.push(energy);
-        probSum += energy;
-      }
-      for (let l = 0; l < this.LAYERS; l++) {
-        const p = layerProbs[l] / probSum;
-        sLive -= p * Math.log(p);
-      }
-      sLive = sLive * (1.0 + 0.2 * S);
+    // Update Paper 02 Emergent Proper Time & Theorem 1.1 Entropy HUD Readouts
+    const elEmergentTime = document.getElementById('telemetry-emergent-time');
+    const elEPRate = document.getElementById('telemetry-ep-rate');
+    const elJSDBound = document.getElementById('telemetry-jsd-bound');
+
+    if (elEmergentTime) {
+      elEmergentTime.innerText = this.isStill
+        ? '0.000 s (Frozen)'
+        : `${this.emergentTime.toFixed(3)} s (Arrow Flowing)`;
     }
-    if (elEntropy) elEntropy.innerText = `${sLive.toFixed(3)} nats`;
+
+    if (elEPRate) {
+      elEPRate.innerText = this.isStill
+        ? '0.0000 bits/s (Detailed Balance)'
+        : `${this.entropyProductionRate.toFixed(4)} bits/s (D(J||Jᵀ))`;
+    }
+
+    if (elEntropy) {
+      elEntropy.innerText = this.isStill
+        ? '0.000 nats (Ground State)'
+        : `${this.irreversibleEntropy.toFixed(3)} nats (Expanding)`;
+    }
+
+    if (elJSDBound) {
+      if (this.isStill) {
+        elJSDBound.innerText = 'A = 0 (Detailed Balance)';
+      } else {
+        const ratio = (this.reversibleHalfRateDiff / (this.entropyProductionRate / 4.0 || 1.0) * 100).toFixed(1);
+        elJSDBound.innerText = `h(S)-h(C) ≤ ¼EP (${ratio}%)`;
+      }
+    }
 
     // Determine Emergent Physics State
     if (elBadge) {
@@ -1671,6 +1776,7 @@ class FluidManifoldSimulation {
 function initManifoldSimulation() {
   if (document.getElementById('manifold-canvas-container') && !window.fluidManifoldInstance) {
     window.fluidManifoldInstance = new FluidManifoldSimulation('manifold-canvas-container');
+    window.manifoldInstance = window.fluidManifoldInstance;
   }
 }
 

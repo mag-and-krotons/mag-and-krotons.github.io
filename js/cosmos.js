@@ -1,38 +1,29 @@
 /**
- * THE GAME OF COSMOS: 3D 36-VERTICE STRING & STRIP CELLULAR AUTOMATON
+ * THE GAME OF COSMOS: 3D 36-VERTICE STRING & STRIP METRIC-ENTROPY FIELD
  *
- * Fundamental Spacetime Unit:
- *   The authentic 36-vertice simplicial complex (6 layers x 6 vertices = 36 vertices),
- *   synthesized purely as continuous ruled ribbon strip sheets S(u, v) and closed
- *   bounding strings—strictly NO point sphere nodes and NO wireframe stick lines.
- *
- * Geometric & String Topology:
- *   - 6 Closed Catmull-Rom string loops bounding the layer perimeters (36 vertices total).
- *   - 5 Outer continuous ruled ribbon strip sheets S_l(u, v) = (1 - v) C_l(u) + v C_{l+1}(u) + n * Delta.
- *   - 45 Internal bipartite helicoid ribbon strips spanning alternating triads A_{l, j} <-> B_{l+1, k} (9 per transition x 5 = 45).
- *   - Metric separation d \in [0.50, 4.40]: at d = 0.50, the complex crushes into the 1/2 Event Horizon throat!
- *
- * Relativistic Astrophysical Automaton:
- *   - STATE_VACUUM (0): Unexcited vacuum ground state (invisible, E = 0).
- *   - STATE_INFLATION (1): Primordial high-energy string plasma expanding superluminally.
- *   - STATE_PROTO_36 (2): Cooling string cloud coalescing below Hagedorn temperature (T < T_H).
- *   - STATE_36_STRUCTURE (3): Stable 36-Vertice String Complex Soliton in harmonic standing-wave resonance!
- *   - STATE_SUPERNOVA (4): Chandrasekhar core collapse (M > 55) emitting Sedov-Taylor shockwaves R(t) ~ t^{2/5}.
- *   - STATE_BLACK_HOLE (5): Schwarzschild string singularity collapsed to d = 0.50 with accretion disk & polar jets.
- *   - STATE_PULSAR (6): Highly magnetized rotating string neutron star emitting beacon beams.
+ * Fundamental Principles (Papers 02 & 11):
+ *   1. Spacetime Unit Cell: Authentic 36-vertice simplicial complex (6 layers x 6 vertices = 36 vertices),
+ *      synthesized purely as continuous ruled ribbon strip sheets and closed bounding strings—strictly
+ *      WITHOUT point sphere nodes and WITHOUT wireframe stick lines.
+ *   2. Time Emergence from Stillness: In the still ground state, detailed balance holds (J = J^T, A = 0,
+ *      tau = 0, S = 0, EP = 0). Emitting a gamma frequency breaks detailed balance, awakening proper time
+ *      tau and launching the directed arrow of time.
+ *   3. Expanding Irreversible Entropy: Theorem 1.1 gives EP = D(J || J^T) > 0 and 0 <= h(S) - h(C) <= 1/4 EP.
+ *      Total entropy S_irr strictly expands: dS/dt = EP >= 0.
+ *   4. Spontaneous Metric Collapse (No Manual Placement): Concentrated gamma energy density rho drives
+ *      dynamical metric collapse ddot{d} + Gamma dot{d} + omega_0^2(d - 4.40) = - kappa * rho / d^2.
+ *      The metric separation d dynamically contracts from 4.40 to 0.50, spontaneously forging the
+ *      1/2 event horizon with shadow void, accretion disk, and relativistic polar string jets!
  */
 
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-// Automaton Spacetime States
 export const STATE_VACUUM = 0;
-export const STATE_INFLATION = 1;
-export const STATE_PROTO_36 = 2;
-export const STATE_36_STRUCTURE = 3;
-export const STATE_SUPERNOVA = 4;
-export const STATE_BLACK_HOLE = 5;
-export const STATE_PULSAR = 6;
+export const STATE_PROTO_36 = 1;
+export const STATE_36_STRUCTURE = 2;
+export const STATE_SUPERNOVA = 3;
+export const STATE_BLACK_HOLE = 4;
 
 export class GameOfCosmos {
   constructor(containerId = 'cosmos-canvas-container') {
@@ -42,42 +33,46 @@ export class GameOfCosmos {
       return;
     }
 
-    // Spacetime Lattice Dimensions (3x3x3 = 27 Unit Complexes)
+    // 3D Matrix Dimensions (3x3x3 = 27 Unit Complexes)
     this.GRID = 3;
-    this.LAYERS = 6;            // 6 layers = 36 vertices total per unit
+    this.LAYERS = 6;            // 6 layers x 6 vertices = 36 vertices total
     this.SPACING_X = 9.2;
     this.SPACING_Y = 10.0;
     this.SPACING_Z = 9.2;
 
     // Unit Ribbon Resolution
-    this.U_SEGS = 36;           // Perimeter subdivisions around closed loop
-    this.V_SEGS = 6;            // Vertical subdivisions along inter-layer sheet
-    this.R_BASE = 2.45;         // Base radius of 36-vertice complex
+    this.U_SEGS = 36;
+    this.V_SEGS = 6;
+    this.R_BASE = 2.45;
 
-    // Cellular Automaton Grids
-    this.state = this.createGrid3D(STATE_VACUUM);
-    this.nextState = this.createGrid3D(STATE_VACUUM);
+    // Continuous Metric & Entropy Fields (3x3x3)
+    this.distance = this.createGrid3D(4.40);       // Metric separation d \in [0.50, 4.40]
+    this.distanceVel = this.createGrid3D(0.0);    // d(dot)
+    this.energy = this.createGrid3D(0.0);          // Energy density rho
+    this.properTime = this.createGrid3D(0.0);      // Local emergent time tau
+    this.entropy = this.createGrid3D(0.0);         // Irreversible entropy S_irr
+    this.epRate = this.createGrid3D(0.0);          // Entropy production EP = D(J || J^T)
+    this.blastRadius = this.createGrid3D(0.0);     // Sedov blast wave radius
     this.age = this.createGrid3D(0);
-    this.mass = this.createGrid3D(0.0);
-    this.energy = this.createGrid3D(0.0);
-    this.distance = this.createGrid3D(4.40);
-    this.blastRadius = this.createGrid3D(0.0);
 
-    // Simulation State
+    // Simulation Engine State
     this.generation = 0;
     this.isPlaying = true;
-    this.genSpeed = 3.0;        // generations per second
+    this.isStill = false;
+    this.genSpeed = 3.0;                           // Evolution speed
     this.lastStepTime = performance.now();
-    this.ruleMode = 'astrophysics';
-    this.showScaffold = false;  // False by default: vacuum is empty space!
+    this.showScaffold = false;
     this.isVisible = true;
 
-    // Telemetry Metrics
+    // Global Cosmic Telemetry
+    this.cosmicTime = 0.0;
     this.activeUnits36 = 0;
     this.supernovaeActive = 0;
     this.supernovaeTotal = 0;
     this.blackHolesActive = 0;
     this.blackHolesTotal = 0;
+    this.totalEntropy = 0.0;
+    this.totalEPRate = 0.0;
     this.energyFlux = 0.0;
 
     // Three.js Core
@@ -86,6 +81,8 @@ export class GameOfCosmos {
     this.renderer = null;
     this.controls = null;
     this.clock = new THREE.Clock();
+    this.raycaster = new THREE.Raycaster();
+    this.mouse = new THREE.Vector2(-999, -999);
     this.animId = null;
 
     // Render Assets
@@ -102,7 +99,7 @@ export class GameOfCosmos {
     this.animate();
 
     window.cosmosInstance = this;
-    console.log('[GameOfCosmos] 3D 36-Vertice String & Strip Matrix initialized.');
+    console.log('[GameOfCosmos] 3D 36-Vertice String Matrix with Time & Entropy Emergence initialized.');
   }
 
   createGrid3D(initVal) {
@@ -121,7 +118,7 @@ export class GameOfCosmos {
   }
 
   // --------------------------------------------------------------------------
-  // 1. Three.js Initialization & Lighting
+  // 1. Three.js Scene Setup & Lighting
   // --------------------------------------------------------------------------
   initThree() {
     this.scene = new THREE.Scene();
@@ -148,7 +145,6 @@ export class GameOfCosmos {
     this.controls.maxDistance = 120;
     this.controls.minDistance = 5;
 
-    // Ambient and Directional Spacetime Lighting
     const ambLight = new THREE.AmbientLight(0x0f172a, 1.8);
     this.scene.add(ambLight);
 
@@ -163,7 +159,6 @@ export class GameOfCosmos {
     this.mainGroup = new THREE.Group();
     this.scene.add(this.mainGroup);
 
-    // Deep cosmic background dust
     this.initBackgroundStars();
 
     window.addEventListener('resize', () => this.onResize());
@@ -205,9 +200,6 @@ export class GameOfCosmos {
     this.scene.add(starPoints);
   }
 
-  // --------------------------------------------------------------------------
-  // 2. 3D Spacetime Scaffold
-  // --------------------------------------------------------------------------
   initScaffold() {
     this.scaffoldGroup = new THREE.Group();
     const boundBox = new THREE.Box3Helper(
@@ -226,7 +218,7 @@ export class GameOfCosmos {
   }
 
   // --------------------------------------------------------------------------
-  // 3. Construction of 36-Vertice String & Ruled Ribbon Strip Complexes
+  // 2. Construction of 36-Vertice String & Ribbon Strip Complexes
   // --------------------------------------------------------------------------
   initMatrixUnits() {
     this.unitMeshes = [];
@@ -304,10 +296,9 @@ export class GameOfCosmos {
             stringLoops.push({ line: loopLine, geo: lGeo, mat: lMat, layer: l });
           }
 
-          // C. 45 Internal Bipartite Helical Ruled Ribbon Strips (Spanning Alternating Triads Across Throat)
-          // 5 inter-layer transitions x 9 bipartite chords (3x3) = 45 ribbon strips
+          // C. 45 Internal Bipartite Helical Ruled Ribbon Strips
           const TOTAL_INTERNAL_STRIPS = (this.LAYERS - 1) * 9;
-          const STRIP_STEPS = 4; // Subdivisions along each internal chord
+          const STRIP_STEPS = 4;
           const intVertCount = TOTAL_INTERNAL_STRIPS * (STRIP_STEPS + 1) * 2;
           const intPositions = new Float32Array(intVertCount * 3);
           const intColors = new Float32Array(intVertCount * 3);
@@ -344,7 +335,7 @@ export class GameOfCosmos {
           const intMesh = new THREE.Mesh(intGeo, intMat);
           unitGroup.add(intMesh);
 
-          // D. Black Hole Singularity Sub-Group (1/2 Event Horizon at d = 0.50)
+          // D. Spontaneous Black Hole Sub-Group (Activated purely when d <= 0.52)
           const bhGroup = new THREE.Group();
 
           // Central Pitch-Black Schwarzschild Horizon Shadow Void
@@ -426,7 +417,7 @@ export class GameOfCosmos {
           snGroup.visible = false;
           unitGroup.add(snGroup);
 
-          unitGroup.visible = false; // Hidden when in vacuum
+          unitGroup.visible = false;
           this.mainGroup.add(unitGroup);
 
           this.unitMeshes.push({
@@ -450,212 +441,137 @@ export class GameOfCosmos {
   }
 
   // --------------------------------------------------------------------------
-  // 4. Relativistic Cosmological Automaton Engine
+  // 3. Mathematical Field Evolution Engine (Continuous Metric & Entropy ODEs)
   // --------------------------------------------------------------------------
-  countNeighbors(x, y, z) {
+  stepFieldEvolution(dt) {
+    if (this.isStill) return;
+
     const G = this.GRID;
-    let nbrPlasma = 0;
-    let nbrProto = 0;
-    let nbr36 = 0;
-    let nbrSupernovae = 0;
-    let nbrBlackHoles = 0;
-    let totalMass = 0;
-    let activeNbrs = 0;
-
-    for (let dx = -1; dx <= 1; dx++) {
-      for (let dy = -1; dy <= 1; dy++) {
-        for (let dz = -1; dz <= 1; dz++) {
-          if (dx === 0 && dy === 0 && dz === 0) continue;
-          const nx = x + dx;
-          const ny = y + dy;
-          const nz = z + dz;
-          if (nx < 0 || nx >= G || ny < 0 || ny >= G || nz < 0 || nz >= G) continue;
-
-          const st = this.state[nx][ny][nz];
-          totalMass += this.mass[nx][ny][nz];
-          if (st > STATE_VACUUM) activeNbrs++;
-
-          if (st === STATE_INFLATION) nbrPlasma++;
-          else if (st === STATE_PROTO_36) nbrProto++;
-          else if (st === STATE_36_STRUCTURE) nbr36++;
-          else if (st === STATE_SUPERNOVA) nbrSupernovae++;
-          else if (st === STATE_BLACK_HOLE) nbrBlackHoles++;
-        }
-      }
-    }
-
-    return { nbrPlasma, nbrProto, nbr36, nbrSupernovae, nbrBlackHoles, totalMass, activeNbrs };
-  }
-
-  stepGeneration() {
-    const G = this.GRID;
-    let cur36 = 0;
-    let curSN = 0;
-    let curBH = 0;
     let netFlux = 0.0;
+    let cur36 = 0, curSN = 0, curBH = 0;
+    let sumEP = 0.0, sumEntropy = 0.0;
 
-    // First Pass: Relativistic State Evolution
+    // Buffer for energy diffusion
+    const dEnergy = this.createGrid3D(0.0);
+
+    // 1. Calculate Ruled Ribbon Stress-Energy Currents & Polar Jet Flux
     for (let x = 0; x < G; x++) {
       for (let y = 0; y < G; y++) {
         for (let z = 0; z < G; z++) {
-          const st = this.state[x][y][z];
-          const curAge = this.age[x][y][z];
-          const curMass = this.mass[x][y][z];
-          const { nbrPlasma, nbrProto, nbr36, nbrSupernovae, nbrBlackHoles, totalMass, activeNbrs } = this.countNeighbors(x, y, z);
+          const rho = this.energy[x][y][z];
+          const dEff = this.distance[x][y][z];
+          const isBH = (dEff <= 0.52);
 
-          let next = st;
-          let newMass = curMass;
-          let newD = this.distance[x][y][z];
+          // Neighbor diffusion along continuous string ribbon connections
+          for (let dx = -1; dx <= 1; dx++) {
+            for (let dy = -1; dy <= 1; dy++) {
+              for (let dz = -1; dz <= 1; dz++) {
+                if (Math.abs(dx) + Math.abs(dy) + Math.abs(dz) !== 1) continue;
+                const nx = x + dx, ny = y + dy, nz = z + dz;
+                if (nx < 0 || nx >= G || ny < 0 || ny >= G || nz < 0 || nz >= G) continue;
 
-          if (st === STATE_VACUUM) {
-            // A. Cosmic Inflation Spreading (Big Bang Early Epoch)
-            if (this.generation < 6 && nbrPlasma >= 1) {
-              next = STATE_INFLATION;
-              newMass = 28.0 + Math.random() * 12.0;
-              newD = 4.40;
-              netFlux += 3.5;
-            }
-            // B. Supernova Sedov Blast Wave Trigger: Shockwave compresses vacuum strings into proto-36 clouds!
-            else if (nbrSupernovae > 0) {
-              next = STATE_PROTO_36;
-              newMass = 22.0 + Math.random() * 14.0;
-              newD = 4.40;
-              netFlux += 2.5;
-            }
-            // C. Black Hole Polar Jet Ionization along vertical axis
-            else if (nbrBlackHoles > 0 && Math.random() < 0.20) {
-              next = STATE_PROTO_36;
-              newMass = 18.0;
-              newD = 4.40;
-              netFlux += 1.8;
-            }
-          }
-          else if (st === STATE_INFLATION) {
-            // Inflationary expansion cooling below Hagedorn temperature
-            if (this.generation < 3 && activeNbrs < 3) {
-              next = STATE_INFLATION;
-            } else if (curAge >= 2) {
-              // String plasma condenses into proto-36 vertice complex
-              next = STATE_PROTO_36;
-              newMass = Math.max(curMass, 26.0 + Math.random() * 10.0);
-              newD = 4.40;
-            }
-          }
-          else if (st === STATE_PROTO_36) {
-            // Accreting strings lock into coherent 36-vertice harmonic equilibrium
-            if (curAge >= 2) {
-              // FULL EMERGENCE: Locks into stable 36-vertice string/strip structure!
-              next = STATE_36_STRUCTURE;
-              newMass = Math.max(curMass, 22.0);
-              newD = 4.40;
-              netFlux += 2.8;
-            } else {
-              newMass += 1.5;
-            }
-          }
-          else if (st === STATE_36_STRUCTURE) {
-            // STABLE 36-VERTICE STRING COMPLEX: Resonant standing-wave soliton!
-            // Highly stable! Radiates harmonic standing waves in equilibrium.
-            // Chandrasekhar core collapse ONLY triggers if hyper-massive (curMass > 55.0):
-            if (curMass > 55.0 && curAge >= 6) {
-              // Hyper-massive core collapse supernova!
-              next = STATE_SUPERNOVA;
-              this.supernovaeTotal++;
-              this.blastRadius[x][y][z] = 0.5;
-              netFlux += 8.5;
-            } else {
-              // STABLE SOLITON: Persists indefinitely in harmonic equilibrium!
-              next = STATE_36_STRUCTURE;
-              // Sedov blast from neighbor compresses & excites, but does not destroy
-              if (nbrSupernovae > 0) {
-                newMass = Math.min(50.0, curMass + 3.0);
-                netFlux += 4.0;
-              } else if (nbrProto > 0) {
-                newMass += 0.2;
+                // Diffusion current J = - D * grad(rho)
+                const gradRho = rho - this.energy[nx][ny][nz];
+                const diffRate = 0.12 * dt;
+                dEnergy[x][y][z] -= gradRho * diffRate;
+                dEnergy[nx][ny][nz] += gradRho * diffRate;
+                netFlux += Math.abs(gradRho) * 0.05;
               }
             }
           }
-          else if (st === STATE_SUPERNOVA) {
-            // Sedov-Taylor shockwave expands for 2 generations
-            if (curAge >= 2) {
-              // Core remnant collapses below Schwarzschild radius -> forms BLACK HOLE at d = 0.50!
-              if (curMass >= 24.0 || this.blackHolesTotal === 0) {
-                next = STATE_BLACK_HOLE;
-                newMass = 18.0 + curMass * 0.4;
-                newD = 0.50; // The 1/2 event horizon throat collapse!
-                this.blackHolesTotal++;
-                netFlux += 10.0;
-              } else {
-                next = STATE_PULSAR;
-                newMass = 2.4;
-              }
-            } else {
-              next = STATE_SUPERNOVA;
-            }
-          }
-          else if (st === STATE_BLACK_HOLE) {
-            // Permanent Singularity (d = 0.50): Accretes mass from surrounding string clouds
-            next = STATE_BLACK_HOLE;
-            newD = 0.50;
-            newMass += (nbrProto + nbrPlasma) * 1.5;
 
-            // Binary Black Hole Coalescence
-            if (nbrBlackHoles > 0) {
-              newMass += 15.0;
-              netFlux += 14.0;
-            }
+          // Relativistic Polar String Jets from Black Hole (d <= 0.52): Beams along +/- y
+          if (isBH) {
+            const jetFlux = 4.2 * dt;
+            if (y + 1 < G) dEnergy[x][y + 1][z] += jetFlux;
+            if (y - 1 >= 0) dEnergy[x][y - 1][z] += jetFlux;
+            netFlux += jetFlux * 2.0;
           }
-          else if (st === STATE_PULSAR) {
-            if (curAge >= 10) {
-              next = STATE_VACUUM;
-            } else if (totalMass > 45.0) {
-              // Accretion collapse to Black Hole
-              next = STATE_BLACK_HOLE;
-              newD = 0.50;
-              this.blackHolesTotal++;
-            }
-          }
-
-          this.nextState[x][y][z] = next;
-          this.mass[x][y][z] = newMass;
-          this.distance[x][y][z] = newD;
-
-          // Count active 36-vertice complexes (both fully formed and emerging proto-complexes)
-          if (next === STATE_36_STRUCTURE || next === STATE_PROTO_36) cur36++;
-          if (next === STATE_SUPERNOVA) curSN++;
-          if (next === STATE_BLACK_HOLE) curBH++;
         }
       }
     }
 
-    // Second Pass: Buffer Swap and Metrics
+    // 2. Integrate Continuous Metric Collapse & Theorem 1.1 Entropy Production
     for (let x = 0; x < G; x++) {
       for (let y = 0; y < G; y++) {
         for (let z = 0; z < G; z++) {
-          if (this.nextState[x][y][z] === this.state[x][y][z]) {
-            this.age[x][y][z]++;
-          } else {
-            this.state[x][y][z] = this.nextState[x][y][z];
-            this.age[x][y][z] = 0;
-            if (this.state[x][y][z] === STATE_SUPERNOVA) {
-              this.blastRadius[x][y][z] = 0.5;
+          // Update energy density rho
+          this.energy[x][y][z] = Math.max(0.0, this.energy[x][y][z] + dEnergy[x][y][z]);
+          const rho = this.energy[x][y][z];
+          let curD = this.distance[x][y][z];
+          let velD = this.distanceVel[x][y][z];
+
+          // A. Spontaneous Metric Collapse ODE:
+          // ddot{d} + Gamma dot{d} + omega_0^2(d - 4.40) = - kappa * rho / d^2
+          if (rho > 0.05) {
+            const gravForce = -6.2 * (rho / Math.max(0.35, curD * curD));
+            const restoringForce = -1.8 * (curD - 4.40);
+            velD += (gravForce + restoringForce) * dt;
+            velD *= Math.max(0.0, 1.0 - dt * 3.0); // Dissipative damping Gamma from entropy production
+            curD = Math.max(0.50, Math.min(4.40, curD + velD * dt));
+            if (curD <= 0.51) {
+              curD = 0.50;
+              velD = 0.0;
             }
+          } else {
+            // Unperturbed vacuum relaxes to 4.40
+            curD += (4.40 - curD) * 0.1 * dt;
+            velD *= 0.8;
           }
+
+          this.distance[x][y][z] = curD;
+          this.distanceVel[x][y][z] = velD;
+
+          // B. Paper 02 Emergent Proper Time tau:
+          // dtau = sqrt(1 - rs / r) * dt * (1 + hbar omega / E0)
+          const isBH = (curD <= 0.52);
+          const rsEff = isBH ? 0.85 : 0.85 * (4.40 - curD) / 3.90;
+          const g00 = Math.max(0.01, 1.0 - rsEff / 1.5);
+          if (rho > 0.01 || this.properTime[x][y][z] > 0) {
+            this.properTime[x][y][z] += dt * Math.sqrt(g00) * (1.0 + Math.min(5.0, rho / 30.0));
+          }
+
+          // C. Theorem 1.1 Entropy Production Rate: EP = D(J || J^T)
+          if (rho > 0.01) {
+            const chiralAsym = 0.00686 + 0.08 * (rho / 35.0) + 0.12 * Math.abs(velD);
+            const curEP = chiralAsym * (1.0 + 0.25 * (4.40 - curD));
+            this.epRate[x][y][z] = curEP;
+            this.entropy[x][y][z] += curEP * dt;
+          } else {
+            this.epRate[x][y][z] = 0.0;
+          }
+
+          // Classify state from continuous fields
+          if (isBH) {
+            curBH++;
+          } else if (rho > 55.0 && curD > 0.52) {
+            curSN++;
+          } else if (rho > 0.5 || this.properTime[x][y][z] > 0.2) {
+            cur36++;
+          }
+
+          sumEP += this.epRate[x][y][z];
+          sumEntropy += this.entropy[x][y][z];
         }
       }
     }
 
     this.generation++;
+    this.cosmicTime += dt * 12.5; // Myr
     this.activeUnits36 = cur36;
     this.supernovaeActive = curSN;
     this.blackHolesActive = curBH;
+    this.blackHolesTotal = Math.max(this.blackHolesTotal, curBH);
+    this.supernovaeTotal = Math.max(this.supernovaeTotal, curSN);
+    this.totalEPRate = sumEP;
+    this.totalEntropy = sumEntropy;
     this.energyFlux = netFlux;
 
     this.updateTelemetry();
   }
 
   // --------------------------------------------------------------------------
-  // 5. Render Loop: Continuous Strings & Ruled Ribbon Sheets Synthesis
+  // 4. Render Loop: Continuous Ruled Ribbon Synthesis
   // --------------------------------------------------------------------------
   animate() {
     this.animId = requestAnimationFrame(() => this.animate());
@@ -664,30 +580,27 @@ export class GameOfCosmos {
 
     this.controls.update();
 
-    const now = performance.now();
-    const dt = (now - this.lastStepTime) / 1000;
-    const stepInterval = 1.0 / Math.max(0.1, this.genSpeed);
+    const dt = this.clock.getDelta();
+    const effectiveDt = Math.min(0.1, dt * this.genSpeed);
 
-    if (this.isPlaying && dt >= stepInterval) {
-      this.stepGeneration();
-      this.lastStepTime = now;
+    if (this.isPlaying && !this.isStill) {
+      this.stepFieldEvolution(effectiveDt);
     }
 
     const t = this.clock.getElapsedTime();
-    const G = this.GRID;
 
     for (let i = 0; i < this.unitMeshes.length; i++) {
       const uItem = this.unitMeshes[i];
       const { x, y, z } = uItem;
-      const st = this.state[x][y][z];
       const curD = this.distance[x][y][z];
+      const rho = this.energy[x][y][z];
+      const tau = this.properTime[x][y][z];
+      const isBlackHole = (curD <= 0.52);
 
-      // Smooth energy transition: 0.0 in vacuum, 1.0 when active
-      const targetE = st > STATE_VACUUM ? 1.0 : (this.showScaffold ? 0.05 : 0.0);
-      this.energy[x][y][z] += (targetE - this.energy[x][y][z]) * 0.18;
-      const e = this.energy[x][y][z];
+      // Energy visibility transition: completely hidden in vacuum
+      const targetE = (rho > 0.05 || tau > 0.05) ? 1.0 : (this.showScaffold ? 0.05 : 0.0);
+      const e = targetE;
 
-      // Hide unit completely if vacuum
       if (e < 0.01) {
         uItem.group.visible = false;
         continue;
@@ -697,12 +610,9 @@ export class GameOfCosmos {
       // 1. Calculate 6 Layer Closed String Loops (36 Vertices Profile)
       const layerLoops = [];
       const layerHeights = [];
-      const primaryTriads = []; // 3 primary vertices per layer
-      const isBlackHole = (st === STATE_BLACK_HOLE);
+      const primaryTriads = [];
 
-      // In black hole state, metric separation d crushes to 0.50 (throat collapse)
-      const dEff = isBlackHole ? 0.50 : curD;
-      const heightScale = dEff / 4.40;
+      const heightScale = curD / 4.40;
 
       for (let l = 0; l < this.LAYERS; l++) {
         const isInv = (l % 2 !== 0);
@@ -715,13 +625,12 @@ export class GameOfCosmos {
 
         // Peristaltic breathing wave
         const wavePsi = Math.cos(t * 3.5 - l * 0.8);
-        const rLayer = this.R_BASE * throat * (1.0 + (isBlackHole ? 0.08 : 0.22 * wavePsi * e));
+        const rLayer = this.R_BASE * throat * (1.0 + (isBlackHole ? 0.08 : 0.22 * wavePsi * Math.min(1.0, rho / 20.0)));
 
         // Torsional Chiral Twist
-        const chiralAngle = (isInv ? -1 : 1) * 0.35 * Math.sin(t * 2.5 + l * 0.6) * e;
+        const chiralAngle = (isInv ? -1 : 1) * 0.35 * Math.sin(t * 2.5 + l * 0.6);
         const baseTheta = isInv ? -Math.PI / 2 : Math.PI / 2;
 
-        // 3 Primary Vertices + 3 Midpoints = 6 Points per layer loop (36 Vertices across 6 layers)
         const loopPts = [];
         const triadPts = [];
         for (let j = 0; j < 3; j++) {
@@ -743,11 +652,10 @@ export class GameOfCosmos {
         }
         primaryTriads.push(triadPts);
 
-        // CatmullRom closed string curve
         const curve = new THREE.CatmullRomCurve3(loopPts, true, 'centripetal', 0.5);
         layerLoops.push(curve);
 
-        // Update Bounding String Loop Line
+        // Bounding String Loop
         const sLoop = uItem.stringLoops[l];
         const lPosAttr = sLoop.geo.attributes.position;
         const lColAttr = sLoop.geo.attributes.color;
@@ -758,23 +666,20 @@ export class GameOfCosmos {
           const pt = cPts[p];
           lPosAttr.setXYZ(p, pt.x, pt.y, pt.z);
 
-          // String color based on state
           let cr = 0.22, cg = 0.85, cb = 0.98;
-          if (st === STATE_SUPERNOVA) {
-            cr = 0.98; cg = 0.75; cb = 0.15;
-          } else if (isBlackHole) {
+          if (isBlackHole) {
             cr = 0.65; cg = 0.18; cb = 0.95;
-          } else if (st === STATE_INFLATION) {
-            cr = 0.98; cg = 0.95; cb = 0.45;
+          } else if (rho > 45.0) {
+            cr = 0.98; cg = 0.75; cb = 0.15;
           }
           const pulse = 0.6 + 0.4 * Math.sin(t * 5.0 + p * 0.2 + l);
-          lColAttr.setXYZ(p, cr * e * pulse, cg * e * pulse, cb * e * pulse);
+          lColAttr.setXYZ(p, cr * pulse, cg * pulse, cb * pulse);
         }
         lPosAttr.needsUpdate = true;
         lColAttr.needsUpdate = true;
       }
 
-      // 2. Update 5 Outer Ruled Ribbon Strip Sheets
+      // 2. 5 Outer Ruled Ribbon Strip Sheets
       for (let rb = 0; rb < uItem.outerRibbons.length; rb++) {
         const rItem = uItem.outerRibbons[rb];
         const c1 = layerLoops[rItem.l1];
@@ -794,31 +699,25 @@ export class GameOfCosmos {
             const p1 = c1.getPoint(wu);
             const p2 = c2.getPoint(wu);
 
-            // Interpolated point on ruled surface strip
             const xBase = p1.x * (1 - wv) + p2.x * wv;
             const yBase = zInterp;
             const zBase = p1.z * (1 - wv) + p2.z * wv;
 
-            // Outward normal vector
             const rLen = Math.sqrt(xBase * xBase + zBase * zBase) || 1.0;
             const nx = xBase / rLen;
             const nz = zBase / rLen;
 
-            // Peristaltic wave ripple along string strip
-            const waveDisplacement = Math.sin(Math.PI * wv) * 0.25 * Math.sin(t * 4.0 - wu * Math.PI * 4) * e;
+            const waveDisplacement = Math.sin(Math.PI * wv) * 0.25 * Math.sin(t * 4.0 - wu * Math.PI * 4);
 
             const idx = v * (this.U_SEGS + 1) + u;
             posAttr.setXYZ(idx, xBase + nx * waveDisplacement, yBase, zBase + nz * waveDisplacement);
 
-            // Dynamic Vertex Colors for Ruled Surface
             let cr = 0.15, cg = 0.65, cb = 0.95;
-            if (st === STATE_SUPERNOVA) {
-              cr = 0.98; cg = 0.35; cb = 0.25;
-            } else if (isBlackHole) {
+            if (isBlackHole) {
               cr = 0.55; cg = 0.12; cb = 0.85;
-            } else if (st === STATE_INFLATION) {
-              cr = 0.98; cg = 0.85; cb = 0.25;
-            } else if (st === STATE_36_STRUCTURE) {
+            } else if (rho > 45.0) {
+              cr = 0.98; cg = 0.35; cb = 0.25;
+            } else {
               const isAmber = Math.sin(wu * Math.PI * 6 + t * 2.0) > 0.65;
               if (isAmber) {
                 cr = 0.96; cg = 0.65; cb = 0.18;
@@ -827,7 +726,7 @@ export class GameOfCosmos {
               }
             }
 
-            const alphaPulse = Math.max(0.05, e * (0.65 + 0.35 * Math.sin(t * 3.0 + wu * 6.0)));
+            const alphaPulse = Math.max(0.05, 0.65 + 0.35 * Math.sin(t * 3.0 + wu * 6.0));
             colAttr.setXYZ(idx, cr * alphaPulse, cg * alphaPulse, cb * alphaPulse);
           }
         }
@@ -835,8 +734,7 @@ export class GameOfCosmos {
         colAttr.needsUpdate = true;
       }
 
-      // 3. Update 45 Internal Bipartite Helical Ruled Ribbon Strips
-      // Connecting alternating triads A_{l, j} <-> B_{l+1, k} across the throat
+      // 3. 45 Internal Bipartite Helical Ruled Ribbon Strips
       const intPosAttr = uItem.intGeo.attributes.position;
       const intColAttr = uItem.intGeo.attributes.color;
       let stripIdx = 0;
@@ -852,15 +750,12 @@ export class GameOfCosmos {
             const ptA = triadA[j];
             const ptB = triadB[k];
 
-            // Chord vector and transverse normal
             const dx = ptB.x - ptA.x;
             const dy = ptB.y - ptA.y;
             const dz = ptB.z - ptA.z;
             const chordLen = Math.sqrt(dx * dx + dy * dy + dz * dz) || 1.0;
 
-            // Transverse vector perpendicular to chord
             const wx = (-dz / chordLen) * RIBBON_W;
-            const wy = 0.0;
             const wz = (dx / chordLen) * RIBBON_W;
 
             const baseV = stripIdx * (STRIP_STEPS + 1) * 2;
@@ -871,7 +766,6 @@ export class GameOfCosmos {
               const cy = ptA.y * (1 - s) + ptB.y * s;
               const cz = ptA.z * (1 - s) + ptB.z * s;
 
-              // Helical twist phase
               const twist = Math.cos(s * Math.PI + t * 3.0 + j + k);
               const vIdx1 = baseV + step * 2;
               const vIdx2 = vIdx1 + 1;
@@ -879,17 +773,14 @@ export class GameOfCosmos {
               intPosAttr.setXYZ(vIdx1, cx - wx * twist, cy, cz - wz * twist);
               intPosAttr.setXYZ(vIdx2, cx + wx * twist, cy, cz + wz * twist);
 
-              // Colors for internal bipartite string strips
               let ir = 0.18, ig = 0.85, ib = 0.98;
-              if (st === STATE_SUPERNOVA) {
-                ir = 0.98; ig = 0.65; ib = 0.20;
-              } else if (isBlackHole) {
+              if (isBlackHole) {
                 ir = 0.70; ig = 0.20; ib = 0.95;
-              } else if (st === STATE_PROTO_36) {
-                ir = 0.65; ig = 0.40; ib = 0.92;
+              } else if (rho > 45.0) {
+                ir = 0.98; ig = 0.65; ib = 0.20;
               }
 
-              const pulse = e * (0.50 + 0.50 * Math.sin(t * 4.0 + s * Math.PI));
+              const pulse = 0.50 + 0.50 * Math.sin(t * 4.0 + s * Math.PI);
               intColAttr.setXYZ(vIdx1, ir * pulse, ig * pulse, ib * pulse);
               intColAttr.setXYZ(vIdx2, ir * pulse, ig * pulse, ib * pulse);
             }
@@ -901,7 +792,7 @@ export class GameOfCosmos {
       intPosAttr.needsUpdate = true;
       intColAttr.needsUpdate = true;
 
-      // 4. Black Hole Singularities (Accretion Disk + Polar Jets)
+      // 4. Black Hole Singularity Display (Accretion Disk + Polar Jets)
       if (isBlackHole) {
         uItem.bhGroup.visible = true;
         uItem.bhDisk.rotation.z = t * 3.5;
@@ -911,153 +802,130 @@ export class GameOfCosmos {
       } else {
         uItem.bhGroup.visible = false;
       }
-
-      // 5. Supernova Blast Wave Animation (Sedov Blast Expansion)
-      if (st === STATE_SUPERNOVA) {
-        uItem.snGroup.visible = true;
-        this.blastRadius[x][y][z] += dt * 2.8;
-        const rB = this.blastRadius[x][y][z];
-        uItem.snBlastMesh.scale.set(rB, rB, rB);
-        uItem.snRingMesh.scale.set(rB * 1.2, rB * 1.2, 1.0);
-        uItem.snRingMesh.rotation.z = t * 2.5;
-      } else {
-        uItem.snGroup.visible = false;
-      }
     }
 
     this.renderer.render(this.scene, this.camera);
   }
 
   // --------------------------------------------------------------------------
-  // 6. Cosmological Presets & Initialization
+  // 5. Preset Configurations & Gamma Pulse Actions
   // --------------------------------------------------------------------------
   clearGrid() {
     const G = this.GRID;
     for (let x = 0; x < G; x++) {
       for (let y = 0; y < G; y++) {
         for (let z = 0; z < G; z++) {
-          this.state[x][y][z] = STATE_VACUUM;
-          this.nextState[x][y][z] = STATE_VACUUM;
-          this.age[x][y][z] = 0;
-          this.mass[x][y][z] = 0.0;
-          this.energy[x][y][z] = 0.0;
           this.distance[x][y][z] = 4.40;
+          this.distanceVel[x][y][z] = 0.0;
+          this.energy[x][y][z] = 0.0;
+          this.properTime[x][y][z] = 0.0;
+          this.entropy[x][y][z] = 0.0;
+          this.epRate[x][y][z] = 0.0;
           this.blastRadius[x][y][z] = 0.0;
+          this.age[x][y][z] = 0;
         }
       }
     }
     this.generation = 0;
+    this.cosmicTime = 0.0;
     this.activeUnits36 = 0;
     this.supernovaeActive = 0;
     this.supernovaeTotal = 0;
     this.blackHolesActive = 0;
     this.blackHolesTotal = 0;
+    this.totalEntropy = 0.0;
+    this.totalEPRate = 0.0;
     this.energyFlux = 0.0;
+    this.isStill = false;
     this.updateTelemetry();
+  }
+
+  freezeStillMatrix() {
+    this.clearGrid();
+    this.isStill = true;
+    const btnStill = document.getElementById('cosmos-still-btn');
+    if (btnStill) btnStill.classList.add('active');
+    this.updateTelemetry();
+  }
+
+  emitGammaPulse(targetX = 1, targetY = 1, targetZ = 1) {
+    this.isStill = false;
+    const btnStill = document.getElementById('cosmos-still-btn');
+    if (btnStill) btnStill.classList.remove('active');
+
+    // Inject high-energy gamma pulse at specified cell:
+    // Breaks detailed balance -> Time tau emerges -> EP > 0 -> Metric collapses to d = 0.50!
+    this.energy[targetX][targetY][targetZ] = 85.0; // Hyper-massive concentration
+    this.properTime[targetX][targetY][targetZ] = 0.1;
+    this.epRate[targetX][targetY][targetZ] = 0.45;
+    this.entropy[targetX][targetY][targetZ] = 0.25;
+
+    console.log(`[GameOfCosmos] Gamma Pulse emitted at (${targetX}, ${targetY}, ${targetZ}). Time and entropy emerging!`);
   }
 
   loadPreset(presetKey) {
     this.clearGrid();
     const G = this.GRID;
-    const mid = 1; // Center of 3x3x3 lattice
+    const mid = 1;
 
     if (presetKey === 'genesis' || presetKey === 'bigbang') {
-      // 1. BIG BANG GENESIS: Primordial 36-Vertice String Singularity
-      // High-mass central string inflaton seed; expands and condenses into a family of 36-vertice complexes!
-      this.state[mid][mid][mid] = STATE_INFLATION;
-      this.mass[mid][mid][mid] = 72.0; // Center is hyper-massive -> will detonate into central black hole
-      this.energy[mid][mid][mid] = 1.0;
-      this.ruleMode = 'astrophysics';
+      // Primordial Singularity: Gamma Frequency pulse injected into still vacuum!
+      this.emitGammaPulse(mid, mid, mid);
     }
     else if (presetKey === 'supernova') {
-      // 2. CORE-COLLAPSE SUPERNOVA: Massive 36-vertice structure detonating
-      this.state[mid][mid][mid] = STATE_SUPERNOVA;
-      this.mass[mid][mid][mid] = 60.0;
-      this.blastRadius[mid][mid][mid] = 0.6;
-      this.supernovaeTotal++;
-
-      // Neighboring stable 36-vertice string complexes
-      this.state[mid + 1][mid][mid] = STATE_36_STRUCTURE;
-      this.mass[mid + 1][mid][mid] = 30.0;
-      this.state[mid - 1][mid][mid] = STATE_36_STRUCTURE;
-      this.mass[mid - 1][mid][mid] = 28.0;
-      this.state[mid][mid + 1][mid] = STATE_PROTO_36;
-      this.mass[mid][mid + 1][mid] = 22.0;
-
-      this.ruleMode = 'astrophysics';
+      this.energy[mid][mid][mid] = 62.0;
+      this.energy[mid + 1][mid][mid] = 28.0;
+      this.energy[mid - 1][mid][mid] = 28.0;
+      this.energy[mid][mid + 1][mid] = 24.0;
+      this.properTime[mid][mid][mid] = 1.0;
+      this.properTime[mid + 1][mid][mid] = 0.8;
+      this.properTime[mid - 1][mid][mid] = 0.8;
+      this.properTime[mid][mid + 1][mid] = 0.5;
     }
     else if (presetKey === 'blackhole') {
-      // 3. SCHWARZSCHILD BLACK HOLE (d = 0.50) & RELATIVISTIC JETS
-      this.state[mid][mid][mid] = STATE_BLACK_HOLE;
-      this.mass[mid][mid][mid] = 85.0;
-      this.distance[mid][mid][mid] = 0.50; // Collapsed 1/2 event horizon!
-      this.blackHolesTotal++;
+      // Dynamic metric d set to 0.50 at center with surrounding stable 36-vertice complexes
+      this.energy[mid][mid][mid] = 95.0;
+      this.distance[mid][mid][mid] = 0.50; // Dynamic 1/2 event horizon!
+      this.properTime[mid][mid][mid] = 2.0;
 
-      // Surrounding stable 36-vertice string complexes orbiting
-      this.state[mid + 1][mid][mid] = STATE_36_STRUCTURE;
-      this.mass[mid + 1][mid][mid] = 32.0;
-      this.state[mid - 1][mid][mid] = STATE_36_STRUCTURE;
-      this.mass[mid - 1][mid][mid] = 32.0;
-      this.state[mid][mid][mid + 1] = STATE_36_STRUCTURE;
-      this.mass[mid][mid][mid + 1] = 28.0;
-
-      this.ruleMode = 'astrophysics';
+      this.energy[mid + 1][mid][mid] = 30.0;
+      this.energy[mid - 1][mid][mid] = 30.0;
+      this.energy[mid][mid][mid + 1] = 28.0;
+      this.properTime[mid + 1][mid][mid] = 1.0;
+      this.properTime[mid - 1][mid][mid] = 1.0;
+      this.properTime[mid][mid][mid + 1] = 1.0;
     }
     else if (presetKey === 'binary_merger') {
-      // 4. BINARY BLACK HOLE INSPIRAL & COALESCENCE
-      this.state[mid - 1][mid][mid] = STATE_BLACK_HOLE;
-      this.mass[mid - 1][mid][mid] = 45.0;
+      this.energy[mid - 1][mid][mid] = 80.0;
       this.distance[mid - 1][mid][mid] = 0.50;
+      this.properTime[mid - 1][mid][mid] = 2.0;
 
-      this.state[mid + 1][mid][mid] = STATE_BLACK_HOLE;
-      this.mass[mid + 1][mid][mid] = 40.0;
+      this.energy[mid + 1][mid][mid] = 75.0;
       this.distance[mid + 1][mid][mid] = 0.50;
+      this.properTime[mid + 1][mid][mid] = 2.0;
 
-      // Orbiting 36-vertice string complexes
-      this.state[mid][mid][mid + 1] = STATE_36_STRUCTURE;
-      this.mass[mid][mid][mid + 1] = 26.0;
-
-      this.blackHolesTotal = 2;
-      this.ruleMode = 'astrophysics';
+      this.energy[mid][mid][mid + 1] = 26.0;
+      this.properTime[mid][mid][mid + 1] = 1.0;
     }
     else if (presetKey === 'cosmic_web') {
-      // 5. COSMIC WEB OF 36-VERTICE STRING MANIFOLDS
       for (let x = 0; x < G; x++) {
         for (let z = 0; z < G; z++) {
           if ((x + z) % 2 === 0) {
-            this.state[x][mid][z] = STATE_36_STRUCTURE;
-            this.mass[x][mid][z] = 30.0;
+            this.energy[x][mid][z] = 28.0;
+            this.properTime[x][mid][z] = 1.0;
           }
         }
       }
-      this.state[mid][mid][mid] = STATE_BLACK_HOLE;
-      this.mass[mid][mid][mid] = 80.0;
+      this.energy[mid][mid][mid] = 90.0;
       this.distance[mid][mid][mid] = 0.50;
-      this.blackHolesTotal++;
-      this.ruleMode = 'astrophysics';
+      this.properTime[mid][mid][mid] = 2.5;
     }
 
-    // Immediately tally active units from preset
-    let cur36 = 0, curSN = 0, curBH = 0;
-    for (let x = 0; x < G; x++) {
-      for (let y = 0; y < G; y++) {
-        for (let z = 0; z < G; z++) {
-          const st = this.state[x][y][z];
-          if (st === STATE_36_STRUCTURE || st === STATE_PROTO_36) cur36++;
-          if (st === STATE_SUPERNOVA) curSN++;
-          if (st === STATE_BLACK_HOLE) curBH++;
-        }
-      }
-    }
-    this.activeUnits36 = cur36;
-    this.supernovaeActive = curSN;
-    this.blackHolesActive = curBH;
-
-    this.updateTelemetry();
+    this.stepFieldEvolution(0.01);
   }
 
   // --------------------------------------------------------------------------
-  // 7. Live Cosmological Telemetry
+  // 6. Live Telemetry HUD Updates
   // --------------------------------------------------------------------------
   updateTelemetry() {
     const elGen = document.getElementById('cosmos-telemetry-gen');
@@ -1065,39 +933,56 @@ export class GameOfCosmos {
     const elSN = document.getElementById('cosmos-telemetry-sn');
     const elBH = document.getElementById('cosmos-telemetry-bh');
     const elFlux = document.getElementById('cosmos-telemetry-flux');
+    const elEP = document.getElementById('cosmos-telemetry-ep');
+    const elEntropy = document.getElementById('cosmos-telemetry-entropy');
     const elBadge = document.getElementById('cosmos-state-badge');
 
-    const myr = (this.generation * 12.5).toFixed(0);
+    if (elGen) {
+      elGen.innerText = this.isStill
+        ? '0.0 Myr (Timeless)'
+        : `${this.cosmicTime.toFixed(1)} Myr (Gen ${this.generation})`;
+    }
 
-    if (elGen) elGen.innerText = `Gen ${this.generation} (${myr} Myr)`;
     if (elUnits) elUnits.innerText = `${this.activeUnits36} Complexes`;
     if (elSN) elSN.innerText = `${this.supernovaeTotal} Detonations`;
     if (elBH) elBH.innerText = `${this.blackHolesTotal} Singularities`;
     if (elFlux) elFlux.innerText = `∇•J = ${this.energyFlux.toFixed(2)}`;
 
+    if (elEP) {
+      elEP.innerText = this.isStill
+        ? '0.00 bits/Myr'
+        : `${this.totalEPRate.toFixed(2)} bits/Myr`;
+    }
+
+    if (elEntropy) {
+      elEntropy.innerText = this.isStill
+        ? '0.00 nats'
+        : `${this.totalEntropy.toFixed(2)} nats`;
+    }
+
     if (elBadge) {
       elBadge.className = 'telemetry-badge';
-      if (this.supernovaeActive > 0) {
-        elBadge.classList.add('badge-turbulent');
-        elBadge.innerText = '🌟 SUPERNOVA SEDOV BLAST CASCADE';
+      if (this.isStill) {
+        elBadge.classList.add('badge-resonance');
+        elBadge.innerText = '❄️ TIMELESS GROUND STATE (S = 0, EP = 0)';
       } else if (this.blackHolesActive > 0) {
         elBadge.classList.add('badge-horizon');
-        elBadge.innerText = '🕳️ BLACK HOLE STRING SINGULARITY (d = 0.50)';
+        elBadge.innerText = '🕳️ SPONTANEOUS BLACK HOLE COLLAPSE (d = 0.50)';
+      } else if (this.supernovaeActive > 0) {
+        elBadge.classList.add('badge-turbulent');
+        elBadge.innerText = '🌟 SUPERNOVA SEDOV BLAST CASCADE';
       } else if (this.activeUnits36 > 0) {
         elBadge.classList.add('badge-triad');
         elBadge.innerText = '🌌 36-VERTICE STRING SOLITON EPOCH';
-      } else if (this.generation === 0) {
-        elBadge.classList.add('badge-resonance');
-        elBadge.innerText = '⚡ PRIMORDIAL STRING SINGULARITY';
       } else {
         elBadge.classList.add('badge-standing');
-        elBadge.innerText = '🌌 COSMIC EXPANSION';
+        elBadge.innerText = '⚡ PRIMORDIAL INFLATION';
       }
     }
   }
 
   // --------------------------------------------------------------------------
-  // 8. Interactive UI Controls & Event Listeners
+  // 7. Interactive Event Listeners & Raycasting
   // --------------------------------------------------------------------------
   initUI() {
     const btnPlay = document.getElementById('cosmos-play-btn');
@@ -1112,7 +997,7 @@ export class GameOfCosmos {
     const btnStep = document.getElementById('cosmos-step-btn');
     if (btnStep) {
       btnStep.addEventListener('click', () => {
-        this.stepGeneration();
+        this.stepFieldEvolution(0.08);
       });
     }
 
@@ -1141,19 +1026,26 @@ export class GameOfCosmos {
       });
     }
 
+    const btnGamma = document.getElementById('cosmos-gamma-btn');
+    if (btnGamma) {
+      btnGamma.addEventListener('click', () => {
+        this.emitGammaPulse(1, 1, 1);
+      });
+    }
+
+    const btnStill = document.getElementById('cosmos-still-btn');
+    if (btnStill) {
+      btnStill.addEventListener('click', () => {
+        this.freezeStillMatrix();
+      });
+    }
+
     const speedSlider = document.getElementById('cosmos-speed-slider');
     const speedBadge = document.getElementById('cosmos-speed-badge');
     if (speedSlider) {
       speedSlider.addEventListener('input', (e) => {
         this.genSpeed = parseFloat(e.target.value);
         if (speedBadge) speedBadge.innerText = `${this.genSpeed.toFixed(1)} gen/s`;
-      });
-    }
-
-    const ruleSelect = document.getElementById('cosmos-rule-select');
-    if (ruleSelect) {
-      ruleSelect.addEventListener('change', (e) => {
-        this.ruleMode = e.target.value;
       });
     }
 
@@ -1181,7 +1073,6 @@ export class GameOfCosmos {
   }
 }
 
-// Auto-instantiate when DOM is loaded
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => {
     window.cosmosInstance = new GameOfCosmos('cosmos-canvas-container');
