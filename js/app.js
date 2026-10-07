@@ -1041,9 +1041,10 @@ function triggerMathRendering(target = null) {
     }
   } else {
     // Retry once scripts finish initializing
-    setTimeout(() => triggerMathRendering(el), 60);
   }
 }
+window.triggerMathRendering = triggerMathRendering;
+
 
 window.toggleAbstract = function(id) {
   const wrap = document.getElementById(`wrap-${id}`);
@@ -1495,6 +1496,8 @@ function showToast(message, duration = 3000) {
     toast.classList.remove("show");
   }, duration);
 }
+window.showToast = showToast;
+
 
 // --- Hero KaTeX Formulas ---
 function initHeroFormulas() {
