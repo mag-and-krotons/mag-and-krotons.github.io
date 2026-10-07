@@ -18,17 +18,18 @@ class GameOfCosmosSimulation {
     // Automaton State
     this.isPlaying = true;
     this.generation = 0;
+    this.population = 0;
+    this.peakPopulation = 0;
     this.genSpeed = 3.0; // Generations per second
     this.lastStepTime = 0;
     this.birthsLastGen = 0;
     this.deathsLastGen = 0;
 
-    // Rules: Conway 3D / Triad Flux
-    // Survival: [2, 3], Birth: [3] in 6-neighbor face topology
-    this.ruleMode = 'conway6'; // 'conway6' | 'bays4555' | 'triad_flux'
-    this.survivalRules = [2, 3];
-    this.birthRules = [3];
-    this.neighborMode = 6; // 6 (von Neumann) or 26 (Moore)
+    // Rules: Bays 3D Life (B4,5 / S4,5) in 26-Moore neighborhood (Perpetual Cosmic Emergence)
+    this.ruleMode = 'bays4555';
+    this.survivalRules = [4, 5];
+    this.birthRules = [4, 5];
+    this.neighborMode = 26; // 26 (Moore in 3D)
     this.wrapAround = true;
 
     // Visual Settings
@@ -363,7 +364,38 @@ class GameOfCosmosSimulation {
     this.generation++;
     this.birthsLastGen = births;
     this.deathsLastGen = deaths;
+
+    // Extinction check & Primordial Quantum Reheating
+    let liveCount = 0;
+    for (let x = 0; x < G; x++) {
+      for (let y = 0; y < G; y++) {
+        for (let z = 0; z < G; z++) {
+          if (this.grid[x][y][z] === 1) liveCount++;
+        }
+      }
+    }
+    if (liveCount === 0 && this.generation > 1) {
+      this.reheatCosmos();
+    }
+
     this.updateTelemetry();
+  }
+
+  reheatCosmos() {
+    const G = this.GRID;
+    const mid = Math.floor(G / 2);
+    // Primordial Quantum Reheating: re-ignite central spherical kernel
+    for (let dx = -1; dx <= 1; dx++) {
+      for (let dy = -1; dy <= 1; dy++) {
+        for (let dz = -1; dz <= 1; dz++) {
+          if (dx * dx + dy * dy + dz * dz <= 2) {
+            this.grid[mid + dx][mid + dy][mid + dz] = 1;
+            this.energy[mid + dx][mid + dy][mid + dz] = 1.0;
+          }
+        }
+      }
+    }
+    this.birthsLastGen += 19;
   }
 
   // --------------------------------------------------------------------------
@@ -532,68 +564,87 @@ class GameOfCosmosSimulation {
     const mid = Math.floor(G / 2); // 3
 
     if (presetKey === 'bigbang') {
-      // Cosmic Big Bang: dense core cluster of 7 K3,3 units in center
-      // Expands into rich cosmological filaments and satellite galaxies
-      this.grid[mid][mid][mid] = 1;
-      this.grid[mid - 1][mid][mid] = 1;
-      this.grid[mid + 1][mid][mid] = 1;
-      this.grid[mid][mid - 1][mid] = 1;
-      this.grid[mid][mid + 1][mid] = 1;
-      this.grid[mid][mid][mid - 1] = 1;
-      this.grid[mid][mid][mid + 1] = 1;
-
-      this.neighborMode = 6;
-      this.survivalRules = [2, 3];
-      this.birthRules = [3];
-    } else if (presetKey === 'soliton') {
-      // 3D K3,3 Glider / Soliton: travels diagonally through 3D spacetime
+      // Cosmic Big Bang: 19-unit spherical primordial fireball
+      // Expands via Bays 3D Life (B4,5/S4,5) into a perpetual, breathing cosmic web
+      for (let dx = -1; dx <= 1; dx++) {
+        for (let dy = -1; dy <= 1; dy++) {
+          for (let dz = -1; dz <= 1; dz++) {
+            if (dx * dx + dy * dy + dz * dz <= 2) {
+              this.grid[mid + dx][mid + dy][mid + dz] = 1;
+            }
+          }
+        }
+      }
       this.neighborMode = 26;
-      this.survivalRules = [3, 4, 5];
-      this.birthRules = [3, 4];
+      this.survivalRules = [4, 5];
+      this.birthRules = [4, 5];
+      this.ruleMode = 'bays4555';
+      this.wrapAround = true;
+    } else if (presetKey === 'soliton') {
+      // 3D K3,3 Glider / Soliton: Carter Bays self-propagating 3D glider cluster
+      this.neighborMode = 26;
+      this.survivalRules = [4, 5];
+      this.birthRules = [4, 5];
+      this.ruleMode = 'bays4555';
+      this.wrapAround = true;
       const s = mid - 1;
-      // 3D glider seed
-      this.grid[s][s][s] = 1;
-      this.grid[s + 1][s][s] = 1;
-      this.grid[s][s + 1][s] = 1;
-      this.grid[s + 1][s + 1][s + 1] = 1;
-      this.grid[s][s][s + 1] = 1;
+      const gOffsets = [
+        [0,0,0], [1,0,0], [0,1,0], [1,1,1], [0,0,1], [1,1,0], [0,1,1]
+      ];
+      gOffsets.forEach(([dx, dy, dz]) => {
+        this.grid[s + dx][s + dy][s + dz] = 1;
+      });
     } else if (presetKey === 'pulsar') {
-      // Triad Pulsar: Period-3 breathing oscillator
-      this.neighborMode = 6;
-      this.survivalRules = [2, 3];
-      this.birthRules = [3];
-      // Cross blinker triad in 3 planes
+      // Triad Pulsar: stable 3D breathing limit-cycle oscillator
+      this.neighborMode = 26;
+      this.survivalRules = [4, 5];
+      this.birthRules = [4, 5];
+      this.ruleMode = 'bays4555';
+      this.wrapAround = true;
       for (let d = -1; d <= 1; d++) {
         this.grid[mid + d][mid][mid] = 1;
-        this.grid[mid][mid + d][mid + 1] = 1;
-        this.grid[mid][mid + d][mid - 1] = 1;
+        this.grid[mid][mid + d][mid] = 1;
+        this.grid[mid][mid][mid + d] = 1;
       }
+      this.grid[mid + 1][mid + 1][mid + 1] = 1;
+      this.grid[mid - 1][mid - 1][mid - 1] = 1;
     } else if (presetKey === 'helix') {
-      // Chiral Helical Filament: vertical column of rotating K3,3 units
-      this.neighborMode = 6;
-      this.survivalRules = [2, 3, 4];
-      this.birthRules = [3];
-      for (let y = 1; y < G - 1; y++) {
-        const offX = Math.round(Math.sin((y / G) * Math.PI * 2) * 1.5);
-        const offZ = Math.round(Math.cos((y / G) * Math.PI * 2) * 1.5);
+      // Chiral Helical Filament: intertwined double-helix flux channels
+      this.neighborMode = 26;
+      this.survivalRules = [4, 5];
+      this.birthRules = [4, 5];
+      this.ruleMode = 'bays4555';
+      this.wrapAround = true;
+      for (let y = 0; y < G; y++) {
+        const offX = Math.round(Math.sin((y / G) * Math.PI * 2) * 1.4);
+        const offZ = Math.round(Math.cos((y / G) * Math.PI * 2) * 1.4);
         this.grid[mid + offX][y][mid + offZ] = 1;
+        this.grid[mid - offX][y][mid - offZ] = 1;
       }
     } else if (presetKey === 'galaxy') {
-      // Stable Hyper-Galaxy (Still Life): 8-cell octahedron in thermodynamic equilibrium
-      this.neighborMode = 6;
-      this.survivalRules = [2, 3];
-      this.birthRules = [3];
-      const offsets = [
-        [1, 0, 0], [-1, 0, 0],
-        [0, 1, 0], [0, -1, 0],
-        [0, 0, 1], [0, 0, -1]
-      ];
-      offsets.forEach(off => {
-        this.grid[mid + off[0]][mid + off[1]][mid + off[2]] = 1;
-      });
+      // Spiral Galaxy: central core with spiral arm arms
+      this.neighborMode = 26;
+      this.survivalRules = [4, 5];
+      this.birthRules = [4, 5];
+      this.ruleMode = 'bays4555';
+      this.wrapAround = true;
+      for (let dx = -1; dx <= 1; dx++) {
+        for (let dy = -1; dy <= 1; dy++) {
+          this.grid[mid + dx][mid + dy][mid] = 1;
+        }
+      }
+      this.grid[mid + 2][mid + 1][mid] = 1;
+      this.grid[mid + 3][mid + 2][mid] = 1;
+      this.grid[mid - 2][mid - 1][mid] = 1;
+      this.grid[mid - 3][mid - 2][mid] = 1;
     } else if (presetKey === 'random') {
-      // Primordial Quantum Soup with 18% density
-      const density = 0.18;
+      // Primordial Quantum Soup with 16% density
+      this.neighborMode = 26;
+      this.survivalRules = [4, 5];
+      this.birthRules = [4, 5];
+      this.ruleMode = 'bays4555';
+      this.wrapAround = true;
+      const density = 0.16;
       for (let x = 0; x < G; x++) {
         for (let y = 0; y < G; y++) {
           for (let z = 0; z < G; z++) {
@@ -602,6 +653,10 @@ class GameOfCosmosSimulation {
         }
       }
     }
+
+    // Sync rule dropdown in UI
+    const ruleSelector = document.getElementById('cosmos-rule-select');
+    if (ruleSelector) ruleSelector.value = this.ruleMode;
 
     // Set initial energy to 1 for live cells
     for (let x = 0; x < G; x++) {
@@ -647,6 +702,12 @@ class GameOfCosmosSimulation {
         }
       }
     }
+
+    this.population = liveCount;
+    if (this.population > this.peakPopulation) {
+      this.peakPopulation = this.population;
+    }
+    this.shannonEntropy = spatialEntropy;
 
     // DOM Updates
     const elGen = document.getElementById('cosmos-telemetry-gen');
@@ -791,17 +852,22 @@ class GameOfCosmosSimulation {
     if (ruleSelector) {
       ruleSelector.addEventListener('change', (e) => {
         const mode = e.target.value;
-        if (mode === 'conway6') {
-          this.neighborMode = 6;
-          this.survivalRules = [2, 3];
-          this.birthRules = [3];
-        } else if (mode === 'bays4555') {
+        this.ruleMode = mode;
+        if (mode === 'bays4555') {
           this.neighborMode = 26;
           this.survivalRules = [4, 5];
-          this.birthRules = [5];
+          this.birthRules = [4, 5];
+        } else if (mode === 'inflation') {
+          this.neighborMode = 26;
+          this.survivalRules = [3, 4, 5];
+          this.birthRules = [4, 5];
         } else if (mode === 'triad_flux') {
+          this.neighborMode = 26;
+          this.survivalRules = [3, 4];
+          this.birthRules = [3, 4];
+        } else if (mode === 'conway6') {
           this.neighborMode = 6;
-          this.survivalRules = [2, 3, 4];
+          this.survivalRules = [2, 3];
           this.birthRules = [3];
         }
         this.updateTelemetry();

@@ -2414,6 +2414,13 @@ body {
   border-color: rgba(255, 255, 255, 0.3);
 }
 
+.icon-tool-btn.active {
+  background: rgba(34, 211, 238, 0.2);
+  border-color: rgba(34, 211, 238, 0.6);
+  color: #38bdf8;
+  box-shadow: 0 0 10px rgba(34, 211, 238, 0.25);
+}
+
 .manifold-canvas-wrap {
   width: 100%;
   height: 640px;
@@ -2672,6 +2679,7 @@ body {
 .dot-violet { background-color: #A78BFA; box-shadow: 0 0 8px #A78BFA; }
 .dot-emerald { background-color: #34D399; box-shadow: 0 0 8px #34D399; }
 .dot-blue { background-color: #60A5FA; box-shadow: 0 0 8px #60A5FA; }
+.dot-rose { background-color: #F43F5E; box-shadow: 0 0 8px #F43F5E; }
 
 .telemetry-label {
   color: #94A3B8;
@@ -2722,6 +2730,13 @@ body {
   background: rgba(59, 130, 246, 0.2);
   border: 1px solid #3B82F6;
   color: #60A5FA;
+}
+
+.badge-horizon {
+  background: rgba(239, 68, 68, 0.25);
+  border: 1px solid #EF4444;
+  color: #F87171;
+  box-shadow: 0 0 14px rgba(239, 68, 68, 0.6);
 }
 
 .manifold-details-grid {

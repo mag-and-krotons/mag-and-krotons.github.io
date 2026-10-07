@@ -288,6 +288,10 @@
             </div>
 
             <div class="manifold-quick-actions">
+              <button id="manifold-photons-btn" class="icon-tool-btn active" title="Toggle Spacetime Light Beam / Photon Geodesics">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                <span>Photons: ON</span>
+              </button>
               <button id="manifold-play-btn" class="icon-tool-btn" title="Pause / Resume Animation">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
                 <span>Pause</span>
@@ -320,6 +324,9 @@
               </button>
               <button class="manifold-preset-chip" data-preset="throat" title="High transmission velocity acoustic jet compressed through the narrow central throat">
                 <span>⚡ Acoustic Throat Jet</span>
+              </button>
+              <button class="manifold-preset-chip" data-preset="event_horizon" title="Collapse structure to the 1/2 point (d = 0.50): forms an acoustic event horizon that pulls passing photons into the singularity">
+                <span>🕳️ 1/2 Event Horizon (Pull Light)</span>
               </button>
               <button class="manifold-preset-chip" data-preset="superfluid" title="Zero entropy, perfectly coherent laminar superfluid with harmonic breathing">
                 <span>❄️ Crystalline Superfluid</span>
@@ -374,10 +381,10 @@
                     <span class="hud-slider-title">Distance (<em>d</em>)</span>
                     <span class="hud-unit-tag">units</span>
                   </div>
-                  <input type="number" id="manifold-dist-input" class="hud-num-input" min="1.50" max="8.00" step="0.05" value="4.40" aria-label="Inter-layer distance">
+                  <input type="number" id="manifold-dist-input" class="hud-num-input" min="0.50" max="8.00" step="0.05" value="4.40" aria-label="Inter-layer distance">
                 </div>
-                <input type="range" id="manifold-dist-slider" class="hud-range range-indigo" min="1.50" max="8.00" step="0.05" value="4.40">
-                <div class="hud-range-bounds"><span>1.50 (Compressed Neck)</span><span>8.00 (Elongated Pillar)</span></div>
+                <input type="range" id="manifold-dist-slider" class="hud-range range-indigo" min="0.50" max="8.00" step="0.05" value="4.40">
+                <div class="hud-range-bounds"><span>0.50 (1/2 Critical Horizon)</span><span>8.00 (Elongated Pillar)</span></div>
               </div>
 
               <!-- 5. Triad Coupling (kappa) -->
@@ -428,6 +435,16 @@
                 <span class="telemetry-dot dot-violet"></span>
                 <span class="telemetry-label">Emergent State:</span>
                 <span id="telemetry-state-badge" class="telemetry-badge badge-resonance">STANDING WAVE LOCK</span>
+              </div>
+              <div class="telemetry-item">
+                <span class="telemetry-dot dot-rose"></span>
+                <span class="telemetry-label">Horizon Metric:</span>
+                <span id="telemetry-horizon-state" class="telemetry-val" style="font-weight: 700; color: #38bdf8;">LAMINAR SUB-HORIZON</span>
+              </div>
+              <div class="telemetry-item">
+                <span class="telemetry-dot dot-amber"></span>
+                <span class="telemetry-label">Geodesic Lensing:</span>
+                <span id="telemetry-light-pull" class="telemetry-val" style="font-weight: 700; color: #94a3b8;">0.0° DEFLECTION</span>
               </div>
               <div class="telemetry-item">
                 <span class="telemetry-dot dot-emerald"></span>
@@ -513,9 +530,10 @@
               <div class="cosmos-rules-selector-wrap">
                 <span class="preset-label">RULE:</span>
                 <select id="cosmos-rule-select" class="cosmos-select">
-                  <option value="conway6" selected>Conway 3D (B3 / S2,3 &bull; 6 Face Neighbors)</option>
-                  <option value="bays4555">Bays 3D (B4,5 / S4,5 &bull; 26 Moore Neighbors)</option>
-                  <option value="triad_flux">Triad Parity Balance (B3 / S2,3,4 &bull; Chiral Flux)</option>
+                  <option value="bays4555" selected>Bays 3D Life (B4,5 / S4,5 &bull; 26-Moore Perpetual Web) [Default]</option>
+                  <option value="inflation">Cosmic Inflation (B4,5 / S3,4,5 &bull; Dense Filament Web)</option>
+                  <option value="triad_flux">Triad Parity Balance (B3,4 / S3,4 &bull; Chiral Quantum Flux)</option>
+                  <option value="conway6">Conway 3D Face (B3 / S2,3 &bull; 6 Orthogonal Neighbors)</option>
                 </select>
               </div>
 

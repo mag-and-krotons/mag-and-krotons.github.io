@@ -41,6 +41,12 @@ class FluidManifoldSimulation {
     this.clock = new THREE.Clock();
     this.elapsed = 0;
 
+    // Spacetime Geodesics & Photon Beam Simulation
+    this.showPhotons = true;
+    this.maxPhotons = 120;
+    this.photons = [];
+    this.photonsTrappedTotal = 0;
+
     this.initScene();
     this.initTopology();
     this.initControls();
@@ -390,6 +396,256 @@ class FluidManifoldSimulation {
 
     this.particleSys = new THREE.Points(pGeo, this.pMat);
     this.mainGroup.add(this.particleSys);
+
+    // 6. Schwarzschild Event Horizon Throat Core & Accretion Photon Sphere
+    this.initEventHorizon();
+
+    // 7. Spacetime Photon Beam & Gravitational Lensing Stream
+    this.initPhotonStream();
+  }
+
+  initEventHorizon() {
+    this.eventHorizonGroup = new THREE.Group();
+    this.eventHorizonGroup.position.set(0, 0, 0);
+
+    // 1. Central Event Horizon Singularity Void (Schwarzschild Dark Throat Core)
+    const sphereGeo = new THREE.SphereGeometry(0.72, 32, 32);
+    const sphereMat = new THREE.MeshBasicMaterial({
+      color: 0x010204,
+      wireframe: false
+    });
+    this.horizonVoidSphere = new THREE.Mesh(sphereGeo, sphereMat);
+    this.eventHorizonGroup.add(this.horizonVoidSphere);
+
+    // 2. Glowing Accretion Ring / Photon Sphere Plasma Disc (Horizontal Throat Plane)
+    const ringGeo = new THREE.RingGeometry(0.75, 1.95, 64, 8);
+    ringGeo.rotateX(Math.PI / 2);
+    const ringMat = new THREE.MeshBasicMaterial({
+      color: 0xf59e0b,
+      side: THREE.DoubleSide,
+      transparent: true,
+      opacity: 0.85,
+      blending: THREE.AdditiveBlending
+    });
+    this.horizonAccretionRing = new THREE.Mesh(ringGeo, ringMat);
+    this.eventHorizonGroup.add(this.horizonAccretionRing);
+
+    // 3. Photon Sphere Wireframe Boundary Ring
+    const torusGeo = new THREE.TorusGeometry(1.15, 0.035, 16, 64);
+    torusGeo.rotateX(Math.PI / 2);
+    const torusMat = new THREE.MeshBasicMaterial({
+      color: 0x38bdf8,
+      transparent: true,
+      opacity: 0.9,
+      blending: THREE.AdditiveBlending
+    });
+    this.horizonPhotonRing = new THREE.Mesh(torusGeo, torusMat);
+    this.eventHorizonGroup.add(this.horizonPhotonRing);
+
+    this.eventHorizonGroup.visible = false;
+    this.mainGroup.add(this.eventHorizonGroup);
+  }
+
+  initPhotonStream() {
+    this.photons = [];
+    this.maxPhotons = 120;
+    this.photonsTrappedTotal = 0;
+
+    for (let p = 0; p < this.maxPhotons; p++) {
+      const ph = {
+        pos: new THREE.Vector3(),
+        vel: new THREE.Vector3(),
+        history: [],
+        trapped: false,
+        color: new THREE.Color(0x38bdf8),
+        alpha: 1.0,
+        life: Math.random() * 3.0
+      };
+      this.respawnPhoton(ph);
+      ph.pos.x = -26.0 + Math.random() * 52.0;
+      this.photons.push(ph);
+    }
+
+    // Photon Heads Points System
+    const ptPos = new Float32Array(this.maxPhotons * 3);
+    const ptCol = new Float32Array(this.maxPhotons * 3);
+    this.photonPointsGeo = new THREE.BufferGeometry();
+    this.photonPointsGeo.setAttribute('position', new THREE.BufferAttribute(ptPos, 3));
+    this.photonPointsGeo.setAttribute('color', new THREE.BufferAttribute(ptCol, 3));
+
+    const pTex = this.createGlowTexture('rgba(255, 255, 255, 1)', 0.25);
+    this.photonPointsMat = new THREE.PointsMaterial({
+      size: 0.75,
+      map: pTex,
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.95,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false
+    });
+    this.photonPoints = new THREE.Points(this.photonPointsGeo, this.photonPointsMat);
+    this.mainGroup.add(this.photonPoints);
+
+    // Photon Geodesic Ray Trails (Lines System)
+    this.MAX_TRAIL_VERTS = this.maxPhotons * 16;
+    const lPos = new Float32Array(this.MAX_TRAIL_VERTS * 3);
+    const lCol = new Float32Array(this.MAX_TRAIL_VERTS * 3);
+    this.photonLinesGeo = new THREE.BufferGeometry();
+    this.photonLinesGeo.setAttribute('position', new THREE.BufferAttribute(lPos, 3));
+    this.photonLinesGeo.setAttribute('color', new THREE.BufferAttribute(lCol, 3));
+
+    this.photonLinesMat = new THREE.LineBasicMaterial({
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.65,
+      blending: THREE.AdditiveBlending,
+      linewidth: 1.5,
+      depthWrite: false
+    });
+    this.photonLines = new THREE.LineSegments(this.photonLinesGeo, this.photonLinesMat);
+    this.mainGroup.add(this.photonLines);
+  }
+
+  respawnPhoton(ph) {
+    const spreadY = 12.0;
+    const spreadZ = 8.0;
+    ph.pos.set(-26.0, (Math.random() - 0.5) * spreadY, (Math.random() - 0.5) * spreadZ);
+    ph.vel.set(16.0, 0, 0);
+    ph.history = [ph.pos.clone()];
+    ph.trapped = false;
+    ph.color.setRGB(0.22, 0.74, 0.97);
+    ph.alpha = 1.0;
+    ph.life = 0;
+  }
+
+  updatePhotons(delta, t, d) {
+    if (!this.showPhotons) {
+      if (this.photonPoints) this.photonPoints.visible = false;
+      if (this.photonLines) this.photonLines.visible = false;
+      if (this.eventHorizonGroup) this.eventHorizonGroup.visible = false;
+      return;
+    }
+    if (this.photonPoints) this.photonPoints.visible = true;
+    if (this.photonLines) this.photonLines.visible = true;
+
+    // Critical 1/2 point collapse factor: d = 0.50 is the exact critical point
+    const xi = Math.max(0.0, Math.min(1.0, 1.0 - (d - 0.50) / 1.5));
+    const rHorizon = 0.75 * xi;
+    const rPhotonSphere = 1.5 * rHorizon;
+    const c = 16.0;
+
+    // Update Event Horizon Group
+    if (this.eventHorizonGroup) {
+      const hScale = Math.max(0.001, xi * 1.6);
+      this.eventHorizonGroup.scale.set(hScale, hScale, hScale);
+      this.eventHorizonGroup.visible = (xi > 0.04);
+      this.eventHorizonGroup.rotation.y = t * 1.5;
+      if (this.horizonAccretionRing) {
+        this.horizonAccretionRing.material.opacity = 0.5 + 0.4 * Math.sin(t * 4.0);
+      }
+    }
+
+    // Effective gravitational lensing mass surges as d -> 0.50
+    const M_eff = 2.0 + 88.0 * (xi * xi) * Math.pow(0.50 / Math.max(0.35, d), 2);
+
+    const posAttr = this.photonPointsGeo.attributes.position;
+    const colAttr = this.photonPointsGeo.attributes.color;
+    const linePosAttr = this.photonLinesGeo.attributes.position;
+    const lineColAttr = this.photonLinesGeo.attributes.color;
+    let lineVertIdx = 0;
+
+    const dt = Math.min(0.035, delta);
+
+    for (let p = 0; p < this.maxPhotons; p++) {
+      const ph = this.photons[p];
+      ph.life += dt;
+
+      if (ph.trapped) {
+        // Redshift and spiral into singularity
+        ph.pos.multiplyScalar(Math.max(0.0, 1.0 - dt * 6.0));
+        ph.alpha -= dt * 3.5;
+        if (ph.alpha <= 0) {
+          this.respawnPhoton(ph);
+        }
+      } else {
+        const r = ph.pos.length();
+
+        // Check Event Horizon Crossing
+        if (r <= rHorizon && xi > 0.12) {
+          ph.trapped = true;
+          this.photonsTrappedTotal++;
+          ph.color.setRGB(0.98, 0.15, 0.05); // High-redshift dark crimson
+        } else {
+          // Geodesic metric acceleration towards center (0,0,0)
+          const rCubed = Math.pow(r * r + 0.35, 1.5);
+          const accMag = M_eff / rCubed;
+
+          ph.vel.x -= ph.pos.x * accMag * dt;
+          ph.vel.y -= ph.pos.y * accMag * dt;
+          ph.vel.z -= ph.pos.z * accMag * dt;
+
+          // Frame dragging from fluid circulation Q
+          if (r < 7.0 && this.flowRate > 0.1) {
+            const dragCoeff = (0.28 * this.flowRate) / (r * r + 0.5);
+            ph.vel.z += ph.pos.x * dragCoeff * dt;
+            ph.vel.x -= ph.pos.z * dragCoeff * dt;
+          }
+
+          // Maintain photon speed = c
+          const curSpeed = ph.vel.length();
+          if (curSpeed > 0.001) {
+            ph.vel.multiplyScalar(c / curSpeed);
+          }
+
+          ph.pos.addScaledVector(ph.vel, dt);
+
+          // Color transition based on gravitational field strength
+          if (r < rPhotonSphere && xi > 0.18) {
+            ph.color.setRGB(0.98, 0.65, 0.18); // Gold photon sphere lensing
+          } else if (xi > 0.25 && r < 3.2) {
+            ph.color.setRGB(0.35, 0.95, 0.75); // Lensing green-cyan
+          } else {
+            ph.color.setRGB(0.22, 0.74, 0.97); // Laser cyan
+          }
+
+          if (ph.pos.x > 26.0 || r > 35.0 || ph.life > 4.5) {
+            this.respawnPhoton(ph);
+          }
+        }
+      }
+
+      ph.history.unshift(ph.pos.clone());
+      if (ph.history.length > 7) ph.history.pop();
+
+      posAttr.setXYZ(p, ph.pos.x, ph.pos.y, ph.pos.z);
+      colAttr.setXYZ(p, ph.color.r * ph.alpha, ph.color.g * ph.alpha, ph.color.b * ph.alpha);
+
+      for (let h = 0; h < ph.history.length - 1; h++) {
+        if (lineVertIdx + 2 >= this.MAX_TRAIL_VERTS) break;
+        const p1 = ph.history[h];
+        const p2 = ph.history[h + 1];
+        const segAlpha = (1.0 - h / ph.history.length) * ph.alpha * 0.75;
+
+        linePosAttr.setXYZ(lineVertIdx, p1.x, p1.y, p1.z);
+        lineColAttr.setXYZ(lineVertIdx, ph.color.r * segAlpha, ph.color.g * segAlpha, ph.color.b * segAlpha);
+        lineVertIdx++;
+
+        linePosAttr.setXYZ(lineVertIdx, p2.x, p2.y, p2.z);
+        lineColAttr.setXYZ(lineVertIdx, ph.color.r * segAlpha, ph.color.g * segAlpha, ph.color.b * segAlpha);
+        lineVertIdx++;
+      }
+    }
+
+    // Zero out unused line vertices
+    for (let i = lineVertIdx; i < this.MAX_TRAIL_VERTS; i++) {
+      linePosAttr.setXYZ(i, 0, 0, 0);
+      lineColAttr.setXYZ(i, 0, 0, 0);
+    }
+
+    posAttr.needsUpdate = true;
+    colAttr.needsUpdate = true;
+    linePosAttr.needsUpdate = true;
+    lineColAttr.needsUpdate = true;
   }
 
   // --------------------------------------------------------------------------
@@ -444,10 +700,13 @@ class FluidManifoldSimulation {
       const y = z0 + yWave;
 
       // Constricted central throat nozzle profile (de Laval constriction at middle layers)
-      const throatFactor = 1.0 - 0.32 * Math.exp(- (z0 * z0) / (1.8 * d * d + 0.1));
+      // When structure collapses to the 1/2 point (d -> 0.50), throat contracts towards event horizon!
+      const xi = Math.max(0.0, Math.min(1.0, 1.0 - (d - 0.50) / 1.5));
+      const throatFactor = (1.0 - 0.32 * Math.exp(- (z0 * z0) / (1.8 * d * d + 0.1)))
+        * (1.0 - 0.58 * xi * Math.exp(- (z0 * z0) / (0.35 * d * d + 0.05)));
 
       // Radial wave undulation + breathing
-      const radialWave = 1.0 + psiWave * 0.22 * (1.0 / throatFactor);
+      const radialWave = 1.0 + psiWave * 0.22 * (1.0 / Math.max(0.18, throatFactor));
       const r = this.R_BASE * throatFactor * radialWave;
 
       // Torsional Chiral Vortex Shear (coupled across layers via kappa)
@@ -541,14 +800,17 @@ class FluidManifoldSimulation {
 
     this.controls.update();
 
+    const delta = this.clock.getDelta();
     if (this.isPlaying) {
-      const delta = this.clock.getDelta();
       // Flow rate modulates time progression
       this.elapsed += delta * this.flowRate;
     }
 
     const t = this.elapsed;
     const { layerData, layerCurves, deltaPhi, lambda, k, omega, S } = this.computeWaveState(t);
+
+    // Update Spacetime Photon Beam & Event Horizon Light Pulling
+    this.updatePhotons(delta, t, this.distance);
 
     // 1. Update 90 Streamlines with Traveling Wave Packet Illumination
     this.splines = [];
@@ -817,7 +1079,10 @@ class FluidManifoldSimulation {
       const roundThird = Math.round(ratio * 3);
       const isTriad = !isHarmonic && Math.abs(ratio * 3 - roundThird) < 0.08;
 
-      if (isHarmonic && S < 1.0) {
+      if (d <= 0.55) {
+        elBadge.className = 'telemetry-badge badge-horizon';
+        elBadge.innerText = '🕳️ 1/2 EVENT HORIZON (PULLING LIGHT)';
+      } else if (isHarmonic && S < 1.0) {
         elBadge.classList.add('badge-resonance');
         elBadge.innerText = `STANDING WAVE SOLITON (${roundInt}.00 λ)`;
       } else if (isTriad && S < 1.5) {
@@ -834,13 +1099,51 @@ class FluidManifoldSimulation {
         elBadge.innerText = `PROPAGATING WAVE (${ratio.toFixed(2)} λ)`;
       }
     }
+
+    // Horizon & Light Deflection Telemetry
+    const elHorizon = document.getElementById('telemetry-horizon-state');
+    const elLightPull = document.getElementById('telemetry-light-pull');
+
+    const xi = Math.max(0.0, Math.min(1.0, 1.0 - (d - 0.50) / 1.5));
+    if (elHorizon) {
+      if (d <= 0.55) {
+        elHorizon.innerText = '🕳️ 1/2 EVENT HORIZON FORMED';
+        elHorizon.style.color = '#ef4444';
+      } else if (d <= 1.20) {
+        elHorizon.innerText = 'GRAVITATIONAL LENSING';
+        elHorizon.style.color = '#f59e0b';
+      } else {
+        elHorizon.innerText = 'LAMINAR SUB-HORIZON';
+        elHorizon.style.color = '#38bdf8';
+      }
+    }
+    if (elLightPull) {
+      if (d <= 0.55) {
+        elLightPull.innerText = `PULLING LIGHT (${this.photonsTrappedTotal} SWALLOWED)`;
+        elLightPull.style.color = '#ef4444';
+      } else {
+        const defAngle = (38.0 * xi).toFixed(1);
+        elLightPull.innerText = `${defAngle}° DEFLECTION`;
+        elLightPull.style.color = xi > 0.1 ? '#f59e0b' : '#94a3b8';
+      }
+    }
   }
 
   // --------------------------------------------------------------------------
   // 7. Emergence Presets Handler
   // --------------------------------------------------------------------------
   applyPreset(presetKey) {
-    if (presetKey === 'soliton') {
+    if (presetKey === 'event_horizon') {
+      // 1/2 Point Critical Collapse: forms event horizon and pulls passing light
+      this.entropy = 0.45;
+      this.frequency = 1.00;
+      this.velocity = 4.40;
+      this.distance = 0.50; // The 1/2 critical point!
+      this.coupling = 1.20;
+      this.flowRate = 2.00;
+      this.showPhotons = true;
+      this.setCameraPreset('side');
+    } else if (presetKey === 'soliton') {
       // Harmonic resonance: lambda = d, pure standing wave soliton
       this.entropy = 0.00;
       this.frequency = 1.00;
@@ -904,6 +1207,13 @@ class FluidManifoldSimulation {
       if (elNum) elNum.value = p.val.toFixed(p.dec);
       if (elRange) elRange.value = p.val;
     });
+
+    const photonBtn = document.getElementById('manifold-photons-btn');
+    if (photonBtn) {
+      photonBtn.classList.toggle('active', this.showPhotons);
+      const span = photonBtn.querySelector('span');
+      if (span) span.innerText = this.showPhotons ? 'Photons: ON' : 'Photons: OFF';
+    }
   }
 
   // --------------------------------------------------------------------------
@@ -983,18 +1293,19 @@ class FluidManifoldSimulation {
   }
 
   initUI() {
-    // 1. Two-way binding for numerical inputs & range sliders
+    // 1. Two-way binding for numerical inputs & range sliders (Fluid typing & wide physical bounds)
     const bindControl = (idNum, idRange, propName, minVal, maxVal, dec) => {
       const elNum = document.getElementById(idNum);
       const elRange = document.getElementById(idRange);
 
       if (elNum) {
         elNum.addEventListener('input', (e) => {
-          let val = parseFloat(e.target.value);
+          const raw = e.target.value.trim();
+          if (raw === '' || raw === '.' || raw === '-') return;
+          let val = parseFloat(raw);
           if (isNaN(val)) return;
-          val = Math.max(minVal, Math.min(maxVal, val));
           this[propName] = val;
-          if (elRange) elRange.value = val;
+          if (elRange) elRange.value = Math.max(minVal, Math.min(maxVal, val));
           this.updateTelemetry();
         });
         elNum.addEventListener('change', (e) => {
@@ -1018,12 +1329,12 @@ class FluidManifoldSimulation {
       }
     };
 
-    bindControl('manifold-entropy-input', 'manifold-entropy-slider', 'entropy', 0.00, 5.00, 2);
-    bindControl('manifold-freq-input', 'manifold-freq-slider', 'frequency', 0.05, 5.00, 2);
-    bindControl('manifold-vel-input', 'manifold-vel-slider', 'velocity', 0.50, 20.00, 2);
-    bindControl('manifold-dist-input', 'manifold-dist-slider', 'distance', 1.50, 8.00, 2);
-    bindControl('manifold-coupling-input', 'manifold-coupling-slider', 'coupling', 0.00, 2.00, 2);
-    bindControl('manifold-flow-input', 'manifold-flow-slider', 'flowRate', 0.10, 3.00, 2);
+    bindControl('manifold-entropy-input', 'manifold-entropy-slider', 'entropy', 0.00, 10.00, 2);
+    bindControl('manifold-freq-input', 'manifold-freq-slider', 'frequency', 0.00, 50.00, 2);
+    bindControl('manifold-vel-input', 'manifold-vel-slider', 'velocity', 0.10, 100.00, 2);
+    bindControl('manifold-dist-input', 'manifold-dist-slider', 'distance', 0.50, 12.00, 2);
+    bindControl('manifold-coupling-input', 'manifold-coupling-slider', 'coupling', 0.00, 5.00, 2);
+    bindControl('manifold-flow-input', 'manifold-flow-slider', 'flowRate', 0.00, 10.00, 2);
 
     // 2. Emergence Presets Buttons
     const presetChips = document.querySelectorAll('.manifold-preset-chip');
@@ -1089,6 +1400,17 @@ class FluidManifoldSimulation {
         } else {
           if (document.exitFullscreen) document.exitFullscreen();
         }
+      });
+    }
+
+    // 8. Photon Beam Toggle
+    const photonBtn = document.getElementById('manifold-photons-btn');
+    if (photonBtn) {
+      photonBtn.addEventListener('click', () => {
+        this.showPhotons = !this.showPhotons;
+        photonBtn.classList.toggle('active', this.showPhotons);
+        const span = photonBtn.querySelector('span');
+        if (span) span.innerText = this.showPhotons ? 'Photons: ON' : 'Photons: OFF';
       });
     }
   }
