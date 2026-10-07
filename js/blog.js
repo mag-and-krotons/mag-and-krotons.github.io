@@ -3,26 +3,11 @@
  * Author: Abhijit Singh | Number Theory & Quantum Networks
  * Email: abhijitsingh@tuta.io
  * 
- * To add a new blog dispatch:
- * Add an object to the `BLOG_ENTRIES` array with the following fields:
- * - id: unique slug string (e.g., 'new-derivation-slug')
- * - title: full article title
- * - date: display date (e.g., 'October 15, 2026')
- * - isoDate: 'YYYY-MM-DD'
- * - readTime: estimated read time (e.g., '7 min read')
- * - category: category key ('differential-geometry' | 'number-theory' | 'celestial-mechanics' | 'quantum-physics' | 'cortical-networks')
- * - categoryLabel: display category label
- * - categoryClass: CSS color accent class ('cat-violet' | 'cat-blue' | 'cat-crimson' | 'cat-amber' | 'cat-emerald')
- * - tags: array of tag strings
- * - formulaHighlight: LaTeX formula string highlighted on the preview card
- * - summary: short teaser with LaTeX inline notation
- * - paperId: optional ID of related research paper in RESEARCH_PAPERS
- * - paperTitle: optional title of related preprint
- * - paperPdf: optional path to related PDF
- * - contentHtml: full rich article text with KaTeX formulas, theorems, code/derivations
+ * Supports both pre-compiled research dispatches and client-side in-browser
+ * dispatch authoring & publishing directly from the website.
  */
 
-const BLOG_ENTRIES = [
+let BLOG_ENTRIES = [
   {
     id: "fluid-manifold-simplicial-complex",
     title: "The 36-Node Simplicial Complex: Translating Discrete Triads into Continuous Solenoidal Flow",
@@ -295,9 +280,98 @@ const BLOG_ENTRIES = [
   }
 ];
 
+// --- Category Class Mapping ---
+const CATEGORY_MAP = {
+  "differential-geometry": { label: "Fluid Manifolds & Topology", class: "cat-violet" },
+  "number-theory": { label: "Number Theory & Zeros", class: "cat-blue" },
+  "celestial-mechanics": { label: "Celestial Throats & Flux", class: "cat-crimson" },
+  "quantum-physics": { label: "Quantum Negativity & Coherence", class: "cat-amber" },
+  "cortical-networks": { label: "Cortical & Ternary Networks", class: "cat-emerald" },
+  "general-physics": { label: "Mathematical Physics & Balance", class: "cat-blue" }
+};
+
 // --- State Variables ---
 let blogActiveCategory = "all";
 let blogSearchQuery = "";
+
+// --- Local Storage Management for User Dispatches ---
+const LOCAL_STORAGE_KEY = "custom_research_dispatches";
+const DRAFT_STORAGE_KEY = "composer_dispatch_draft";
+
+function loadCustomDispatches() {
+  try {
+    const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (!raw) return;
+    const entries = JSON.parse(raw);
+    if (Array.isArray(entries)) {
+      entries.forEach(item => {
+        if (!BLOG_ENTRIES.some(existing => existing.id === item.id)) {
+          BLOG_ENTRIES.unshift(item);
+        }
+      });
+    }
+  } catch (err) {
+    console.warn("Failed to load local custom dispatches:", err);
+  }
+}
+
+function saveCustomDispatchToStorage(newEntry) {
+  try {
+    const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
+    const list = raw ? JSON.parse(raw) : [];
+    // remove if duplicate ID
+    const filtered = list.filter(item => item.id !== newEntry.id);
+    filtered.unshift(newEntry);
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(filtered));
+  } catch (err) {
+    console.error("Failed to save custom dispatch to localStorage:", err);
+  }
+}
+
+function deleteCustomDispatch(id) {
+  const entry = BLOG_ENTRIES.find(e => e.id === id);
+  const title = entry ? entry.title : "this dispatch";
+  if (!confirm(`Are you sure you want to delete "${title}"?`)) return;
+
+  BLOG_ENTRIES = BLOG_ENTRIES.filter(e => e.id !== id);
+
+  try {
+    const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (raw) {
+      const list = JSON.parse(raw).filter(item => item.id !== id);
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(list));
+    }
+  } catch (err) {
+    console.warn("Could not remove from localStorage:", err);
+  }
+
+  renderBlogEntries(blogActiveCategory, blogSearchQuery);
+  updateBlogFilterCounts();
+
+  if (window.showToast) {
+    window.showToast("Dispatch deleted successfully.");
+  }
+}
+
+function updateBlogFilterCounts() {
+  const pills = document.querySelectorAll(".blog-filter-pill");
+  pills.forEach(pill => {
+    const cat = pill.getAttribute("data-category");
+    if (cat === "all") {
+      pill.textContent = `All Dispatches (${BLOG_ENTRIES.length})`;
+    } else {
+      const count = BLOG_ENTRIES.filter(e => e.category === cat).length;
+      const baseLabel = pill.getAttribute("data-base-label") || pill.textContent.replace(/\s*\(\d+\)/, "");
+      pill.setAttribute("data-base-label", baseLabel);
+      pill.textContent = `${baseLabel} (${count})`;
+    }
+  });
+
+  const headerCount = document.getElementById("blog-header-count");
+  if (headerCount) {
+    headerCount.textContent = `${BLOG_ENTRIES.length} ARTICLES • REGULARLY UPDATED`;
+  }
+}
 
 // --- Rendering Function ---
 function renderBlogEntries(category = "all", query = "") {
@@ -315,11 +389,11 @@ function renderBlogEntries(category = "all", query = "") {
     // Search query match
     if (!blogSearchQuery) return true;
     const q = blogSearchQuery;
-    const titleMatch = entry.title.toLowerCase().includes(q);
-    const summaryMatch = entry.summary.toLowerCase().includes(q);
-    const tagMatch = entry.tags.some(t => t.toLowerCase().includes(q));
-    const catLabelMatch = entry.categoryLabel.toLowerCase().includes(q);
-    const formulaMatch = entry.formulaHighlight.toLowerCase().includes(q);
+    const titleMatch = (entry.title || "").toLowerCase().includes(q);
+    const summaryMatch = (entry.summary || "").toLowerCase().includes(q);
+    const tagMatch = (entry.tags || []).some(t => t.toLowerCase().includes(q));
+    const catLabelMatch = (entry.categoryLabel || "").toLowerCase().includes(q);
+    const formulaMatch = (entry.formulaHighlight || "").toLowerCase().includes(q);
 
     return titleMatch || summaryMatch || tagMatch || catLabelMatch || formulaMatch;
   });
@@ -341,12 +415,42 @@ function renderBlogEntries(category = "all", query = "") {
   }
 
   container.innerHTML = filtered.map(entry => {
-    const tagsHtml = entry.tags.map(t => `<span class="blog-tag-pill">#${escapeHtml(t)}</span>`).join("");
-    
+    // Ensure tags are individually styled and separated with explicit spaces
+    const tagsHtml = (entry.tags || []).map(t => {
+      const clean = t.replace(/^#+/, "").trim();
+      return `<span class="blog-tag-pill">#${escapeHtml(clean)}</span>`;
+    }).join(" ");
+
+    const customBadge = entry.isCustom 
+      ? `<span class="blog-custom-badge" title="Authored directly from website">PUBLISHED VIA WEB</span>` 
+      : ``;
+
+    const formulaBox = entry.formulaHighlight ? `
+      <div class="blog-formula-box">
+        <div class="blog-formula-tag">${escapeHtml(entry.formulaTag || "KEY FORMULA / CRITERION")}</div>
+        <div class="blog-formula-math">$$${entry.formulaHighlight}$$</div>
+      </div>
+    ` : ``;
+
+    const deleteBtn = entry.isCustom ? `
+      <button onclick="deleteCustomDispatch('${entry.id}')" class="btn-delete-dispatch" title="Delete custom dispatch" aria-label="Delete">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+      </button>
+    ` : ``;
+
+    const exportBtn = `
+      <button onclick="exportSingleDispatch('${entry.id}')" class="btn-export-dispatch" title="Export JavaScript code for Git repository">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      </button>
+    `;
+
     return `
       <article class="blog-card" id="card-${entry.id}">
         <div class="blog-card-meta">
-          <span class="blog-cat-badge ${entry.categoryClass}">${escapeHtml(entry.categoryLabel)}</span>
+          <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+            <span class="blog-cat-badge ${entry.categoryClass}">${escapeHtml(entry.categoryLabel)}</span>
+            ${customBadge}
+          </div>
           <div class="blog-date-wrap">
             <span class="blog-date">${escapeHtml(entry.date)}</span>
             <span class="blog-meta-sep">&bull;</span>
@@ -364,10 +468,7 @@ function renderBlogEntries(category = "all", query = "") {
           ${entry.summary}
         </div>
 
-        <div class="blog-formula-box">
-          <div class="blog-formula-tag">KEY FORMULA / CRITERION</div>
-          <div class="blog-formula-math">$$${entry.formulaHighlight}$$</div>
-        </div>
+        ${formulaBox}
 
         <div class="blog-tags-row">
           ${tagsHtml}
@@ -379,6 +480,8 @@ function renderBlogEntries(category = "all", query = "") {
             <span>Abhijit Singh</span>
           </div>
           <div class="blog-card-actions">
+            ${exportBtn}
+            ${deleteBtn}
             <a href="mailto:abhijitsingh@tuta.io?subject=Discussion:%20${encodeURIComponent(entry.title)}" class="blog-discuss-btn" title="Discuss dispatch with Abhijit Singh via Tuta Mail">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
               <span>Email</span>
@@ -402,7 +505,7 @@ function renderBlogEntries(category = "all", query = "") {
 // --- Helper Functions ---
 function escapeHtml(str) {
   if (!str) return "";
-  return str
+  return String(str)
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
@@ -508,7 +611,9 @@ function openBlogModal(id) {
 }
 
 function closeBlogModal(e) {
-  if (e && e.target && e.target.classList.contains("modal-card")) return;
+  if (e && e.target && e.target.closest(".modal-card") && !e.target.classList.contains("modal-close-btn")) {
+    return;
+  }
   const modal = document.getElementById("blog-modal");
   if (modal) {
     modal.classList.remove("open");
@@ -520,10 +625,553 @@ function closeBlogModal(e) {
   }
 }
 
+// ==========================================================================
+// IN-BROWSER DISPATCH COMPOSER STUDIO
+// ==========================================================================
+
+function openBlogComposer() {
+  const modal = document.getElementById("blog-composer-modal");
+  if (!modal) return;
+
+  // Restore draft if exists and form is empty
+  const draftRaw = localStorage.getItem(DRAFT_STORAGE_KEY);
+  const titleInput = document.getElementById("composer-title");
+  if (draftRaw && titleInput && !titleInput.value) {
+    try {
+      const draft = JSON.parse(draftRaw);
+      titleInput.value = draft.title || "";
+      document.getElementById("composer-category").value = draft.category || "differential-geometry";
+      document.getElementById("composer-tags").value = draft.tags || "";
+      document.getElementById("composer-readtime").value = draft.readTime || "5 min read";
+      document.getElementById("composer-formula-tag").value = draft.formulaTag || "KEY FORMULA / CRITERION";
+      document.getElementById("composer-formula-latex").value = draft.formulaLatex || "";
+      document.getElementById("composer-summary").value = draft.summary || "";
+      document.getElementById("composer-content").value = draft.content || "";
+    } catch (e) {
+      console.warn("Could not restore draft:", e);
+    }
+  }
+
+  renderComposerFormulaPreview();
+  switchComposerTab("edit");
+
+  modal.classList.add("open");
+  modal.classList.add("active");
+  document.body.style.overflow = "hidden";
+
+  if (titleInput) {
+    setTimeout(() => titleInput.focus(), 100);
+  }
+}
+
+function closeBlogComposer(e) {
+  if (e && e.target && e.target.closest(".modal-card") && !e.target.classList.contains("modal-close-btn") && !e.target.classList.contains("btn-composer-cancel")) {
+    return;
+  }
+  const modal = document.getElementById("blog-composer-modal");
+  if (modal) {
+    modal.classList.remove("open");
+    modal.classList.remove("active");
+    document.body.style.overflow = "";
+  }
+}
+
+function saveComposerDraft() {
+  try {
+    const draft = {
+      title: document.getElementById("composer-title")?.value || "",
+      category: document.getElementById("composer-category")?.value || "differential-geometry",
+      tags: document.getElementById("composer-tags")?.value || "",
+      readTime: document.getElementById("composer-readtime")?.value || "5 min read",
+      formulaTag: document.getElementById("composer-formula-tag")?.value || "",
+      formulaLatex: document.getElementById("composer-formula-latex")?.value || "",
+      summary: document.getElementById("composer-summary")?.value || "",
+      content: document.getElementById("composer-content")?.value || ""
+    };
+    localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draft));
+  } catch (e) {
+    console.warn("Failed to persist composer draft:", e);
+  }
+}
+
+function renderComposerFormulaPreview() {
+  const latexInput = document.getElementById("composer-formula-latex");
+  const previewBox = document.getElementById("composer-formula-preview");
+  if (!latexInput || !previewBox) return;
+
+  const latex = latexInput.value.trim();
+  if (!latex) {
+    previewBox.innerHTML = `<span class="composer-formula-empty">(Live KaTeX formula preview will appear here as you type LaTeX)</span>`;
+    return;
+  }
+
+  try {
+    if (window.katex) {
+      window.katex.render(latex, previewBox, {
+        displayMode: true,
+        throwOnError: false
+      });
+    } else {
+      previewBox.innerText = `$$ ${latex} $$`;
+    }
+  } catch (err) {
+    previewBox.innerHTML = `<span style="color: var(--color-crimson); font-size: 0.85rem;">KaTeX Syntax Error: ${escapeHtml(err.message)}</span>`;
+  }
+}
+
+function insertComposerMarkdown(prefix, suffix, placeholder = "") {
+  const textarea = document.getElementById("composer-content");
+  if (!textarea) return;
+
+  const start = textarea.selectionStart;
+  const end = textarea.selectionEnd;
+  const val = textarea.value;
+  const selection = val.substring(start, end) || placeholder;
+
+  const replacement = `${prefix}${selection}${suffix}`;
+  textarea.value = val.substring(0, start) + replacement + val.substring(end);
+
+  const newCursor = start + prefix.length + selection.length;
+  textarea.focus();
+  textarea.setSelectionRange(newCursor, newCursor);
+
+  saveComposerDraft();
+}
+
+function switchComposerTab(tab) {
+  const editTabBtn = document.getElementById("tab-btn-edit");
+  const prevTabBtn = document.getElementById("tab-btn-preview");
+  const editorArea = document.getElementById("composer-editor-wrap");
+  const previewArea = document.getElementById("composer-preview-pane");
+
+  if (!editorArea || !previewArea) return;
+
+  if (tab === "preview") {
+    if (editTabBtn) editTabBtn.classList.remove("active");
+    if (prevTabBtn) prevTabBtn.classList.add("active");
+    editorArea.style.display = "none";
+    previewArea.style.display = "block";
+
+    // Convert Markdown to HTML & render math
+    const content = document.getElementById("composer-content")?.value || "";
+    const html = formatMarkdownToHtml(content);
+    previewArea.innerHTML = html;
+
+    if (window.triggerMathRendering) {
+      window.triggerMathRendering(previewArea);
+    }
+  } else {
+    if (editTabBtn) editTabBtn.classList.add("active");
+    if (prevTabBtn) prevTabBtn.classList.remove("active");
+    editorArea.style.display = "block";
+    previewArea.style.display = "none";
+  }
+}
+
+// Markdown to HTML converter supporting LaTeX and academic callouts
+function formatMarkdownToHtml(md) {
+  if (!md) return "<p><em>No content written yet.</em></p>";
+
+  const lines = md.split("\n");
+  let html = "";
+  let inList = false;
+  let inCodeBlock = false;
+  let codeBuffer = "";
+  let inCallout = false;
+  let calloutBuffer = [];
+
+  for (let i = 0; i < lines.length; i++) {
+    let line = lines[i];
+
+    // Code blocks ```
+    if (line.trim().startsWith("```")) {
+      if (inCodeBlock) {
+        html += `<pre><code>${escapeHtml(codeBuffer)}</code></pre>`;
+        codeBuffer = "";
+        inCodeBlock = false;
+      } else {
+        inCodeBlock = true;
+        codeBuffer = "";
+      }
+      continue;
+    }
+    if (inCodeBlock) {
+      codeBuffer += line + "\n";
+      continue;
+    }
+
+    // Callout blocks :::callout ... :::
+    if (line.trim().startsWith(":::callout")) {
+      inCallout = true;
+      calloutBuffer = [];
+      continue;
+    }
+    if (line.trim() === ":::" && inCallout) {
+      inCallout = false;
+      html += `<div class="blog-callout">${calloutBuffer.join("<br>")}</div>`;
+      calloutBuffer = [];
+      continue;
+    }
+    if (inCallout) {
+      calloutBuffer.push(parseInlineFormatting(line));
+      continue;
+    }
+
+    // Unordered lists - item
+    if (line.trim().match(/^[-*]\s+/)) {
+      if (!inList) {
+        html += "<ul>";
+        inList = true;
+      }
+      const itemText = line.trim().replace(/^[-*]\s+/, "");
+      html += `<li>${parseInlineFormatting(itemText)}</li>`;
+      continue;
+    } else {
+      if (inList) {
+        html += "</ul>";
+        inList = false;
+      }
+    }
+
+    // Headings
+    if (line.startsWith("### ")) {
+      html += `<h3>${parseInlineFormatting(line.substring(4))}</h3>`;
+      continue;
+    }
+    if (line.startsWith("## ")) {
+      html += `<h3>${parseInlineFormatting(line.substring(3))}</h3>`;
+      continue;
+    }
+    if (line.startsWith("# ")) {
+      html += `<h3>${parseInlineFormatting(line.substring(2))}</h3>`;
+      continue;
+    }
+
+    // Blockquote >
+    if (line.startsWith("> ")) {
+      html += `<blockquote>${parseInlineFormatting(line.substring(2))}</blockquote>`;
+      continue;
+    }
+
+    // Math block $$ ... $$
+    if (line.trim().startsWith("$$") && line.trim().endsWith("$$") && line.trim().length > 4) {
+      html += `<div>${line.trim()}</div>`;
+      continue;
+    }
+
+    // Empty lines
+    if (line.trim() === "") {
+      continue;
+    }
+
+    // Regular paragraph
+    html += `<p>${parseInlineFormatting(line)}</p>`;
+  }
+
+  if (inList) {
+    html += "</ul>";
+  }
+
+  return html;
+}
+
+function parseInlineFormatting(str) {
+  if (!str) return "";
+  let out = str;
+
+  // Protect block math $$...$$ and inline math $...$
+  const mathPlaceholders = [];
+  out = out.replace(/\$\$([\s\S]*?)\$\$/g, (match) => {
+    mathPlaceholders.push(match);
+    return `___MATH_BLOCK_${mathPlaceholders.length - 1}___`;
+  });
+  out = out.replace(/\$([^\$\n]+?)\$/g, (match) => {
+    mathPlaceholders.push(match);
+    return `___MATH_INLINE_${mathPlaceholders.length - 1}___`;
+  });
+
+  // Escape raw HTML entities
+  out = escapeHtml(out);
+
+  // Bold **text**
+  out = out.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+  // Italic *text*
+  out = out.replace(/\*(.*?)\*/g, "<em>$1</em>");
+  // Inline code `code`
+  out = out.replace(/`(.*?)`/g, "<code>$1</code>");
+
+  // Restore math placeholders
+  mathPlaceholders.forEach((math, idx) => {
+    out = out.replace(`___MATH_BLOCK_${idx}___`, math);
+    out = out.replace(`___MATH_INLINE_${idx}___`, math);
+  });
+
+  return out;
+}
+
+function publishNewDispatch() {
+  const title = (document.getElementById("composer-title")?.value || "").trim();
+  const categoryKey = document.getElementById("composer-category")?.value || "differential-geometry";
+  const tagsRaw = (document.getElementById("composer-tags")?.value || "").trim();
+  const readTime = (document.getElementById("composer-readtime")?.value || "5 min read").trim();
+  const formulaTag = (document.getElementById("composer-formula-tag")?.value || "KEY FORMULA / CRITERION").trim();
+  const formulaLatex = (document.getElementById("composer-formula-latex")?.value || "").trim();
+  const summary = (document.getElementById("composer-summary")?.value || "").trim();
+  const content = (document.getElementById("composer-content")?.value || "").trim();
+  const paperSelect = document.getElementById("composer-paper-select");
+
+  if (!title) {
+    alert("Please provide an article title for this research dispatch.");
+    document.getElementById("composer-title")?.focus();
+    return;
+  }
+  if (!summary) {
+    alert("Please provide a short teaser summary/abstract.");
+    document.getElementById("composer-summary")?.focus();
+    return;
+  }
+  if (!content) {
+    alert("Please write the working note content.");
+    document.getElementById("composer-content")?.focus();
+    return;
+  }
+
+  // Parse tags
+  const tags = tagsRaw
+    ? tagsRaw.split(",").map(t => t.trim().replace(/^#+/, "")).filter(t => t.length > 0)
+    : ["Research Note", "Mathematical Physics"];
+
+  // Category metadata
+  const catMeta = CATEGORY_MAP[categoryKey] || { label: "Mathematical Physics", class: "cat-blue" };
+
+  // Current formatted date
+  const now = new Date();
+  const dateFormatted = new Intl.DateTimeFormat("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric"
+  }).format(now);
+  const isoDate = now.toISOString().split("T")[0];
+
+  // Optional associated paper
+  let paperId = "";
+  let paperTitle = "";
+  let paperPdf = "";
+  if (paperSelect && paperSelect.value) {
+    paperId = paperSelect.value;
+    const selectedOption = paperSelect.options[paperSelect.selectedIndex];
+    paperTitle = selectedOption ? selectedOption.getAttribute("data-title") : "";
+    paperPdf = `papers/${paperId}/${paperId}.pdf`;
+  }
+
+  // Create article object
+  const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "").slice(0, 45);
+  const newId = `note-${now.getFullYear()}-${Math.floor(Math.random() * 899 + 100)}-${slug}`;
+
+  const newEntry = {
+    id: newId,
+    title: title,
+    date: dateFormatted,
+    isoDate: isoDate,
+    readTime: readTime,
+    category: categoryKey,
+    categoryLabel: catMeta.label,
+    categoryClass: catMeta.class,
+    tags: tags,
+    formulaTag: formulaTag,
+    formulaHighlight: formulaLatex,
+    summary: summary,
+    paperId: paperId,
+    paperTitle: paperTitle,
+    paperPdf: paperPdf,
+    contentHtml: formatMarkdownToHtml(content),
+    isCustom: true
+  };
+
+  // Prepend to active array
+  BLOG_ENTRIES.unshift(newEntry);
+
+  // Save to localStorage
+  saveCustomDispatchToStorage(newEntry);
+
+  // Clear composer draft
+  localStorage.removeItem(DRAFT_STORAGE_KEY);
+  resetComposerForm();
+
+  // Close composer modal
+  closeBlogComposer();
+
+  // Re-render blog grid & update pill badges
+  renderBlogEntries("all", "");
+  updateBlogFilterCounts();
+
+  // Smooth scroll to blog section
+  const blogSection = document.getElementById("blog");
+  if (blogSection) {
+    blogSection.scrollIntoView({ behavior: "smooth" });
+  }
+
+  // Open the newly published article in the reader modal immediately
+  setTimeout(() => {
+    openBlogModal(newEntry.id);
+  }, 400);
+
+  if (window.showToast) {
+    window.showToast("Dispatch published successfully! Saved locally in this browser.");
+  }
+}
+
+function resetComposerForm() {
+  const fields = [
+    "composer-title",
+    "composer-tags",
+    "composer-formula-latex",
+    "composer-summary",
+    "composer-content"
+  ];
+  fields.forEach(f => {
+    const el = document.getElementById(f);
+    if (el) el.value = "";
+  });
+
+  const catEl = document.getElementById("composer-category");
+  if (catEl) catEl.value = "differential-geometry";
+  const rtEl = document.getElementById("composer-readtime");
+  if (rtEl) rtEl.value = "5 min read";
+  const tagEl = document.getElementById("composer-formula-tag");
+  if (tagEl) tagEl.value = "KEY FORMULA / CRITERION";
+
+  renderComposerFormulaPreview();
+  switchComposerTab("edit");
+}
+
+// --- Export Dispatch Code for Git Commits ---
+function exportSingleDispatch(id) {
+  const entry = BLOG_ENTRIES.find(e => e.id === id);
+  if (!entry) return;
+
+  const exportModal = document.getElementById("dispatch-export-modal");
+  const codeBlock = document.getElementById("dispatch-export-code");
+  if (!exportModal || !codeBlock) {
+    alert("Export code:\n" + JSON.stringify(entry, null, 2));
+    return;
+  }
+
+  const jsSnippet = `  {\n` +
+    `    id: ${JSON.stringify(entry.id)},\n` +
+    `    title: ${JSON.stringify(entry.title)},\n` +
+    `    date: ${JSON.stringify(entry.date)},\n` +
+    `    isoDate: ${JSON.stringify(entry.isoDate)},\n` +
+    `    readTime: ${JSON.stringify(entry.readTime)},\n` +
+    `    category: ${JSON.stringify(entry.category)},\n` +
+    `    categoryLabel: ${JSON.stringify(entry.categoryLabel)},\n` +
+    `    categoryClass: ${JSON.stringify(entry.categoryClass)},\n` +
+    `    tags: ${JSON.stringify(entry.tags)},\n` +
+    `    formulaTag: ${JSON.stringify(entry.formulaTag || "KEY FORMULA / CRITERION")},\n` +
+    `    formulaHighlight: ${JSON.stringify(entry.formulaHighlight || "")},\n` +
+    `    summary: ${JSON.stringify(entry.summary)},\n` +
+    `    paperId: ${JSON.stringify(entry.paperId || "")},\n` +
+    `    paperTitle: ${JSON.stringify(entry.paperTitle || "")},\n` +
+    `    paperPdf: ${JSON.stringify(entry.paperPdf || "")},\n` +
+    `    contentHtml: \`\n${entry.contentHtml.trim()}\n    \`\n` +
+    `  },`;
+
+  codeBlock.innerText = jsSnippet;
+  exportModal.classList.add("open");
+  exportModal.classList.add("active");
+  document.body.style.overflow = "hidden";
+}
+
+function exportComposerCode() {
+  const title = (document.getElementById("composer-title")?.value || "").trim() || "Untitled Dispatch";
+  const categoryKey = document.getElementById("composer-category")?.value || "differential-geometry";
+  const catMeta = CATEGORY_MAP[categoryKey] || { label: "Fluid Manifolds & Topology", class: "cat-violet" };
+  const tagsRaw = (document.getElementById("composer-tags")?.value || "").trim();
+  const tags = tagsRaw ? tagsRaw.split(",").map(t => t.trim().replace(/^#+/, "")).filter(t => t.length > 0) : ["Research"];
+  const formulaLatex = (document.getElementById("composer-formula-latex")?.value || "").trim();
+  const formulaTag = (document.getElementById("composer-formula-tag")?.value || "KEY FORMULA / CRITERION").trim();
+  const summary = (document.getElementById("composer-summary")?.value || "").trim();
+  const content = (document.getElementById("composer-content")?.value || "").trim();
+
+  const now = new Date();
+  const dateFormatted = new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", year: "numeric" }).format(now);
+  const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 35);
+
+  const mockEntry = {
+    id: `note-${now.getFullYear()}-${slug}`,
+    title: title,
+    date: dateFormatted,
+    isoDate: now.toISOString().split("T")[0],
+    readTime: document.getElementById("composer-readtime")?.value || "5 min read",
+    category: categoryKey,
+    categoryLabel: catMeta.label,
+    categoryClass: catMeta.class,
+    tags: tags,
+    formulaTag: formulaTag,
+    formulaHighlight: formulaLatex,
+    summary: summary,
+    paperId: "",
+    paperTitle: "",
+    paperPdf: "",
+    contentHtml: formatMarkdownToHtml(content)
+  };
+
+  const exportModal = document.getElementById("dispatch-export-modal");
+  const codeBlock = document.getElementById("dispatch-export-code");
+  if (exportModal && codeBlock) {
+    const jsSnippet = `  {\n` +
+      `    id: ${JSON.stringify(mockEntry.id)},\n` +
+      `    title: ${JSON.stringify(mockEntry.title)},\n` +
+      `    date: ${JSON.stringify(mockEntry.date)},\n` +
+      `    isoDate: ${JSON.stringify(mockEntry.isoDate)},\n` +
+      `    readTime: ${JSON.stringify(mockEntry.readTime)},\n` +
+      `    category: ${JSON.stringify(mockEntry.category)},\n` +
+      `    categoryLabel: ${JSON.stringify(mockEntry.categoryLabel)},\n` +
+      `    categoryClass: ${JSON.stringify(mockEntry.categoryClass)},\n` +
+      `    tags: ${JSON.stringify(mockEntry.tags)},\n` +
+      `    formulaTag: ${JSON.stringify(mockEntry.formulaTag)},\n` +
+      `    formulaHighlight: ${JSON.stringify(mockEntry.formulaHighlight)},\n` +
+      `    summary: ${JSON.stringify(mockEntry.summary)},\n` +
+      `    contentHtml: \`\n${mockEntry.contentHtml.trim()}\n    \`\n` +
+      `  },`;
+
+    codeBlock.innerText = jsSnippet;
+    exportModal.classList.add("open");
+    exportModal.classList.add("active");
+    document.body.style.overflow = "hidden";
+  }
+}
+
+function closeDispatchExportModal() {
+  const modal = document.getElementById("dispatch-export-modal");
+  if (modal) {
+    modal.classList.remove("open");
+    modal.classList.remove("active");
+    document.body.style.overflow = "";
+  }
+}
+
+function copyExportCodeToClipboard() {
+  const codeBlock = document.getElementById("dispatch-export-code");
+  if (!codeBlock) return;
+
+  navigator.clipboard.writeText(codeBlock.innerText).then(() => {
+    if (window.showToast) {
+      window.showToast("JavaScript snippet copied! You can paste it into js/blog.js.");
+    } else {
+      alert("Copied to clipboard!");
+    }
+  });
+}
+
 // --- Initialization ---
 function initBlog() {
+  // Load any previously saved user dispatches from localStorage
+  loadCustomDispatches();
+
   // Render initial cards
   renderBlogEntries("all", "");
+  updateBlogFilterCounts();
 
   // Category filter pills
   const pills = document.querySelectorAll(".blog-filter-pill");
@@ -561,6 +1209,29 @@ function initBlog() {
     });
   }
 
+  // Setup auto-save for composer
+  const composerFormula = document.getElementById("composer-formula-latex");
+  if (composerFormula) {
+    composerFormula.addEventListener("input", () => {
+      renderComposerFormulaPreview();
+      saveComposerDraft();
+    });
+  }
+
+  const composerContent = document.getElementById("composer-content");
+  if (composerContent) {
+    composerContent.addEventListener("input", () => {
+      saveComposerDraft();
+      // Auto estimate read time
+      const words = composerContent.value.trim().split(/\s+/).filter(w => w.length > 0).length;
+      const minutes = Math.max(1, Math.round(words / 160));
+      const readtimeInput = document.getElementById("composer-readtime");
+      if (readtimeInput && !readtimeInput.getAttribute("data-manual")) {
+        readtimeInput.value = `${minutes} min read`;
+      }
+    });
+  }
+
   // Check URL hash on load for deep linking (e.g. #blog-fluid-manifold-simplicial-complex)
   const hash = window.location.hash;
   if (hash && hash.startsWith("#blog-")) {
@@ -574,6 +1245,8 @@ function initBlog() {
   window.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
       closeBlogModal();
+      closeBlogComposer();
+      closeDispatchExportModal();
     }
   });
 }
@@ -591,3 +1264,15 @@ window.renderBlogEntries = renderBlogEntries;
 window.openBlogModal = openBlogModal;
 window.closeBlogModal = closeBlogModal;
 window.resetBlogFilters = resetBlogFilters;
+window.openBlogComposer = openBlogComposer;
+window.closeBlogComposer = closeBlogComposer;
+window.publishNewDispatch = publishNewDispatch;
+window.insertComposerMarkdown = insertComposerMarkdown;
+window.switchComposerTab = switchComposerTab;
+window.deleteCustomDispatch = deleteCustomDispatch;
+window.exportSingleDispatch = exportSingleDispatch;
+window.exportComposerCode = exportComposerCode;
+window.closeDispatchExportModal = closeDispatchExportModal;
+window.copyExportCodeToClipboard = copyExportCodeToClipboard;
+window.renderComposerFormulaPreview = renderComposerFormulaPreview;
+window.resetComposerForm = resetComposerForm;
