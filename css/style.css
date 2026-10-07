@@ -3782,3 +3782,130 @@ body {
   box-shadow: 0 0 14px rgba(254, 240, 138, 0.35);
 }
 
+/* -------------------------------------------------------------------------
+   Cosmos Interactive Hover Card / Tooltip (Monad Lineage & The Egg)
+-------------------------------------------------------------------------- */
+.cosmos-hover-tooltip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgba(10, 15, 30, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1.5px solid rgba(56, 189, 248, 0.5);
+  border-radius: 10px;
+  padding: 0.95rem 1.25rem;
+  color: #F8FAFC;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8), 0 0 25px rgba(56, 189, 248, 0.25);
+  z-index: 120;
+  pointer-events: none;
+  font-family: 'Outfit', sans-serif;
+  min-width: 290px;
+  max-width: 370px;
+  opacity: 0;
+  transform: translate(-50%, 0) scale(0.96);
+  transition: opacity 0.16s ease, transform 0.16s ease;
+}
+
+.cosmos-hover-tooltip.visible {
+  opacity: 1;
+}
+
+.cosmos-hover-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.45rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  padding-bottom: 0.35rem;
+}
+
+.cosmos-hover-monad {
+  font-size: 0.84rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #38BDF8;
+  text-transform: uppercase;
+}
+
+.cosmos-hover-incarnation {
+  font-size: 0.70rem;
+  font-family: 'JetBrains Mono', monospace;
+  background: rgba(168, 85, 247, 0.25);
+  color: #D8B4FE;
+  border: 1px solid rgba(168, 85, 247, 0.55);
+  border-radius: 4px;
+  padding: 0.15rem 0.45rem;
+}
+
+.cosmos-hover-compound {
+  font-size: 0.96rem;
+  font-weight: 700;
+  color: #F8FAFC;
+  margin-bottom: 0.4rem;
+  line-height: 1.35;
+}
+
+.cosmos-hover-knowledge {
+  background: rgba(2, 6, 23, 0.65);
+  border-radius: 6px;
+  padding: 0.5rem 0.65rem;
+  margin-bottom: 0.45rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.cosmos-hover-knowledge-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  font-family: 'JetBrains Mono', monospace;
+  color: #CBD5E1;
+}
+
+.cosmos-hover-knowledge-bar {
+  display: flex;
+  height: 6px;
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 0.35rem;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.cosmos-hover-knowledge-fill-a {
+  background: #38BDF8;
+  transition: width 0.3s ease;
+}
+
+.cosmos-hover-knowledge-fill-b {
+  background: #C084FC;
+  transition: width 0.3s ease;
+}
+
+.cosmos-hover-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.74rem;
+  color: #94A3B8;
+  line-height: 1.5;
+}
+
+.cosmos-hover-phase-pill {
+  display: inline-block;
+  font-size: 0.68rem;
+  padding: 0.12rem 0.4rem;
+  border-radius: 3px;
+  margin-top: 0.3rem;
+  font-weight: 600;
+}
+
+.cosmos-hover-history {
+  margin-top: 0.45rem;
+  padding-top: 0.35rem;
+  border-top: 1px dashed rgba(255, 255, 255, 0.12);
+  font-size: 0.68rem;
+  font-family: 'JetBrains Mono', monospace;
+  color: #CBD5E1;
+  max-height: 80px;
+  overflow-y: hidden;
+}
+
+

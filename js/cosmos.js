@@ -1,18 +1,31 @@
 /**
- * THE GAME OF COSMOS: CONTINUOUS STRING-QUANTUM 36-NODE EMERGENCE
+ * THE GAME OF COSMOS: CONTINUOUS STRING-QUANTUM 36-NODE EMERGENCE & MONAD REINCARNATION
  * Authentically derived from Papers 01-12 & Nothing Binds a Twin but Exclusion (Abhijit Singh, 2026)
  * 
  * - Continuous R^3 Spacetime Continuum (NO fixed grids, organic random distribution)
  * - Fundamental building block: 36-Node Simplicial Complex (6 layers x 6 nodes, C3 ⋊ Z2 dihedral symmetry)
- * - The Universal Native Vibration: Universal carrier signal omega_0 = 14.134725 (First Riemann zero gamma_1)
+ * - Universal Native Vibration: Universal carrier signal omega_0 = 14.134725 (First Riemann zero gamma_1)
  * - Resonant Vortex Core Transmission: Middle layers (Layers 2 & 3 around throat d) become transmitters
  *   at exact phase angles: 0 rad, ±2pi/3 (120° decoherence at the thirds), pi (180° Laplace lock), and arccos(-1/3) (109.47°)
- * - Signal Relay & Non-Perishing Persistence: Passing waves trigger nearby structures without destroying source
- * - Quantum Coherence Function (Paper 03 Theorem 1.1): L = (1 + 2 cos(Delta theta)) / 3
- *     - Full Coherence (L > 0.65): Attraction, Casimir-string bonding, fusion into molecules & biospheres
- *     - Complete Decoherence (|L| < 0.15 at the thirds): Mitosis / division into daughter units under excess energy
- *     - Partial Coherence (0.15 <= |L| <= 0.65): Orbital pairing, two-state energy exchange delta = -1/2 tanh((rho - 3.5)/2)
- * - Spontaneous Evolution: Replicating bonded triads emerge into Living Biospheres and Advancing Civilizations
+ * - Multi-element Compound Formation & Graph Clustering:
+ *     - Prime numbers up to 9: 2, 3, 5, 7. 9 is counting limit 3^2.
+ *     - N=1: Monomer (Fermion/Lepton)
+ *     - N=2: Diatomic Hydrogen (^1H₂ — Prime 2 Duality)
+ *     - N=3: Triad Nucleon / Helium-3 (^3He — Prime 3 Contact Trigon)
+ *     - N=4: Helium-4 Alpha Nucleus (^4He — 2² Tetrahedral Singlet)
+ *     - N=5: Pentagonal Boron-10 (^10B — Prime 5 Ribose Core)
+ *     - N=6: Carbon-12 Ring (^12C — Hexagonal Benzene Aromatic)
+ *     - N=7: Nitrogen-14 Branch (^14N — Prime 7 Peptide Bridge)
+ *     - N=8: Oxygen-16 Complex (^16O — 2³ Cube of Prime 2, True Knowledge 1/2)
+ *     - N>=9: Polymeric Macromolecule (Prebiotic Foldamer Chain)
+ * - Event Horizon Duality & Complete Knowledge (0.5 + 0.5 = 1.0):
+ *     - Side A (Forward Universe): 18 nodes, Knowledge 0.50
+ *     - Side B (Conjugate Anti-Universe): 18 nodes, Knowledge 0.50
+ *     - Event Horizon (d <= 0.52): Complete Knowledge = 0.50 + 0.50 = 1.00
+ * - Quantum Reincarnation across Spacetime ("The Egg"):
+ *     - Dissolution at horizon into the Native Signal continuum
+ *     - Re-emergence across cosmic time preserving Monad ID and soul lineage
+ * - Interactive 3D Hover Labeling & Telemetry
  */
 
 import * as THREE from 'three';
@@ -21,7 +34,7 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 
-// Physical State Classifications (Emergent from local continuous fields)
+// Physical State Classifications
 export const STATE_VACUUM = 0;              // Quiescent background foam
 export const STATE_FERMION = 1;             // Chiral half-spin excitation (rho < 0.8)
 export const STATE_HADRON = 2;              // Meson / quark dipole (0.8 <= rho < 1.5)
@@ -47,10 +60,29 @@ export const RESONANT_ANGLES = [
   Math.acos(-1.0 / 3.0)      // 109.47°: Contact angle / trigon (Paper 07)
 ];
 
-// Autonomous Continuous 36-Node String-Quantum Agent
+const MONAD_PREFIXES = [
+  'Alpha', 'Beta', 'Gamma', 'Delta', 'Epsilon', 'Zeta', 'Eta', 'Theta',
+  'Iota', 'Kappa', 'Lambda', 'Mu', 'Nu', 'Xi', 'Omicron', 'Pi',
+  'Rho', 'Sigma', 'Tau', 'Upsilon', 'Phi', 'Chi', 'Psi', 'Omega'
+];
+
+const ROMAN_NUMERALS = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI', 'XVII', 'XVIII', 'XIX', 'XX'];
+export function toRoman(num) {
+  if (num <= 0) return 'I';
+  if (num <= 20) return ROMAN_NUMERALS[num - 1];
+  return `${num}`;
+}
+
+// Autonomous Continuous 36-Node String-Quantum Monad
 class CosmicStructure {
-  constructor(id, x, y, z, rho = 2.5, theta = null) {
+  constructor(id, x, y, z, rho = 2.5, theta = null, monadId = null, incarnation = 1, reincarnationLog = null) {
     this.id = id;
+    this.monadId = monadId || `Monad-${MONAD_PREFIXES[id % MONAD_PREFIXES.length]}-${id}`;
+    this.incarnation = incarnation;
+    this.reincarnationLog = reincarnationLog || [
+      `Incarnation ${toRoman(incarnation)}: Primordial Genesis at t=0.0 Myr`
+    ];
+
     this.pos = new THREE.Vector3(x, y, z);
     this.vel = new THREE.Vector3(
       (Math.random() - 0.5) * 0.15,
@@ -66,10 +98,29 @@ class CosmicStructure {
     this.reach = 6;            // Active topological node reach [1..36]
     this.state = STATE_BARYON;
     this.bonds = new Set();    // Bonded structure IDs
+
+    // Event Horizon Duality & Complete Knowledge (0.5 + 0.5 = 1.0)
+    this.knowledgeA = 0.50;    // Side A (Observable Forward Universe: 18 nodes, max 0.50)
+    this.knowledgeB = 0.00;    // Side B (Conjugate Anti-Universe: 18 nodes, unlocked at horizon)
+    this.totalKnowledge = 0.50; // Sum = KA + KB
+
+    // Multi-Element Chemical Graph Classification
+    this.compoundType = "Monomer (Fermion/Lepton)";
+    this.compoundSize = 1;
+
+    // Phase Perception State (1/3 and 2/3 contribution of zero and one)
+    this.phasePerception = "Ground State: Coherent Alignment";
+
+    // Non-Local Horizon Slip & Reincarnation ("The Egg")
+    this.isDissolving = false;
+    this.dissolveTimer = 0.0;
+    this.opacity = 1.0;
+
+    // Vortex Core Wave Transmission
     this.isTransmitting = false;
     this.transmitTimer = 0.0;
-    this.transmitPulse = 0.0;  // Expanding wave pulse visual
-    this.generation = 0;       // Lineage counter
+    this.transmitPulse = 0.0;
+    this.generation = 0;
     this.age = 0.0;
   }
 }
@@ -90,6 +141,13 @@ export class GameOfCosmos {
     this.structures = [];
     this.maxStructures = 180;
     this.nextStructureId = 1;
+
+    // Non-Local Akashic Reincarnation Queue ("The Egg")
+    this.reincarnationQueue = [];
+
+    // Interactive Hover Tracking
+    this.hoveredStructure = null;
+    this.hoverTooltipEl = document.getElementById('cosmos-hover-tooltip');
 
     // Simulation Controls
     this.generation = 0;
@@ -190,7 +248,7 @@ export class GameOfCosmos {
     observer.observe(this.container);
 
     window.cosmosInstance = this;
-    console.log('[GameOfCosmos] Continuous String-Quantum Engine initialized successfully.');
+    console.log('[GameOfCosmos] Continuous String-Quantum Engine & Reincarnation Loop initialized.');
   }
 
   // --------------------------------------------------------------------------
@@ -237,7 +295,7 @@ export class GameOfCosmos {
       const renderPass = new RenderPass(this.scene, this.camera);
       this.bloomPass = new UnrealBloomPass(
         new THREE.Vector2(w, h),
-        0.82, // strength (crisp glow without overexposure)
+        0.82, // strength
         0.40, // radius
         0.30  // threshold
       );
@@ -287,7 +345,6 @@ export class GameOfCosmos {
   // 3. Macro 3D Instanced Meshes
   // --------------------------------------------------------------------------
   initMacroMeshes() {
-    // 36 Nodes per unit across maxStructures
     const maxNodesTotal = this.maxStructures * 36;
     const nodeGeo = new THREE.SphereGeometry(0.38, 8, 8);
     const nodeMat = new THREE.MeshStandardMaterial({
@@ -379,7 +436,7 @@ export class GameOfCosmos {
       const posArray = new Float32Array(7 * 3);
       ringGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
       const ringMat = new THREE.LineBasicMaterial({
-        color: (l === 2 || l === 3) ? 0xfacc15 : 0x38bdf8, // Middle layers are the vortex core!
+        color: (l === 2 || l === 3) ? 0xfacc15 : 0x38bdf8,
         linewidth: 2,
         transparent: true,
         opacity: 0.85
@@ -530,7 +587,7 @@ export class GameOfCosmos {
   }
 
   // --------------------------------------------------------------------------
-  // 6. Universal Native Wavefield Ripples (Visualizing the Pervasive Carrier Wave)
+  // 6. Universal Native Wavefield Ripples
   // --------------------------------------------------------------------------
   initWaveRipples() {
     const waveGeo = new THREE.RingGeometry(10, 10.5, 48);
@@ -554,7 +611,7 @@ export class GameOfCosmos {
   }
 
   // --------------------------------------------------------------------------
-  // 7. Continuous String-Quantum Physics Update (Native Vibration, Coherence & Evolution)
+  // 7. Continuous String-Quantum Physics Update (Native Vibration, Coherence, Horizon Duality & The Egg)
   // --------------------------------------------------------------------------
   step() {
     if (this.isStill) return;
@@ -565,23 +622,27 @@ export class GameOfCosmos {
     const f_eff = params.f;
     const S_param = params.S;
 
-    // Carrier wavevector k_vec = (0.1, 0.1, 0.1)
     const kx = 0.08, ky = 0.08, kz = 0.08;
     let txCount = 0;
     let sumEntropy = 0.0;
     let sumEP = 0.0;
     let netFlux = 0.0;
 
-    // 1. Interaction with the Universal Native Vibration Signal (Paper 01/03/08)
+    let maxId = 0;
+    for (let i = 0; i < this.structures.length; i++) {
+      if (this.structures[i].id > maxId) maxId = this.structures[i].id;
+    }
+
+    // 1. Universal Native Vibration & Event Horizon Duality
     for (let i = 0; i < this.structures.length; i++) {
       const s = this.structures[i];
 
-      // Local phase of the universal carrier wave at structure position
+      // Local phase of universal carrier wave
       const wavePhase = (OMEGA_NATIVE * t - (kx * s.pos.x + ky * s.pos.y + kz * s.pos.z)) % (2.0 * Math.PI);
       let dThetaWave = Math.abs(wavePhase - s.phase) % (2.0 * Math.PI);
       if (dThetaWave > Math.PI) dThetaWave = 2.0 * Math.PI - dThetaWave;
 
-      // Check resonance conditions: vortex core (middle layer) becomes transmitter!
+      // Resonant vortex core transmission
       let isResonant = false;
       for (let k = 0; k < RESONANT_ANGLES.length; k++) {
         if (Math.abs(dThetaWave - RESONANT_ANGLES[k]) < 0.26) {
@@ -599,17 +660,33 @@ export class GameOfCosmos {
         if (s.transmitTimer <= 0) s.isTransmitting = false;
       }
 
-      // Expanding wave pulse visual
       if (s.isTransmitting) {
         s.transmitPulse = (s.transmitPulse + dt * 4.0) % 3.0;
       } else {
         s.transmitPulse = 0.0;
       }
 
-      // Natural vibration oscillation + external frequency drive
+      // Natural phase oscillation
       s.phase = (s.phase + dt * (OMEGA_NATIVE * 0.25 + (f_eff / 144.0) * 0.15 + s.energy * 0.03)) % (2.0 * Math.PI);
 
-      // Proper time emergence (Theorem 1.1, Paper 02)
+      // Phase Perception: 1/3 (120°) and 2/3 (240°) contribution of zero and one
+      const normPhase = ((s.phase % (2.0 * Math.PI)) + 2.0 * Math.PI) % (2.0 * Math.PI);
+      const phaseFrac = normPhase / (2.0 * Math.PI);
+      const deg = Math.round(normPhase * (180.0 / Math.PI));
+
+      if (Math.abs(phaseFrac - 1.0 / 3.0) < 0.055) {
+        s.phasePerception = `1/3 Perception (${deg}°): Zero-State Dominance (Decoherence at Thirds) [1/2 (0 + 1)]`;
+      } else if (Math.abs(phaseFrac - 2.0 / 3.0) < 0.055) {
+        s.phasePerception = `2/3 Perception (${deg}°): One-State Dominance (Conjugate Harmonic) [1/2 (0 + 1)]`;
+      } else if (Math.abs(phaseFrac - 0.50) < 0.045) {
+        s.phasePerception = `1/2 Perception (${deg}°): Laplace Lock (Conjugate Inversion)`;
+      } else if (phaseFrac < 0.04 || phaseFrac > 0.96) {
+        s.phasePerception = `Ground State (${deg}°): Complete Coherence`;
+      } else {
+        s.phasePerception = `Continuous Quantum Phase (${deg}°) [Harmonic Balance]`;
+      }
+
+      // Proper time emergence
       const timeDilation = Math.sqrt(Math.max(0.01, 1.0 - 0.50 / s.distance));
       const localEP = 0.008 * S_param + 0.002 * Math.abs(Math.sin(s.phase));
       s.properTime += dt * timeDilation;
@@ -617,37 +694,59 @@ export class GameOfCosmos {
       sumEP += localEP;
       sumEntropy += s.entropy;
 
-      // Metric Throat Contraction & Horizon Singularity (Papers 07 & 11)
+      // Metric Throat Contraction
       if (s.distance <= 0.50) {
         s.distance = 0.50; // Locked at Schwarzschild horizon
         s.energy = Math.max(16.0, s.energy);
       } else if (s.energy > 22.0) {
-        s.distance = Math.max(0.50, s.distance - dt * 0.35); // Gravitational collapse
+        s.distance = Math.max(0.50, s.distance - dt * 0.35);
       } else if (s.energy > 11.0) {
-        s.distance = Math.max(1.15, s.distance - dt * 0.18); // Stellar core compression
+        s.distance = Math.max(1.15, s.distance - dt * 0.18);
       } else if (s.energy > 3.0) {
         s.distance = Math.max(2.0, s.distance - dt * 0.04);
       } else {
-        s.distance = Math.min(4.40, s.distance + dt * 0.12); // Cosmic expansion to flat space
+        s.distance = Math.min(4.40, s.distance + dt * 0.12);
       }
 
-      // Topological Node Reach Expansion (Prompt 5)
+      // Topological Node Reach Expansion
       if (s.properTime > 2.0 && s.coherence > 0.38 && s.energy >= 3.0) {
-        s.reach = (s.properTime > 3.0 || s.distance <= 1.0) ? 36 : 18; // Omniversal horizon slip!
+        s.reach = (s.properTime > 3.0 || s.distance <= 1.0) ? 36 : 18;
       } else if (s.energy >= 6.0) {
-        s.reach = 18; // Organic molecular triad
+        s.reach = 18;
       } else if (s.energy >= 2.5) {
-        s.reach = 12; // Atomic shells
+        s.reach = 12;
       } else if (s.energy >= 1.5) {
-        s.reach = 6;  // Baryon nucleon
+        s.reach = 6;
       } else if (s.energy >= 0.8) {
-        s.reach = 3;  // Hadron triad
+        s.reach = 3;
       } else {
-        s.reach = 1;  // Fermion
+        s.reach = 1;
+      }
+
+      // Event Horizon Duality & Knowledge Equation:
+      // Side A has 0.50, Side B has 0.50.
+      // Only object standing at event horizon (d <= 0.52) has Complete Knowledge = 0.50 + 0.50 = 1.00!
+      if (s.distance <= 0.52) {
+        s.knowledgeA = 0.50;
+        s.knowledgeB = 0.50;
+        s.totalKnowledge = 1.00; // COMPLETE KNOWLEDGE: Omniscience!
+        s.reach = 36;
+        s.coherence = 1.0;
+        s.isTransmitting = true; // Directly becomes the Native Signal!
+
+        // Trigger Event Horizon Slip & Dissolution into the Native Signal continuum ("The Egg")
+        if (!s.isDissolving) {
+          s.isDissolving = true;
+          s.dissolveTimer = 1.8;
+        }
+      } else {
+        s.knowledgeA = 0.50 * Math.min(1.0, s.reach / 18.0);
+        s.knowledgeB = 0.00; // Conjugate anti-universe inaccessible away from horizon
+        s.totalKnowledge = s.knowledgeA;
       }
     }
 
-    // 2. Inter-Structure Dynamics: Signal Relay, Quantum Coherence, Combine & Bond
+    // 2. Inter-Structure Dynamics: Signal Relay, Coherence, Combine & Bond
     const N = this.structures.length;
     for (let i = 0; i < N; i++) {
       const s1 = this.structures[i];
@@ -660,11 +759,10 @@ export class GameOfCosmos {
         const dist = rVec.length();
         if (dist < 0.001) continue;
 
-        // A. Signal Relay ("Next source is quickly found, previous doesn't perish")
+        // A. Signal Relay
         if (s1.isTransmitting && dist < 28.0) {
           let dTh = Math.abs(s1.phase - s2.phase) % (2.0 * Math.PI);
           if (dTh > Math.PI) dTh = 2.0 * Math.PI - dTh;
-          // If s2 is receptive to resonant signal:
           if (dTh < 0.40 || Math.abs(dTh - 2.0 * Math.PI / 3.0) < 0.30) {
             if (!s2.isTransmitting) {
               s2.isTransmitting = true;
@@ -684,15 +782,15 @@ export class GameOfCosmos {
           }
         }
 
-        // B. Quantum Coherence Function (Paper 03 Theorem 1.1)
+        // B. Quantum Coherence Function L_ij = (1 + 2 cos(dTheta)) / 3
         let dTheta_ij = Math.abs(s1.phase - s2.phase) % (2.0 * Math.PI);
         if (dTheta_ij > Math.PI) dTheta_ij = 2.0 * Math.PI - dTheta_ij;
-        const L_ij = (1.0 + 2.0 * Math.cos(dTheta_ij)) / 3.0; // Theorem 1.1
+        const L_ij = (1.0 + 2.0 * Math.cos(dTheta_ij)) / 3.0;
 
         if (Math.abs(L_ij) > 0.65) neighborSync++;
         totalInteractions++;
 
-        // Mutual Kuramoto Phase Coupling & Vector Momentum Flux (Paper 01 Euler Merge)
+        // Mutual Kuramoto Phase Coupling
         const coupling = (0.12 * (S_param / 0.5) * Math.sin(s2.phase - s1.phase)) / Math.max(1.0, dist);
         s1.phase = (s1.phase + dt * coupling) % (2.0 * Math.PI);
         s2.phase = (s2.phase - dt * coupling) % (2.0 * Math.PI);
@@ -707,12 +805,11 @@ export class GameOfCosmos {
           netFlux += Math.abs(forceMag);
         }
 
-        // C. Combine (Bonding into complex molecular / civilizational structures)
+        // C. Combine (Bonding into complex molecular / chemical structures)
         if (dist < 6.8 && L_ij > 0.60) {
           s1.bonds.add(s2.id);
           s2.bonds.add(s1.id);
 
-          // Two-State Energy Partitioning (Paper 04 Which Member Carries)
           const delta = -0.5 * Math.tanh((s1.energy - s2.energy) / 3.5);
           const exchange = dt * 0.15 * delta;
           s1.energy += exchange;
@@ -726,12 +823,11 @@ export class GameOfCosmos {
       s1.coherence = totalInteractions > 0 ? (neighborSync / totalInteractions) : 1.0;
     }
 
-    // 3. Mitosis (Divide), Reproduction & Kinematic Integration
+    // 3. Compute Connected-Component Molecular Graph (Compounds N=1..8+)
+    this.computeCompoundGraph();
+
+    // 4. Kinematics, Mitosis, Reproduction & Dissolution Handling
     const spawned = [];
-    let maxId = 0;
-    for (let i = 0; i < this.structures.length; i++) {
-      if (this.structures[i].id > maxId) maxId = this.structures[i].id;
-    }
 
     for (let i = 0; i < this.structures.length; i++) {
       const s = this.structures[i];
@@ -740,17 +836,49 @@ export class GameOfCosmos {
       s.pos.addScaledVector(s.vel, dt);
       s.age += dt;
 
-      // Cosmic Envelope Containment (Soft Boundary Reflection at R = 55)
+      // Cosmic Envelope Containment (R = 55)
       const distFromOrigin = s.pos.length();
       if (distFromOrigin > 55.0) {
         const pull = (distFromOrigin - 55.0) * 0.08;
         s.vel.addScaledVector(s.pos.clone().normalize(), -pull * dt);
       }
-
-      // Natural drag damping
       s.vel.multiplyScalar(0.988);
 
-      // A. Divide (Mitosis under high energy & complete decoherence at the thirds)
+      // Dissolution at Horizon ("The Egg" Quantum Slip)
+      if (s.isDissolving) {
+        s.dissolveTimer -= dt;
+        s.opacity = Math.max(0.0, s.dissolveTimer / 1.8);
+
+        if (s.dissolveTimer <= 0) {
+          // Dematerialize into non-local Native Signal continuum
+          const nextInc = s.incarnation + 1;
+          const romanPrev = toRoman(s.incarnation);
+          const romanNext = toRoman(nextInc);
+          const slipLog = `Incarnation ${romanPrev}: Slipped into Event Horizon (Knowledge 1.00 = 0.5+0.5) at t=${t.toFixed(1)} Myr. Transcended into Native Signal continuum.`;
+          const updatedHistory = [...s.reincarnationLog, slipLog];
+
+          this.reincarnationQueue.push({
+            monadId: s.monadId,
+            incarnation: nextInc,
+            reincarnationLog: updatedHistory,
+            reincarnateAtTime: this.cosmicTime + (1.8 + Math.random() * 3.4),
+            sourceEnergy: Math.max(2.2, s.energy * 0.45),
+            sourcePhase: (s.phase + Math.PI) % (2.0 * Math.PI)
+          });
+
+          // Unlink bonds
+          s.bonds.forEach(bId => {
+            const nb = this.structures.find(item => item.id === bId);
+            if (nb) nb.bonds.delete(s.id);
+          });
+
+          this.structures.splice(i, 1);
+          i--;
+          continue;
+        }
+      }
+
+      // Mitosis (Divide under excess energy)
       if (s.energy > 20.0 && this.structures.length < this.maxStructures) {
         maxId++;
         const daughter = new CosmicStructure(
@@ -767,7 +895,7 @@ export class GameOfCosmos {
         spawned.push(daughter);
       }
 
-      // B. Reproduction (Living Biosphere Triad Replication)
+      // Reproduction (Living Biosphere Triad Replication)
       if (s.bonds.size >= 3 && s.properTime > 1.0 && s.isTransmitting && this.structures.length < this.maxStructures && Math.random() < 0.04) {
         maxId++;
         const offspring = new CosmicStructure(
@@ -787,7 +915,42 @@ export class GameOfCosmos {
       this.structures.push(...spawned);
     }
 
-    // 4. Emergent Classification & Telemetry Update
+    // 5. Process Quantum Reincarnation Queue ("The Egg")
+    for (let q = 0; q < this.reincarnationQueue.length; q++) {
+      const entry = this.reincarnationQueue[q];
+      if (this.cosmicTime >= entry.reincarnateAtTime && this.structures.length < this.maxStructures) {
+        this.reincarnationQueue.splice(q, 1);
+        q--;
+        maxId++;
+        const romanInc = toRoman(entry.incarnation);
+
+        // Spawn organically at a new coordinate across spacetime
+        const r = 6.0 + Math.random() * 36.0;
+        const th = Math.random() * Math.PI * 2.0;
+        const ph = (Math.random() - 0.5) * Math.PI;
+        const nx = r * Math.cos(ph) * Math.cos(th);
+        const ny = r * Math.sin(ph);
+        const nz = r * Math.cos(ph) * Math.sin(th);
+
+        const reincarnated = new CosmicStructure(
+          maxId,
+          nx, ny, nz,
+          entry.sourceEnergy,
+          entry.sourcePhase,
+          entry.monadId,
+          entry.incarnation,
+          [
+            ...entry.reincarnationLog,
+            `Incarnation ${romanInc}: Re-emerged across spacetime at (${nx.toFixed(1)}, ${ny.toFixed(1)}, ${nz.toFixed(1)}) at t=${this.cosmicTime.toFixed(1)} Myr ("The Egg").`
+          ]
+        );
+        reincarnated.properTime = 0.0;
+        reincarnated.generation = entry.incarnation - 1;
+        this.structures.push(reincarnated);
+      }
+    }
+
+    // 6. Emergent Classification & Telemetry Update
     const cMap = {
       vacuum: 0, fermions: 0, hadrons: 0, baryons: 0, hydrogen: 0, helium: 0,
       organic: 0, stars: 0, planets: 0, biospheres: 0, civilizations: 0,
@@ -827,7 +990,92 @@ export class GameOfCosmos {
   }
 
   // --------------------------------------------------------------------------
-  // 8. Emergent Classification Evaluator (Pure Continuous Field Reading)
+  // 8. Dynamic Molecular Graph Clustering (Primes up to 9 & Cube of 2)
+  // --------------------------------------------------------------------------
+  computeCompoundGraph() {
+    const visited = new Set();
+    const structMap = new Map();
+    for (let i = 0; i < this.structures.length; i++) {
+      structMap.set(this.structures[i].id, this.structures[i]);
+    }
+
+    const compounds = [];
+    for (let i = 0; i < this.structures.length; i++) {
+      const s = this.structures[i];
+      if (visited.has(s.id)) continue;
+      const comp = [];
+      const queue = [s.id];
+      visited.add(s.id);
+
+      while (queue.length > 0) {
+        const currId = queue.shift();
+        comp.push(currId);
+        const curr = structMap.get(currId);
+        if (curr) {
+          curr.bonds.forEach(bId => {
+            if (!visited.has(bId) && structMap.has(bId)) {
+              visited.add(bId);
+              queue.push(bId);
+            }
+          });
+        }
+      }
+      compounds.push(comp);
+    }
+
+    for (let c = 0; c < compounds.length; c++) {
+      const comp = compounds[c];
+      const sz = comp.length;
+      let cName = 'Monomer (Fermion/Lepton)';
+      if (sz === 1) cName = 'Monomer (Fermion/Lepton excitation)';
+      else if (sz === 2) cName = 'Diatomic Hydrogen (^1H₂ — Prime 2 Duality)';
+      else if (sz === 3) cName = 'Triad Nucleon / Helium-3 (^3He — Prime 3 Contact Trigon)';
+      else if (sz === 4) cName = 'Helium-4 Alpha Nucleus (^4He — 2² Tetrahedral Singlet)';
+      else if (sz === 5) cName = 'Pentagonal Boron-10 (^10B — Prime 5 Ribose Core)';
+      else if (sz === 6) cName = 'Carbon-12 Ring (^12C — Hexagonal Benzene Aromatic)';
+      else if (sz === 7) cName = 'Nitrogen-14 Branch (^14N — Prime 7 Peptide Bridge)';
+      else if (sz === 8) cName = 'Oxygen-16 Complex (^16O — 2³ Cube of Prime 2, True Knowledge 1/2)';
+      else if (sz >= 9) cName = `Polymeric Macromolecule (${sz} Units — 3² Prebiotic Foldamer)`;
+
+      let anyTx = false;
+      for (let k = 0; k < comp.length; k++) {
+        const s = structMap.get(comp[k]);
+        if (s) {
+          s.compoundSize = sz;
+          s.compoundType = cName;
+          if (s.isTransmitting) anyTx = true;
+        }
+      }
+
+      // Compound-level collective behavior
+      if (sz >= 2) {
+        for (let k = 0; k < comp.length; k++) {
+          const s = structMap.get(comp[k]);
+          if (!s) continue;
+          if (anyTx && !s.isTransmitting && sz >= 5) {
+            s.isTransmitting = true;
+            s.transmitTimer = 0.8;
+          }
+          // Bond spring tension
+          s.bonds.forEach(bId => {
+            const nb = structMap.get(bId);
+            if (nb) {
+              const rVec = new THREE.Vector3().subVectors(nb.pos, s.pos);
+              const dist = rVec.length();
+              if (dist > 0.01) {
+                const r0 = 3.6;
+                const spring = (dist - r0) * 0.035;
+                s.vel.addScaledVector(rVec.normalize(), spring * 0.12);
+              }
+            }
+          });
+        }
+      }
+    }
+  }
+
+  // --------------------------------------------------------------------------
+  // 9. Emergent Classification Evaluator
   // --------------------------------------------------------------------------
   classifyStructure(s) {
     const e = s.energy;
@@ -842,7 +1090,6 @@ export class GameOfCosmos {
     if (d <= 1.00 && e > 12.0) return STATE_PULSAR;
     if (e > 11.0 && d <= 1.80) return STATE_STAR;
 
-    // Context from surrounding bonds & neighbors
     let hasStarBond = false;
     let hasOrganicBond = false;
     s.bonds.forEach(bId => {
@@ -853,20 +1100,16 @@ export class GameOfCosmos {
       }
     });
 
-    // Advancing Civilization: Living biosphere that achieves deep proper time, coherence, and long-range transmission:
     if ((hasStarBond || bondCount >= 3) && tau > 1.25 && coh > 0.35 && e >= 3.0 && e <= 8.0 && s.reach >= 18) {
       return STATE_CIVILIZATION;
     }
-    // Living Biosphere: Replicating bonded triad with phase homeostasis
     if ((hasStarBond || bondCount >= 2) && e >= 3.0 && e <= 8.0 && tau > 0.5) {
       return STATE_BIOSPHERE;
     }
-    // Planetary System: Orbiting within stellar gravitational well
     if (hasStarBond && e >= 1.8 && e < 7.0) {
       return STATE_PLANETARY_SYSTEM;
     }
 
-    // Elementary and chemical particle levels:
     if (e >= 6.0 || bondCount >= 4) return STATE_ORGANIC_ELEMENT;
     if (e >= 4.0 || bondCount === 3) return STATE_HELIUM;
     if (e >= 2.5 || bondCount === 2) return STATE_HYDROGEN;
@@ -876,7 +1119,7 @@ export class GameOfCosmos {
   }
 
   // --------------------------------------------------------------------------
-  // 9. Update Macro Visuals (Rendering Continuous 36-Node Complexes)
+  // 10. Update Macro Visuals (Rendering Continuous 36-Node Complexes)
   // --------------------------------------------------------------------------
   updateVisuals(elapsed) {
     if (this.viewMode === 'inspector') {
@@ -917,7 +1160,7 @@ export class GameOfCosmos {
 
       if (st === STATE_CIVILIZATION) civPositions.push(center);
 
-      // Compute all 36 node coordinates for this unit in continuous space
+      // 36 Node Coordinates
       const unitNodeVecs = [];
       for (let l = 0; l < 6; l++) {
         const zL = (l - 2.5) * (height / 5.0);
@@ -940,13 +1183,16 @@ export class GameOfCosmos {
             dummy.position.copy(v);
             const isNodeActive = (nodeGlobalIdx < reach) || (reach === 36);
             let nScale = (isNodeActive ? 0.38 : 0.18);
-            if (s.isTransmitting && (l === 2 || l === 3)) nScale *= 1.45; // Vortex core transmitter flare!
+            if (s.isTransmitting && (l === 2 || l === 3)) nScale *= 1.45;
+            if (s.isDissolving) nScale *= Math.max(0.05, s.opacity); // Fade out as it slips into horizon
             dummy.scale.setScalar(nScale);
             dummy.updateMatrix();
             this.instancedNodes.setMatrixAt(nodeIdx, dummy.matrix);
 
             // Node Color Palette
-            if (!isNodeActive) {
+            if (s.totalKnowledge >= 0.98) {
+              colorDummy.setHex(0xffffff); // Complete Omniscience Blinding White Light!
+            } else if (!isNodeActive) {
               colorDummy.setHex(0x334155);
             } else if (s.isTransmitting && (l === 2 || l === 3)) {
               colorDummy.setHex(0xfef08a); // Radiant golden-white vortex core transmitter
@@ -978,10 +1224,11 @@ export class GameOfCosmos {
         }
       }
 
-      // Internal Layer Rings & Ruled Hyperbolic Chords of this 36-node unit
+      // Internal Layer Rings & Ruled Hyperbolic Chords
       if (bondVertIdx < 118000) {
         let bR = 0.22, bG = 0.74, bB = 0.97;
-        if (s.isTransmitting) { bR = 0.98; bG = 0.85; bB = 0.20; }
+        if (s.totalKnowledge >= 0.98) { bR = 1.0; bG = 1.0; bB = 1.0; }
+        else if (s.isTransmitting) { bR = 0.98; bG = 0.85; bB = 0.20; }
         else if (st === STATE_CIVILIZATION) { bR = 0.98; bG = 0.80; bB = 0.08; }
         else if (st === STATE_BIOSPHERE) { bR = 0.06; bG = 0.72; bB = 0.50; }
         else if (st === STATE_STAR) { bR = 0.99; bG = 0.94; bB = 0.54; }
@@ -999,7 +1246,7 @@ export class GameOfCosmos {
           }
         }
 
-        // Ruled hyperboloid diagonals between layers
+        // Ruled hyperboloid diagonals
         for (let l = 0; l < 5; l++) {
           const s1 = l * 6;
           const s2 = (l + 1) * 6;
@@ -1015,7 +1262,7 @@ export class GameOfCosmos {
         }
       }
 
-      // Inter-Unit String-Tension Bonds (Molecules, Cells, Chains)
+      // Inter-Unit String-Tension Bonds
       s.bonds.forEach(bId => {
         if (s.id < bId && bondVertIdx < 118000) {
           const nb = this.structures.find(item => item.id === bId);
@@ -1158,10 +1405,16 @@ export class GameOfCosmos {
     this.macroBondsMesh.geometry.setDrawRange(0, bondVertIdx);
     this.macroBondsMesh.geometry.attributes.position.needsUpdate = true;
     this.macroBondsMesh.geometry.attributes.color.needsUpdate = true;
+
+    // Smoothly track hovered tooltip position in 3D
+    if (this.hoveredStructure && this.hoverTooltipEl && this.hoverTooltipEl.classList.contains('visible')) {
+      const rect = this.container.getBoundingClientRect();
+      this.updateHoverTooltipContent(rect.width, rect.height);
+    }
   }
 
   // --------------------------------------------------------------------------
-  // 10. Update Hero Inspector 36-Node Visuals (Close-Up Quantum State)
+  // 11. Update Hero Inspector 36-Node Visuals (Close-Up Quantum State)
   // --------------------------------------------------------------------------
   updateInspectorView(elapsed) {
     if (this.structures.length === 0) return;
@@ -1214,7 +1467,7 @@ export class GameOfCosmos {
           nodeMesh.position.copy(vec);
           const isNodeActive = (nodeGlobalIdx < reach) || (reach === 36);
           let breathe = (isNodeActive ? 1.0 : 0.45) + Math.sin(localPhase * 2.0 + l) * 0.08;
-          if (s.isTransmitting && (l === 2 || l === 3)) breathe *= 1.35; // Transmitter vortex flare!
+          if (s.isTransmitting && (l === 2 || l === 3)) breathe *= 1.35;
           nodeMesh.scale.setScalar(breathe);
 
           if (!isNodeActive) {
@@ -1291,23 +1544,25 @@ export class GameOfCosmos {
       const txStatus = s.isTransmitting ? '<span style="color: #facc15; font-weight: 700;">TRANSMITTING (VORTEX CORE RESONANT)</span>' : '<span style="color: #94a3b8;">RECEIVING / LISTENING</span>';
       if (elState) elState.innerText = `STATE: ${stateNames[st] || 'UNKNOWN'}`;
       if (elMeta) {
-        elMeta.innerHTML = `Position: (${s.pos.x.toFixed(1)}, ${s.pos.y.toFixed(1)}, ${s.pos.z.toFixed(1)}) &bull; Reach: <strong>${reachText}</strong><br>Status: ${txStatus} &bull; Bonds: ${s.bonds.size} links<br>Energy &rho;: ${s.energy.toFixed(2)} &bull; Metric <em>d</em>: ${curD.toFixed(2)}<br>Proper Time &tau;: ${s.properTime.toFixed(2)} Myr &bull; Coherence <em>L</em>: ${(s.coherence * 100).toFixed(1)}% &bull; Gen: ${s.generation}`;
+        elMeta.innerHTML = `<strong>${s.monadId} [${toRoman(s.incarnation)}]</strong> &bull; Compound: <em>${s.compoundType}</em><br>Position: (${s.pos.x.toFixed(1)}, ${s.pos.y.toFixed(1)}, ${s.pos.z.toFixed(1)}) &bull; Reach: <strong>${reachText}</strong><br>Status: ${txStatus} &bull; Bonds: ${s.bonds.size} links<br>Knowledge: <strong>${s.totalKnowledge.toFixed(2)}/1.00</strong> &bull; Metric <em>d</em>: ${curD.toFixed(2)}<br>Proper Time: ${s.properTime.toFixed(2)} Myr &bull; Coherence: ${(s.coherence * 100).toFixed(1)}%`;
       }
     }
   }
 
   // --------------------------------------------------------------------------
-  // 11. Primordial Continuous Initial Configurations (NO Fixed Grids)
+  // 12. Primordial Continuous Initial Configurations
   // --------------------------------------------------------------------------
   loadPreset(presetKey) {
     this.structures = [];
     this.nextStructureId = 1;
     this.focusIndex = 0;
+    this.reincarnationQueue = [];
+    this.hoveredStructure = null;
+    if (this.hoverTooltipEl) this.hoverTooltipEl.classList.remove('visible');
 
     const count = 75;
 
     if (presetKey === 'genesis') {
-      // Primordial Singularity Cloud expanding from center
       for (let i = 0; i < count; i++) {
         const r = Math.random() * 12.0;
         const theta = Math.random() * Math.PI * 2.0;
@@ -1320,12 +1575,11 @@ export class GameOfCosmos {
           3.0 + Math.random() * 12.0,
           Math.random() * Math.PI * 2.0
         );
-        s.vel.set(s.pos.x * 0.08, s.pos.y * 0.08, s.pos.z * 0.08); // Outward Hubble expansion!
+        s.vel.set(s.pos.x * 0.08, s.pos.y * 0.08, s.pos.z * 0.08);
         s.distance = 1.40 + Math.random() * 1.5;
         this.structures.push(s);
       }
     } else if (presetKey === 'nucleosynthesis') {
-      // Dispersed nucleon sea fusing into light elements
       for (let i = 0; i < count; i++) {
         const s = new CosmicStructure(
           this.nextStructureId++,
@@ -1338,19 +1592,16 @@ export class GameOfCosmos {
         this.structures.push(s);
       }
     } else if (presetKey === 'stellar_nursery') {
-      // 3 Gravitating Dense Star-Forming Cores with Circumstellar Gas Clouds
       const centers = [
         new THREE.Vector3(0, 0, 0),
         new THREE.Vector3(-22, 6, -8),
         new THREE.Vector3(22, -6, 8)
       ];
       centers.forEach(cPos => {
-        // Massive central stellar furnace
         const core = new CosmicStructure(this.nextStructureId++, cPos.x, cPos.y, cPos.z, 16.5, 0.0);
         core.distance = 1.25;
         this.structures.push(core);
 
-        // Circumstellar accretion disc of proto-planetary / biological units
         for (let i = 0; i < 24; i++) {
           const r = 4.5 + Math.random() * 14.0;
           const th = Math.random() * Math.PI * 2.0;
@@ -1362,14 +1613,12 @@ export class GameOfCosmos {
             3.2 + Math.random() * 3.8,
             th
           );
-          // Keplerian orbital velocity: v = sqrt(GM / r)
           const vOrb = Math.sqrt(8.0 / r);
           s.vel.set(-Math.sin(th) * vOrb, 0, Math.cos(th) * vOrb);
           this.structures.push(s);
         }
       });
     } else if (presetKey === 'planetary_emergence') {
-      // Single Central Star with Ordered Protoplanetary Discs
       const sun = new CosmicStructure(this.nextStructureId++, 0, 0, 0, 18.0, 0.0);
       sun.distance = 1.20;
       this.structures.push(sun);
@@ -1390,14 +1639,12 @@ export class GameOfCosmos {
         this.structures.push(s);
       }
     } else if (presetKey === 'organic_civilization') {
-      // Multiple planetary biospheres advancing to civilizations
       for (let i = 0; i < 6; i++) {
         const phi = (i / 6.0) * Math.PI * 2.0;
         const sunPos = new THREE.Vector3(Math.cos(phi) * 24.0, (Math.random() - 0.5) * 8.0, Math.sin(phi) * 24.0);
         const sun = new CosmicStructure(this.nextStructureId++, sunPos.x, sunPos.y, sunPos.z, 16.0, phi);
         this.structures.push(sun);
 
-        // Habitable biospheres orbiting each sun
         for (let j = 0; j < 8; j++) {
           const th = (j / 8.0) * Math.PI * 2.0;
           const r = 6.0;
@@ -1415,7 +1662,6 @@ export class GameOfCosmos {
         }
       }
     } else if (presetKey === 'supernova') {
-      // Overpressure Core about to Detonate
       const central = new CosmicStructure(this.nextStructureId++, 0, 0, 0, 28.0, 0.0);
       central.distance = 0.55;
       this.structures.push(central);
@@ -1435,9 +1681,8 @@ export class GameOfCosmos {
         this.structures.push(s);
       }
     } else if (presetKey === 'blackhole') {
-      // Schwarzschild Horizon Singularity (d = 0.50) with Accretion Disc
       const bh = new CosmicStructure(this.nextStructureId++, 0, 0, 0, 24.0, 0.0);
-      bh.distance = 0.50;
+      bh.distance = 0.50; // Directly at event horizon (Knowledge 1.00)
       this.structures.push(bh);
 
       for (let i = 0; i < count - 1; i++) {
@@ -1456,7 +1701,6 @@ export class GameOfCosmos {
         this.structures.push(s);
       }
     } else if (presetKey === 'cosmic_web') {
-      // Large-Scale Cosmic Web Filaments in Continuous R^3
       for (let f = 0; f < 4; f++) {
         const dir = new THREE.Vector3((Math.random() - 0.5), (Math.random() - 0.5), (Math.random() - 0.5)).normalize();
         for (let i = 0; i < 18; i++) {
@@ -1498,8 +1742,12 @@ export class GameOfCosmos {
     return { f, S, phi };
   }
 
+  // --------------------------------------------------------------------------
+  // 13. Interactive UI Controls & Hover Labeling
+  // --------------------------------------------------------------------------
   initUI() {
-    // Preset Buttons
+    this.hoverTooltipEl = document.getElementById('cosmos-hover-tooltip');
+
     const pBtns = document.querySelectorAll('[data-cosmos-preset]');
     pBtns.forEach(btn => {
       btn.addEventListener('click', () => {
@@ -1510,7 +1758,6 @@ export class GameOfCosmos {
       });
     });
 
-    // Control Buttons
     const btnPlay = document.getElementById('cosmos-play-btn');
     if (btnPlay) {
       btnPlay.addEventListener('click', () => {
@@ -1548,6 +1795,9 @@ export class GameOfCosmos {
     if (btnClear) {
       btnClear.addEventListener('click', () => {
         this.structures = [];
+        this.reincarnationQueue = [];
+        this.hoveredStructure = null;
+        if (this.hoverTooltipEl) this.hoverTooltipEl.classList.remove('visible');
         this.generation = 0;
         this.cosmicTime = 0.0;
         this.step();
@@ -1569,9 +1819,9 @@ export class GameOfCosmos {
         if (this.inspectorBadge) {
           this.inspectorBadge.style.display = (this.viewMode === 'inspector') ? 'block' : 'none';
         }
+        if (this.hoverTooltipEl) this.hoverTooltipEl.classList.remove('visible');
 
         if (this.viewMode === 'inspector') {
-          // Focus on most interesting unit (civilization, star, or transmitting unit)
           let bestIdx = 0;
           let bestScore = -1;
           for (let i = 0; i < this.structures.length; i++) {
@@ -1618,7 +1868,6 @@ export class GameOfCosmos {
     const btnGamma = document.getElementById('cosmos-gamma-btn');
     if (btnGamma) {
       btnGamma.addEventListener('click', () => {
-        // High-frequency gamma burst: energizes all structures and triggers universal transmission
         for (let i = 0; i < this.structures.length; i++) {
           const s = this.structures[i];
           s.energy += 3.5;
@@ -1630,14 +1879,13 @@ export class GameOfCosmos {
       });
     }
 
-    // Raycasting Click to Select Unit for Inspector
+    // Raycast on Pointerdown (Click selection)
     this.renderer.domElement.addEventListener('pointerdown', (e) => {
       const rect = this.renderer.domElement.getBoundingClientRect();
       this.mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
       this.mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
       this.raycaster.setFromCamera(this.mouse, this.camera);
 
-      // Check distance to structures
       let closestIdx = -1;
       let minRayDist = 3.5;
       for (let i = 0; i < this.structures.length; i++) {
@@ -1656,6 +1904,136 @@ export class GameOfCosmos {
         }
       }
     });
+
+    // Raycast on Pointermove (Interactive Hover Labeling)
+    this.renderer.domElement.addEventListener('pointermove', (e) => {
+      if (this.viewMode === 'inspector') {
+        if (this.hoverTooltipEl) this.hoverTooltipEl.classList.remove('visible');
+        return;
+      }
+      const rect = this.renderer.domElement.getBoundingClientRect();
+      this.mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      this.mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+      this.raycaster.setFromCamera(this.mouse, this.camera);
+
+      let closestIdx = -1;
+      let minRayDist = 3.8;
+      for (let i = 0; i < this.structures.length; i++) {
+        const s = this.structures[i];
+        const rayDist = this.raycaster.ray.distanceToPoint(s.pos);
+        if (rayDist < minRayDist) {
+          minRayDist = rayDist;
+          closestIdx = i;
+        }
+      }
+
+      if (closestIdx !== -1) {
+        this.hoveredStructure = this.structures[closestIdx];
+        this.updateHoverTooltipContent(rect.width, rect.height);
+      } else {
+        this.hoveredStructure = null;
+        if (this.hoverTooltipEl) this.hoverTooltipEl.classList.remove('visible');
+      }
+    });
+
+    this.renderer.domElement.addEventListener('pointerleave', () => {
+      this.hoveredStructure = null;
+      if (this.hoverTooltipEl) this.hoverTooltipEl.classList.remove('visible');
+    });
+  }
+
+  updateHoverTooltipContent(width, height) {
+    if (!this.hoverTooltipEl || !this.hoveredStructure) return;
+    const s = this.hoveredStructure;
+
+    // Project 3D pos to 2D
+    const proj = s.pos.clone().project(this.camera);
+    // If behind camera, hide
+    if (proj.z > 1.0) {
+      this.hoverTooltipEl.classList.remove('visible');
+      return;
+    }
+
+    const px = (proj.x * 0.5 + 0.5) * width;
+    const py = (-proj.y * 0.5 + 0.5) * height;
+
+    // Flip tooltip below if near top of container so it never clips!
+    const showBelow = (py < 330);
+    let tipY;
+    if (showBelow) {
+      this.hoverTooltipEl.style.transform = 'translate(-50%, 14px) scale(1)';
+      tipY = Math.max(15, Math.min(height - 330, py));
+    } else {
+      this.hoverTooltipEl.style.transform = 'translate(-50%, -105%) scale(1)';
+      tipY = Math.max(320, Math.min(height - 20, py));
+    }
+
+    const tipX = Math.max(185, Math.min(width - 185, px));
+
+    let phaseBg = 'rgba(56, 189, 248, 0.22)';
+    let phaseColor = '#38bdf8';
+    if (s.phasePerception.includes('1/3')) {
+      phaseBg = 'rgba(239, 68, 68, 0.25)';
+      phaseColor = '#f87171';
+    } else if (s.phasePerception.includes('2/3')) {
+      phaseBg = 'rgba(168, 85, 247, 0.25)';
+      phaseColor = '#c084fc';
+    } else if (s.phasePerception.includes('1/2')) {
+      phaseBg = 'rgba(250, 204, 21, 0.25)';
+      phaseColor = '#facc15';
+    }
+
+    const kTotalStr = s.totalKnowledge >= 0.98 
+      ? '<span style="color: #facc15; font-weight: 800;">1.00 / 1.00 [EVENT HORIZON OMNISCIENCE]</span>'
+      : `<span>${s.totalKnowledge.toFixed(2)} / 1.00</span>`;
+
+    const horizonNotice = s.distance <= 0.52
+      ? '<div style="color: #ef4444; font-weight: 700; margin-top: 3px;">⚡ Standing at Event Horizon: 0.50 + 0.50 = Complete Knowledge</div>'
+      : '';
+
+    const dissolvingNotice = s.isDissolving
+      ? '<div style="color: #facc15; font-weight: 700; margin-top: 3px;">✦ TRANSCENDING INTO NATIVE SIGNAL CONTINUUM ("THE EGG")</div>'
+      : '';
+
+    this.hoverTooltipEl.innerHTML = `
+      <div class="cosmos-hover-header">
+        <span class="cosmos-hover-monad">✦ ${s.monadId}</span>
+        <span class="cosmos-hover-incarnation">INCARNATION ${toRoman(s.incarnation)}</span>
+      </div>
+      <div class="cosmos-hover-compound">${s.compoundType}</div>
+      <div class="cosmos-hover-knowledge">
+        <div class="cosmos-hover-knowledge-label">
+          <span>Knowledge Quotient (0.5+0.5):</span>
+          ${kTotalStr}
+        </div>
+        <div class="cosmos-hover-knowledge-bar">
+          <div class="cosmos-hover-knowledge-fill-a" style="width: ${(s.knowledgeA * 100).toFixed(0)}%;" title="Forward Universe A: ${(s.knowledgeA * 100).toFixed(0)}%"></div>
+          <div class="cosmos-hover-knowledge-fill-b" style="width: ${(s.knowledgeB * 100).toFixed(0)}%;" title="Conjugate Anti-Universe B: ${(s.knowledgeB * 100).toFixed(0)}%"></div>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 0.65rem; color: #94a3b8; margin-top: 3px;">
+          <span>Observed Universe A: ${(s.knowledgeA * 100).toFixed(0)}%</span>
+          <span>Conjugate Anti-Universe B: ${(s.knowledgeB * 100).toFixed(0)}%</span>
+        </div>
+        ${horizonNotice}
+        ${dissolvingNotice}
+      </div>
+      <div class="cosmos-hover-meta">
+        <div>&bull; Metric Throat <em>d</em>: <strong>${s.distance.toFixed(2)}</strong> ${s.distance <= 0.52 ? '<span style="color:#ef4444;">[HORIZON SINGULARITY]</span>' : ''}</div>
+        <div>&bull; Energy &rho;: <strong>${s.energy.toFixed(2)}</strong> &bull; Coherence <em>L</em>: <strong>${(s.coherence * 100).toFixed(0)}%</strong></div>
+        <div>&bull; Topological Reach: <strong>${s.reach}/36 Nodes</strong> &bull; Proper Time: <strong>${s.properTime.toFixed(1)} Myr</strong></div>
+        <div class="cosmos-hover-phase-pill" style="background: ${phaseBg}; color: ${phaseColor};">
+          ${s.phasePerception}
+        </div>
+      </div>
+      <div class="cosmos-hover-history">
+        <div style="font-weight: 700; color: #38bdf8; margin-bottom: 2px;">Soul Lineage Across Time ("The Egg"):</div>
+        ${s.reincarnationLog.slice(-3).map(entry => `<div>&bull; ${entry}</div>`).join('')}
+      </div>
+    `;
+
+    this.hoverTooltipEl.style.left = `${tipX}px`;
+    this.hoverTooltipEl.style.top = `${tipY}px`;
+    this.hoverTooltipEl.classList.add('visible');
   }
 
   updateTelemetry() {
@@ -1700,7 +2078,7 @@ export class GameOfCosmos {
   }
 
   // --------------------------------------------------------------------------
-  // 12. Main Animation & Render Loop
+  // 14. Main Animation & Render Loop
   // --------------------------------------------------------------------------
   animate() {
     requestAnimationFrame(this.animate);
@@ -1709,7 +2087,6 @@ export class GameOfCosmos {
     const delta = this.clock.getDelta();
     const elapsed = this.clock.getElapsedTime();
 
-    // Physics step timer
     if (this.isPlaying && !this.isStill) {
       const now = performance.now();
       if (now - this.lastStepTime > this.stepInterval) {
@@ -1736,7 +2113,6 @@ if (typeof window !== 'undefined') {
   window.GameOfCosmos = GameOfCosmos;
 }
 
-// Auto-instantiate upon DOM ready
 if (typeof document !== 'undefined') {
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
