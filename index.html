@@ -117,7 +117,7 @@
         <ul class="nav-menu">
           <li><a href="#manifold" class="nav-link" onclick="switchVisualizerTab('manifold')">Manifold</a></li>
           <li><a href="#cosmos" class="nav-link" onclick="switchVisualizerTab('cosmos')">Game of Cosmos</a></li>
-          <li><a href="fluid_topology.html" class="nav-link" target="_blank" style="color: #38bdf8;">K₃,₃ Topology <span style="font-size: 0.65rem; background: rgba(56, 189, 248, 0.2); border: 1px solid rgba(56, 189, 248, 0.4); padding: 1px 5px; border-radius: 4px;">3D</span></a></li>
+          <li><a href="fluid_topology.html" class="nav-link" target="_blank">K₃,₃ Topology <span class="nav-mini-tag">3D</span></a></li>
           <li><a href="#papers" class="nav-link">Papers</a></li>
           <li><a href="#lab" class="nav-link">Lab</a></li>
           <li><a href="#blog" class="nav-link">Dispatches</a></li>
@@ -131,9 +131,39 @@
         <a href="#papers" class="btn-nav-action" title="View 12 original preprints">
           <span>12 Papers</span>
         </a>
+        <button id="mobile-menu-btn" class="mobile-menu-btn" aria-label="Toggle navigation menu" onclick="toggleMobileMenu()">
+          <span class="ham-bar"></span>
+          <span class="ham-bar"></span>
+          <span class="ham-bar"></span>
+        </button>
       </div>
     </div>
   </header>
+
+  <!-- Mobile Navigation Drawer Overlay & Panel -->
+  <div id="drawer-overlay" class="drawer-overlay" onclick="closeMobileMenu()"></div>
+  <div id="mobile-nav-drawer" class="mobile-nav-drawer">
+    <div class="mobile-drawer-header">
+      <div class="mobile-drawer-brand">
+        <span class="brand-mark" style="width:28px;height:28px;font-size:0.95rem;box-shadow:none;">&Sigma;</span>
+        <span style="font-family:var(--font-display);font-weight:900;font-size:0.95rem;letter-spacing:0.02em;">NAVIGATION</span>
+      </div>
+      <button id="mobile-drawer-close" class="mobile-drawer-close" aria-label="Close menu" onclick="closeMobileMenu()">&times;</button>
+    </div>
+    <ul class="mobile-nav-list">
+      <li><a href="#manifold" onclick="switchVisualizerTab('manifold'); closeMobileMenu();"><span>✦</span> 36-Node Fluid Manifold</a></li>
+      <li><a href="#cosmos" onclick="switchVisualizerTab('cosmos'); closeMobileMenu();"><span>✦</span> The Game of Cosmos</a></li>
+      <li><a href="fluid_topology.html" target="_blank" onclick="closeMobileMenu();"><span>↗</span> K₃,₃ Fluid Topology (3D)</a></li>
+      <li><a href="#papers" onclick="closeMobileMenu();"><span>📄</span> Research Papers (12)</a></li>
+      <li><a href="#lab" onclick="closeMobileMenu();"><span>⚛</span> Quantum Bloch Lab</a></li>
+      <li><a href="#blog" onclick="closeMobileMenu();"><span>✎</span> Dispatches &amp; Notes</a></li>
+      <li><a href="#github" onclick="closeMobileMenu();"><span>⌘</span> Code &amp; GitHub</a></li>
+      <li><a href="#about" onclick="closeMobileMenu();"><span>ℹ</span> About &amp; Contact</a></li>
+    </ul>
+    <div class="mobile-drawer-footer">
+      <a href="mailto:abhijitsingh@tuta.io" class="drawer-contact-btn">✉ abhijitsingh@tuta.io</a>
+    </div>
+  </div>
 
   <main>
     <!-- Hero Section -->
@@ -151,7 +181,7 @@
           </h1>
 
           <p class="hero-description">
-            Investigating the mathematical physics of pair balances, the zeros of the Riemann zeta function, Wigner negativity, and balanced dynamical states across quantum circuits and complex biological networks.
+            Investigating the mathematical physics of pair balances, the zeros of the Riemann zeta function, Wigner negativity, and balanced dynamical states across quantum circuits and complex biological networks. An open-access platform uniting number theory, quantum mechanics, and continuous 3D fluid simulations.
           </p>
 
           <div class="hero-cta-group">
@@ -159,21 +189,29 @@
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
               Explore 12 Research Papers
             </a>
-            <a href="#manifold" class="btn-secondary" style="border-color: #2563EB; color: #1D4ED8;">
+            <a href="#manifold" class="btn-secondary" style="border-color: #1D4ED8; color: #1D4ED8;" onclick="switchVisualizerTab('manifold')">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>
-              36-Node Fluid Manifold
+              3D Interactive Manifold
             </a>
             <a href="#blog" class="btn-secondary">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
               Dispatches &amp; Notes
             </a>
-            <a href="mailto:abhijitsingh@tuta.io" class="btn-outline email-hero-btn" title="Direct Academic Correspondence">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-              abhijitsingh@tuta.io
+          </div>
+
+          <div class="hero-academic-links">
+            <a href="https://github.com/mag-and-krotons" target="_blank" rel="noopener noreferrer" class="hero-sub-link">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+              <span>GitHub Code</span>
             </a>
-            <a href="https://github.com/mag-and-krotons" target="_blank" rel="noopener noreferrer" class="btn-outline">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-              GitHub
+            <span class="hero-link-sep">&bull;</span>
+            <a href="mailto:abhijitsingh@tuta.io" class="hero-sub-link">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+              <span>abhijitsingh@tuta.io</span>
+            </a>
+            <span class="hero-link-sep">&bull;</span>
+            <a href="https://orcid.org/0009-0002-7161-1805" target="_blank" rel="noopener noreferrer" class="hero-sub-link">
+              <span>ORCID: 0009-0002-7161-1805 ↗</span>
             </a>
           </div>
 
@@ -191,8 +229,8 @@
               <span class="metric-label">Current Series</span>
             </div>
             <div class="metric-card">
-              <span class="metric-num">GAT</span>
-              <span class="metric-label">Graph Attention Networks</span>
+              <span class="metric-num">3D</span>
+              <span class="metric-label">Simulations &amp; Lab</span>
             </div>
           </div>
         </div>
@@ -208,6 +246,7 @@
             <div class="formula-latex" id="hero-formula-1">
               $$J = 2\partial_y |\Xi(x+iy)|^2 = \frac{1}{4} \int Q(p,x)\, p \sinh(yp)\, dp$$
             </div>
+            <p class="formula-caption">Maps the zeros of the Riemann zeta function to a physical, conserved energy current ($\nabla \cdot \mathbf{J} = 0$).</p>
           </div>
 
           <div class="formula-box">
@@ -215,6 +254,7 @@
             <div class="formula-latex" id="hero-formula-2">
               $$p = \frac{1}{1 + e^{\varepsilon}} = \frac{1}{2} + \delta, \quad \delta = -\frac{1}{2}\tanh\frac{\varepsilon}{2}$$
             </div>
+            <p class="formula-caption">The universal balance law: any equilibrium splits into a reversible half and an odd measurable difference.</p>
           </div>
 
           <div class="card-footer-strip">
@@ -233,17 +273,17 @@
           <button id="tab-btn-manifold" class="topology-tab-btn active" onclick="switchVisualizerTab('manifold')">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/><path d="M12 22a10 10 0 0 0 10-10c0-4-3-7-10-12-7 5-10 8-10 12a10 10 0 0 0 10 10z"/></svg>
             <span>36-Node Fluid Manifold</span>
-            <span class="tab-chip">Continuous 6D Wave</span>
+            <span class="tab-chip">6D Wave</span>
           </button>
           <button id="tab-btn-cosmos" class="topology-tab-btn" onclick="switchVisualizerTab('cosmos')">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/><circle cx="12" cy="12" r="3"/></svg>
             <span>The Game of Cosmos</span>
-            <span class="tab-chip chip-amber">3D 36-Vertice String Matrix</span>
+            <span class="tab-chip chip-amber">Continuous CA</span>
           </button>
           <a href="fluid_topology.html" target="_blank" class="topology-tab-btn" style="text-decoration: none;">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18.178 8c5.096 0 5.096 8 0 8-5.095 0-7.262-8-12.356-8-5.096 0-5.096 8 0 8 5.094 0 7.261-8 12.356-8Z"/></svg>
             <span>K₃,₃ Fluid Topology</span>
-            <span class="tab-chip" style="background: rgba(255, 0, 255, 0.15); color: #ff77ff; border-color: rgba(255,0,255,0.3);">Möbius &bull; 18 Zero-Points</span>
+            <span class="tab-chip chip-violet">Möbius 3D ↗</span>
           </a>
         </div>
 
@@ -295,7 +335,7 @@
 
             <div class="manifold-quick-actions">
               <button id="manifold-still-btn" class="icon-tool-btn" title="Freeze Structure into Pristine Static 36-Node Geometric Equilibrium">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M4.93 19.07l14.14-14.14"/></svg>
                 <span>Still: OFF</span>
               </button>
               <button id="manifold-gamma-btn" class="icon-tool-btn" title="Emit Relativistic Gamma Wave Packet from Still Structure (v = c, high-frequency Compton scattering)">
@@ -324,6 +364,10 @@
 
           <!-- Bottom Floating Bar: Presets, Numerical Inputs, Sliders & Live Telemetry -->
           <div class="manifold-hud-bottom">
+            <div class="stage-user-hint">
+              <span class="hint-icon">💡</span>
+              <span><strong>Interactive Explorer:</strong> Click any preset state below to reshape the 3D fluid in real time, or drag inside the scene with your mouse to rotate and explore from any angle!</span>
+            </div>
             <!-- Emergent Physics Presets Bar -->
             <div class="manifold-presets-bar">
               <span class="preset-label">EMERGENCE PRESETS:</span>
@@ -510,6 +554,9 @@
             <p>
               The complex couples two dual 18-node structures across six alternating horizontal planes. Each plane houses an equilateral triangle with $C_3$ rotational symmetry. Consecutive layers undergo spatial inversion ($\theta \to -\theta$), establishing alternating angular sets $[-90^\circ, 30^\circ, 150^\circ]$ and $[90^\circ, 210^\circ, 330^\circ]$.
             </p>
+            <div class="card-intuition-tag">
+              <strong>Intuition:</strong> Like two twisting spiral staircases mirrored against each other, the 36 points form a self-supporting geometric skeleton.
+            </div>
             <div class="manifold-card-formula">
               $$\theta_k^{(l)} = \theta_k^{(0)} + \pi \cdot (l \bmod 2) + \Delta \theta_{\text{shear}}(y, t)$$
             </div>
@@ -523,6 +570,9 @@
             <p>
               Wave packets propagate across the 6 layers at transmission velocity $v$. When inter-layer distance $d$, frequency $f$, and velocity $v$ satisfy $k \cdot d = 2\pi n / 3$, coherent $C_3$ standing solitons and continuous helical vortex tubes spontaneously lock into place. Entropy $S$ modulates the phase transition from crystalline laminar superfluidity to Kolmogorov turbulent cascades.
             </p>
+            <div class="card-intuition-tag">
+              <strong>Intuition:</strong> When energy waves pass through at harmonious speeds, they self-organize into stable, non-collapsing standing rings.
+            </div>
             <div class="manifold-card-formula">
               $$\psi(z, t) = A e^{-S |z|/v} \left[ \cos\left(2\pi f t - \frac{2\pi f}{v} z\right) + R \cos\left(2\pi f t + \frac{2\pi f}{v} z\right) \right]$$
             </div>
@@ -840,7 +890,7 @@
                 <circle cx="11" cy="11" r="8"></circle>
                 <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
               </svg>
-              <input type="text" id="paper-search-input" placeholder="Search by theorem, topic, equation, or keyword (e.g., Riemann, Wigner, Triad, Sawtooth, Clocks)...">
+              <input type="text" id="paper-search-input" placeholder="Search by topic, keyword, or concept (e.g., Riemann, quantum, ternary computing, planets, primes)...">
               <button id="clear-search-btn" class="clear-btn" title="Clear Search">&times;</button>
             </div>
 
@@ -945,6 +995,12 @@
             <div class="control-header">
               <h3>Quantum State Parameters</h3>
               <p>Adjust the polar angle ($\theta$) and azimuthal phase ($\phi$) to manipulate the quantum superposition.</p>
+              <div class="quantum-analogy-box">
+                <span class="analogy-icon">&#x1FA99;</span>
+                <div class="analogy-text">
+                  <strong>Think of it like a spinning coin:</strong> In classical computing, a bit is flat on the table (heads or tails: $0$ or $1$). In quantum computing, the qubit is spinning on the sphere in superposition until measured.
+                </div>
+              </div>
             </div>
 
             <div class="lab-formula-display" id="quantum-formula">
@@ -1485,12 +1541,48 @@
     }
     window.switchVisualizerTab = switchVisualizerTab;
 
+    // Mobile navigation drawer toggle
+    function toggleMobileMenu() {
+      const drawer = document.getElementById('mobile-nav-drawer');
+      const overlay = document.getElementById('drawer-overlay');
+      const btn = document.getElementById('mobile-menu-btn');
+      if (!drawer) return;
+      const isOpen = drawer.classList.contains('open');
+      if (isOpen) {
+        closeMobileMenu();
+      } else {
+        drawer.classList.add('open');
+        if (overlay) overlay.classList.add('open');
+        if (btn) btn.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+    function closeMobileMenu() {
+      const drawer = document.getElementById('mobile-nav-drawer');
+      const overlay = document.getElementById('drawer-overlay');
+      const btn = document.getElementById('mobile-menu-btn');
+      if (drawer) drawer.classList.remove('open');
+      if (overlay) overlay.classList.remove('open');
+      if (btn) btn.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    window.toggleMobileMenu = toggleMobileMenu;
+    window.closeMobileMenu = closeMobileMenu;
+
     // Check URL hash on page load and on hash change
     function syncHashTab() {
       if (window.location.hash === '#cosmos') {
         switchVisualizerTab('cosmos');
       } else if (window.location.hash === '#manifold') {
         switchVisualizerTab('manifold');
+      } else if (window.location.hash === '#mobile-menu') {
+        toggleMobileMenu();
+      } else if (window.location.hash === '#verify-papers') {
+        const el = document.getElementById('papers');
+        if (el) window.scrollTo(0, el.offsetTop);
+      } else if (window.location.hash === '#verify-lab') {
+        const el = document.getElementById('lab');
+        if (el) window.scrollTo(0, el.offsetTop);
       }
     }
     syncHashTab();

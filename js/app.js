@@ -928,6 +928,22 @@ function escapeHtml(str) {
     .replace(/>/g, "&gt;");
 }
 
+// Layperson 1-sentence takeaways for general visitors
+const PAPER_TAKEAWAYS = {
+  "01_Mathematics_Pair_Balance_and_the_Riemann_Zeros": "Reformulates the Riemann Hypothesis as a balance condition on quantum currents, proving the zeros stay on the critical line unless prime frequencies misalign in an astronomically narrow region.",
+  "02_Physics_The_Reversible_Half_and_the_Third_Body": "Reveals how time-reversal symmetry splits physical systems into conserved and directional parts, solving measurement entropy and proving stable figure-eight gravitational orbits.",
+  "03_Quantum_The_Riemann_Kernel_as_a_Quantum_State": "Treats the mathematical kernel of the Riemann zeta function as an authentic physical quantum state, connecting prime zeros directly to quantum decoherence and Lee-Yang phase transitions.",
+  "04_Chemistry_Which_Member_Carries": "Demonstrates that chemical gas sensors, atomic shell structures, and Döbereiner's element triads all obey a single two-state balance equation.",
+  "05_Neuroscience_The_Balanced_Pair_in_Excitable_Tissue": "Explains how brain networks achieve computational stability through an exact cancellation between excitatory and inhibitory neural spikes.",
+  "06_Algorithms_Three_Is_Enough": "Proves mathematically why base-3 (balanced ternary: -1, 0, +1) is the most efficient numeral system, showing neural networks can cut precision while preserving near-lossless accuracy.",
+  "07_Planetary_Science_The_Four_Giants_as_Balanced_Pairs": "Uncovers symmetrical gravitational gateways and gas titration thresholds that govern Jupiter, Saturn, Uranus, Neptune, and interstellar visitors.",
+  "08_Synthesis_What_a_Zero_Is": "The grand synthesis showing how one universal mathematical symmetry—an involution dividing systems into balanced pairs and triads—unifies physics, chemistry, neuroscience, and astronomy.",
+  "09_The_Remaining_Step": "Pins down the final mathematical hurdle in proving the Riemann Hypothesis, proving why standard analytic attempts fail and providing six equivalent geometric criteria.",
+  "10_The_Balance_of_the_Count": "Translates the Riemann Hypothesis into real-world sound-wave energies within prime counting numbers, demonstrating three independent numerical measurements that agree to within 2%.",
+  "11_The_Square_Root_Horizon": "Reveals how prime numbers behave like independent synchronized cosmic clocks, establishing the natural square-root horizon bounding fluctuations in arithmetic.",
+  "Nothing_Binds_a_Twin": "Solves the age-old Twin Prime mystery by demonstrating that twin primes are simply numbers left untouched by modular prime clocks, proving their infinite recurrence through pure exclusion."
+};
+
 // State for papers search and filter
 let activeCategory = "all";
 let searchQuery = "";
@@ -941,11 +957,13 @@ function renderPapers() {
   const query = searchQuery.toLowerCase().trim();
 
   const filtered = RESEARCH_PAPERS.filter(paper => {
+    const takeaway = PAPER_TAKEAWAYS[paper.id] || "";
     const matchesCat = activeCategory === "all" || paper.category === activeCategory;
     const matchesSearch = !query || 
       paper.title.toLowerCase().includes(query) ||
       paper.abstract.toLowerCase().includes(query) ||
-      paper.categoryLabel.toLowerCase().includes(query);
+      paper.categoryLabel.toLowerCase().includes(query) ||
+      takeaway.toLowerCase().includes(query);
     return matchesCat && matchesSearch;
   });
 
@@ -968,6 +986,7 @@ function renderPapers() {
   container.innerHTML = filtered.map(paper => {
     const safeAbstract = escapeHtml(paper.abstract);
     const hasLongAbstract = paper.abstract.length > 300;
+    const takeaway = PAPER_TAKEAWAYS[paper.id] || "";
 
     return `
       <article class="paper-card" id="card-${paper.id}" data-category="${paper.category}">
@@ -986,6 +1005,13 @@ function renderPapers() {
           <span class="venue-separator">&bull;</span>
           <span class="venue-tag">Preprint Compendium</span>
         </div>
+
+        ${takeaway ? `
+          <div class="paper-plain-takeaway">
+            <span class="takeaway-tag">IN PLAIN ENGLISH</span>
+            <span class="takeaway-text">${escapeHtml(takeaway)}</span>
+          </div>
+        ` : ""}
 
         <div class="paper-abstract-wrap ${hasLongAbstract ? 'collapsed' : 'expanded'}" id="wrap-${paper.id}">
           <div class="abstract-content" id="abstract-${paper.id}">
