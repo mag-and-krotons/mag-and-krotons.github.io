@@ -349,26 +349,13 @@
             </div>
         </div>
 
-        <div class="controls-group">
-            <button class="toggle-btn active" id="btn-toggle-u">
-                <span>U Layer (6k-1) [+½ Twist]</span>
-                <span class="toggle-badge" id="badge-u">VISIBLE</span>
-            </button>
-            <button class="toggle-btn active" id="btn-toggle-v">
-                <span>V Layer (6k+1) [-½ Twist]</span>
-                <span class="toggle-badge" id="badge-v">VISIBLE</span>
-            </button>
-            <button class="toggle-btn active" id="btn-toggle-nodes">
-                <span>18 Zero-Point Boundary Nodes</span>
-                <span class="toggle-badge" id="badge-nodes">ACTIVE (18)</span>
-            </button>
-            <button class="toggle-btn active" id="btn-toggle-quanta">
-                <span>Flowing Native Quanta Streamlines</span>
-                <span class="toggle-badge" id="badge-quanta">FLOWING</span>
-            </button>
-            <button class="toggle-btn active" id="btn-toggle-rotate">
-                <span>Auto-Rotation</span>
+        <div class="controls-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+            <button class="toggle-btn active" id="btn-toggle-rotate" style="margin: 0; justify-content: center; gap: 6px;">
+                <span>Rotation</span>
                 <span class="toggle-badge" id="badge-rotate">ON</span>
+            </button>
+            <button class="toggle-btn" id="btn-reset-view" style="margin: 0; justify-content: center; gap: 6px;">
+                <span>Reset View</span>
             </button>
         </div>
 
@@ -710,52 +697,27 @@
         let showQuanta = true;
         let speedMultiplier = 1.0;
 
-        const btnU = document.getElementById('btn-toggle-u');
-        const btnV = document.getElementById('btn-toggle-v');
-        const btnNodes = document.getElementById('btn-toggle-nodes');
-        const btnQuanta = document.getElementById('btn-toggle-quanta');
         const btnRotate = document.getElementById('btn-toggle-rotate');
+        const btnResetView = document.getElementById('btn-reset-view');
         const speedSlider = document.getElementById('speed-slider');
         const radiusSlider = document.getElementById('radius-slider');
 
-        btnU.addEventListener('click', () => {
-            showU = !showU;
-            groupU.visible = showU;
-            btnU.classList.toggle('active', showU);
-            btnU.classList.toggle('inactive', !showU);
-            document.getElementById('badge-u').innerText = showU ? 'VISIBLE' : 'HIDDEN';
-        });
+        if (btnRotate) {
+            btnRotate.addEventListener('click', () => {
+                controls.autoRotate = !controls.autoRotate;
+                btnRotate.classList.toggle('active', controls.autoRotate);
+                btnRotate.classList.toggle('inactive', !controls.autoRotate);
+                document.getElementById('badge-rotate').innerText = controls.autoRotate ? 'ON' : 'OFF';
+            });
+        }
 
-        btnV.addEventListener('click', () => {
-            showV = !showV;
-            groupV.visible = showV;
-            btnV.classList.toggle('active', showV);
-            btnV.classList.toggle('inactive', !showV);
-            document.getElementById('badge-v').innerText = showV ? 'VISIBLE' : 'HIDDEN';
-        });
-
-        btnNodes.addEventListener('click', () => {
-            showNodes = !showNodes;
-            nodesGroup.visible = showNodes;
-            btnNodes.classList.toggle('active', showNodes);
-            btnNodes.classList.toggle('inactive', !showNodes);
-            document.getElementById('badge-nodes').innerText = showNodes ? `ACTIVE (${boundaryNodesData.length})` : 'HIDDEN';
-        });
-
-        btnQuanta.addEventListener('click', () => {
-            showQuanta = !showQuanta;
-            quantaGroup.visible = showQuanta;
-            btnQuanta.classList.toggle('active', showQuanta);
-            btnQuanta.classList.toggle('inactive', !showQuanta);
-            document.getElementById('badge-quanta').innerText = showQuanta ? 'FLOWING' : 'OFF';
-        });
-
-        btnRotate.addEventListener('click', () => {
-            controls.autoRotate = !controls.autoRotate;
-            btnRotate.classList.toggle('active', controls.autoRotate);
-            btnRotate.classList.toggle('inactive', !controls.autoRotate);
-            document.getElementById('badge-rotate').innerText = controls.autoRotate ? 'ON' : 'OFF';
-        });
+        if (btnResetView) {
+            btnResetView.addEventListener('click', () => {
+                camera.position.set(0, 26, 42);
+                controls.target.set(0, 0, 0);
+                controls.update();
+            });
+        }
 
         speedSlider.addEventListener('input', (e) => {
             speedMultiplier = parseFloat(e.target.value);

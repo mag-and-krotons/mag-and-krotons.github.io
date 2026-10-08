@@ -903,7 +903,7 @@ export class GameOfCosmos {
     }
 
     // 2. Inter-Structure Dynamics: Signal Relay, Coherence, Combine & Bond
-    const N = this.structures.length;
+    let N = this.structures.length;
     for (let i = 0; i < N; i++) {
       const s1 = this.structures[i];
       let neighborSync = 0;
@@ -1482,7 +1482,6 @@ export class GameOfCosmos {
             nodeIdx++;
           }
         }
-      }
 
       // Emergent Geometric Bond Struts (Tailored to Atomic Number Z & 36-Node Complex)
       if (bondVertIdx < 118000) {
