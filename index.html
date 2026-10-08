@@ -3,76 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Abhijit Singh | Number Theory & Quantum Networks</title>
-  <meta name="description" content="Academic research portfolio, publications, and preprints by Abhijit Singh. Focused on pair balance, the Riemann zeros, Wigner negativity, and quantum networks.">
-  <meta name="keywords" content="Number Theory, Riemann Hypothesis, Quantum Networks, Wigner Negativity, Mathematical Physics, Abhijit Singh, Research Papers">
+  <title>Abhijit Singh — Research</title>
+  <meta name="description" content="Research by Abhijit Singh: the medial antiprism, the square-root horizon, the exclusion law of twin primes, and one principle read across number theory, geometry and the physical sciences.">
   <meta name="author" content="Abhijit Singh">
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="Abhijit Singh | Number Theory & Quantum Networks">
-  <meta property="og:description" content="Academic research portfolio, publications, and preprints by Abhijit Singh.">
+  <meta property="og:title" content="Abhijit Singh — Research">
+  <meta property="og:description" content="Papers, an interactive model of the medial antiprism, and research notes by Abhijit Singh.">
   <meta property="og:type" content="website">
-
-  <!-- Google Fonts: Space Grotesk & Outfit for 80s Graphic Typography, Inter for Reading, JetBrains Mono for Math -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-
-  <!-- KaTeX for Scientific & Mathematical Typography -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
-
-  <!-- Custom Stylesheet with Cache Busting -->
-  <link rel="stylesheet" href="css/style.css?v=20261007_v6">
-
-  <!-- Critical Blog & Composer Styles (Guaranteed Styling Under CDN / Proxy Cache) -->
-  <style id="critical-blog-styles">
-    .blog-section { padding: 6rem 0; background-color: #F8FAFC; border-bottom: 3px solid #0F172A; }
-    .blog-controls-card { background: #FFFFFF; border: 2.5px solid #0F172A; box-shadow: 4px 4px 0px rgba(15, 23, 42, 0.15); padding: 1.25rem 1.5rem; margin-bottom: 2.5rem; display: flex; flex-direction: column; gap: 1.25rem; }
-    .blog-controls-top-row { display: flex; gap: 1rem; align-items: center; justify-content: space-between; flex-wrap: wrap; }
-    .blog-search-wrapper { position: relative; display: flex; align-items: center; flex: 1; min-width: 280px; }
-    .blog-search-wrapper svg { position: absolute; left: 1rem; color: #64748B; pointer-events: none; }
-    .blog-search-input { width: 100%; padding: 0.8rem 2.8rem; font-family: 'Inter', sans-serif; font-size: 0.95rem; font-weight: 500; border: 2.5px solid #0F172A; background: #F8FAFC; color: #0F172A; outline: none; }
-    .blog-search-input:focus { border-color: #2563EB; box-shadow: 2px 2px 0px #2563EB; background: #FFFFFF; }
-    .btn-compose-dispatch { font-family: 'Outfit', sans-serif; font-size: 0.88rem; font-weight: 700; background-color: #F59E0B; color: #0F172A; border: 2.5px solid #0F172A; padding: 0.72rem 1.25rem; box-shadow: 2px 2px 0px #0F172A; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; white-space: nowrap; text-decoration: none; }
-    .btn-compose-dispatch:hover { transform: translate(-1px, -1px); box-shadow: 3px 3px 0px #0F172A; background-color: #FBBF24; }
-    .btn-nav-compose { font-family: 'Outfit', sans-serif; font-size: 0.8rem; font-weight: 700; background-color: #2563EB; color: #FFFFFF; border: 2.5px solid #0F172A; padding: 0.45rem 0.8rem; box-shadow: 2px 2px 0px #0F172A; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem; white-space: nowrap; }
-    .btn-nav-compose:hover { background-color: #1D4ED8; transform: translate(-1px, -1px); box-shadow: 3px 3px 0px #0F172A; }
-    .blog-filter-pills { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
-    .blog-filter-pill { background: #F1F5F9; border: 1px solid #CBD5E1; color: #334155; font-family: 'Outfit', sans-serif; font-size: 0.82rem; font-weight: 600; padding: 0.4rem 0.85rem; cursor: pointer; border-radius: 2px; }
-    .blog-filter-pill:hover { background: #E2E8F0; color: #0F172A; border-color: #0F172A; }
-    .blog-filter-pill.active { background: #0F172A; color: #FFFFFF; border-color: #0F172A; font-weight: 700; }
-    .blog-posts-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; margin-bottom: 3.5rem; }
-    .blog-card { background: #FFFFFF; border: 2.5px solid #0F172A; box-shadow: 4px 4px 0px rgba(15, 23, 42, 0.15); padding: 2rem; display: flex; flex-direction: column; gap: 1.25rem; transition: transform 0.15s ease, box-shadow 0.15s ease; }
-    .blog-card:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0px #0F172A; }
-    .blog-card-meta { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; }
-    .blog-cat-badge { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; font-weight: 800; padding: 0.25rem 0.65rem; border: 1.5px solid #0F172A; text-transform: uppercase; letter-spacing: 0.04em; }
-    .blog-cat-badge.cat-violet { background: #EDE9FE; color: #6D28D9; border-color: #7C3AED; }
-    .blog-cat-badge.cat-blue { background: #DBEAFE; color: #1E40AF; border-color: #2563EB; }
-    .blog-cat-badge.cat-crimson { background: #FFE4E6; color: #9F1239; border-color: #E11D48; }
-    .blog-cat-badge.cat-amber { background: #FEF3C7; color: #92400E; border-color: #D97706; }
-    .blog-cat-badge.cat-emerald { background: #D1FAE5; color: #065F46; border-color: #059669; }
-    .blog-custom-badge { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; font-weight: 800; background: #FEF3C7; color: #92400E; border: 1.5px solid #F59E0B; padding: 0.15rem 0.45rem; letter-spacing: 0.04em; }
-    .blog-date-wrap { font-family: 'JetBrains Mono', monospace; font-size: 0.76rem; color: #64748B; font-weight: 600; display: flex; align-items: center; gap: 0.4rem; }
-    .blog-card-title { font-family: 'Outfit', sans-serif; font-size: 1.45rem; font-weight: 800; line-height: 1.35; margin: 0; }
-    .blog-card-title a { color: #0F172A; text-decoration: none; }
-    .blog-card-title a:hover { color: #2563EB; text-decoration: underline; }
-    .blog-card-excerpt { font-family: 'Inter', sans-serif; font-size: 0.98rem; line-height: 1.65; color: #334155; }
-    .blog-formula-box { background: #F8FAFC; border: 2px solid #0F172A; padding: 1.25rem 1.5rem; position: relative; margin: 0.25rem 0; overflow-x: auto; }
-    .blog-formula-tag { position: absolute; top: 0; right: 0; background: #0F172A; color: #F8FAFC; font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; font-weight: 800; letter-spacing: 0.08em; padding: 0.2rem 0.6rem; text-transform: uppercase; }
-    .blog-formula-math { text-align: center; font-size: 1.15rem; color: #0F172A; padding-top: 0.4rem; }
-    .blog-tags-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
-    .blog-tag-pill { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: #475569; background: #F1F5F9; border: 1px solid #CBD5E1; padding: 0.2rem 0.55rem; border-radius: 2px; }
-    .blog-card-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; border-top: 1px solid #E2E8F0; flex-wrap: wrap; gap: 1rem; }
-    .blog-card-author { display: flex; align-items: center; gap: 0.5rem; font-family: 'Outfit', sans-serif; font-size: 0.86rem; font-weight: 700; color: #0F172A; }
-    .blog-card-actions { display: flex; align-items: center; gap: 0.6rem; }
-    .blog-discuss-btn { font-family: 'Outfit', sans-serif; font-size: 0.82rem; font-weight: 700; color: #0F172A; border: 1.5px solid #0F172A; background: #FFFFFF; padding: 0.45rem 0.8rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.35rem; }
-    .blog-discuss-btn:hover { background: #F1F5F9; border-color: #2563EB; color: #2563EB; }
-    .blog-read-btn { font-size: 0.86rem; padding: 0.55rem 1.15rem; display: inline-flex; align-items: center; gap: 0.4rem; cursor: pointer; }
-  </style>
-
-  <!-- Import map for Three.js ES Modules -->
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+  <link rel="stylesheet" href="css/style.css?v=20261009b">
   <script type="importmap">
   {
     "imports": {
@@ -84,1487 +27,259 @@
 </head>
 <body>
 
-  <!-- Top Editorial Status Bar -->
-  <div class="top-status-bar">
-    <div class="container status-bar-content">
-      <span class="status-badge">RESEARCH ARCHIVE 2026</span>
-      <span class="status-ticker">NUMBER THEORY &bull; RIEMANN ZEROS &bull; QUANTUM NETWORKS &bull; OPEN ACCESS</span>
-      <div class="status-bar-links">
-        <a href="mailto:abhijitsingh@tuta.io" class="status-email-link" title="Direct Academic Correspondence">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="vertical-align: -2px; margin-right: 4px;"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-          abhijitsingh@tuta.io
-        </a>
-        <span class="status-sep">&bull;</span>
-        <a href="https://orcid.org/0009-0002-7161-1805" target="_blank" rel="noopener noreferrer" class="status-orcid-link">
-          ORCiD: 0009-0002-7161-1805 ↗
-        </a>
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="#top">
+      <span class="brand-name">Abhijit Singh</span>
+      <span class="brand-sub">Independent researcher</span>
+    </a>
+    <nav class="site-nav" id="site-nav">
+      <a href="#structure">Structure</a>
+      <a href="#cosmos">Game of Cosmos</a>
+      <a href="#papers">Papers</a>
+      <a href="#blog">Dispatches</a>
+      <a href="#github">Code</a>
+      <a href="#about">About</a>
+    </nav>
+    <div style="display:flex;gap:6px">
+      <button class="theme-btn" id="theme-btn" title="Switch light / dark" aria-label="Switch light or dark theme">◐</button>
+      <button class="menu-btn" id="menu-btn" aria-label="Open menu">☰</button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ============ Hero ============ -->
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <div class="section-kicker">Research</div>
+      <h1>Abhijit Singh</h1>
+      <p class="tagline">One principle read across number theory, geometry and the physical sciences.</p>
+      <div class="principle">Objects are related only through the mechanism of their construction.</div>
+      <p style="margin-top:18px">The work studies what binds two objects that one construction builds: the two members of a twin prime pair, the forward and reversed terms of the zeta function, the two strands of a finite structure. Its centre is a small object, the medial antiprism, in which every step passes only a sum, and its two strands meet only at one half.</p>
+      <div class="hero-links">
+        <a class="btn-primary btn" href="#papers">Papers</a>
+        <a class="btn" href="#structure">Structure playground</a>
+        <a class="btn" href="https://doi.org/10.5281/zenodo.22129334" target="_blank" rel="noopener">Research record (Zenodo)</a>
+        <a class="btn" href="https://orcid.org/0009-0002-7161-1805" target="_blank" rel="noopener">ORCID</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="section-kicker" style="margin-bottom:6px">Current work · October 2026</div>
+      <ul class="current-list" id="current-list"></ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Structure ============ -->
+<section id="structure">
+  <div class="container">
+    <div class="section-kicker">The structure</div>
+    <h2>The medial antiprism</h2>
+    <p class="section-lead">Triangles are stacked along an axis, each turned through $180^\circ$ against the one below, and every vertex is joined to every side midpoint of the neighbouring layers. The side midpoints of a triangle are its vertices multiplied by $-\tfrac12$, so one move, a half-turn with a halving, builds the whole object.</p>
+
+    <div class="tabs" role="tablist" data-tabgroup="structure">
+      <button class="tab active" data-tab="playground" role="tab">Structure playground</button>
+      <button class="tab" data-tab="cosmos" role="tab" id="cosmos">Game of Cosmos</button>
+    </div>
+
+    <div class="tab-panel active" data-panel="playground">
+      <div class="playground">
+        <div class="viewport" id="structure-viewport">
+          <div class="hint">Drag to turn the model</div>
+          <div class="legend">
+            <span><i style="background:var(--vertex)"></i>vertex</span>
+            <span><i style="background:var(--midpoint)"></i>midpoint</span>
+            <span><i style="background:var(--strand-a)"></i>strand A</span>
+            <span><i style="background:var(--strand-b)"></i>strand B</span>
+            <span><i style="background:var(--ink)"></i>A meets B</span>
+            <span><i class="sq" style="background:var(--muted)"></i>a strand meets itself</span>
+          </div>
+        </div>
+        <div class="controls">
+          <div class="control-group">
+            <h4>Build</h4>
+            <div class="control-row"><label for="ctl-layers">Layers $L$</label><input type="range" id="ctl-layers" min="2" max="12" step="1" value="6"><output id="out-layers">6</output></div>
+            <div class="seg" id="ctl-placement" style="margin-top:8px">
+              <button data-v="side" class="active">Node on its side</button>
+              <button data-v="radial">Node on its ray</button>
+            </div>
+            <div class="control-row" id="row-f"><label for="ctl-f">Fraction $f$</label><input type="range" id="ctl-f" min="0.05" max="0.95" step="0.01" value="0.5"><output id="out-f">0.50</output></div>
+            <div class="control-row" id="row-rho" style="display:none"><label for="ctl-rho">Radius $\rho$</label><input type="range" id="ctl-rho" min="0.25" max="2.5" step="0.05" value="0.5"><output id="out-rho">0.50</output></div>
+            <button class="btn btn-sm" id="ctl-reset" style="margin-top:6px">Back to the midpoints</button>
+          </div>
+          <div class="control-group">
+            <h4>Show</h4>
+            <label class="check"><input type="checkbox" id="show-a" checked> Strand A</label>
+            <label class="check"><input type="checkbox" id="show-b" checked> Strand B</label>
+            <label class="check"><input type="checkbox" id="show-tri" checked> Triangles</label>
+            <label class="check"><input type="checkbox" id="show-cross" checked> Crossings</label>
+            <label class="check"><input type="checkbox" id="show-planes"> Planes through the crossings</label>
+            <label class="check"><input type="checkbox" id="show-spin" checked> Turn slowly</label>
+          </div>
+          <div class="control-group">
+            <h4>Pass a pattern down strand A</h4>
+            <div class="seg" id="ctl-pattern">
+              <button data-v="none" class="active">None</button>
+              <button data-v="still">Still</button>
+              <button data-v="turning">Turning</button>
+              <button data-v="mixed">Mixed</button>
+            </div>
+            <p class="small muted" style="margin:8px 0 0" id="pattern-note">Each bridge passes only the sum of a level: the still pattern survives, a turning pattern is erased at the first step.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="facts" id="structure-facts"></div>
+      <p class="small muted" style="margin-top:14px">Every number above is computed in your browser from the construction. The proofs are in the paper <a href="#paper-medial_antiprism">The Medial Antiprism</a>.</p>
+    </div>
+
+    <div class="tab-panel" data-panel="cosmos">
+      <div class="card" id="cosmos-panel">
+        <h3>The Game of Cosmos</h3>
+        <p>The Game of Cosmos is being rebuilt so that it follows its rules exactly: emergence from the structure and its principle alone, with nothing placed by hand.</p>
       </div>
     </div>
   </div>
+</section>
 
-  <!-- Navigation Bar -->
-  <header class="navbar">
-    <div class="container nav-container">
-      <a href="#hero" class="brand-link">
-        <div class="brand-mark">Σ</div>
-        <div class="brand-text">
-          <span class="brand-title">ABHIJIT SINGH</span>
-          <span class="brand-subtitle">NUMBER THEORY &bull; QUANTUM NETWORKS</span>
-        </div>
-      </a>
-
-      <nav>
-        <ul class="nav-menu">
-          <li><a href="#manifold" class="nav-link" onclick="switchVisualizerTab('manifold')">Manifold</a></li>
-          <li><a href="#cosmos" class="nav-link" onclick="switchVisualizerTab('cosmos')">Game of Cosmos</a></li>
-          <li><a href="fluid_topology.html" class="nav-link" target="_blank">K₃,₃ Topology <span class="nav-mini-tag">3D</span></a></li>
-          <li><a href="#papers" class="nav-link">Papers</a></li>
-          <li><a href="#lab" class="nav-link">Lab</a></li>
-          <li><a href="#blog" class="nav-link">Dispatches</a></li>
-          <li><a href="#github" class="nav-link">Code</a></li>
-          <li><a href="#licensing" class="nav-link">Licensing</a></li>
-          <li><a href="#about" class="nav-link">About</a></li>
-        </ul>
-      </nav>
-
-      <div class="nav-actions">
-        <a href="#papers" class="btn-nav-action" title="View 12 original preprints">
-          <span>12 Papers</span>
-        </a>
-        <button id="mobile-menu-btn" class="mobile-menu-btn" aria-label="Toggle navigation menu" onclick="toggleMobileMenu()">
-          <span class="ham-bar"></span>
-          <span class="ham-bar"></span>
-          <span class="ham-bar"></span>
-        </button>
-      </div>
+<!-- ============ Papers ============ -->
+<section id="papers">
+  <div class="container">
+    <div class="section-kicker">Papers</div>
+    <h2>Papers and preprints</h2>
+    <p class="section-lead">All papers are open access under CC BY 4.0. Each entry has the full abstract, the PDF and a citation.</p>
+    <div class="tabs" data-tabgroup="papers">
+      <button class="tab active" data-tab="manuscripts">Manuscripts</button>
+      <button class="tab" data-tab="results">Key results by paper</button>
     </div>
-  </header>
-
-  <!-- Mobile Navigation Drawer Overlay & Panel -->
-  <div id="drawer-overlay" class="drawer-overlay" onclick="closeMobileMenu()"></div>
-  <div id="mobile-nav-drawer" class="mobile-nav-drawer">
-    <div class="mobile-drawer-header">
-      <div class="mobile-drawer-brand">
-        <span class="brand-mark" style="width:28px;height:28px;font-size:0.95rem;box-shadow:none;">&Sigma;</span>
-        <span style="font-family:var(--font-display);font-weight:900;font-size:0.95rem;letter-spacing:0.02em;">NAVIGATION</span>
-      </div>
-      <button id="mobile-drawer-close" class="mobile-drawer-close" aria-label="Close menu" onclick="closeMobileMenu()">&times;</button>
+    <div class="tab-panel active" data-panel="manuscripts">
+      <div class="filter-row" id="paper-filters"></div>
+      <div id="papers-list"></div>
     </div>
-    <ul class="mobile-nav-list">
-      <li><a href="#manifold" onclick="switchVisualizerTab('manifold'); closeMobileMenu();"><span>✦</span> 36-Node Fluid Manifold</a></li>
-      <li><a href="#cosmos" onclick="switchVisualizerTab('cosmos'); closeMobileMenu();"><span>✦</span> The Game of Cosmos</a></li>
-      <li><a href="fluid_topology.html" target="_blank" onclick="closeMobileMenu();"><span>↗</span> K₃,₃ Fluid Topology (3D)</a></li>
-      <li><a href="#papers" onclick="closeMobileMenu();"><span>📄</span> Research Papers (12)</a></li>
-      <li><a href="#lab" onclick="closeMobileMenu();"><span>⚛</span> Quantum Bloch Lab</a></li>
-      <li><a href="#blog" onclick="closeMobileMenu();"><span>✎</span> Dispatches &amp; Notes</a></li>
-      <li><a href="#github" onclick="closeMobileMenu();"><span>⌘</span> Code &amp; GitHub</a></li>
-      <li><a href="#about" onclick="closeMobileMenu();"><span>ℹ</span> About &amp; Contact</a></li>
-    </ul>
-    <div class="mobile-drawer-footer">
-      <a href="mailto:abhijitsingh@tuta.io" class="drawer-contact-btn">✉ abhijitsingh@tuta.io</a>
+    <div class="tab-panel" data-panel="results">
+      <p class="small muted">The systems treated in the September 2026 series, with their key equations, as stated in the papers.</p>
+      <div id="matrix-container"></div>
     </div>
   </div>
+</section>
 
-  <main>
-    <!-- Hero Section -->
-    <section id="hero" class="hero-section">
-      <div class="container hero-grid">
-        <div class="hero-content">
-          <div class="hero-pill-badge">
-            <span class="accent-dot"></span>
-            <span>RESEARCH COMPENDIUM &bull; PREPRINTS ARCHIVE</span>
-          </div>
-
-          <h1 class="hero-title">
-            <span class="highlight-text">NUMBER THEORY</span><br>
-            &amp; QUANTUM NETWORKS
-          </h1>
-
-          <p class="hero-description">
-            Investigating the mathematical physics of pair balances, the zeros of the Riemann zeta function, Wigner negativity, and balanced dynamical states across quantum circuits and complex biological networks. An open-access platform uniting number theory, quantum mechanics, and continuous 3D fluid simulations.
-          </p>
-
-          <div class="hero-cta-group">
-            <a href="#papers" class="btn-primary">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-              Explore 12 Research Papers
-            </a>
-            <a href="#manifold" class="btn-secondary" style="border-color: #1D4ED8; color: #1D4ED8;" onclick="switchVisualizerTab('manifold')">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>
-              3D Interactive Manifold
-            </a>
-            <a href="#blog" class="btn-secondary">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-              Dispatches &amp; Notes
-            </a>
-          </div>
-
-          <div class="hero-academic-links">
-            <a href="https://github.com/mag-and-krotons" target="_blank" rel="noopener noreferrer" class="hero-sub-link">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-              <span>GitHub Code</span>
-            </a>
-            <span class="hero-link-sep">&bull;</span>
-            <a href="mailto:abhijitsingh@tuta.io" class="hero-sub-link">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-              <span>abhijitsingh@tuta.io</span>
-            </a>
-            <span class="hero-link-sep">&bull;</span>
-            <a href="https://orcid.org/0009-0002-7161-1805" target="_blank" rel="noopener noreferrer" class="hero-sub-link">
-              <span>ORCID: 0009-0002-7161-1805 ↗</span>
-            </a>
-          </div>
-
-          <div class="metrics-row">
-            <div class="metric-card">
-              <span class="metric-num">12</span>
-              <span class="metric-label">Original Manuscripts</span>
-            </div>
-            <div class="metric-card">
-              <span class="metric-num">100%</span>
-              <span class="metric-label">Open Access (CC BY 4.0)</span>
-            </div>
-            <div class="metric-card">
-              <span class="metric-num">2026</span>
-              <span class="metric-label">Current Series</span>
-            </div>
-            <div class="metric-card">
-              <span class="metric-num">3D</span>
-              <span class="metric-label">Simulations &amp; Lab</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="hero-sidebar-card">
-          <div class="card-header-bar">
-            <span class="card-tag">THEORETICAL FOUNDATIONS</span>
-            <span class="badge-accent">EXACT DYNAMICS</span>
-          </div>
-
-          <div class="formula-box">
-            <div class="formula-label">RIEMANN CURRENT EQUIVALENCE</div>
-            <div class="formula-latex" id="hero-formula-1">
-              $$J = 2\partial_y |\Xi(x+iy)|^2 = \frac{1}{4} \int Q(p,x)\, p \sinh(yp)\, dp$$
-            </div>
-            <p class="formula-caption">Maps the zeros of the Riemann zeta function to a physical, conserved energy current ($\nabla \cdot \mathbf{J} = 0$).</p>
-          </div>
-
-          <div class="formula-box">
-            <div class="formula-label">TRIAD &amp; INVOLUTION SPLIT</div>
-            <div class="formula-latex" id="hero-formula-2">
-              $$p = \frac{1}{1 + e^{\varepsilon}} = \frac{1}{2} + \delta, \quad \delta = -\frac{1}{2}\tanh\frac{\varepsilon}{2}$$
-            </div>
-            <p class="formula-caption">The universal balance law: any equilibrium splits into a reversible half and an odd measurable difference.</p>
-          </div>
-
-          <div class="card-footer-strip">
-            <span>AUTHOR: ABHIJIT SINGH</span>
-            <a href="https://orcid.org/0009-0002-7161-1805" target="_blank" rel="noopener noreferrer">ORCiD PROFILE ↗</a>
-          </div>
+<!-- ============ Dispatches ============ -->
+<section id="blog">
+  <div class="container">
+    <div class="section-kicker">Dispatches</div>
+    <h2>Notes and dispatches</h2>
+    <p class="section-lead">Short notes on single results, each linked to the paper it comes from. <span class="muted" id="blog-header-count"></span></p>
+    <div class="blog-controls-card">
+      <div class="blog-controls-top-row">
+        <div class="blog-search-wrapper">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="text" id="blog-search-input" class="blog-search-input" placeholder="Search notes, formulas, tags">
+          <button id="blog-clear-search-btn" aria-label="Clear search">×</button>
         </div>
       </div>
-    </section>
-
-    <!-- 36-Node Simplicial Complex & 6D Fluid Manifold Section -->
-    <section id="manifold" class="manifold-section">
-      <div class="container">
-        <!-- Primary Topology & Visualizer Switcher Tabs -->
-        <div class="topology-tabs-container">
-          <button id="tab-btn-manifold" class="topology-tab-btn active" onclick="switchVisualizerTab('manifold')">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/><path d="M12 22a10 10 0 0 0 10-10c0-4-3-7-10-12-7 5-10 8-10 12a10 10 0 0 0 10 10z"/></svg>
-            <span>36-Node Fluid Manifold</span>
-            <span class="tab-chip">6D Wave</span>
-          </button>
-          <button id="tab-btn-cosmos" class="topology-tab-btn" onclick="switchVisualizerTab('cosmos')">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/><circle cx="12" cy="12" r="3"/></svg>
-            <span>The Game of Cosmos</span>
-            <span class="tab-chip chip-amber">Continuous CA</span>
-          </button>
-          <a href="fluid_topology.html" target="_blank" class="topology-tab-btn" style="text-decoration: none;">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18.178 8c5.096 0 5.096 8 0 8-5.095 0-7.262-8-12.356-8-5.096 0-5.096 8 0 8 5.094 0 7.261-8 12.356-8Z"/></svg>
-            <span>K₃,₃ Fluid Topology</span>
-            <span class="tab-chip chip-violet">Möbius 3D ↗</span>
-          </a>
-        </div>
-
-        <a id="cosmos" style="position: relative; top: -80px; display: block; visibility: hidden;"></a>
-
-        <!-- Panel 1: 36-Node Continuous Fluid Manifold -->
-        <div id="manifold-viewport-panel" class="visualizer-panel">
-        <div class="section-heading">
-          <div class="heading-meta">
-            <span class="section-tag">TOPOLOGICAL DYNAMICS &bull; 6D SIMPLICIAL PROJECTION</span>
-            <span class="section-count">36 NODES &bull; INCOMPRESSIBLE FLUID</span>
-          </div>
-          <h2 class="section-title">36-Node Simplicial Complex: 6D Fluid Manifold</h2>
-          <p class="section-desc">
-            Continuous projective embedding of coupled dual 18-node simplicial structures across 6 alternating 3D layers. Formulated as an incompressible harmonic fluid in projective space, exhibiting peristaltic wave breathing, torsional vortex shear, and dynamic streamline circulation ($\nabla \cdot \mathbf{J} = 0$).
-          </p>
-        </div>
-
-        <!-- 3D Interactive Fluid Stage Card -->
-        <div id="manifold-viewport-stage" class="manifold-stage-card">
-          <!-- Top Floating Bar: Status, Modes & Presets -->
-          <div class="manifold-hud-top">
-            <div class="manifold-status-chip">
-              <span class="live-dot-pulse"></span>
-              <span class="status-label">ACTIVE 3D FLUID SIMULATION</span>
-            </div>
-
-            <div class="manifold-mode-pills" id="manifold-mode-selector">
-              <button class="manifold-pill active" data-manifold-mode="fluid" title="Full fluid ribbons, curved streamlines, and advection quanta">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
-                <span>Dynamic Fluid Flow</span>
-              </button>
-              <button class="manifold-pill" data-manifold-mode="geodesic" title="Inspect the 18 primary vertices, 18 L/2 midpoints, and geodesic cross-lattice">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/></svg>
-                <span>Simplicial Geodesics</span>
-              </button>
-              <button class="manifold-pill" data-manifold-mode="vortex" title="High-vorticity streamline tubes and accelerated circulation">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21.54 15H17a2 2 0 0 0-2 2v4.54"/><path d="M7 3.34V5a3 3 0 0 0 3 3v0a2 2 0 0 1 2 2v0c0 1.1.9 2 2 2v0a2 2 0 0 0 2-2v0c0-1.1.9-2 2-2h3.17"/><path d="M11 21.95V18a2 2 0 0 0-2-2v0a2 2 0 0 1-2-2v-1a2 2 0 0 0-2-2H2.05"/></svg>
-                <span>Vortex Streamlines</span>
-              </button>
-            </div>
-
-            <div class="manifold-view-presets">
-              <span class="preset-label">VIEW:</span>
-              <button class="preset-btn active" data-manifold-view="perspective" title="Perspective Orbit">Perspective</button>
-              <button class="preset-btn" data-manifold-view="top" title="Axial Throat Eye (Top-Down)">Throat Eye</button>
-              <button class="preset-btn" data-manifold-view="side" title="Equatorial Profile (Side)">Profile</button>
-            </div>
-
-            <div class="manifold-quick-actions">
-              <button id="manifold-play-btn" class="icon-tool-btn" title="Pause / Resume Animation">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
-                <span>Pause</span>
-              </button>
-              <button id="manifold-reset-btn" class="icon-tool-btn" title="Reset Camera View">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
-              </button>
-              <button id="manifold-fullscreen-btn" class="icon-tool-btn" title="Toggle Fullscreen">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
-              </button>
-            </div>
-          </div>
-
-          <!-- WebGL Three.js Canvas Container -->
-          <div id="manifold-canvas-container" class="manifold-canvas-wrap"></div>
-
-          <!-- Bottom Floating Bar: Presets, Numerical Inputs, Sliders & Live Telemetry -->
-          <div class="manifold-hud-bottom">
-            <div class="stage-user-hint">
-              <span class="hint-icon">💡</span>
-              <span><strong>Interactive Explorer:</strong> Click any preset state below to reshape the 3D fluid in real time, or drag inside the scene with your mouse to rotate and explore from any angle!</span>
-            </div>
-            <!-- Emergent Physics Presets Bar -->
-            <div class="manifold-presets-bar">
-              <span class="preset-label">EMERGENCE PRESETS:</span>
-              <button class="manifold-preset-chip active" data-preset="soliton" title="Exact harmonic resonance (λ = d) with zero dissipation, trapping coherent standing solitons">
-                <span>🌟 Soliton Standing Wave</span>
-              </button>
-              <button class="manifold-preset-chip" data-preset="triad" title="Triad resonance (fd/v = 1/3) locking into an unbroken C3 chiral vortex conduit">
-                <span>🌀 Triad Phase Lock (⅓ λ)</span>
-              </button>
-              <button class="manifold-preset-chip" data-preset="event_horizon" title="Collapse structure to the 1/2 point (d = 0.50): forms an acoustic event horizon where spacetime curvature deflects null geodesics according to Einstein's Binet equation d²u/dφ² + u = (3/2)rs u²">
-                <span>🕳️ 1/2 Event Horizon (Null Geodesics)</span>
-              </button>
-              <button class="manifold-preset-chip" data-preset="gamma_still" title="Freeze structure into pristine static 36-node geometric equilibrium and emit a high-frequency relativistic gamma wave packet (f = 144 Hz / 1e20 Hz, v = c)">
-                <span>⚡ Still Structure + Gamma Wave</span>
-              </button>
-              <button class="manifold-preset-chip" data-preset="lightspeed_144" title="144 Hz harmonic resonance at the exact speed of light v = c = 299,792,458 m/s (Relativistic wave mechanics)">
-                <span>🌌 144 Hz @ Speed of Light (c)</span>
-              </button>
-              <button class="manifold-preset-chip" data-preset="throat" title="High transmission velocity acoustic jet compressed through the narrow central throat">
-                <span>⚡ Acoustic Throat Jet</span>
-              </button>
-              <button class="manifold-preset-chip" data-preset="superfluid" title="Zero entropy, perfectly coherent laminar superfluid with harmonic breathing">
-                <span>❄️ Crystalline Superfluid</span>
-              </button>
-              <button class="manifold-preset-chip" data-preset="turbulent" title="High entropy thermal dissipation, Kolmogorov vortex cascade, and ribbon flutter">
-                <span>🔥 Turbulent Cascade</span>
-              </button>
-            </div>
-
-            <!-- 6 Parameter Controls Grid with Direct Numerical Inputs AND Range Sliders -->
-            <div class="manifold-sliders-wrap">
-              <!-- 1. Entropy (S) -->
-              <div class="hud-slider-group">
-                <div class="hud-slider-label-row">
-                  <div class="hud-slider-title-wrap">
-                    <span class="hud-slider-title">Entropy (<em>S</em>)</span>
-                    <span class="hud-unit-tag">nats</span>
-                  </div>
-                  <input type="number" id="manifold-entropy-input" class="hud-num-input" min="0" step="any" value="0.20" aria-label="Entropy value">
-                </div>
-                <input type="range" id="manifold-entropy-slider" class="hud-range range-amber" min="0.00" max="5.00" step="0.01" value="0.20">
-                <div class="hud-range-bounds"><span>0.00 (Pure Coherence)</span><span>5.00+ (Thermal Dispersion)</span></div>
-              </div>
-
-              <!-- 2. Wave Frequency (f) -->
-              <div class="hud-slider-group">
-                <div class="hud-slider-label-row">
-                  <div class="hud-slider-title-wrap">
-                    <span class="hud-slider-title">Frequency (<em>f</em>)</span>
-                    <span class="hud-unit-tag">Hz</span>
-                  </div>
-                  <input type="number" id="manifold-freq-input" class="hud-num-input" min="0" step="any" value="1.00" aria-label="Frequency value (Hz)">
-                </div>
-                <input type="range" id="manifold-freq-slider" class="hud-range range-cyan" min="0.05" max="144.00" step="0.1" value="1.00">
-                <div class="hud-range-bounds"><span>0.05 Hz (Infrasound)</span><span>144 Hz &bull; 10²⁰ Hz (Gamma)</span></div>
-              </div>
-
-              <!-- 3. Velocity of Transmission (v) -->
-              <div class="hud-slider-group">
-                <div class="hud-slider-label-row">
-                  <div class="hud-slider-title-wrap">
-                    <span class="hud-slider-title">Velocity (<em>v</em>)</span>
-                    <span class="hud-unit-tag">u/s</span>
-                  </div>
-                  <input type="number" id="manifold-vel-input" class="hud-num-input" min="0" step="any" value="4.40" aria-label="Velocity of transmission">
-                </div>
-                <input type="range" id="manifold-vel-slider" class="hud-range range-blue" min="0.50" max="300.00" step="0.50" value="4.40">
-                <div class="hud-range-bounds"><span>0.50 u/s (Creep)</span><span>299,792,458 m/s (c, Light)</span></div>
-              </div>
-
-              <!-- 4. Layer Distance (d) -->
-              <div class="hud-slider-group">
-                <div class="hud-slider-label-row">
-                  <div class="hud-slider-title-wrap">
-                    <span class="hud-slider-title">Distance (<em>d</em>)</span>
-                    <span class="hud-unit-tag">units</span>
-                  </div>
-                  <input type="number" id="manifold-dist-input" class="hud-num-input" min="0.001" step="any" value="4.40" aria-label="Inter-layer distance">
-                </div>
-                <input type="range" id="manifold-dist-slider" class="hud-range range-indigo" min="0.50" max="12.00" step="0.05" value="4.40">
-                <div class="hud-range-bounds"><span>0.50 (1/2 Critical Involution)</span><span>12.00 (Elongated)</span></div>
-              </div>
-
-              <!-- 5. Triad Coupling (kappa) -->
-              <div class="hud-slider-group">
-                <div class="hud-slider-label-row">
-                  <div class="hud-slider-title-wrap">
-                    <span class="hud-slider-title">Coupling (<em>&kappa;</em>)</span>
-                    <span class="hud-unit-tag">merge</span>
-                  </div>
-                  <input type="number" id="manifold-coupling-input" class="hud-num-input" min="0" step="any" value="0.35" aria-label="Triad coupling">
-                </div>
-                <input type="range" id="manifold-coupling-slider" class="hud-range range-violet" min="0.00" max="2.00" step="0.01" value="0.35">
-                <div class="hud-range-bounds"><span>0.00 (Decoupled)</span><span>0.35 (½ ln 2) &bull; 2.00</span></div>
-              </div>
-
-              <!-- 6. Circulation Flow Rate (Q) -->
-              <div class="hud-slider-group">
-                <div class="hud-slider-label-row">
-                  <div class="hud-slider-title-wrap">
-                    <span class="hud-slider-title">Circulation (<em>Q</em>)</span>
-                    <span class="hud-unit-tag">flux</span>
-                  </div>
-                  <input type="number" id="manifold-flow-input" class="hud-num-input" min="0" step="any" value="1.00" aria-label="Circulation flow rate">
-                </div>
-                <input type="range" id="manifold-flow-slider" class="hud-range range-emerald" min="0.00" max="10.00" step="0.10" value="1.00">
-                <div class="hud-range-bounds"><span>0.00 (Static Rest)</span><span>10.00 (Hyper-Circulation)</span></div>
-              </div>
-            </div>
-
-            <!-- Live Telemetry & Physics Diagnostics -->
-            <div class="manifold-telemetry-strip">
-              <div class="telemetry-item">
-                <span class="telemetry-dot dot-cyan"></span>
-                <span class="telemetry-label">Wavelength (<em>&lambda; = v/f</em>):</span>
-                <span id="telemetry-wavelength" class="telemetry-val">4.40 u</span>
-              </div>
-              <div class="telemetry-item">
-                <span class="telemetry-dot dot-sapphire"></span>
-                <span class="telemetry-label">Wavenumber (<em>k = 2&pi;/&lambda;</em>):</span>
-                <span id="telemetry-wavenumber" class="telemetry-val">1.43 rad/u</span>
-              </div>
-              <div class="telemetry-item">
-                <span class="telemetry-dot dot-amber"></span>
-                <span class="telemetry-label">Phase Shift (<em>&Delta;&phi; = kd</em>):</span>
-                <span id="telemetry-phaseshift" class="telemetry-val">2.00 &pi; (1.00 &lambda;)</span>
-              </div>
-              <div class="telemetry-item">
-                <span class="telemetry-dot dot-violet"></span>
-                <span class="telemetry-label">Emergent State:</span>
-                <span id="telemetry-state-badge" class="telemetry-badge badge-resonance">STANDING WAVE LOCK</span>
-              </div>
-              <div class="telemetry-item">
-                <span class="telemetry-dot dot-rose"></span>
-                <span class="telemetry-label">Horizon Metric:</span>
-                <span id="telemetry-horizon-state" class="telemetry-val" style="font-weight: 700; color: #38bdf8;">SCHWARZSCHILD NULL CONE</span>
-              </div>
-              <div class="telemetry-item">
-                <span class="telemetry-dot dot-amber"></span>
-                <span class="telemetry-label">Null Geodesic:</span>
-                <span id="telemetry-light-pull" class="telemetry-val" style="font-weight: 700; color: #94a3b8;">EINSTEIN DEFLECTION</span>
-              </div>
-              <div class="telemetry-item" id="telemetry-gamma-item" style="display: none;">
-                <span class="telemetry-dot dot-rose"></span>
-                <span class="telemetry-label">Gamma Wave:</span>
-                <span id="telemetry-gamma-val" class="telemetry-val" style="color: #f43f5e; font-weight: 700;">ACTIVE (c)</span>
-              </div>
-              <div class="telemetry-item">
-                <span class="telemetry-dot dot-emerald"></span>
-                <span class="telemetry-label">Emergent Time &tau;:</span>
-                <span id="telemetry-emergent-time" class="telemetry-val" style="color: #38bdf8; font-weight: 700;">0.000 s (Frozen)</span>
-              </div>
-              <div class="telemetry-item">
-                <span class="telemetry-dot dot-amber"></span>
-                <span class="telemetry-label">Entropy Prod. EP:</span>
-                <span id="telemetry-ep-rate" class="telemetry-val" style="color: #f59e0b; font-weight: 700;">0.000 bits/s</span>
-              </div>
-              <div class="telemetry-item">
-                <span class="telemetry-dot dot-emerald"></span>
-                <span class="telemetry-label">Irreversible <em>S</em><sub>irr</sub>:</span>
-                <span id="telemetry-entropy" class="telemetry-val">0.000 nats</span>
-              </div>
-              <div class="telemetry-item">
-                <span class="telemetry-dot dot-violet"></span>
-                <span class="telemetry-label">Involution Bound:</span>
-                <span id="telemetry-jsd-bound" class="telemetry-val" style="color: #c084fc;">h(S)-h(C) &le; &frac14;EP</span>
-              </div>
-              <div class="telemetry-item">
-                <span class="telemetry-dot dot-blue"></span>
-                <span class="telemetry-label">Flux:</span>
-                <span class="telemetry-val">&nabla; &bull; J = 0.000</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Explanatory Swiss Architecture Cards -->
-        <div class="manifold-details-grid">
-          <div class="manifold-card">
-            <div class="manifold-card-header">
-              <span class="manifold-card-num">01</span>
-              <h3>6-Layer Simplicial Topology</h3>
-            </div>
-            <p>
-              The complex couples two dual 18-node structures across six alternating horizontal planes. Each plane houses an equilateral triangle with $C_3$ rotational symmetry. Consecutive layers undergo spatial inversion ($\theta \to -\theta$), establishing alternating angular sets $[-90^\circ, 30^\circ, 150^\circ]$ and $[90^\circ, 210^\circ, 330^\circ]$.
-            </p>
-            <div class="card-intuition-tag">
-              <strong>Intuition:</strong> Like two twisting spiral staircases mirrored against each other, the 36 points form a self-supporting geometric skeleton.
-            </div>
-            <div class="manifold-card-formula">
-              $$\theta_k^{(l)} = \theta_k^{(0)} + \pi \cdot (l \bmod 2) + \Delta \theta_{\text{shear}}(y, t)$$
-            </div>
-          </div>
-
-          <div class="manifold-card">
-            <div class="manifold-card-header">
-              <span class="manifold-card-num">02</span>
-              <h3>Transmission Dynamics &amp; Soliton Emergence</h3>
-            </div>
-            <p>
-              Wave packets propagate across the 6 layers at transmission velocity $v$. When inter-layer distance $d$, frequency $f$, and velocity $v$ satisfy $k \cdot d = 2\pi n / 3$, coherent $C_3$ standing solitons and continuous helical vortex tubes spontaneously lock into place. Entropy $S$ modulates the phase transition from crystalline laminar superfluidity to Kolmogorov turbulent cascades.
-            </p>
-            <div class="card-intuition-tag">
-              <strong>Intuition:</strong> When energy waves pass through at harmonious speeds, they self-organize into stable, non-collapsing standing rings.
-            </div>
-            <div class="manifold-card-formula">
-              $$\psi(z, t) = A e^{-S |z|/v} \left[ \cos\left(2\pi f t - \frac{2\pi f}{v} z\right) + R \cos\left(2\pi f t + \frac{2\pi f}{v} z\right) \right]$$
-            </div>
-          </div>
-
-          <div class="manifold-card">
-            <div class="manifold-card-header">
-              <span class="manifold-card-num">03</span>
-              <h3>Conserved Fluid Currents &amp; Zero-Point Boundaries</h3>
-            </div>
-            <p>
-              Energy conservation across the 36-node complex is governed by the divergence-free fluid current equation $\nabla \cdot \mathbf{J} = 0$. The 18 diamond-shaped geometric boundary nodes enforce zero flux leakage between the $(6k-1)$ right-handed sheet and the $(6k+1)$ left-handed sheet, preserving topological charge and detailed balance throughout the continuum.
-            </p>
-            <div class="card-intuition-tag">
-              <strong>Intuition:</strong> Like an airtight, frictionless hydraulic loop, no energy or information escapes through the 18 crossing boundaries.
-            </div>
-            <div class="manifold-card-formula">
-              $$\nabla \cdot \mathbf{J} = 0, \quad J = 2\partial_y |\Xi(x+iy)|^2 = \frac{1}{4} \int Q(p, x)\, p \sinh(yp)\, dp$$
-            </div>
-          </div>
-        </div>
-        <!-- End manifold-viewport-panel -->
-      </div>
-
-      <!-- Panel 2: The Game of Cosmos (3D 36-Node Simplicial Units & Multi-Scale Cosmic Emergence) -->
-      <div id="cosmos-viewport-panel" class="visualizer-panel" style="display: none;">
-          <div class="section-heading">
-            <div class="heading-meta">
-              <span class="section-tag">36-NODE STRING-QUANTUM CONTINUUM &bull; CONTINUOUS ℝ³ SPACETIME</span>
-              <span class="section-count">NO FIXED GRIDS &bull; NATIVE VIBRATION &bull; RESONANT VORTEX RELAYS &bull; C3 ⋊ Z2 SYMMETRY</span>
-            </div>
-            <h2 class="section-title">The Game of Cosmos: Continuous 36-Node Complexes &amp; Advancing Civilizations</h2>
-            <p class="section-desc">
-              Liberated from fixed grids, the spacetime continuum is populated by autonomous <strong>36-node string-quantum simplicial complexes</strong> (6 layers &times; 6 nodes = 36 nodes, dihedral symmetry $C_3 \rtimes \mathbb{Z}_2$, Papers 08 &amp; 12). Pervaded by the <strong>universal native vibration</strong> ($\omega_0 = 14.134725$, first Riemann zero $\gamma_1$), resonant vortex cores (middle layers 2 &amp; 3 around throat $d$) ignite and transmit carrier waves across space at exact phase angles ($0^\circ, 120^\circ, 180^\circ, 109.5^\circ$) without destroying the source. Quantum coherence ($L = \frac{1+2\cos\Delta\theta}{3}$, Paper 03) governs combining into molecules, dividing (mitosis under decoherence at the thirds), and organic self-replication—evolving from primordial fermions to <strong>Living Biospheres</strong> and <strong>Advancing Civilizations</strong> with circumstellar Dyson swarms and interstellar constellation lasers.
-            </p>
-          </div>
-
-          <!-- 3D Interactive Cosmos Stage Card -->
-          <div id="cosmos-viewport-stage" class="manifold-stage-card">
-            <!-- Top Floating Bar: Status, Modes & Presets -->
-            <div class="manifold-hud-top">
-              <div class="manifold-status-chip">
-                <span class="live-dot-pulse"></span>
-                <span class="status-label">ACTIVE 3D 36-NODE BUILDING BLOCK &amp; MULTI-SCALE COSMIC EMERGENCE</span>
-              </div>
-
-              <!-- Rule Selector -->
-              <div class="cosmos-rules-selector-wrap">
-                <span class="preset-label">RULE:</span>
-                <select id="cosmos-rule-select" class="cosmos-select">
-                  <option value="astrophysics" selected>Cosmic &amp; Civilizational Evolution (Resonance, Nucleosynthesis &amp; Dyson Networks) [Default]</option>
-                  <option value="supernova_cascade">Runaway Supernova Nucleosynthesis Cascade (Heavy Element Seeding)</option>
-                  <option value="blackhole_growth">Supermassive Black Hole Accretion &amp; Polar Relativistic Jets</option>
-                  <option value="inflation">Primordial Inflationary Genesis (Hagedorn String Expansion)</option>
-                  <option value="bays4555">Carter Bays 3D Topological Lattice (B4,5 / S4,5 Mode)</option>
-                </select>
-              </div>
-
-              <div class="manifold-quick-actions">
-                <button id="cosmos-inspect-toggle-btn" class="icon-tool-btn" title="Toggle Spacetime Unit Cell Inspector Mode (Hero Close-up of 36-Node Simplicial Complex)">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                  <span>Inspect 36-Node Unit</span>
-                </button>
-                <button id="cosmos-play-btn" class="icon-tool-btn" title="Pause / Resume Generation">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
-                  <span>Pause</span>
-                </button>
-                <button id="cosmos-step-btn" class="icon-tool-btn" title="Step 1 Generation">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2.5"/></svg>
-                  <span>Step</span>
-                </button>
-                <button id="cosmos-clear-btn" class="icon-tool-btn" title="Clear Spacetime Void">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/></svg>
-                  <span>Clear</span>
-                </button>
-                <button id="cosmos-reset-btn" class="icon-tool-btn" title="Reset Camera View">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
-                </button>
-              </div>
-            </div>
-
-            <!-- WebGL Three.js Canvas Container -->
-            <div id="cosmos-canvas-container" class="manifold-canvas-wrap">
-              <div id="cosmos-hover-tooltip" class="cosmos-hover-tooltip"></div>
-            </div>
-
-            <!-- Bottom Floating Bar: Seeds, Speed & Live Telemetry -->
-            <div class="manifold-hud-bottom">
-              <!-- Cosmic Seeds Presets Bar -->
-              <div class="manifold-presets-bar">
-                <span class="preset-label">COSMIC SCALES &amp; EPOCHS:</span>
-                <button class="cosmos-preset-chip active" data-cosmos-preset="genesis" title="Big Bang Genesis: Primordial Singularity -> Inflation -> Hydrogen & Helium -> First Stars">
-                  <span>💥 Big Bang Genesis</span>
-                </button>
-                <button class="cosmos-preset-chip" data-cosmos-preset="nucleosynthesis" title="Atomic Nucleosynthesis: Hydrogen (^1H) & Helium (^4He) fusion into Carbon (^12C) and Oxygen (^16O) Organic Elements">
-                  <span>⚛️ Nucleosynthesis (^1H, ^4He, ^12C)</span>
-                </button>
-                <button class="cosmos-preset-chip" data-cosmos-preset="stellar_nursery" title="Stellar Nursery: Gravitational collapse forming Main Sequence Stars with circumsolar planetary accretion discs">
-                  <span>☀️ Stellar Nursery &amp; Systems</span>
-                </button>
-                <button class="cosmos-preset-chip" data-cosmos-preset="planetary_emergence" title="Habitable Worlds: Stars surrounded by terrestrial goldilocks planets with liquid oceans and prebiotic chemistry">
-                  <span>🪐 Habitable Planetary Systems</span>
-                </button>
-                <button class="cosmos-preset-chip" data-cosmos-preset="organic_civilization" title="Living Biospheres & Advancing Civilizations: Planetary life advancing to Kardashev Type I/II with Dyson Swarms & Interstellar Laser Beams">
-                  <span>🏛️ Advancing Civilizations &amp; Life</span>
-                </button>
-                <button class="cosmos-preset-chip" data-cosmos-preset="supernova" title="Core-Collapse Supernova: Massive star iron-core collapse detonating Sedov blast waves and dispersing heavy organic elements">
-                  <span>🌟 Core-Collapse Supernova</span>
-                </button>
-                <button class="cosmos-preset-chip" data-cosmos-preset="blackhole" title="Black Hole Singularity: Spontaneous collapse to d = 0.50 Schwarzschild horizon with accretion disk and polar relativistic jets">
-                  <span>🕳️ Black Hole &amp; Polar Jets</span>
-                </button>
-                <button class="cosmos-preset-chip" data-cosmos-preset="cosmic_web" title="Cosmic Web Filaments: Large-scale gravitational clustering of 36-node complexes linking stars, habitable planets & civilizations">
-                  <span>🌌 Cosmic Web &amp; Galaxies</span>
-                </button>
-              </div>
-
-              <!-- Speed and Controls Row -->
-              <div class="cosmos-speed-bar">
-                <div class="hud-slider-group" style="max-width: 320px;">
-                  <div class="hud-slider-label-row">
-                    <span class="hud-slider-title">Evolution Speed</span>
-                    <span id="cosmos-speed-badge" class="hud-slider-badge">3.0 gen/s</span>
-                  </div>
-                  <input type="range" id="cosmos-speed-slider" class="hud-range range-amber" min="0.5" max="15.0" step="0.5" value="3.0">
-                  <div class="hud-range-bounds"><span>0.5 gen/s (Slow Motion)</span><span>15.0 gen/s (Fast Forward)</span></div>
-                </div>
-                <div class="cosmos-legend-strip">
-                  <span class="telemetry-item"><span class="telemetry-dot dot-sapphire"></span> <span class="telemetry-label">Unit:</span> <span class="telemetry-val">36 Nodes (6 Layers &times; 6)</span></span>
-                  <span class="telemetry-item"><span class="telemetry-dot dot-cyan"></span> <span class="telemetry-label">Elements:</span> <span class="telemetry-val">^1H &bull; ^4He &bull; ^12C/Org</span></span>
-                  <span class="telemetry-item"><span class="telemetry-dot dot-emerald"></span> <span class="telemetry-label">Habitable Worlds:</span> <span class="telemetry-val">Living Biospheres</span></span>
-                  <span class="telemetry-item"><span class="telemetry-dot dot-amber" style="background: #facc15;"></span> <span class="telemetry-label">Civilizations:</span> <span class="telemetry-val">Dyson Swarms &amp; Lasers</span></span>
-                  <span class="telemetry-item"><span class="telemetry-dot dot-rose"></span> <span class="telemetry-label">Singularities:</span> <span class="telemetry-val">Horizon d &le; 0.50 &amp; Jets</span></span>
-                </div>
-              </div>
-
-              <!-- Cosmological Particle Emergence Parameters (Frequency, Entropy, Phase) -->
-              <div class="manifold-sliders-wrap" style="margin-top: 1rem; border-top: 1px solid #1E293B; padding-top: 1rem;">
-                <div class="hud-slider-group">
-                  <div class="hud-slider-label-row">
-                    <span class="hud-slider-title">Frequency (<em>f</em>)</span>
-                  </div>
-                  <input type="number" id="cosmos-freq-input" class="hud-num-input" value="144" step="any" style="width: 100%; max-width: 120px;">
-                </div>
-                <div class="hud-slider-group">
-                  <div class="hud-slider-label-row">
-                    <span class="hud-slider-title">Entropy (<em>S</em>)</span>
-                  </div>
-                  <input type="number" id="cosmos-entropy-input" class="hud-num-input" value="0.5" step="any" style="width: 100%; max-width: 120px;">
-                </div>
-                <div class="hud-slider-group">
-                  <div class="hud-slider-label-row">
-                    <span class="hud-slider-title">Phase Twist (<em>&phi;</em>)</span>
-                  </div>
-                  <input type="number" id="cosmos-phase-input" class="hud-num-input" value="1.0" step="any" style="width: 100%; max-width: 120px;">
-                </div>
-              </div>
-
-              <!-- Live Cosmological Telemetry -->
-              <div class="manifold-telemetry-strip">
-                <div class="telemetry-item">
-                  <span class="telemetry-dot dot-cyan"></span>
-                  <span class="telemetry-label">Emergent &tau; / Epoch:</span>
-                  <span id="cosmos-telemetry-gen" class="telemetry-val">0.0 Myr (Timeless)</span>
-                </div>
-                <div class="telemetry-item">
-                  <span class="telemetry-dot dot-amber"></span>
-                  <span class="telemetry-label">Entropy Prod. EP:</span>
-                  <span id="cosmos-telemetry-ep" class="telemetry-val" style="color: #f59e0b; font-weight: 700;">0.00 bits/Myr</span>
-                </div>
-                <div class="telemetry-item">
-                  <span class="telemetry-dot dot-emerald"></span>
-                  <span class="telemetry-label">Cosmic <em>S</em><sub>irr</sub>:</span>
-                  <span id="cosmos-telemetry-entropy" class="telemetry-val" style="color: #10b981; font-weight: 700;">0.00 nats</span>
-                </div>
-                <div class="telemetry-item">
-                  <span class="telemetry-dot dot-violet"></span>
-                  <span class="telemetry-label">Involution Bound:</span>
-                  <span id="cosmos-telemetry-involution" class="telemetry-val" style="color: #c084fc;">h(S)-h(C) &le; &frac14;EP (99.8%)</span>
-                </div>
-                <div class="telemetry-item">
-                  <span class="telemetry-dot dot-sapphire"></span>
-                  <span class="telemetry-label">36-Node Units:</span>
-                  <span id="cosmos-telemetry-stars" class="telemetry-val">0 Units</span>
-                </div>
-                <div class="telemetry-item">
-                  <span class="telemetry-dot dot-cyan"></span>
-                  <span class="telemetry-label">Elements (^1H / ^4He / ^12C):</span>
-                  <span id="cosmos-telemetry-elements" class="telemetry-val" style="color: #38bdf8; font-weight: 700;">0 H &bull; 0 He &bull; 0 Org</span>
-                </div>
-                <div class="telemetry-item">
-                  <span class="telemetry-dot dot-amber" style="background: #facc15;"></span>
-                  <span class="telemetry-label">Stars, Planets &amp; Civ:</span>
-                  <span id="cosmos-telemetry-civ" class="telemetry-val" style="color: #facc15; font-weight: 700;">0 Stars &bull; 0 Planets &bull; 0 Civ</span>
-                </div>
-                <div class="telemetry-item">
-                  <span class="telemetry-dot dot-amber"></span>
-                  <span class="telemetry-label">Supernovae:</span>
-                  <span id="cosmos-telemetry-sn" class="telemetry-val" style="color: #f59e0b; font-weight: 700;">0 Detonations</span>
-                </div>
-                <div class="telemetry-item">
-                  <span class="telemetry-dot dot-rose"></span>
-                  <span class="telemetry-label">Black Holes:</span>
-                  <span id="cosmos-telemetry-bh" class="telemetry-val" style="color: #ef4444; font-weight: 700;">0 Singularities</span>
-                </div>
-                <div class="telemetry-item">
-                  <span class="telemetry-dot dot-emerald"></span>
-                  <span class="telemetry-label">Energy Flux:</span>
-                  <span id="cosmos-telemetry-flux" class="telemetry-val">&nabla;&bull;J = 0.00</span>
-                </div>
-                <div class="telemetry-item">
-                  <span class="telemetry-dot dot-cyan"></span>
-                  <span class="telemetry-label">Captured Light:</span>
-                  <span id="cosmos-telemetry-photons" class="telemetry-val" style="color: #38bdf8; font-weight: 700;">0 Rays Pulled</span>
-                </div>
-                <div class="telemetry-item">
-                  <span class="telemetry-dot dot-violet"></span>
-                  <span class="telemetry-label">Cosmic State:</span>
-                  <span id="cosmos-state-badge" class="telemetry-badge badge-triad">PRIMORDIAL INFLATION</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Explanatory Swiss Architecture Cards for The Game of Cosmos -->
-          <div class="manifold-details-grid">
-            <div class="manifold-card">
-              <div class="manifold-card-header">
-                <span class="manifold-card-num">01</span>
-                <h3>36-Node Spacetime Unit &amp; Modulo-6 World</h3>
-              </div>
-              <p>
-                In standard cellular automata, units are flat 2D scalar squares. In The Game of Cosmos, the fundamental atom of space is the authentic <strong>36-node simplicial complex</strong> (6 layers &times; 6 nodes = 36 nodes, derived from Papers 08 &amp; 12: modulo 6 world of clocks with dihedral symmetry $C_3 \rtimes \mathbb{Z}_2$). Stacking across 6 alternating planes forms complete bipartite couplings $K_{3,3}$ with 45 internal helicoid ribbon strips spanning across the central throat $d \in [0.50, 4.40]$.
-              </p>
-              <div class="manifold-card-formula">
-                $$\theta_{l,k} = k \cdot \frac{2\pi}{6} + \phi(l, t), \quad |V| = 6 \times 6 = 36, \quad d \in [0.50, 4.40]$$
-              </div>
-            </div>
-
-            <div class="manifold-card">
-              <div class="manifold-card-header">
-                <span class="manifold-card-num">02</span>
-                <h3>Nucleosynthesis, Organic Elements &amp; Living Biospheres</h3>
-              </div>
-              <p>
-                Applied frequency ($f$), entropy ($S$), and chiral phase twist ($\phi$) act on the 36 nodes to drive resonant combinations: <strong>Fermions</strong> ($s=1/2$ chiral excitations), <strong>Hadrons</strong> (quark-antiquark mesons), <strong>Baryon nucleons</strong> locked in $C_3$ triad balance via Paper 08 Triad Principle $\{-s, 0, s\}$, <strong>Hydrogen ($^1\text{H}$)</strong> and <strong>Helium ($^4\text{He}$)</strong> via Paper 04 energy partitioning $\delta = -\frac{1}{2}\tanh(\varepsilon/2)$. High-frequency stellar nucleosynthesis forges <strong>Carbon ($^{12}\text{C}$)</strong>, <strong>Oxygen ($^{16}\text{O}$)</strong>, and <strong>Iron ($^{56}\text{Fe}$)</strong>, enabling prebiotic oceans and self-replicating chiral <strong>Living Biospheres</strong>!
-              </p>
-              <div class="manifold-card-formula">
-                $$p = \frac{1}{1 + e^\varepsilon} = \frac{1}{2} + \delta, \quad \delta = -\frac{1}{2}\tanh\left(\frac{\varepsilon}{2}\right), \quad 3\alpha \to {}^{12}\text{C} + \gamma$$
-              </div>
-            </div>
-
-            <div class="manifold-card">
-              <div class="manifold-card-header">
-                <span class="manifold-card-num">03</span>
-                <h3>Stars, Habitable Planets, Civilizations &amp; Relativistic Collapse</h3>
-              </div>
-              <p>
-                When proper time $\tau$ flows under irreversible entropy production $\text{EP} = D(J \parallel J^{\mathsf T}) &gt; 0$ (Paper 02 Theorem 1.1), complex life ascends into <strong>Advancing Civilizations</strong> (Kardashev Type I/II), constructing circumsolar Dyson swarms and firing interstellar coherent laser communication beams! Aging massive stars suffer Chandrasekhar core collapse into <strong>Type II Supernovae</strong> ($R \propto t^{2/5}$ Sedov blast wave) or collapse below the <strong>Square-Root Horizon</strong> ($d = 0.50$, Paper 11) into <strong>Schwarzschild Black Holes</strong> with relativistic accretion disks and polar plasma jets.
-              </p>
-              <div class="manifold-card-formula">
-                $$\tau(t) = \int_0^t \sqrt{1 - \frac{r_s}{r}}\, dt', \quad h(S) - h(C) \le \frac{1}{4}\text{EP}, \quad d_{\text{horizon}} = 0.50$$
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Research Papers & Preprints Section -->
-    <section id="papers" class="papers-section">
-      <div class="container">
-        <div class="section-heading">
-          <div class="heading-meta">
-            <span class="section-tag">PRIMARY ARCHIVE</span>
-            <span class="section-count" id="papers-count-badge">12 MANUSCRIPTS</span>
-          </div>
-          <h2 class="section-title">Research Papers &amp; Preprints</h2>
-          <p class="section-desc">
-            Complete mathematical papers authored by Abhijit Singh. Each entry includes the complete scientific abstract, direct PDF download, BibTeX citation generator, and open access metadata.
-          </p>
-        </div>
-
-        <!-- View Mode Navigation Tabs -->
-        <div class="archive-tabs-container">
-          <button id="tab-btn-cards" class="archive-tab-btn active" onclick="switchPapersView('cards')">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
-            <span>Manuscript Compendium (12 Papers)</span>
-          </button>
-          <button id="tab-btn-matrix" class="archive-tab-btn" onclick="switchPapersView('matrix')">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/></svg>
-            <span>Theoretical Matrix &amp; Key Equations (42 Systems)</span>
-            <span class="matrix-tab-badge">42 Systems &bull; Figures</span>
-          </button>
-        </div>
-
-        <!-- Panel 1: Manuscript Cards View -->
-        <div id="cards-view-panel" class="view-panel">
-          <!-- Search and Filter Bar -->
-          <div class="archive-controls-bar">
-            <div class="search-input-wrap">
-              <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-              </svg>
-              <input type="text" id="paper-search-input" placeholder="Search by topic, keyword, or concept (e.g., Riemann, quantum, ternary computing, planets, primes)...">
-              <button id="clear-search-btn" class="clear-btn" title="Clear Search">&times;</button>
-            </div>
-
-            <div class="filter-pills" id="category-filter-pills">
-              <button class="filter-pill active" data-category="all">All Topics (12)</button>
-              <button class="filter-pill" data-category="number-theory">Number Theory (5)</button>
-              <button class="filter-pill" data-category="quantum-networks">Quantum &amp; Physics (2)</button>
-              <button class="filter-pill" data-category="algorithms">Algorithms (1)</button>
-              <button class="filter-pill" data-category="applied-science">Applied Systems (4)</button>
-            </div>
-          </div>
-
-          <!-- Papers Container -->
-          <div id="papers-container" class="papers-list-container">
-            <!-- Dynamically populated via js/app.js -->
-          </div>
-        </div>
-
-        <!-- Panel 2: Theoretical Matrix & Validation Table View -->
-        <div id="matrix-view-panel" class="view-panel" style="display: none;">
-          <!-- Matrix Search and Domain Filters -->
-          <div class="matrix-controls-bar">
-            <div class="search-input-wrap matrix-search-wrap">
-              <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-              </svg>
-              <input type="text" id="matrix-search-input" placeholder="Search across all 42 systems, equations, validation techniques, parameters, or papers...">
-              <button id="clear-matrix-search-btn" class="clear-btn" title="Clear Search">&times;</button>
-            </div>
-
-            <div class="filter-pills" id="matrix-domain-filter-pills">
-              <button class="filter-pill active" data-domain="all">All Domains (42)</button>
-              <button class="filter-pill" data-domain="Number Theory">Number Theory (10)</button>
-              <button class="filter-pill" data-domain="Planetary">Planetary &amp; Celestial (11)</button>
-              <button class="filter-pill" data-domain="Quantum">Quantum &amp; Statistical (8)</button>
-              <button class="filter-pill" data-domain="Neuroscience">Neuroscience (7)</button>
-              <button class="filter-pill" data-domain="Chemistry">Chemistry &amp; Sensors (8)</button>
-              <button class="filter-pill" data-domain="Computer Science">Algorithms (2)</button>
-            </div>
-          </div>
-
-          <!-- Matrix Table Responsive Wrapper -->
-          <div class="matrix-table-wrapper">
-            <table class="matrix-table" id="theoretical-matrix-table">
-              <thead>
-                <tr>
-                  <th class="col-num">#</th>
-                  <th class="col-paper">Paper &amp; Domain</th>
-                  <th class="col-system">Primary System / Phenomenon</th>
-                  <th class="col-eqs">Main Results &amp; Key Equations</th>
-                  <th class="col-val">Validation Method</th>
-                  <th class="col-params">Main Parameters &amp; Values</th>
-                  <th class="col-figs">Figures &amp; Source</th>
-                </tr>
-              </thead>
-              <tbody id="matrix-tbody">
-                <!-- Dynamically rendered by renderTheoreticalMatrix() -->
-              </tbody>
-            </table>
-          </div>
-
-          <div class="matrix-footer-summary">
-            <span id="matrix-count-text">Showing 42 of 42 scientific systems across 12 research manuscripts.</span>
-            <span class="matrix-hint-badge">Click any figure preview chip to view full-resolution diagrams with complete context</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Interactive Quantum Lab / Simulator -->
-    <section id="lab" class="quantum-lab-section">
-      <div class="container">
-        <div class="section-heading">
-          <div class="heading-meta">
-            <span class="section-tag">INTERACTIVE LABORATORY</span>
-            <span class="section-count">REAL-TIME SIMULATION</span>
-          </div>
-          <h2 class="section-title">Quantum Bloch Sphere &amp; Superposition Lab</h2>
-          <p class="section-desc">
-            Interactive visualization of single-qubit quantum state $|\psi\rangle$ on the Bloch sphere with real-time Born-rule probability projection and state collapse.
-          </p>
-        </div>
-
-        <div class="lab-card-grid">
-          <!-- Canvas Visualizer -->
-          <div class="lab-canvas-panel">
-            <div class="canvas-header-strip">
-              <span>3D PERSPECTIVE BLOCH SPHERE</span>
-              <span class="live-dot-indicator">ACTIVE</span>
-            </div>
-            <div class="canvas-center-wrap">
-              <canvas id="bloch-canvas" width="320" height="320"></canvas>
-            </div>
-            <div class="canvas-footer-caption">
-              <span>State Vector: $|\psi\rangle = \cos(\theta/2)|0\rangle + e^{i\phi}\sin(\theta/2)|1\rangle$</span>
-            </div>
-          </div>
-
-          <!-- Controls & Math -->
-          <div class="lab-controls-panel">
-            <div class="control-header">
-              <h3>Quantum State Parameters</h3>
-              <p>Adjust the polar angle ($\theta$) and azimuthal phase ($\phi$) to manipulate the quantum superposition.</p>
-              <div class="quantum-analogy-box">
-                <span class="analogy-icon">&#x1FA99;</span>
-                <div class="analogy-text">
-                  <strong>Think of it like a spinning coin:</strong> In classical computing, a bit is flat on the table (heads or tails: $0$ or $1$). In quantum computing, the qubit is spinning on the sphere in superposition until measured.
-                </div>
-              </div>
-            </div>
-
-            <div class="lab-formula-display" id="quantum-formula">
-              $$|\psi\rangle = \cos\frac{\theta}{2}|0\rangle + e^{i\phi}\sin\frac{\theta}{2}|1\rangle$$
-            </div>
-
-            <div class="slider-control-card">
-              <div class="slider-header-row">
-                <span class="slider-title">Polar Angle ($\theta$): Superposition</span>
-                <span id="theta-val" class="slider-value-badge">60°</span>
-              </div>
-              <input type="range" id="theta-slider" class="range-slider" min="0" max="180" value="60">
-              <div class="slider-range-ticks">
-                <span>0° (|0⟩)</span>
-                <span>90° (|+⟩)</span>
-                <span>180° (|1⟩)</span>
-              </div>
-            </div>
-
-            <div class="slider-control-card">
-              <div class="slider-header-row">
-                <span class="slider-title">Azimuthal Phase ($\phi$): Relative Phase</span>
-                <span id="phi-val" class="slider-value-badge">45°</span>
-              </div>
-              <input type="range" id="phi-slider" class="range-slider" min="0" max="360" value="45">
-              <div class="slider-range-ticks">
-                <span>0°</span>
-                <span>180°</span>
-                <span>360°</span>
-              </div>
-            </div>
-
-            <div class="probabilities-card">
-              <div class="prob-header-row">
-                <span class="prob-name">Projection $P(|0\rangle) = |\langle 0|\psi\rangle|^2$</span>
-                <span id="prob-0-text" class="prob-percentage">75.0%</span>
-              </div>
-              <div class="prob-track">
-                <div id="prob-fill-0" class="prob-bar-0" style="width: 75%;"></div>
-              </div>
-
-              <div class="prob-header-row" style="margin-top: 1rem;">
-                <span class="prob-name">Projection $P(|1\rangle) = |\langle 1|\psi\rangle|^2$</span>
-                <span id="prob-1-text" class="prob-percentage">25.0%</span>
-              </div>
-              <div class="prob-track">
-                <div id="prob-fill-1" class="prob-bar-1" style="width: 25%;"></div>
-              </div>
-            </div>
-
-            <div class="lab-button-row">
-              <button id="measure-btn" class="btn-primary" style="flex: 1.4;">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                Measure State (Born Collapse)
-              </button>
-              <button id="reset-btn" class="btn-secondary" style="flex: 1;">
-                Reset to |+⟩
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Research Dispatches & Working Notes Section -->
-    <section id="blog" class="blog-section">
-      <div class="container">
-        <div class="section-heading">
-          <div class="heading-meta">
-            <span class="section-tag">RESEARCH DISPATCHES &amp; WORKING NOTES</span>
-            <span class="section-count" id="blog-header-count">5 ARTICLES &bull; REGULARLY UPDATED</span>
-          </div>
-          <h2 class="section-title">Analytical Notes, Geometric Sketches &amp; Dispatches</h2>
-          <p class="section-desc">
-            Informal derivations, computational notebooks, and theoretical reflections accompanying the preprints. Deliberate notes on $C_3 \rtimes \mathbb{Z}_2$ simplicial fluid manifolds, prime two mirror asymmetries, Hill throat phase-space fluxes, and ternary network architectures. Authored directly from this site.
-          </p>
-        </div>
-
-        <!-- Filter and Search Controls Strip -->
-        <div class="blog-controls-card">
-          <div class="blog-controls-top-row">
-            <div class="blog-search-wrapper">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-              <input type="text" id="blog-search-input" class="blog-search-input" placeholder="Search dispatches by title, concept, or equation ($J, \Xi, \eta, L_1$)...">
-              <button id="blog-clear-search-btn" class="blog-clear-btn" style="display: none;" title="Clear search">&times;</button>
-            </div>
-          </div>
-
-          <div class="blog-filter-pills" id="blog-filter-pills">
-            <button class="blog-filter-pill active" data-category="all">All Dispatches (5)</button>
-            <button class="blog-filter-pill" data-category="differential-geometry">Fluid Manifolds &amp; Topology</button>
-            <button class="blog-filter-pill" data-category="number-theory">Number Theory &amp; Zeros</button>
-            <button class="blog-filter-pill" data-category="celestial-mechanics">Celestial Throats &amp; Flux</button>
-            <button class="blog-filter-pill" data-category="quantum-physics">Quantum Negativity &amp; Coherence</button>
-            <button class="blog-filter-pill" data-category="cortical-networks">Cortical &amp; Ternary Networks</button>
-          </div>
-        </div>
-
-        <!-- Dynamic Blog Posts Grid -->
-        <div id="blog-posts-grid" class="blog-posts-grid">
-          <!-- Dynamically populated via js/blog.js -->
-        </div>
-
-        <!-- Direct Correspondence & Collaboration Callout -->
-        <div class="blog-correspondence-banner">
-          <div class="banner-icon-col">
-            <div class="banner-icon-badge">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-            </div>
-          </div>
-          <div class="banner-body-col">
-            <h3 class="banner-title">Direct Academic Correspondence &amp; Proof Inquiries</h3>
-            <p class="banner-text">
-              Working manuscripts, numerical verification notebooks (Mathematica/Python), and raw datasets are circulated directly to interested researchers. For discussions, preprint feedback, or proof critiques, write directly to <strong>abhijitsingh@tuta.io</strong>.
-            </p>
-          </div>
-          <div class="banner-action-col">
-            <a href="mailto:abhijitsingh@tuta.io" class="btn-primary" style="white-space: nowrap;">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-              abhijitsingh@tuta.io
-            </a>
-            <button onclick="navigator.clipboard.writeText('abhijitsingh@tuta.io'); showToast('Copied abhijitsingh@tuta.io to clipboard!');" class="btn-secondary" style="font-size: 0.85rem; padding: 0.5rem 0.9rem;">
-              Copy Email
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- GitHub Repositories Connector Section -->
-    <section id="github" class="github-section">
-      <div class="container">
-        <div class="section-heading">
-          <div class="heading-meta">
-            <span class="section-tag">CODE REPOSITORIES</span>
-            <span class="section-count">OPEN SOURCE</span>
-          </div>
-          <h2 class="section-title">Open Source Quantum Software &amp; Code</h2>
-          <p class="section-desc">
-            Directly synced with GitHub user <a href="https://github.com/mag-and-krotons" target="_blank" rel="noopener noreferrer" style="font-weight: 700; color: var(--color-blue); text-decoration: underline;">@mag-and-krotons</a>. Research implementations, graph attention algorithms, and computational physics scripts.
-          </p>
-        </div>
-
-        <div class="github-sync-header-card">
-          <div class="github-input-wrapper">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-            <input type="text" id="github-username-input" class="github-text-input" value="mag-and-krotons" placeholder="Enter GitHub username...">
-            <button id="github-sync-btn" class="btn-sync">Sync Repositories</button>
-          </div>
-          <div id="github-status" class="github-status-indicator">
-            Connected to GitHub API
-          </div>
-        </div>
-
-        <div id="repos-grid" class="repos-grid-container">
-          <!-- Dynamically populated via js/app.js -->
-        </div>
-      </div>
-    </section>
-
-    <!-- Licensing & Open Science Suite -->
-    <section id="licensing" class="license-section">
-      <div class="container">
-        <div class="section-heading">
-          <div class="heading-meta">
-            <span class="section-tag">LEGAL &amp; ATTRIBUTION</span>
-            <span class="section-count">OPEN SCIENCE STANDARD</span>
-          </div>
-          <h2 class="section-title">Open Science Licensing &amp; Metadata Generator</h2>
-          <p class="section-desc">
-            Generate standardized machine-readable open licenses for your academic manuscripts, datasets, algorithms, and simulation code.
-          </p>
-        </div>
-
-        <div class="license-suite-card">
-          <div class="license-tabs-grid">
-            <div class="license-pill-card selected" data-license="cc-by-4">
-              <div class="license-card-header">
-                <span class="license-name">CC BY 4.0</span>
-                <span class="license-badge-cat">PAPERS &amp; PREPRINTS</span>
-              </div>
-              <p class="license-desc">Creative Commons Attribution 4.0 International. Recommended standard for open-access academic papers.</p>
-            </div>
-
-            <div class="license-pill-card" data-license="mit">
-              <div class="license-card-header">
-                <span class="license-name">MIT License</span>
-                <span class="license-badge-cat" style="color: var(--color-amber);">CODE &amp; SIMULATORS</span>
-              </div>
-              <p class="license-desc">Permissive open source software license for research algorithms, Qiskit scripts, and numerical solvers.</p>
-            </div>
-
-            <div class="license-pill-card" data-license="apache-2">
-              <div class="license-card-header">
-                <span class="license-name">Apache 2.0</span>
-                <span class="license-badge-cat" style="color: var(--color-blue);">DEEP TECH SOFTWARE</span>
-              </div>
-              <p class="license-desc">Permissive license with explicit patent protection grants for quantum computing libraries.</p>
-            </div>
-
-            <div class="license-pill-card" data-license="cc0">
-              <div class="license-card-header">
-                <span class="license-name">CC0 1.0 Universal</span>
-                <span class="license-badge-cat" style="color: var(--color-crimson);">DATASETS &amp; BENCHMARKS</span>
-              </div>
-              <p class="license-desc">Public domain dedication for benchmark datasets, raw spectra, and measurement logs.</p>
-            </div>
-          </div>
-
-          <div class="license-preview-container">
-            <div class="license-preview-header">
-              <span id="license-preview-title">Creative Commons Attribution 4.0 International (CC BY 4.0)</span>
-              <button id="copy-license-btn" class="btn-copy-code">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
-                Copy License Snippet
-              </button>
-            </div>
-            <pre class="license-code-block" id="license-code-output"></pre>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- About Researcher Section -->
-    <section id="about" class="about-section">
-      <div class="container">
-        <div class="about-card">
-          <div class="about-profile-col">
-            <div class="profile-avatar-frame">
-              <span class="profile-avatar-symbol">Σ</span>
-            </div>
-            <h3 class="profile-name">Abhijit Singh</h3>
-            <p class="profile-title">Theoretical Mathematics &amp; Quantum Networks</p>
-            <div class="profile-identifiers">
-              <a href="mailto:abhijitsingh@tuta.io" class="identifier-pill email-pill" title="Send direct academic email">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-                abhijitsingh@tuta.io
-              </a>
-              <a href="https://orcid.org/0009-0002-7161-1805" target="_blank" rel="noopener noreferrer" class="identifier-pill">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm-1 14.5h-2v-9h2zm4 0h-2v-4.5h2zm-3-11a1 1 0 1 1 1-1 1 1 0 0 1-1 1zm4 11h-2v-2.5h2z"/></svg>
-                ORCiD: 0009-0002-7161-1805 ↗
-              </a>
-              <a href="https://github.com/mag-and-krotons" target="_blank" rel="noopener noreferrer" class="identifier-pill">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-                GitHub: mag-and-krotons ↗
-              </a>
-            </div>
-          </div>
-
-          <div class="about-content-col">
-            <span class="section-tag">BIOGRAPHY &amp; RESEARCH SCOPE</span>
-            <h2 class="about-headline">Mathematical Foundations of Balance &amp; Quantum Coherence</h2>
-            <p class="about-text">
-              My research lies at the nexus of analytical number theory, mathematical physics, and quantum information. Specifically, it investigates pair balance symmetries, the distribution and spectral properties of the nontrivial zeros of the Riemann zeta function, Wigner positivity/negativity of Riemann states, and their realizations in quantum circuits, ternary weight networks, and excitable cortical architectures.
-            </p>
-
-            <div class="research-focus-grid">
-              <div class="focus-item">
-                <div class="focus-num">01</div>
-                <div class="focus-body">
-                  <h4>Riemann Zeros &amp; Signed Currents</h4>
-                  <p>Macdonald function expansions, phase-space Wigner averages, and reformulations of the Riemann Hypothesis via the current $J=2\partial_y|\Xi(x+iy)|^2$.</p>
-                </div>
-              </div>
-
-              <div class="focus-item">
-                <div class="focus-num">02</div>
-                <div class="focus-body">
-                  <h4>Quantum States &amp; Decoherence</h4>
-                  <p>Pure states constructed from positive kernel transforms, Lee-Yang theorems, and exact decoherence dynamics in coupled spin systems.</p>
-                </div>
-              </div>
-
-              <div class="focus-item">
-                <div class="focus-num">03</div>
-                <div class="focus-body">
-                  <h4>Exclusion Laws &amp; Prime Clocks</h4>
-                  <p>Clock representations of integers coprime to 6, the exclusion product $E=0.88022\dots$, and twin prime recurrence dynamics.</p>
-                </div>
-              </div>
-
-              <div class="focus-item">
-                <div class="focus-num">04</div>
-                <div class="focus-body">
-                  <h4>Balanced Networks &amp; Radix Economy</h4>
-                  <p>Inward/outward charge cancellation in excitable tissue, and optimality of balanced-ternary arithmetic in neural networks.</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="about-links-row">
-              <a href="#papers" class="btn-primary">
-                View All 12 Papers
-              </a>
-              <a href="mailto:abhijitsingh@tuta.io" class="btn-primary email-about-btn" style="background: var(--color-blue); border-color: var(--text-main);">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-                Email: abhijitsingh@tuta.io
-              </a>
-              <a href="https://orcid.org/0009-0002-7161-1805" target="_blank" rel="noopener noreferrer" class="btn-outline">
-                Verified ORCiD Record ↗
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- Site Footer -->
-  <footer class="site-footer">
-    <div class="container footer-content-grid">
-      <div class="footer-col-main">
-        <div class="footer-brand">
-          <span class="footer-mark">Σ</span>
-          <span class="footer-name">Abhijit Singh</span>
-        </div>
-        <p class="footer-tagline">
-          Academic research compendium covering number theory, quantum networks, and mathematical physics.
-        </p>
-        <p class="footer-license-note">
-          All published papers and preprints licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">Creative Commons Attribution 4.0 International (CC BY 4.0)</a>. Software implementations licensed under MIT.
-        </p>
-      </div>
-
-      <div class="footer-col">
-        <h5 class="footer-col-title">Archive Sections</h5>
-        <ul class="footer-links-list">
-          <li><a href="#manifold">Fluid Manifold (36-Node)</a></li>
-          <li><a href="#papers">Research Papers (12)</a></li>
-          <li><a href="#lab">Bloch Sphere Lab</a></li>
-          <li><a href="#blog">Dispatches &amp; Notes</a></li>
-          <li><a href="#github">GitHub Repositories</a></li>
-          <li><a href="#licensing">Licensing Generator</a></li>
-          <li><a href="#about">Author Profile</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-col">
-        <h5 class="footer-col-title">Direct Correspondence</h5>
-        <ul class="footer-links-list">
-          <li>
-            <a href="mailto:abhijitsingh@tuta.io" class="footer-email-link">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-              abhijitsingh@tuta.io
-            </a>
-          </li>
-          <li style="font-size: 0.8rem; color: var(--text-dim); line-height: 1.45; margin-top: 0.35rem;">
-            Direct inquiries for preprints, mathematical proofs, and collaborative research.
-          </li>
-          <li style="margin-top: 0.5rem;">
-            <button onclick="navigator.clipboard.writeText('abhijitsingh@tuta.io'); showToast('Copied abhijitsingh@tuta.io to clipboard!');" class="btn-outline btn-sm footer-copy-btn">
-              Copy Address
-            </button>
-          </li>
-        </ul>
-      </div>
-
-      <div class="footer-col">
-        <h5 class="footer-col-title">External Links</h5>
-        <ul class="footer-links-list">
-          <li><a href="https://orcid.org/0009-0002-7161-1805" target="_blank" rel="noopener noreferrer">ORCiD Record ↗</a></li>
-          <li><a href="https://github.com/mag-and-krotons" target="_blank" rel="noopener noreferrer">GitHub Profile ↗</a></li>
-          <li><a href="https://github.com/mag-and-krotons/GAT" target="_blank" rel="noopener noreferrer">GAT Repository ↗</a></li>
-          <li><a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0 Deed ↗</a></li>
-        </ul>
+      <div class="blog-filter-pills">
+        <button class="blog-filter-pill active" data-category="all">All</button>
+        <button class="blog-filter-pill" data-category="differential-geometry">Geometry &amp; Structure</button>
+        <button class="blog-filter-pill" data-category="number-theory">Number Theory &amp; Zeros</button>
+        <button class="blog-filter-pill" data-category="celestial-mechanics">Celestial Mechanics</button>
+        <button class="blog-filter-pill" data-category="quantum-physics">Quantum Coherence</button>
+        <button class="blog-filter-pill" data-category="cortical-networks">Ternary &amp; Cortical Networks</button>
+        <button class="blog-filter-pill" data-category="general-physics">Mathematical Physics</button>
       </div>
     </div>
+    <div class="blog-posts-grid" id="blog-posts-grid"></div>
+  </div>
+</section>
 
-    <div class="footer-bottom-bar">
-      <div class="container footer-bottom-flex">
-        <span>&copy; 2026 Abhijit Singh. All rights reserved under CC BY 4.0.</span>
-        <span>Static Research Platform &bull; Built for High-Performance Academic Dissemination</span>
-      </div>
+<!-- ============ Code ============ -->
+<section id="github">
+  <div class="container">
+    <div class="section-kicker">Code</div>
+    <h2>Code and data</h2>
+    <p class="section-lead">The scripts behind the numbers and figures of the papers, and the archived research record.</p>
+    <div class="repo-grid" id="repo-grid"></div>
+  </div>
+</section>
+
+<!-- ============ About ============ -->
+<section id="about">
+  <div class="container about-grid">
+    <div>
+      <div class="section-kicker">About</div>
+      <h2>Abhijit Singh</h2>
+      <p class="muted">Independent researcher</p>
+      <ul class="contact-list">
+        <li><a href="mailto:abhijitsingh@tuta.io">abhijitsingh@tuta.io</a></li>
+        <li>ORCID <a href="https://orcid.org/0009-0002-7161-1805" target="_blank" rel="noopener">0009-0002-7161-1805</a></li>
+        <li>GitHub <a href="https://github.com/mag-and-krotons" target="_blank" rel="noopener">mag-and-krotons</a></li>
+        <li>Research record <a href="https://doi.org/10.5281/zenodo.22129334" target="_blank" rel="noopener">10.5281/zenodo.22129334</a></li>
+      </ul>
     </div>
-  </footer>
-
-  <!-- BibTeX Citation Modal -->
-  <div id="bibtex-modal" class="modal-backdrop">
-    <div class="modal-card">
-      <div class="modal-header">
-        <div class="modal-header-text">
-          <span class="modal-tag">BIBTEX CITATION</span>
-          <h3 class="modal-title" id="modal-paper-title">Citation Entry</h3>
-        </div>
-        <button class="modal-close-btn" title="Close Modal">&times;</button>
-      </div>
-      <div class="modal-body">
-        <div class="modal-code-wrapper">
-          <pre id="bibtex-code" class="modal-code-block"></pre>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button id="copy-bibtex-btn" class="btn-primary">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
-          Copy BibTeX to Clipboard
-        </button>
+    <div>
+      <p>My research reads one principle in many settings: objects are related only through the mechanism of their construction. In number theory it gives the exclusion law of twin primes and the axiom of harmonic independence for the zeros of the zeta function. In geometry it is the medial antiprism, whose two strands meet only at one half. In physics, chemistry, the nerve and the giant planets it appears as the pair, the triad and the half.</p>
+      <p class="small muted">The complete research release 8.0.2 was published on Zenodo on 27 August 2026 and is archived in Software Heritage.</p>
+      <div class="themes">
+        <div class="theme"><b>The zeta function and its zeros</b>The square-root horizon, the forward and reversed terms of the approximate functional equation, and the signed current $J=2\partial_y|\Xi(x+iy)|^2$.</div>
+        <div class="theme"><b>Twin primes</b>The prime clocks on the numbers $6k\pm1$, the exclusion product $E=0.880215\ldots$, and Maier's windows read through the clocks.</div>
+        <div class="theme"><b>The medial antiprism</b>Two strands, a horizon at one half, an undecided trefoil, and the $3$-adic tree of its routes.</div>
+        <div class="theme"><b>The pattern in other systems</b>Lagrange throats, two spins, the sodium gate, polyphase currents and ternary networks.</div>
       </div>
     </div>
   </div>
+</section>
 
-  <!-- High-Resolution Figure Lightbox Modal -->
-  <div id="figure-modal" class="modal-backdrop" onclick="closeFigureModal(event)">
-    <div class="modal-card figure-modal-card" onclick="event.stopPropagation()">
-      <div class="modal-header">
-        <div class="modal-header-text">
-          <span class="modal-tag" id="figure-modal-tag">SCIENTIFIC FIGURE PREVIEW</span>
-          <h3 class="modal-title" id="figure-modal-title">Figure Preview</h3>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>© 2026 Abhijit Singh · Papers under CC BY 4.0</span>
+    <span><a href="https://github.com/mag-and-krotons/mag-and-krotons.github.io" target="_blank" rel="noopener">Site source</a></span>
+  </div>
+</footer>
+
+<!-- BibTeX modal -->
+<div id="bibtex-modal" class="modal-backdrop" onclick="closeBibtex(event)">
+  <div class="modal-card" onclick="event.stopPropagation()">
+    <div class="modal-header"><h2 class="modal-title" id="bibtex-title">Cite</h2><button class="modal-close-btn" onclick="closeBibtex()">&times;</button></div>
+    <div class="modal-body"><pre class="bibtex" id="bibtex-text"></pre></div>
+    <div class="modal-footer"><button class="btn-primary btn" id="bibtex-copy">Copy BibTeX</button><button class="btn" onclick="closeBibtex()">Close</button></div>
+  </div>
+</div>
+
+<!-- Dispatch reader modal (used by js/blog.js) -->
+<div id="blog-modal" class="modal-backdrop" onclick="closeBlogModal(event)">
+  <div class="modal-card blog-modal-card" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div>
+        <div class="blog-modal-meta-row">
+          <span class="blog-modal-cat-badge" id="blog-modal-cat"></span>
+          <span class="blog-modal-date" id="blog-modal-date"></span>
+          <span class="blog-meta-sep">&bull;</span>
+          <span class="blog-modal-readtime" id="blog-modal-readtime"></span>
         </div>
-        <button class="modal-close-btn" onclick="closeFigureModal()">&times;</button>
+        <h2 class="modal-title" id="blog-modal-title"></h2>
+        <div class="blog-modal-author-strip">By Abhijit Singh</div>
       </div>
-      <div class="modal-body figure-modal-body">
-        <div class="figure-modal-img-container">
-          <img id="figure-modal-img" src="" alt="Scientific Figure" class="figure-full-img">
-        </div>
-        <div class="figure-modal-meta-box">
-          <div class="figure-meta-row">
-            <span class="figure-meta-label">Manuscript:</span>
-            <span id="figure-modal-paper-name" class="figure-meta-val"></span>
-          </div>
-          <div class="figure-meta-row">
-            <span class="figure-meta-label">Primary Phenomenon:</span>
-            <span id="figure-modal-system-desc" class="figure-meta-val"></span>
-          </div>
-        </div>
+      <button class="modal-close-btn" onclick="closeBlogModal()">&times;</button>
+    </div>
+    <div class="modal-body" id="blog-modal-content"></div>
+    <div class="modal-footer">
+      <div class="blog-modal-footer-left">
+        <a id="blog-modal-discuss-btn" href="mailto:abhijitsingh@tuta.io" class="btn">Email the author</a>
+        <button id="blog-modal-copy-link-btn" class="btn">Copy link</button>
       </div>
-      <div class="modal-footer figure-modal-footer">
-        <a id="figure-modal-download-link" href="" target="_blank" download class="btn-outline">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Open High-Resolution Image
-        </a>
-        <button class="btn-primary" onclick="closeFigureModal()">Close Preview</button>
-      </div>
+      <button class="btn" onclick="closeBlogModal()">Close</button>
     </div>
   </div>
+</div>
 
-  <!-- Blog Article Full Reader Modal -->
-  <div id="blog-modal" class="modal-backdrop" onclick="closeBlogModal(event)">
-    <div class="modal-card blog-modal-card" onclick="event.stopPropagation()">
-      <div class="modal-header">
-        <div class="modal-header-text">
-          <div class="blog-modal-meta-row">
-            <span class="blog-modal-cat-badge" id="blog-modal-cat">CATEGORY</span>
-            <span class="blog-modal-date" id="blog-modal-date">Date</span>
-            <span class="blog-meta-sep">&bull;</span>
-            <span class="blog-modal-readtime" id="blog-modal-readtime">Reading Time</span>
-          </div>
-          <h2 class="modal-title blog-modal-title" id="blog-modal-title">Article Title</h2>
-          <div class="blog-modal-author-strip">
-            <span>By <strong>Abhijit Singh</strong></span> &bull; 
-            <a href="mailto:abhijitsingh@tuta.io" class="blog-modal-email-link">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: -2px; margin-right: 3px;"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-              abhijitsingh@tuta.io
-            </a>
-          </div>
-        </div>
-        <button class="modal-close-btn" onclick="closeBlogModal()">&times;</button>
-      </div>
+<div id="app-toast" class="toast-notice"></div>
 
-      <div class="modal-body blog-modal-body" id="blog-modal-content">
-        <!-- Rendered rich text with KaTeX formulas -->
-      </div>
-
-      <div class="modal-footer blog-modal-footer">
-        <div class="blog-modal-footer-left">
-          <a id="blog-modal-discuss-btn" href="mailto:abhijitsingh@tuta.io" class="btn-primary">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-            Discuss With Author (abhijitsingh@tuta.io)
-          </a>
-          <button id="blog-modal-copy-link-btn" class="btn-outline">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-            Copy Dispatch Link
-          </button>
-        </div>
-        <button class="btn-secondary" onclick="closeBlogModal()">Close Article</button>
-      </div>
-    </div>
-  </div>
-
-
-
-  <!-- Toast Notification Container -->
-  <div id="app-toast" class="toast-notice"></div>
-
-  <!-- Application Script with Cache Busting -->
-  <script src="js/app.js?v=20261007_v6"></script>
-  <!-- Research Dispatches & Blog System with Composer -->
-  <script src="js/blog.js?v=20261007_v6"></script>
-  <!-- 36-Node 6D Fluid Manifold Simulation -->
-  <script type="module" src="js/manifold.js?v=20261007_v11"></script>
-  <!-- The Game of Cosmos: Continuous 3D 36-Node String-Quantum Emergence Engine -->
-  <script type="module" src="js/cosmos.js?v=20261008_pure_emergence_v19"></script>
-
-  <!-- Global Visualizer Tab Switcher (Manifold vs Game of Cosmos) -->
-  <script>
-    function switchVisualizerTab(tab) {
-      const manifoldPanel = document.getElementById('manifold-viewport-panel');
-      const cosmosPanel = document.getElementById('cosmos-viewport-panel');
-      const btnManifold = document.getElementById('tab-btn-manifold');
-      const btnCosmos = document.getElementById('tab-btn-cosmos');
-
-      if (tab === 'manifold') {
-        if (btnManifold) btnManifold.classList.add('active');
-        if (btnCosmos) btnCosmos.classList.remove('active');
-        if (manifoldPanel) manifoldPanel.style.display = 'block';
-        if (cosmosPanel) cosmosPanel.style.display = 'none';
-        if (window.fluidManifoldInstance) {
-          window.fluidManifoldInstance.isVisible = true;
-          requestAnimationFrame(() => window.fluidManifoldInstance && window.fluidManifoldInstance.onResize());
-          setTimeout(() => window.fluidManifoldInstance && window.fluidManifoldInstance.onResize(), 60);
-        }
-        if (window.cosmosInstance) window.cosmosInstance.isVisible = false;
-        if (window.history && window.history.replaceState) {
-          window.history.replaceState(null, null, '#manifold');
-        }
-      } else if (tab === 'cosmos') {
-        if (btnCosmos) btnCosmos.classList.add('active');
-        if (btnManifold) btnManifold.classList.remove('active');
-        if (manifoldPanel) manifoldPanel.style.display = 'none';
-        if (cosmosPanel) cosmosPanel.style.display = 'block';
-        if (window.fluidManifoldInstance) window.fluidManifoldInstance.isVisible = false;
-        if (!window.cosmosInstance && window.GameOfCosmos) {
-          new window.GameOfCosmos('cosmos-canvas-container');
-        }
-        if (window.cosmosInstance) {
-          window.cosmosInstance.isVisible = true;
-          if (typeof window.cosmosInstance.onResize === 'function') {
-            requestAnimationFrame(() => window.cosmosInstance.onResize());
-            setTimeout(() => window.cosmosInstance.onResize(), 60);
-          }
-        }
-        if (window.history && window.history.replaceState) {
-          window.history.replaceState(null, null, '#cosmos');
-        }
-      }
-      if (window.triggerMathRendering) {
-        window.triggerMathRendering(document.getElementById('manifold'));
-      }
-    }
-    window.switchVisualizerTab = switchVisualizerTab;
-
-    // Mobile navigation drawer toggle
-    function toggleMobileMenu() {
-      const drawer = document.getElementById('mobile-nav-drawer');
-      const overlay = document.getElementById('drawer-overlay');
-      const btn = document.getElementById('mobile-menu-btn');
-      if (!drawer) return;
-      const isOpen = drawer.classList.contains('open');
-      if (isOpen) {
-        closeMobileMenu();
-      } else {
-        drawer.classList.add('open');
-        if (overlay) overlay.classList.add('open');
-        if (btn) btn.classList.add('active');
-        document.body.style.overflow = 'hidden';
-      }
-    }
-    function closeMobileMenu() {
-      const drawer = document.getElementById('mobile-nav-drawer');
-      const overlay = document.getElementById('drawer-overlay');
-      const btn = document.getElementById('mobile-menu-btn');
-      if (drawer) drawer.classList.remove('open');
-      if (overlay) overlay.classList.remove('open');
-      if (btn) btn.classList.remove('active');
-      document.body.style.overflow = '';
-    }
-    window.toggleMobileMenu = toggleMobileMenu;
-    window.closeMobileMenu = closeMobileMenu;
-
-    // Check URL hash on page load and on hash change
-    function syncHashTab() {
-      if (window.location.hash === '#cosmos') {
-        switchVisualizerTab('cosmos');
-      } else if (window.location.hash === '#manifold') {
-        switchVisualizerTab('manifold');
-      } else if (window.location.hash === '#mobile-menu') {
-        toggleMobileMenu();
-      } else if (window.location.hash === '#verify-papers') {
-        const el = document.getElementById('papers');
-        if (el) window.scrollTo(0, el.offsetTop);
-      } else if (window.location.hash === '#verify-lab') {
-        const el = document.getElementById('lab');
-        if (el) window.scrollTo(0, el.offsetTop);
-      }
-    }
-    syncHashTab();
-    window.addEventListener('DOMContentLoaded', syncHashTab);
-    window.addEventListener('load', syncHashTab);
-    window.addEventListener('hashchange', syncHashTab);
-  </script>
+<script src="js/app.js?v=20261009b"></script>
+<script src="js/blog.js?v=20261009b"></script>
+<script type="module" src="js/structure.js?v=20261009b"></script>
 </body>
 </html>

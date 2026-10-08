@@ -10,3 +10,6 @@ scratch/
 *.bak
 structure.html
 Gemini_Generated_Image_*
+
+# Local tooling
+.claude/

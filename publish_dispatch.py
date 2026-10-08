@@ -13,27 +13,30 @@ Usage:
 import sys, os, re, json, datetime, subprocess
 
 CATEGORY_MAP = {
-    "differential-geometry": {"label": "Fluid Manifolds & Topology", "class": "cat-violet"},
+    "differential-geometry": {"label": "Geometry & Structure", "class": "cat-violet"},
     "number-theory": {"label": "Number Theory & Zeros", "class": "cat-blue"},
-    "celestial-mechanics": {"label": "Celestial Throats & Flux", "class": "cat-crimson"},
-    "quantum-physics": {"label": "Quantum Negativity & Coherence", "class": "cat-amber"},
-    "cortical-networks": {"label": "Cortical & Ternary Networks", "class": "cat-emerald"},
-    "general-physics": {"label": "Mathematical Physics & Balance", "class": "cat-blue"}
+    "celestial-mechanics": {"label": "Celestial Mechanics", "class": "cat-crimson"},
+    "quantum-physics": {"label": "Quantum Coherence", "class": "cat-amber"},
+    "cortical-networks": {"label": "Ternary & Cortical Networks", "class": "cat-emerald"},
+    "general-physics": {"label": "Mathematical Physics", "class": "cat-blue"}
 }
 
 PAPERS_MAP = {
     "01": ("01_Mathematics_Pair_Balance_and_the_Riemann_Zeros", "Pair Balance and the Riemann Zeros: The Signed Current, the Mirror and the Merge, and the Prime Two"),
-    "02": ("02_Physics_Pair_Balance_and_the_Universal_Spectrum", "Pair Balance and the Universal Spectrum: The Signed Current and the Wigner Positivity of Riemann States"),
+    "02": ("02_Physics_The_Reversible_Half_and_the_Third_Body", "The Reversible Half and the Third Body: Pairs and Triads in Measurement Records and the Three-Body Problem"),
     "03": ("03_Quantum_The_Riemann_Kernel_as_a_Quantum_State", "The Riemann Kernel as a Quantum State: Wigner Negativity, Decoherence at the Thirds and Lee-Yang Zeros"),
-    "04": ("04_Computer_Science_Pair_Balanced_Network_Flow", "Pair-Balanced Network Flow: The Signed Current as an Admissibility Criterion for Quantum Routing"),
-    "05": ("05_Biology_Excitation_Inhibition_Balance_in_Cortical_Networks", "Excitation-Inhibition Balance in Cortical Networks: The Signed Current as an Order Parameter for Neural Excitability"),
+    "04": ("04_Chemistry_Which_Member_Carries", "Which Member Carries: Two-State Pairs from Atoms to Gas Sensors, and Döbereiner's Triads as Balanced Pairs"),
+    "05": ("05_Neuroscience_The_Balanced_Pair_in_Excitable_Tissue", "The Balanced Pair in Excitable Tissue: What a Membrane Reading Determines, and the Balanced Cortex"),
     "06": ("06_Algorithms_Three_Is_Enough", "Three Is Enough: Radix Economy, Balanced-Ternary Arithmetic and Ternary-Weight Networks"),
-    "07": ("07_Astrobiology_The_Enceladus_Subsurface_Ocean", "The Enceladus Subsurface Ocean: A Coupled Hydrothermal-Electrochemical Model of Metabolic Energy Availability"),
-    "08": ("08_Planetary_The_Four_Giants_as_Balanced_Pairs", "The Four Giants as Balanced Pairs: Throats, Hearts, the Gas Ladder and the Interstellar Visitors"),
-    "09": ("09_Neural_Networks_Pair_Balanced_Graph_Attention_Networks", "Pair-Balanced Graph Attention Networks: Sign-Preserving Message Passing for Quantum Circuit Graphs"),
-    "10": ("10_Energy_Pair_Balanced_State_of_Charge_Estimation", "Pair-Balanced State-of-Charge Estimation in Multicell Battery Packs: Thermodynamic Current Bounds"),
-    "11": ("11_Topology_Balance_and_Duality_in_Topological_Quantum_Systems", "Balance and Duality in Topological Quantum Systems: Majorana Modes, Anyons and Braiding"),
-    "12": ("12_Synthesis_The_Geometry_of_Balance", "The Geometry of Balance: A Unifying Principle Across Mathematics, Physics and Biology")
+    "07": ("07_Planetary_Science_The_Four_Giants_as_Balanced_Pairs", "The Four Giants as Balanced Pairs: Throats, Hearts, the Gas Ladder and the Interstellar Visitors"),
+    "08": ("08_Synthesis_What_a_Zero_Is", "What a Zero Is: One Involution across Mathematics, Physics, Chemistry, Neuroscience, Computation and the Giant Planets"),
+    "09": ("09_The_Remaining_Step", "The Remaining Step: Six Equivalent Forms of the Riemann Hypothesis and the Surgery Obstruction"),
+    "10": ("10_The_Balance_of_the_Count", "The Balance of the Count: One Energy in the Prime Counts and in the Sawtooth, and the Riemann Hypothesis in Real Variables"),
+    "srh": ("square_root_horizon", "The Square-Root Horizon: Squares, Reversal and Prime Clocks in the Distribution of the Primes and the Zeros of the Riemann Zeta Function"),
+    "antiprism": ("medial_antiprism", "The Medial Antiprism: Two Strands, a Horizon at One Half and an Undecided Trefoil"),
+    "twin": ("nothing_binds_a_twin", "Nothing Binds a Twin but Exclusion: The Prime Clocks, the Exclusion Law and the Recurrence of the Twin Pair"),
+    "pattern": ("pair_triad_half", "The Pair, the Triad and the Half: One Pattern in Physical, Biological and Learning Systems"),
+    "seven": ("seven_resolutions", "Seven Resolutions Through the Medial Antiprism: One Structure, One Principle")
 }
 
 def escape_html(text):
@@ -43,7 +46,21 @@ def escape_html(text):
                 .replace('"', "&quot;")
                 .replace("'", "&#039;"))
 
+def protect_math(tex):
+    # inside math, < and > would be read as HTML tags by the browser
+    return tex.replace("<", "\\lt ").replace(">", "\\gt ")
+
 def parse_inline(text):
+    # Keep math away from the Markdown rules below (e.g. * and _ inside $...$)
+    stash = []
+    def keep(m):
+        stash.append(protect_math(m.group(0)))
+        return f"\x00{len(stash) - 1}\x00"
+    text = re.sub(r'\$\$.+?\$\$|\$[^$]+\$', keep, text)
+    text = _markdown_inline(text)
+    return re.sub(r'\x00(\d+)\x00', lambda m: stash[int(m.group(1))], text)
+
+def _markdown_inline(text):
     # Inline code
     text = re.sub(r'`([^`]+)`', r'<code>\1</code>', text)
     # Bold
@@ -69,7 +86,7 @@ def markdown_to_html(md_text):
         # Math display block $$
         if stripped == "$$":
             if in_math_block:
-                html_out.append(f'<div class="katex-display-block">$${chr(10).join(math_buffer)}$$</div>')
+                html_out.append(f'<div class="katex-display-block">$${protect_math(chr(10).join(math_buffer))}$$</div>')
                 math_buffer = []
                 in_math_block = False
             else:
@@ -142,7 +159,7 @@ def markdown_to_html(md_text):
     if in_callout:
         html_out.append('</div>')
     if in_math_block:
-        html_out.append(f'<div class="katex-display-block">$${chr(10).join(math_buffer)}$$</div>')
+        html_out.append(f'<div class="katex-display-block">$${protect_math(chr(10).join(math_buffer))}$$</div>')
 
     return "\n".join(html_out)
 
@@ -209,7 +226,12 @@ def publish_from_file(filepath, push_to_git=False):
 
     # Tags
     tags_raw = meta.get("tags", "")
-    if isinstance(tags_raw, str):
+    if isinstance(tags_raw, str) and tags_raw.strip().startswith("["):
+        try:
+            tags = [str(t).strip() for t in json.loads(tags_raw)]
+        except ValueError:
+            tags = [t.strip().strip('[]"\' ') for t in tags_raw.split(",") if t.strip().strip('[]"\' ')]
+    elif isinstance(tags_raw, str):
         tags = [t.strip().lstrip('#') for t in tags_raw.split(",") if t.strip()]
     elif isinstance(tags_raw, list):
         tags = tags_raw
@@ -224,10 +246,12 @@ def publish_from_file(filepath, push_to_git=False):
     if paper_id in PAPERS_MAP:
         pdf_stem, official_title = PAPERS_MAP[paper_id]
         paper_title = paper_title or official_title
-        paper_pdf = paper_pdf or f"papers/{pdf_stem}.pdf"
+        paper_pdf = paper_pdf or f"papers/{pdf_stem}/{pdf_stem}.pdf"
         paper_id = pdf_stem
 
     content_html = markdown_to_html(body)
+    # the body goes into a JavaScript template literal: keep LaTeX backslashes, backticks and ${ literal
+    content_html = content_html.replace("\\", "\\\\").replace("`", "\\`").replace("${", "\\${")
 
     # Format JS object
     js_entry = {
@@ -308,11 +332,11 @@ def create_template(filepath):
     template = """---
 title: "Your Dispatch Title Here"
 category: "differential-geometry"
-formula_tag: "KEY INVARIANCE FORMULA"
-formula_math: "\\nabla \\cdot \\mathbf{J} = 0 \\iff \\oint_{\\partial \\Omega} \\mathbf{v} \\cdot \\hat{n} \\, dS = 0"
-tags: ["Topology", "Fluid Manifolds", "Solenoidal Flux"]
+formula_tag: "KEY FORMULA"
+formula_math: "J = I + C + C^2"
+tags: ["Medial Antiprism", "Triad"]
 summary: "A concise 2-3 sentence overview of this research note to be displayed on the card."
-paper_id: "01"
+paper_id: "antiprism"
 ---
 
 ### 1. Theoretical Premise

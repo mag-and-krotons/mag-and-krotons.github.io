@@ -39,42 +39,42 @@ formula_tag: "THROAT ASYMMETRY EXPANSION"
 formula_math: "A = \frac{h}{3}\left(1 - \frac{h^2}{27} + \mathcal{O}(h^3)\right)"
 tags: ["Hill Throats", "Celestial Mechanics", "Restricted Three-Body Problem"]
 summary: "An analytical derivation of the throat flux and asymmetry in collinear Lagrange systems."
-paper_id: "08"
+paper_id: "07"
 ---
 ```
 
 ### Fields:
 * **`title`** (Required): The full title of the dispatch.
 * **`category`** (Required): One of the 6 canonical research domains:
-  * `differential-geometry` (Fluid Manifolds & Topology)
+  * `differential-geometry` (Geometry & Structure)
   * `number-theory` (Number Theory & Zeros)
-  * `celestial-mechanics` (Celestial Throats & Flux)
-  * `quantum-physics` (Quantum Negativity & Coherence)
-  * `cortical-networks` (Cortical & Ternary Networks)
-  * `general-physics` (Mathematical Physics & Balance)
+  * `celestial-mechanics` (Celestial Mechanics)
+  * `quantum-physics` (Quantum Coherence)
+  * `cortical-networks` (Ternary & Cortical Networks)
+  * `general-physics` (Mathematical Physics)
 * **`formula_tag`**: Short uppercase badge text for the formula callout (e.g. `KEY INVARIANCE FORMULA`).
 * **`formula_math`**: LaTeX formula highlighted on the feed card.
 * **`tags`**: List or comma-separated tags (e.g. `["Topology", "Phase Space"]`).
 * **`summary`**: 2-3 sentence teaser summary for the card feed.
-* **`paper_id`**: Optional preprint index (`"01"` to `"12"`). Automatically links the preprint title and PDF button.
+* **`paper_id`**: Optional. One of `"01"`–`"10"` (the September 2026 series) or `"srh"`, `"antiprism"`, `"twin"`, `"pattern"`, `"seven"` (the October 2026 papers). It links the paper's title and PDF.
 
 ---
 
 ## 3. Formatting in the Body
 
 * **Headings**: Use `### Section Heading` or `## Section Heading`.
-* **Inline Math**: Enclose in single dollars: `$\nabla \cdot \mathbf{J} = 0$`.
+* **Inline Math**: Enclose in single dollars: `$J = I + C + C^2$`. A `<` or `>` inside math is converted for the browser automatically.
 * **Block Display Math**:
   ```latex
   $$
-  J = \frac{1}{2\pi} \oint p \, dq = \frac{E - E_c}{\omega_H}
+  \lambda^4 - 2\lambda^2 - 27 = 0
   $$
   ```
 * **Callout Box**:
   ```markdown
   :::callout
   <strong>Theoretical Note:</strong>
-  Invariance holds under canonical contact transformations.
+  The still pattern survives every step; the turning patterns are erased.
   :::
   ```
 * **Code Blocks**: Fenced with triple backticks ` ```python `.

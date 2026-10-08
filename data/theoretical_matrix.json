@@ -1,644 +1,644 @@
 [
-  {
-    "paperTitle": "The Four Giants as Balanced Pairs: Throats, Hearts, the Gas Ladder and the Interstellar Visitors",
-    "domain": "Celestial Mechanics / Planetary Science / Astrobiology",
-    "system": "Hill throats and collinear Lagrange points ($L_1, L_2$) linear dynamics in the restricted three-body problem",
-    "equations": "Characteristic polynomial: $\\lambda^4 - 2\\lambda^2 - 27 = 0$; Relationships: $\\lambda_H^2 - \\omega_H^2 = 2$, $\\lambda_H^2 \\omega_H^2 = 27$; Throat asymmetry: $A = \\frac{h}{3}\\left(1 - \\frac{h^2}{27} + O(h^3)\\right)$, where $h = (\\mu/3)^{1/3}$",
-    "validation": "Exact asymptotic expansions and 50-digit numerical root finding",
-    "parameters": "Hill values: $\\lambda_H = 2.508287$, $\\omega_H = 2.071594$; mass ratio $\\mu = m/(M+m)$",
-    "source": "[1]",
-    "figures": [
-      {
-        "title": "Hill Throats & Lyapunov Orbits",
-        "file": "papers/07_Planetary_Science_The_Four_Giants_as_Balanced_Pairs/fig_throats.png"
-      }
-    ]
-  },
-  {
-    "paperTitle": "The Four Giants as Balanced Pairs: Throats, Hearts, the Gas Ladder and the Interstellar Visitors",
-    "domain": "Planetary Physics / Celestial Mechanics",
-    "system": "Phase space topology and mass transport flux through $L_1/L_2$ Hill throats",
-    "equations": "Topology $S^2 \\times I$; Orbital Action/Flux: $J = \\frac{2\\pi \\Delta E}{\\omega}$; Quantum transmission probability: $T(\\Delta E) = \\frac{1}{1 + e^{-2\\pi \\Delta E / (\\hbar \\lambda)}}$",
-    "validation": "Differential correction computation of Lyapunov periodic orbits around Jupiter's L1 point",
-    "parameters": "Lyapunov orbit amplitude $0.0018\\,r_H$; Action flux accuracy to $1.000002$",
-    "source": "[1]",
-    "figures": [
-      {
-        "title": "Hill Throats & Lyapunov Orbits",
-        "file": "papers/07_Planetary_Science_The_Four_Giants_as_Balanced_Pairs/fig_throats.png"
-      }
-    ]
-  },
-  {
-    "paperTitle": "The Four Giants as Balanced Pairs: Throats, Hearts, the Gas Ladder and the Interstellar Visitors",
-    "domain": "Planetary Structure / Hydrodynamics",
-    "system": "Rotational response, quadrupole moment ($J_2$), and interior mass concentration",
-    "equations": "Fluid Love number for $n=1$ polytrope: $k_2 = \\frac{15}{\\pi^2} - 1 = 0.519818$; Rotational ratio: $\\frac{J_2}{q_\\omega} = \\frac{1}{3}k_2 = 0.17327$; Density profile: $\\rho = \\rho_c \\frac{\\sin u}{u}$",
-    "validation": "First-order Clairaut perturbation theory on Lane-Emden profiles",
-    "parameters": "$q_\\omega = \\omega_{\\text{rot}}^2 R^3 / GM$; Measured $J_2/q_\\omega$: Jupiter ($0.16477$), Saturn ($0.10303$), Uranus ($0.11331$), Neptune ($0.13080$)",
-    "source": "[1]",
-    "figures": [
-      {
-        "title": "Jupiter Polar Vortex Dynamics",
-        "file": "papers/07_Planetary_Science_The_Four_Giants_as_Balanced_Pairs/fig_jup.png"
-      }
-    ]
-  },
-  {
-    "paperTitle": "The Four Giants as Balanced Pairs: Throats, Hearts, the Gas Ladder and the Interstellar Visitors",
-    "domain": "Planetary Seismology / Asteroseismology",
-    "system": "Acoustic p-mode frequency spacing (heartbeat) of giant gas planets",
-    "equations": "Acoustic spacing equation: $\\Delta \\nu = \\left[ 2 \\int_0^R \\frac{dr}{c} \\right]^{-1} = 1.6747\\, \\nu_{\\text{dyn}}$; Dynamical frequency: $\\nu_{\\text{dyn}} = \\frac{1}{2\\pi}\\sqrt{\\frac{GM}{R^3}}$",
-    "validation": "Numerical quadrature of sound speed profiles over n=1 polytropes against Jupiter ground-based seismic measurements",
-    "parameters": "Jupiter volumetric radius $R = 69911\\text{ km}$; Measured $\\Delta \\nu = 155.3 \\pm 2.2\\,\\mu\\text{Hz}$; Model predicted $\\Delta \\nu = 162.3\\,\\mu\\text{Hz}$ (4.5% error); Predicted Saturn $\\Delta \\nu = 112\\text{--}117\\,\\mu\\text{Hz}$",
-    "source": "[1]",
-    "figures": [
-      {
-        "title": "Acoustic p-mode Heartbeat",
-        "file": "papers/07_Planetary_Science_The_Four_Giants_as_Balanced_Pairs/fig_heart.png"
-      }
-    ]
-  },
-  {
-    "paperTitle": "The Four Giants as Balanced Pairs: Throats, Hearts, the Gas Ladder and the Interstellar Visitors",
-    "domain": "Atmospheric Dynamics / Fluid Mechanics",
-    "system": "Spectral stability of polygonal vortex rings surrounding a central polar vortex",
-    "equations": "Spectral stability intervals for central vortex strength $\\kappa$: $\\frac{N^2 - 8N + 8}{16} < \\kappa < \\frac{(N-1)^2}{4}$ (even $N$), $\\frac{(N-1)(N-7)}{16} < \\kappa < \\frac{(N-1)^2}{4}$ (odd $N$); Maximum central strength share: $\\frac{\\kappa}{\\kappa + N} = \\left(\\frac{N-1}{N+1}\\right)^2$",
-    "validation": "Eigenspectrum analysis of the analytic Jacobian matrix in the co-rotating reference frame validated against finite differences",
-    "parameters": "Ring counts $N=3$ to $12$; Jupiter North pole $N=8+1$ (share $1/9$); Jupiter South pole $N=5+1$ and $N=6+1$",
-    "source": "[1]",
-    "figures": [
-      {
-        "title": "Jupiter Polar Vortex Dynamics",
-        "file": "papers/07_Planetary_Science_The_Four_Giants_as_Balanced_Pairs/fig_jup.png"
-      }
-    ]
-  },
-  {
-    "paperTitle": "The Four Giants as Balanced Pairs: Throats, Hearts, the Gas Ladder and the Interstellar Visitors",
-    "domain": "Planetary Atmospheric Chemistry / Thermodynamics",
-    "system": "Ammonium hydrosulfide ($\\mathrm{NH_4SH}$) condensation titration and chemical survivor identity",
-    "equations": "Mass action condition: $x_{\\mathrm{NH_3}} x_{\\mathrm{H_2S}} = k^2 = \\frac{K(T)}{P_{\\text{atm}}^2}$; Parametrisation: $x_{\\mathrm{NH_3}} = k e^{\\varepsilon/2}, x_{\\mathrm{H_2S}} = k e^{-\\varepsilon/2}$; Conservation of difference: $\\Delta = N - S = 2k \\sinh(\\varepsilon/2)$; Survivor species sign: $\\operatorname{sign}(N - S)$",
-    "validation": "Integration of dry adiabats via 4th-order Runge-Kutta method in ln P, evaluated across 179 abundance variant scenarios",
-    "parameters": "Deep ratios $\\mathrm{N/S}$: Jupiter ($4.73$), Saturn ($3.16$), Uranus ($0.195$), Neptune ($0.170$); $\\mathrm{NH_4SH}$ equilibrium constant: $\\log_{10}(P_{\\mathrm{NH_3}} P_{\\mathrm{H_2S}}/\\text{atm}^2) = 14.82 - 4705/T$",
-    "source": "[1]",
-    "figures": [
-      {
-        "title": "Gas Ladder & NH4SH Titration",
-        "file": "papers/07_Planetary_Science_The_Four_Giants_as_Balanced_Pairs/fig_gas_ladder.png"
-      }
-    ]
-  },
-  {
-    "paperTitle": "The Four Giants as Balanced Pairs: Throats, Hearts, the Gas Ladder and the Interstellar Visitors",
-    "domain": "Orbital Mechanics / Secular Perturbation Theory",
-    "system": "Secular inclination precession modes and invariant invariable plane of the four giant planets",
-    "equations": "Laplace-Lagrange equations: $\\dot{\\mathbf{p}} = \\mathbf{B}\\mathbf{q}$, $\\dot{\\mathbf{q}} = -\\mathbf{B}\\mathbf{p}$; Matrix row sum identity: $\\sum_k B_{jk} = 0 \\implies \\det(\\mathbf{B}) = 0$",
-    "validation": "Numerical eigensystem calculation of the 4x4 Laplace-Lagrange matrix B using NSSDC masses and semimajor axes",
-    "parameters": "Eigenvalues: $-25.5183$, $-2.9276$, $-0.6698$, and $0.0000\\text{ arcsec/yr}$ (zero mode exact to $6 \\times 10^{-17}$)",
-    "source": "[1]",
-    "figures": [
-      {
-        "title": "Hill Throats & Lyapunov Orbits",
-        "file": "papers/07_Planetary_Science_The_Four_Giants_as_Balanced_Pairs/fig_throats.png"
-      }
-    ]
-  },
-  {
-    "paperTitle": "The Four Giants as Balanced Pairs: Throats, Hearts, the Gas Ladder and the Interstellar Visitors",
-    "domain": "Celestial Mechanics / Orbital Stability",
-    "system": "Equilateral triangular equilibrium point ($L_4/L_5$) linear stability and Krein signature spectrum",
-    "equations": "Gascheau-Routh criterion: $27 \\mu (1-\\mu) < 1 \\implies \\mu < \\mu_G = \\frac{1}{2}\\left(1 - \\sqrt{\\frac{23}{27}}\\right) \\approx 0.0385209$; $L_4$ characteristic polynomial: $\\lambda^4 + \\lambda^2 + \\frac{27}{4}\\mu(1-\\mu) = 0$",
-    "validation": "Eigenvalue computation and Krein signature determination across 2000 mass ratio values and random mass triples",
-    "parameters": "Critical mass ratio $\\mu_G = 0.0385209$; Collision frequency $\\omega = 1/\\sqrt{2}$",
-    "source": "[1]",
-    "figures": [
-      {
-        "title": "Hill Throats & Lyapunov Orbits",
-        "file": "papers/07_Planetary_Science_The_Four_Giants_as_Balanced_Pairs/fig_throats.png"
-      }
-    ]
-  },
-  {
-    "paperTitle": "The Four Giants as Balanced Pairs: Throats, Hearts, the Gas Ladder and the Interstellar Visitors",
-    "domain": "Astrophysical Spectroscopy / Radio Astronomy",
-    "system": "Hydroxyl ($\\mathrm{OH}$) ground-state hyperfine transition frequencies of interstellar object 3I/ATLAS",
-    "equations": "$\\mathrm{OH}$ quartet frequency sum rule: $\\nu_{1612.2309} + \\nu_{1720.5299} = \\nu_{1665.4018} + \\nu_{1667.3590} = 3332.7608\\text{ MHz}$; Common spectral centre: $\\nu_c = 1666.38040\\text{ MHz}$",
-    "validation": "Exact algebraic sum validation using MeerKAT radio telescope observed transition frequencies",
-    "parameters": "Main line offsets: $\\pm 0.97860\\text{ MHz}$; Satellite line offsets: $\\pm 54.14950\\text{ MHz}$",
-    "source": "[1]",
-    "figures": [
-      {
-        "title": "Hyperfine Radio Spectra",
-        "file": "papers/07_Planetary_Science_The_Four_Giants_as_Balanced_Pairs/fig_sounds.png"
-      }
-    ]
-  },
-  {
-    "paperTitle": "The Four Giants as Balanced Pairs: Throats, Hearts, the Gas Ladder and the Interstellar Visitors",
-    "domain": "Relativistic Astrophysics / Exoplanetary Physics",
-    "system": "Schwarzschild horizon, photon sphere, and ISCO radii of pulsar PSR B1257+12",
-    "equations": "Schwarzschild radii relations: $r_{\\text{horizon}} = \\frac{2GM}{c^2}$, $r_{\\text{photon}} = \\frac{3GM}{c^2}$, $r_{\\text{ISCO}} = \\frac{6GM}{c^2}$; Horizon ratio: $r_{\\text{horizon}} = \\frac{1}{3} r_{\\text{ISCO}} = \\frac{2}{3} r_{\\text{photon}}$",
-    "validation": "Exact analytical solution of geodesic motion in static Schwarzschild spacetime metrics",
-    "parameters": "Pulsar mass $M = 1.4\\,M_\\odot$; Length unit $GM/c^2 = 2.07\\text{ km}$; Radii values: $4.13\\text{ km}$ (horizon), $6.20\\text{ km}$ (photon sphere), $12.40\\text{ km}$ (ISCO)",
-    "source": "[1]",
-    "figures": [
-      {
-        "title": "Hill Throats & Lyapunov Orbits",
-        "file": "papers/07_Planetary_Science_The_Four_Giants_as_Balanced_Pairs/fig_throats.png"
-      }
-    ]
-  },
-  {
-    "paperTitle": "Pair Balance and the Riemann Zeros: The Signed Current, the Mirror and the Merge, and the Prime Two",
-    "domain": "Number Theory / Analytic Number Theory / Mathematical Physics",
-    "system": "Riemann hypothesis, nontrivial zeros of the Riemann zeta function, signed current $J$, and phase-space density (Wigner function $Q$) of the Riemann kernel $\\Phi$",
-    "equations": "$H(x, y) = \\frac{1}{8} \\int Q(p, x) \\cosh(yp)\\, dp$; $J(x, y) = \\frac{1}{4} \\int Q(p, x)\\, p \\sinh(yp)\\, dp$; $Q(p, x) = 8 e^{p/2} \\sum_{N \\ge 1} \\tau_x(N) \\mathcal{K}_x(2\\pi N e^p)$; $Q(p, x) > 0$ for $2\\pi e^{|p|} \\ge \\max(\\sqrt{2x^2 + 1/2}, 20)$. RH holds $\\iff J \\ge 0$ for $y > 0 \\iff \\int Q(p, x)\\, p^{2k}\\, dp \\ge 0 \\; (\\forall k \\ge 0)$",
-    "validation": "High-precision decimal floating-point arithmetic (40–200 digits), adaptive Gauss–Kronrod quadrature, Riccati comparison for Macdonald functions, sieve computations up to 10^8, and trapezoidal numerical integrations.",
-    "parameters": "$|x| \\ge 14.14$, $y > 0$; verification range for zeros up to height $3 \\cdot 10^{12}$; prime-2 lattice $1 + 2\\pi i / \\log 2$; precision up to 200 significant digits; verification of Liouville sum to $10^8$",
-    "source": "[2]",
-    "figures": [
-      {
-        "title": "Pair Balance & Current J",
-        "file": "papers/01_Mathematics_Pair_Balance_and_the_Riemann_Zeros/fig1_balance.png"
-      }
-    ]
-  },
-  {
-    "paperTitle": "Pair Balance and the Riemann Zeros: The Signed Current, the Mirror and the Merge, and the Prime Two",
-    "domain": "Analytic Number Theory / Mathematical Physics",
-    "system": "Epstein zeta function $Z_\\epsilon(s)$ of the binary quadratic form $2m^2 + 3n^2$ without an Euler product (the mirror without the merge)",
-    "equations": "$\\xi_\\epsilon(s) = s(s-1)(\\sqrt{6}/\\pi)^s \\Gamma(s) Z_\\epsilon(s)$; $Q_\\epsilon(p, x)$ expansion in $\\mathcal{K}_{2ix}$ Macdonald functions; $J_\\epsilon$ takes negative values in the upper half-plane near off-line zeros",
-    "validation": "Trapezoidal quadrature on kernel integrals, high-precision Newton iteration (50 digits) for zero finding.",
-    "parameters": "Off-line zero $s_0 = 1.15958745297694888 + 9.45225081186590043\\,i$; current sign change height $y = \\operatorname{Re} s_0 - 1/2 = 0.6596$",
-    "source": "[2]",
-    "figures": [
-      {
-        "title": "Mirror Symmetry in Zeros",
-        "file": "papers/01_Mathematics_Pair_Balance_and_the_Riemann_Zeros/fig2_mirror.png"
-      }
-    ]
-  },
-  {
-    "paperTitle": "Pair Balance and the Riemann Zeros: The Signed Current, the Mirror and the Merge, and the Prime Two",
-    "domain": "Probability Theory / Analytic Number Theory",
-    "system": "Merge of $\\nu$ copies of independent random variable $S_1$; moment function $M_\\nu(s) = \\mathbb{E}[(\\pi S_\\nu / 2)^{s/2}]$",
-    "equations": "$M_2(s) = 2\\xi(s)$ (the merged pair); $M_1(s) = s \\pi^{-s/2} \\Gamma(s/2) \\eta(s)$; $M_\\nu(1-s) = M_\\nu(s)$ holds for all $s \\iff \\nu = 2$",
-    "validation": "Adaptive quadrature on Mellin/Laplace integral transforms, trapezoidal integration of series expansions, double-precision and high-precision Newton-type zero tracking.",
-    "parameters": "Continuous variation of parameter $\\nu \\in (0, 4]$; movement of first zero from $1 + 2\\pi i / \\log 2$ (at $\\nu = 1$) to $1/2 + 14.134725\\,i$ (at $\\nu = 2$)",
-    "source": "[2]",
-    "figures": [
-      {
-        "title": "Merge Parameter ν Zero Path",
-        "file": "papers/01_Mathematics_Pair_Balance_and_the_Riemann_Zeros/fig3_merge.png"
-      }
-    ]
-  },
-  {
-    "paperTitle": "Pair Balance and the Riemann Zeros: The Signed Current, the Mirror and the Merge, and the Prime Two",
-    "domain": "Statistical Mechanics / Number Theory",
-    "system": "Lee–Yang zeros of uniform three-state spin systems and merged elementary spin pairs; Davenport–Heilbronn function",
-    "equations": "Merged pair $\\varsigma_1 \\oplus_\\kappa \\varsigma_2$ has Lee–Yang zeros on $|z| = 1$ for coupling $\\kappa \\ge 0$; uniform three-state spin zeros sit at exactly $1/3$ and $2/3$ of a turn; Davenport–Heilbronn function $f(s)$ has 4 mirrored pairs off the critical line below height 200",
-    "validation": "Companion matrix eigenvalue computation for spin-chain partition functions; argument principle and grid sign-change searches for Dirichlet series zeros.",
-    "parameters": "Coupling $\\kappa = \\frac{1}{2} \\ln 2$; spin chain lengths $n = 2, \\dots, 6$; height bound $T = 200$",
-    "source": "[2]",
-    "figures": [
-      {
-        "title": "Lee-Yang Zeros & Sign Structure",
-        "file": "papers/01_Mathematics_Pair_Balance_and_the_Riemann_Zeros/fig4_sign_structure.png"
-      }
-    ]
-  },
-  {
-    "paperTitle": "The Remaining Step: Six Equivalent Forms of the Riemann Hypothesis and the Surgery Obstruction",
-    "domain": "Analytic Number Theory / Mathematical Physics",
-    "system": "Riemann Hypothesis (RH), Riemann zeta function $\\zeta(s)$, even entire function $\\Xi(z)$, positivity of the current $J = 2\\partial_y|\\Xi(x + iy)|^2$, and surgery obstructions",
-    "equations": "Proves six equivalent forms of RH: (a) Jensen–Riesz defect vanishing, (b) Krein–Langer index $N_+ = 0$, (c) absence of multiple real zeros in heat-flow deformation $\\Xi_T$ for $0 < T \\le 0.2$, (d) Weil–Poisson form positivity $J = 4H W(h_{x,y})$, (e) Li radius $R_\\zeta = 1$, (f) Hausdorff moment property of Lee–Yang cumulants. Proves a surgery obstruction showing that local gradient/log inequalities on $\\operatorname{Re} s \\ge 1$ cannot prove RH.",
-    "validation": "Potential theory in a strip, indefinite reproducing kernels, heat flow deformations, Weil's explicit formula, Li's coefficients, and double-precision numerical calculations.",
-    "parameters": "Height threshold $3 \\cdot 10^{12}$; Lehmer pairs near $7005.08$ and $17143.8$; de Bruijn–Newman constant bound $\\Lambda \\le 0.2$; Li coefficients positive for $n \\le 10^{12}$; surgery parameters $b = a = 0.018849$",
-    "source": "[3]",
-    "figures": [
-      {
-        "title": "Surgery Obstruction on Re s ≥ 1",
-        "file": "papers/09_The_Remaining_Step/fig1_surgery.png"
-      }
-    ]
-  },
-  {
-    "paperTitle": "The Remaining Step: Six Equivalent Forms of the Riemann Hypothesis and the Surgery Obstruction",
-    "domain": "Analytic Number Theory / Structural Comparison of L-functions",
-    "system": "Structural and numerical separation between Riemann zeta function $\\zeta(s)$ and non-Euler product comparison functions: Epstein zeta function $Z_\\epsilon(s)$ and Davenport–Heilbronn function $f(s)$",
-    "equations": "Demonstrates that $Z_\\epsilon$ and $f$ share structural flow, operator, and heat-flow properties with $\\zeta$, but differ in having zeros off the critical line, negative Li coefficients $(\\lambda_{\\epsilon,1130} = -414.9)$, de Bruijn–Newman constant $\\Lambda_\\epsilon \\in [0.7472, 5.12]$, and negative Weil forms on windows $L \\ge 1.587$",
-    "validation": "High-precision adaptive Gauss–Kronrod quadrature, discrete Cauchy integrals via FFT, Newton's method for zero-finding, and exact sifting up to 10^10.",
-    "parameters": "Epstein zero $s_0 = 1.159587 + 9.452251\\,i$; Spira zero of $f$ at $0.808517 + 85.699348\\,i$; first off-line pair landing time $T_c = 0.7472307$; exact sieve bound $x = 10^{10}$ giving $M(10^{10}) = -33722$ and $L(10^{10}) = -116026$",
-    "source": "[3]",
-    "figures": [
-      {
-        "title": "Comparison with Epstein & Davenport-Heilbronn",
-        "file": "papers/09_The_Remaining_Step/fig2_comparison.png"
-      }
-    ]
-  },
-  {
-    "paperTitle": "The Square-Root Horizon: Squares, Reversal and Prime Clocks in the Distribution of the Primes and the Zeros of the Riemann Zeta Function",
-    "domain": "Analytic Number Theory / Analytic Function Theory",
-    "system": "Residue classes of divisor $r$ in the rebuild law $S_c^{(m)}(x)$, prime squares, reversal of the Euler product, and prime clock alignments relative to the zeros of the Riemann zeta function",
-    "equations": "Split mod 3: $(1, a(x), -a(x))$ for $x \\ge 3$ with $a(x) = \\frac{1}{2} G_{-3}(x)$; Split mod 4: $(1, b(x), 0, -b(x))$; Reversal identity: $\\sum_{n \\le x} L(x/n) = \\lfloor \\sqrt{x} \\rfloor$; Reversed staircase identity: $-\\sum_{k \\ge 1} \\lambda(k)\\{x/k\\} = \\lfloor \\sqrt{x} \\rfloor$; Squares series variance: $\\sum_p p^{-2\\sigma}$",
-    "validation": "Exact sieve to 10^10 in integer and Eisenstein-integer arithmetic, high-precision numerical Integration of Hilbert-space inner products, multi-precision evaluation of zeros and Dirichlet L-functions using mpmath/Euler-Maclaurin formulas",
-    "parameters": "$x = 10^{10}$, $M(10^{10}) = -33722$, $G_{-3}(10^{10}) = -25880$, $G_{-4}(10^{10}) = -66506$, $G_9(10^{10}) = 6679 + 32060\\,\\omega$, fitted square weight $= 0.4994$, mean lean $= -1.364$, $C_{\\text{rev}} = 0.07502$, $C_{\\text{fwd}} = 0.04619$",
-    "source": "[4]",
-    "figures": [
-      {
-        "title": "Prime Clocks & Triad Residue Splits",
-        "file": "papers/11_The_Square_Root_Horizon/fig6_prime_clocks.png"
-      },
-      {
-        "title": "Reversed Staircases & Prime Squares",
-        "file": "papers/11_The_Square_Root_Horizon/fig5_staircases.png"
-      }
-    ]
-  },
-  {
-    "paperTitle": "Which Member Carries: Two-State Pairs from Atoms to Gas Sensors, and Döbereiner’s Triads as Balanced Pairs",
-    "domain": "Atomic Physics / Gas Phase Mass Action",
-    "system": "Valence electron sharing between isolated gas-phase $\\mathrm{Na}$ and $\\mathrm{K}$ cores ($\\mathrm{Na}^+\\mathrm{K}$ vs $\\mathrm{Na}+\\mathrm{K}^+$ configurations)",
-    "equations": "Potassium carries the charge at all temperatures due to lower ionization energy. Minority configuration occupancy: $p = \\frac{1}{1 + e^\\varepsilon}$ with $\\varepsilon = \\Delta E / (k_B T)$; $\\Delta E = 0.7984132\\text{ eV}$. Equilibrium ratio in gas mixture: $\\frac{x}{1 - x} = e^{-\\Delta E / (2 k_B T)}$",
-    "validation": "Exact theoretical calculation evaluated on fundamental ionization energy data",
-    "parameters": "$\\operatorname{IE}(\\text{Na I}) = 5.13907696\\text{ eV}$, $\\operatorname{IE}(\\text{K I}) = 4.34066373\\text{ eV}$, $\\Delta E = 0.7984132(3)\\text{ eV}$, $k_B = 8.617333262 \\times 10^{-5}\\text{ eV/K}$",
-    "source": "[5]",
-    "figures": [
-      {
-        "title": "Two-State Valence Ionization Pair (Na-K)",
-        "file": "papers/04_Chemistry_Which_Member_Carries/fig5_pairs.png"
-      }
-    ]
-  },
-  {
-    "paperTitle": "Which Member Carries: Two-State Pairs from Atoms to Gas Sensors, and Döbereiner’s Triads as Balanced Pairs",
-    "domain": "Nuclear Physics / Radioactive Decay",
-    "system": "Branching ratio and net nuclear charge change per decay in ${}^{40}\\mathrm{K}$ ($\\beta^-$ decay vs electron capture/$\\beta^+$)",
-    "equations": "Average charge change per decay: $\\langle \\Delta Z \\rangle = \\tanh(\\varepsilon/2) = 2p_{\\beta^-} - 1$. Found $\\langle \\Delta Z \\rangle = +0.7856(22)$ for 2017 ENSDF and $+0.7918(10)$ for 2023 KDK branching ratios (2.6$\\sigma$ difference).",
-    "validation": "Evaluation of nuclear branching ratios and decay constants on experimental evaluations",
-    "parameters": "ENSDF 2017: $p_{\\beta^-} = 89.28(11)\\%$, $p_{\\text{EC}+\\beta^+} = 10.72(11)\\%$; KDK 2023: $p_{\\beta^-} = 89.59(5)\\%$, $p_{\\text{EC}+\\beta^+} = 10.41\\%$",
-    "source": "[5]",
-    "figures": [
-      {
-        "title": "Two-State Pairs & Ionization Energies",
-        "file": "papers/04_Chemistry_Which_Member_Carries/fig5_pairs.png"
-      }
-    ]
-  },
-  {
-    "paperTitle": "Which Member Carries: Two-State Pairs from Atoms to Gas Sensors, and Döbereiner’s Triads as Balanced Pairs",
-    "domain": "Atomic Physics / Thermal Population",
-    "system": "Thermal population balance of the fine-structure doublet of neutral Aluminium (${}^2\\mathrm{P}^\\circ_{1/2}$ vs ${}^2\\mathrm{P}^\\circ_{3/2}$)",
-    "equations": "Upper level holds the majority above balance temperature $T_{1/2} = \\frac{h c \\tilde{\\nu}}{k_B \\ln(g_u / g_l)} = 232.61\\text{ K}$; $p_u(T) = \\frac{2e^{-\\Theta/T}}{1 + 2e^{-\\Theta/T}}$ where $\\Theta = 161.231\\text{ K}$.",
-    "validation": "Analytical solution of two-state equilibrium on NIST ASD spectroscopy data",
-    "parameters": "Splitting $\\tilde{\\nu} = 112.061\\text{ cm}^{-1}$, $g_l = 2$, $g_u = 4$, $hc/k_B = 1.438776877\\text{ cm}\\cdot\\text{K}$, $\\Theta = 161.231\\text{ K}$",
-    "source": "[5]",
-    "figures": [
-      {
-        "title": "Two-State Pairs & Ionization Energies",
-        "file": "papers/04_Chemistry_Which_Member_Carries/fig5_pairs.png"
-      }
-    ]
-  },
-  {
-    "paperTitle": "Which Member Carries: Two-State Pairs from Atoms to Gas Sensors, and Döbereiner’s Triads as Balanced Pairs",
-    "domain": "Statistics / Applied Data Analysis",
-    "system": "Effect of joint absent values / shared coding on bivariate correlations",
-    "equations": "Exact coded correlation equation: $r_{\\text{coded}} = \\frac{r + f d_x d_y}{\\sqrt{(1 + f d_x^2)(1 + f d_y^2)}}$. Sign flips when $\\sqrt{d_x d_y}$ crosses $d^* = \\sqrt{-r / f}$. Bound: $|r_{\\text{coded}}| \\le \\frac{|r + f d_x d_y|}{1 + f |d_x d_y|}$.",
-    "validation": "Direct numerical validation using UCI Air Quality dataset hourly sensor channels (PT08.S1 and PT08.S3)",
-    "parameters": "$n = 9357$, $n_{11} = 8991$, $f = 366/9357 = 0.0391151$, $r = -0.771918$; code $-200 \\implies r_{\\text{coded}} = +0.0869312$ and code $0 \\implies r_{\\text{coded}} = -0.0756296$",
-    "source": "[5]",
-    "figures": [
-      {
-        "title": "Two-State Pairs & Ionization Energies",
-        "file": "papers/04_Chemistry_Which_Member_Carries/fig5_pairs.png"
-      }
-    ]
-  },
-  {
-    "paperTitle": "Which Member Carries: Two-State Pairs from Atoms to Gas Sensors, and Döbereiner’s Triads as Balanced Pairs",
-    "domain": "Chemical Sensing / Surface Chemistry",
-    "system": "Steady-state surface occupancy of metal-oxide gas sensors under mass action",
-    "equations": "Surface site occupancy follows logistic law $\\theta = \\frac{1}{1 + e^\\varepsilon}$, where $\\varepsilon = \\ln(\\Phi_+/\\Phi_-)$. Sensor response: $S = S_{\\text{lo}} + \\frac{S_{\\text{hi}} - S_{\\text{lo}}}{1 + (C_{1/2} / C)^\\beta}$. Half-points form a sensor ladder on CO axis: $S_3 (1.68) < S_5 (4.61) < S_2 (5.40) < S_1 (7.49)\\text{ mg/m}^3$.",
-    "validation": "Nonlinear least-squares fitting on UCI Air Quality record with day-block bootstrap (1000 replicates) for 95% confidence intervals; model comparison via ΔAIC against offset power laws",
-    "parameters": "7344 pairwise-present hours on CO axis; fitted slopes $\\beta$ range $1.18$ to $1.45$; $\\Delta\\text{AIC} = 11.7$ to $209.0$ preferring two-state law over power law",
-    "source": "[5]",
-    "figures": [
-      {
-        "title": "Metal-Oxide Gas Sensor Ladder on CO",
-        "file": "papers/04_Chemistry_Which_Member_Carries/fig_sensor_ladder.png"
-      }
-    ]
-  },
-  {
-    "paperTitle": "Which Member Carries: Two-State Pairs from Atoms to Gas Sensors, and Döbereiner’s Triads as Balanced Pairs",
-    "domain": "Atmospheric Science / Planetary Science",
-    "system": "Vapour phase balance of $\\mathrm{NH_3}$ and $\\mathrm{H_2S}$ above the $\\mathrm{NH_4SH}$ ice deck of giant planets",
-    "equations": "Conserved difference $\\Delta = x_N - x_S = 2\\chi\\sinh(\\varepsilon/2)$, with $x_N x_S = K(T)/P^2$ and $\\chi = \\sqrt{K}/P$. $\\mathrm{NH}_3$ vapour fraction: $\\phi_N = \\frac{1}{1 + e^{-\\varepsilon}}$. Deep N/S ratio determines surviving gas: $\\operatorname{sign}(N - S)$.",
-    "validation": "Thermodynamic mass-action equilibrium derivation compared against observed planetary atmosphere compositions",
-    "parameters": "Deep N/S ratios: Jupiter ($4.73$), Saturn ($3.16$), Uranus ($0.195$), Neptune ($0.170$); zero threshold at $\\mathrm{N/S} = 1$",
-    "source": "[5]",
-    "figures": [
-      {
-        "title": "Two-State Pairs & Ionization Energies",
-        "file": "papers/04_Chemistry_Which_Member_Carries/fig5_pairs.png"
-      }
-    ]
-  },
-  {
-    "paperTitle": "Which Member Carries: Two-State Pairs from Atoms to Gas Sensors, and Döbereiner’s Triads as Balanced Pairs",
-    "domain": "Inorganic Chemistry / Periodic Table Theory",
-    "system": "Period capacity and mathematical exactness of vertical Döbereiner triads",
-    "equations": "Period-pair law: $L(p) = \\kappa(p + 1) = 2 \\lceil(p + 1)/2\\rceil^2$. Vertical triad $Z_2 = \\frac{1}{2}(Z_1 + Z_3)$ is exact iff the two spanned periods have equal length. Exactly 27 of 54 vertical triads are exact.",
-    "validation": "Exhaustive combinatorial enumeration based on Madelung (n+ℓ, n) subshell filling order up to Z = 118",
-    "parameters": "Period lengths $L(p) = [2, 8, 8, 18, 18, 32, 32]$ for periods $p = 1..7$; triad gap steps $s \\in \\{8, 18, 32\\}$",
-    "source": "[5]",
-    "figures": [
-      {
-        "title": "Madelung Order & Vertical Triads",
-        "file": "papers/04_Chemistry_Which_Member_Carries/fig_chem2.png"
-      }
-    ]
-  },
-  {
-    "paperTitle": "The Reversible Half and the Third Body: Pairs and Triads in Measurement Records and the Three-Body Problem",
-    "domain": "Quantum Information / Stochastic Processes",
-    "system": "Reversible half of sequential measurement records and time reversal of Markov chains",
-    "equations": "$0 \\le h(S) - h(C) \\le \\frac{1}{4}\\operatorname{EP}$; $h(S) - h(C) = \\sum_j \\pi_j \\operatorname{JSD}(C_{\\cdot j}, \\tilde{C}_{\\cdot j})$; $\\operatorname{EP} = D(J \\| J^{\\text{T}}) \\ge 0$",
-    "validation": "Mathematical proof using convexity, Jensen-Shannon and Jeffreys divergence inequalities",
-    "parameters": "Column-stochastic matrix $C$, stationary law $\\pi$, pair law $J_{ij} = \\pi_j C_{ij}$",
-    "source": "[6]",
-    "figures": [
-      {
-        "title": "Arrow of Time in Measurement Records",
-        "file": "papers/02_Physics_The_Reversible_Half_and_the_Third_Body/fig3_arrow.png"
-      }
-    ]
-  },
-  {
-    "paperTitle": "The Reversible Half and the Third Body: Pairs and Triads in Measurement Records and the Three-Body Problem",
-    "domain": "Quantum Information",
-    "system": "Alternating sharp measurement of a singlet state with $n \\ge 3$ settings",
-    "equations": "$D_L = \\frac{c}{2}(1 - d^{L-2}) \\log_2\\frac{1+c}{1-c}\\text{ bits}$; Limiting irreversibility: $c \\operatorname{artanh}(c)\\text{ nats}$",
-    "validation": "Exact solution of record law, projector identities, and summation over sequences",
-    "parameters": "$n \\ge 3$, $\\theta = \\pi/n$, $c = \\cos(\\pi/n)$, $d = \\cos(2\\pi/n)$, record length $L$",
-    "source": "[6]",
-    "figures": [
-      {
-        "title": "Arrow of Time in Measurement Records",
-        "file": "papers/02_Physics_The_Reversible_Half_and_the_Third_Body/fig3_arrow.png"
-      }
-    ]
-  },
-  {
-    "paperTitle": "The Reversible Half and the Third Body: Pairs and Triads in Measurement Records and the Three-Body Problem",
-    "domain": "Quantum Information / Open Quantum Systems",
-    "system": "Processed four-outcome instrument reconstructed from tomography",
-    "equations": "$\\operatorname{EP} = 0.00686044\\text{ bits/use}$; $h(S) - h(C) = 0.00171268\\text{ bits}$ (99.86% of $\\operatorname{EP}/4$); $\\sigma^2 = 0.46247828\\text{ bits}^2/\\text{use}$",
-    "validation": "Numerical analysis of 4x4 transition matrix C, spectral decomposition, Markov central limit theorem",
-    "parameters": "$4\\times 4$ stochastic matrix $C$, $\\pi = (0.24328, 0.24564, 0.24991, 0.26117)$, spectrum $= \\{1, 0.35301, 0.27499, 0.19042\\}$",
-    "source": "[6]",
-    "figures": [
-      {
-        "title": "Arrow of Time in Measurement Records",
-        "file": "papers/02_Physics_The_Reversible_Half_and_the_Third_Body/fig3_arrow.png"
-      }
-    ]
-  },
-  {
-    "paperTitle": "The Reversible Half and the Third Body: Pairs and Triads in Measurement Records and the Three-Body Problem",
-    "domain": "Classical Electromagnetism / Electrical Engineering",
-    "system": "Rotating field of three-phase currents in three coils at $0, \\pm 120^\\circ$",
-    "equations": "$\\mathbf{B}(t) = \\boldsymbol{\\alpha}_+ e^{i\\omega t} + \\boldsymbol{\\alpha}_- e^{-i\\omega t}$; Signed swept area: $\\Phi = \\frac{9\\pi}{4}(|I_+|^2 - |I_-|^2)$; $\\operatorname{tr} K(\\tau) = (|I_+|^2 + |I_-|^2)\\cos\\omega\\tau$",
-    "validation": "Fortescue decomposition into symmetrical components and period-averaged lag-τ correlation matrix analysis",
-    "parameters": "Coil currents $I_a, I_b, I_c$; $I_\\pm = \\frac{1}{3}(I_a + u^{\\pm 1} I_b + u^{\\mp 1} I_c)$; $u = e^{2\\pi i/3}$",
-    "source": "[6]",
-    "figures": [
-      {
-        "title": "Three-Phase Symmetrical Involutions",
-        "file": "papers/02_Physics_The_Reversible_Half_and_the_Third_Body/fig3_arrow.png"
-      }
-    ]
-  },
-  {
-    "paperTitle": "The Reversible Half and the Third Body: Pairs and Triads in Measurement Records and the Three-Body Problem",
-    "domain": "Celestial Mechanics / N-Body Problem",
-    "system": "Planar Newtonian three-body problem with equal unit masses",
-    "equations": "Collinear midpoint instant implies triad $(-s, 0, s)$; Choreography $z_i(t) = q(t + (i-1)T/3)$ has $q_k = 0$ for $3 \\mid k$; $L = \\frac{6\\pi}{T}\\sum k|q_k|^2$; Lagrange triangle growth: $\\max\\operatorname{Re}\\lambda = \\omega/\\sqrt{2}$",
-    "validation": "Fourier series analysis on cube roots of unity, symmetry analysis of Newton's equations, and complex coordinate linearisation",
-    "parameters": "$G = 1$, unit masses $m_1 = m_2 = m_3 = 1$, period $T$, angular velocity $\\omega$",
-    "source": "[6]",
-    "figures": [
-      {
-        "title": "Figure-Eight Choreography & Triads",
-        "file": "papers/02_Physics_The_Reversible_Half_and_the_Third_Body/fig_phys2.png"
-      }
-    ]
-  },
-  {
-    "paperTitle": "The Reversible Half and the Third Body: Pairs and Triads in Measurement Records and the Three-Body Problem",
-    "domain": "Celestial Mechanics / Computational Physics",
-    "system": "Figure-eight orbit and Lagrange triangle stability under perturbation",
-    "equations": "Period $T = 6.325914009781$; Orbit closes to $9.6 \\times 10^{-13}$; Degenerates to triad 6 times/period; Lagrange triangle growth rate $0.702194$ vs exact $\\omega/\\sqrt{2} = 0.702331$",
-    "validation": "8th-order Dormand-Prince Runge-Kutta numerical integration (DOP853) with tolerances 10^-12 to 10^-13",
-    "parameters": "Initial positions $x_1 = -x_2 = (0.97000436, -0.24308753)$, $x_3 = 0$; Initial velocity $\\dot{x}_3 = (-0.93240737, -0.86473146)$; Kick size $10^{-6}$",
-    "source": "[6]",
-    "figures": [
-      {
-        "title": "Figure-Eight Choreography & Triads",
-        "file": "papers/02_Physics_The_Reversible_Half_and_the_Third_Body/fig_phys2.png"
-      }
-    ]
-  },
-  {
-    "paperTitle": "The Reversible Half and the Third Body: Pairs and Triads in Measurement Records and the Three-Body Problem",
-    "domain": "Celestial Mechanics / Orbital Dynamics",
-    "system": "Hierarchical four-body system (fourth mass $\\varepsilon$ orbiting the figure-eight triad at distance $D$)",
-    "equations": "$\\delta_{\\max} \\simeq 2 \\max|L_{\\text{in}}| \\simeq \\sqrt{3}\\langle\\Delta I\\rangle \\varepsilon D^{-3/2} = 2.8438\\,\\varepsilon D^{-3/2}$; Stable/shape kept to $10^{-2}$ for $\\varepsilon/D^3 \\le 10^{-4}$; Unstable inside $D_{\\text{MA}} \\simeq 4.06\\text{--}4.11$",
-    "validation": "Quadrupole tidal torque averaging over inner period, DOP853 numerical integration over 100T",
-    "parameters": "Mass $\\varepsilon \\in \\{10^{-4}, 10^{-3}, 10^{-2}, 10^{-1}\\}$, Distance $D \\in \\{3, 5, 10, 20\\}$, $\\langle\\Delta I\\rangle = 1.641896$",
-    "source": "[6]",
-    "figures": [
-      {
-        "title": "Hierarchical Four-Body Perturbation",
-        "file": "papers/02_Physics_The_Reversible_Half_and_the_Third_Body/fig_phys2.png"
-      }
-    ]
-  },
-  {
-    "paperTitle": "The Riemann Kernel as a Quantum State: Wigner Negativity, Decoherence at the Thirds and Lee–Yang Zeros",
-    "domain": "Quantum Physics / Mathematical Physics",
-    "system": "The Riemann kernel $\\Phi$ and Riemann Hypothesis (RH) formulated as a pure quantum state, its Wigner negativity, and quantum decoherence",
-    "equations": "RH is equivalent to non-detection by the symbol-positive observable family $\\hat{O}_{x,y}$; $J(x,y) = 2\\partial_y|\\Xi(x+iy)|^2 = 2\\pi\\|\\Phi\\|^2 \\langle\\varphi|\\hat{O}_{x,y}|\\varphi\\rangle$; Coherence of probe qubit: $L(t) = \\Xi(\\lambda t)/\\Xi(0)$; Negativity confined via $2\\pi e^{2|a|} < \\max(\\sqrt{2k^2 + 1/2}, 20)$; Heat flow obeys $\\partial_T J_T = \\frac{1}{8}(\\partial_y^2 - \\partial_x^2)J_T$",
-    "validation": "Mathematical proofs (Hadamard factorization, Riccati bounds, Lee-Yang circle theorem), trapezoidal quadrature rules, matrix-exponential evolution on C^2 x C^3N, Lanczos/Golub-Welsch algorithms, and high-precision IEEE double-precision arithmetic.",
-    "parameters": "Wigner negativity mass: $4.844 \\times 10^{-5}$; deepest negativity at $k = 12.022$ ($W_\\varphi = -6.60 \\times 10^{-5}$); $\\|\\Phi\\|^2 = 1.2790072478$; de Bruijn-Newman bounds $0 \\le \\Lambda \\le 0.2$; zero verification height $X_0 = 3 \\cdot 10^{12}$; spin-1/2 Ising coupling $K = \\frac{1}{2}\\ln 2$",
-    "source": "[8]",
-    "figures": [
-      {
-        "title": "Wigner Negativity Mass Distribution",
-        "file": "papers/03_Quantum_The_Riemann_Kernel_as_a_Quantum_State/fig_negativity.png"
-      }
-    ]
-  },
-  {
-    "paperTitle": "The Balanced Pair in Excitable Tissue: What a Membrane Reading Determines, and the Balanced Cortex",
-    "domain": "Neuroscience / Computational Neuroscience",
-    "system": "Balanced network of excitatory and inhibitory binary neurons",
-    "equations": "$\\mu = \\sqrt{K}A(\\nu - \\nu_{\\text{bal}})$, where residual net input and distance from balance solution are one object; network inputs cancel to order one while rates converge to balance as $1/\\sqrt{K}$",
-    "validation": "Direct network simulation (2×10^4 binary neurons with K=100 to 1600) and Newton-type root finding for mean-field rates",
-    "parameters": "$N_E = N_I = 10^4, J_E = 2, J_I = 1.8, b_E = 1, b_I = 0.8, \\nu_0 = 0.1, \\theta_E = 1, \\theta_I = 0.7, K = 100 \\text{ to } 1600$",
-    "source": "[10]",
-    "figures": [
-      {
-        "title": "Balanced E-I Cortical Network Rates",
-        "file": "papers/05_Neuroscience_The_Balanced_Pair_in_Excitable_Tissue/fig_cortex.png"
-      }
-    ]
-  },
-  {
-    "paperTitle": "The Balanced Pair in Excitable Tissue: What a Membrane Reading Determines, and the Balanced Cortex",
-    "domain": "Neuroscience / Biophysics",
-    "system": "Two-state voltage-gated ion channels (Hodgkin–Huxley gates $m, h, n$)",
-    "equations": "$x_\\infty = \\frac{1}{1 + e^\\varepsilon}$; at half-point $V_{1/2}$: $x_\\infty = 1/2$, max entropy $= 1\\text{ bit}$, max variance $= 1/4$; $n^4$ reaches half-max $34.5\\text{ mV}$ above gate half-point",
-    "validation": "Mathematical proof using two-state law and bracketing root search (<10^-6 mV precision)",
-    "parameters": "Hodgkin–Huxley gates half-points: $V_{1/2}(m) = -40.02\\text{ mV}, V_{1/2}(h) = -62.31\\text{ mV}, V_{1/2}(n) = -53.41\\text{ mV}$; slopes $k$: $+9.47, -6.95, +16.35\\text{ mV}$",
-    "source": "[10]",
-    "figures": [
-      {
-        "title": "Hodgkin-Huxley Membrane Kinetics",
-        "file": "papers/05_Neuroscience_The_Balanced_Pair_in_Excitable_Tissue/fig_membrane.png"
-      }
-    ]
-  },
-  {
-    "paperTitle": "The Balanced Pair in Excitable Tissue: What a Membrane Reading Determines, and the Balanced Cortex",
-    "domain": "Neuroscience / Ion Channel Biophysics",
-    "system": "Estimation of ion channel number ($N$) and unitary current ($i$) from current fluctuations",
-    "equations": "Mean $I = N i p$ is invariant under scaling; variance $\\sigma^2 = \\sigma_b^2 + i I - I^2/N$; precision of channel count improves steadily with largest open probability $p_{\\max}$",
-    "validation": "Ordinary least-squares fitting of quadratic mean-variance parabola over 400 simulated recordings per design",
-    "parameters": "$N = 2000\\text{ channels}, i = 1\\text{ pA}, \\sigma_b = 3\\text{ pA}$, gate $V_{1/2} = -40\\text{ mV}, k = 9.47\\text{ mV}, 9\\text{ voltages}, 200\\text{ sweeps/voltage}$",
-    "source": "[10]",
-    "figures": [
-      {
-        "title": "Hodgkin-Huxley Membrane Kinetics",
-        "file": "papers/05_Neuroscience_The_Balanced_Pair_in_Excitable_Tissue/fig_membrane.png"
-      }
-    ]
-  },
-  {
-    "paperTitle": "The Balanced Pair in Excitable Tissue: What a Membrane Reading Determines, and the Balanced Cortex",
-    "domain": "Neuroscience / Pharmacology",
-    "system": "Voltage-dependent channel block (Magnesium block of NMDA receptors)",
-    "equations": "$B(V) = \\frac{1}{1 + e^{-(V - V_{1/2})/k_{\\text{bl}}}}$ is a Boltzmann gate with $k_{\\text{bl}} = \\frac{RT}{z_{\\text{bl}}\\delta F}$ and $V_{1/2} = k_{\\text{bl}}\\ln\\frac{[\\text{B}]}{K_d(0)}$; doubling concentration moves $V_{1/2}$ by $k_{\\text{bl}}\\ln(2) = 11.18\\text{ mV}$",
-    "validation": "Theoretical derivation based on Woodhull model and empirical Jahr & Stevens parameters",
-    "parameters": "$K_d(0) = 3.57\\text{ mM}, k_{\\text{bl}} = 16.13\\text{ mV}, z_{\\text{bl}}\\cdot\\delta = 1.58\\; (\\delta \\approx 0.8), [\\text{Mg}^{2+}] = 0.5, 1.0, 2.0\\text{ mM}, T = 295\\text{ K}$",
-    "source": "[10]",
-    "figures": [
-      {
-        "title": "Hodgkin-Huxley Membrane Kinetics",
-        "file": "papers/05_Neuroscience_The_Balanced_Pair_in_Excitable_Tissue/fig_membrane.png"
-      }
-    ]
-  },
-  {
-    "paperTitle": "The Balanced Pair in Excitable Tissue: What a Membrane Reading Determines, and the Balanced Cortex",
-    "domain": "Neuroscience / Neurophysiology",
-    "system": "Action potential / spike threshold initiation with exponential sodium activation",
-    "equations": "Derived closed-form spike threshold: $\\theta = E_{\\text{Na}} - k_a\\left[1 - W_{-1}\\left(-\\frac{g_L}{g_{\\text{Na}}}e^{1 - (E_{\\text{Na}} - V_a)/k_a}\\right)\\right]$; reduces error of simplest threshold equation by factor of $1.3$ to $33$",
-    "validation": "Fixed-point solution via Lambert W function compared to exact numerical root search of Φ'(V) = 0",
-    "parameters": "$V_a = -30\\text{ mV}, k_a = 6\\text{ mV}, E_{\\text{Na}} = 55\\text{ mV}, E_L = -70\\text{ mV}, g_{\\text{Na}}/g_L = 2\\text{ to } 14$",
-    "source": "[10]",
-    "figures": [
-      {
-        "title": "Balanced E-I Cortical Network Rates",
-        "file": "papers/05_Neuroscience_The_Balanced_Pair_in_Excitable_Tissue/fig_cortex.png"
-      }
-    ]
-  },
-  {
-    "paperTitle": "The Balanced Pair in Excitable Tissue: What a Membrane Reading Determines, and the Balanced Cortex",
-    "domain": "Neuroscience / Neurophysiology",
-    "system": "Action potential generation, ionic charge integrals, and $m^q h$ sodium activation triad",
-    "equations": "$Q_{\\text{Na}} = Q_{\\text{K}} + Q_L - Q_{\\text{stim}}$ over equal voltage interval; $m^3h$ spike carries $\\rho = 13.36$ times minimum sodium charge; $q = 3$ is the unique exponent in $\\{1,2,3,4\\}$ yielding both stable rest and spike",
-    "validation": "Multistep adaptive numerical integration (relative tolerance 10^-9) and implicit Runge-Kutta (Radau) verification",
-    "parameters": "$C = 1\\,\\mu\\text{F/cm}^2, g_{\\text{Na}} = 120, g_{\\text{K}} = 36, g_L = 0.3\\text{ mS/cm}^2, E_{\\text{Na}} = 50, E_{\\text{K}} = -77, E_L = -54.387\\text{ mV}, I_{\\text{stim}} = 10\\,\\mu\\text{A/cm}^2\\text{ for 1 ms}$",
-    "source": "[10]",
-    "figures": [
-      {
-        "title": "m³h Sodium Action Potential Charges",
-        "file": "papers/05_Neuroscience_The_Balanced_Pair_in_Excitable_Tissue/fig_membrane.png"
-      }
-    ]
-  },
-  {
-    "paperTitle": "The Balanced Pair in Excitable Tissue: What a Membrane Reading Determines, and the Balanced Cortex",
-    "domain": "Neuroscience / Cellular Energetics",
-    "system": "Sodium–potassium pump ($\\mathrm{Na^+/K^+}$-ATPase) stoichiometry and energetic stall potential",
-    "equations": "Work per cycle: $W_{\\text{cyc}} = e(3E_{\\text{Na}} - 2E_{\\text{K}} - V_m)$; pump moves 1 net elementary charge outwards per cycle; stall potential: $V_m = 3E_{\\text{Na}} - 2E_{\\text{K}} - |\\Delta G_{\\text{ATP}}|/e = -205\\text{ mV}$",
-    "validation": "Thermodynamic energy balance calculation per ATP hydrolysis cycle",
-    "parameters": "Stoichiometry $3\\,\\mathrm{Na^+} : 2\\,\\mathrm{K^+}$, $E_{\\text{Na}} = +55\\text{ mV}$, $E_{\\text{K}} = -90\\text{ mV}$, $V_m = -65\\text{ mV}$, $T = 310\\text{ K}$, $|\\Delta G_{\\text{ATP}}| \\approx 0.55\\text{ eV } (53\\text{ kJ/mol})$",
-    "source": "[10]",
-    "figures": [
-      {
-        "title": "Hodgkin-Huxley Membrane Kinetics",
-        "file": "papers/05_Neuroscience_The_Balanced_Pair_in_Excitable_Tissue/fig_membrane.png"
-      }
-    ]
-  },
-  {
-    "paperTitle": "The Balance of the Count: One Energy in the Prime Counts and in the Sawtooth, and the Riemann Hypothesis in Real Variables",
-    "domain": "Analytic Number Theory",
-    "system": "Riemann Hypothesis, Mertens function $M(x)$, prime-counting error $(\\psi(x) - x)$, and fractional part sawtooth functions",
-    "equations": "1) Rebuild law: $\\sum_{n \\le x} M(x/n) = 1$; 2) Sawtooth identity: $-\\sum_{k \\ge 1} \\mu(k)\\{1/(kt)\\} = \\chi_{(0,1]}(t)$; 3) Shortfall integral: $\\int_{1/N}^{1} |\\chi_{(0,1]}(t) + \\sum_{k \\le N} \\mu(k)\\varsigma_k(t)|^2 dt = (N-1)m(N)^2$; 4) Energy equivalence of RH: $E(X) = \\int_1^X \\left(\\frac{\\psi(x)-x}{x}\\right)^2 dx \\ll_\\varepsilon X^\\varepsilon$; 5) Mean energy identity: $\\sum_\\rho \\frac{1}{\\rho(1-\\rho)} = 2 + \\gamma - \\log(4\\pi) = 0.0461914\\dots$",
-    "validation": "Exact segmented sieve up to x = 10^10 (recording 675,247 checkpoints), exact evaluations of zero locations up to γ < 3000, and exact piecewise integration of fractional-part Gram integrals for N ≤ 60.",
-    "parameters": "Range $x$ up to $10^{10}$ ($u = \\log_2 x$ up to $33.22$); $L = 10^9$ for Möbius table; $2469$ zero pairs with $\\gamma < 3000$; pitch parameters $\\gamma_k \\log(2)/(2\\pi)$; $N$ up to $60$ for sawtooth distance $d_N$",
-    "source": "[11]",
-    "figures": [
-      {
-        "title": "Prime Count Oscillations & Energy Integral",
-        "file": "papers/10_The_Balance_of_the_Count/fig2_energy.png"
-      },
-      {
-        "title": "Wave Structure of Prime Error",
-        "file": "papers/10_The_Balance_of_the_Count/fig1_waves.png"
-      }
-    ]
-  },
-  {
-    "paperTitle": "Three Is Enough: Radix Economy, Balanced-Ternary Arithmetic and Ternary-Weight Networks",
-    "domain": "Computer Science / Applied Mathematics / Neural Networks",
-    "system": "Radix economy, completeness of balanced-ternary arithmetic, and optimal ternary-weight quantization for neural networks",
-    "equations": "Base 3 is the cheapest radix for $N \\ge 2^{16}$ and unique cheapest for $N \\ge 2^{27}$; $E(b) = \\frac{b}{\\ln b}$; register generating function: $Z_d(z) = \\prod_{i=0}^{d-1} (z^{-3^i} + 1 + z^{3^i}) = z^{-M_d}\\frac{z^{3^d} - 1}{z - 1}$; stationary threshold condition: $h'(\\delta) = f(\\delta)\\alpha(\\delta)(\\alpha(\\delta) - 2\\delta) \\implies \\delta = \\alpha^*/2$",
-    "validation": "Analytic bounds, exact comparison of step functions up to N = 2.66 x 10^8, exhaustive enumeration for integers |n| <= 3^10, and empirical evaluation on the 1797 handwritten digits of the UCI optical-recognition test set using a 64-128-10 network",
-    "parameters": "$E(2)/E(3) = 1.0566$; $\\log_2(3) = 1.585\\text{ bits/weight}$; Gaussian optimal threshold $u^* = 0.612003\\sigma$, zero share $= 0.45946$, squared error $= 0.19017\\sigma^2$; uniform optimal threshold $\\delta^* = a/3$; Laplace optimal threshold $\\delta^* = \\beta$; test accuracy $= 97.44 \\pm 0.73\\%$",
-    "source": "[12]",
-    "figures": [
-      {
-        "title": "Radix Economy & Ternary Quantization",
-        "file": "papers/06_Algorithms_Three_Is_Enough/fig_algo.png"
-      }
-    ]
-  },
-  {
-    "paperTitle": "Nothing Binds a Twin but Exclusion: The Prime Clocks, the Exclusion Law, and the Recurrence of the Twin Pair",
-    "domain": "Number Theory / Analytic Number Theory",
-    "system": "Recurrence and distribution of twin prime pairs ($6k - 1, 6k + 1$), prime clocks modulo $p$, sieve theory limitations (parity barrier), and central $L$-function values of congruent-number curves",
-    "equations": "Exclusion Law fixing twin constant: $E = \\prod_{p \\ge 5} \\left(1 - \\frac{1}{(p-1)^2}\\right) = 0.88022$; Twin Law: $\\pi_2(x) \\sim \\frac{x}{6}\\left(\\frac{3}{\\log x}\\right)^2 E = \\frac{2C_2 x}{\\log^2 x}$; Parity barrier ceiling certified share $= 0.48837$; Central value: $L(E_n, 1)\\sqrt{n} = 4\\kappa_n m^2$",
-    "validation": "Mathematical proof, segmented sieve of Eratosthenes up to 10^10, enumeration of full turns, joint factor law over 5 * 10^7 pairs, and numerical integration of Buchstab delay equations.",
-    "parameters": "$E = 0.88022, C_2 = 0.66016, x$ up to $10^{10}, u^* = 3.565$, maximum certifiable share $= 0.48837\\; (u = 3.16), \\kappa_n = 0.163879$ (odd $n$) or $0.327757$ (even $n$)",
-    "source": "[7]",
-    "figures": [
-      {
-        "title": "The Exclusion Law & Twin Constant E",
-        "file": "papers/Nothing_Binds_a_Twin/fig3_exclusion.png"
-      },
-      {
-        "title": "Twin Law Recurrence Dynamics",
-        "file": "papers/Nothing_Binds_a_Twin/fig5_law.png"
-      }
-    ]
-  }
+ {
+  "paperTitle": "The Four Giants as Balanced Pairs: Throats, Hearts, the Gas Ladder and the Interstellar Visitors",
+  "domain": "Celestial Mechanics / Planetary Science / Astrobiology",
+  "system": "Hill throats and collinear Lagrange points ($L_1, L_2$) linear dynamics in the restricted three-body problem",
+  "equations": "Characteristic polynomial: $\\lambda^4 - 2\\lambda^2 - 27 = 0$; Relationships: $\\lambda_H^2 - \\omega_H^2 = 2$, $\\lambda_H^2 \\omega_H^2 = 27$; Throat asymmetry: $A = \\frac{h}{3}\\left(1 - \\frac{h^2}{27} + O(h^3)\\right)$, where $h = (\\mu/3)^{1/3}$",
+  "validation": "Exact asymptotic expansions and 50-digit numerical root finding",
+  "parameters": "Hill values: $\\lambda_H = 2.508287$, $\\omega_H = 2.071594$; mass ratio $\\mu = m/(M+m)$",
+  "source": "[1]",
+  "figures": [
+   {
+    "title": "Hill Throats & Lyapunov Orbits",
+    "file": "papers/07_Planetary_Science_The_Four_Giants_as_Balanced_Pairs/fig_throats.png"
+   }
+  ]
+ },
+ {
+  "paperTitle": "The Four Giants as Balanced Pairs: Throats, Hearts, the Gas Ladder and the Interstellar Visitors",
+  "domain": "Planetary Physics / Celestial Mechanics",
+  "system": "Phase space topology and mass transport flux through $L_1/L_2$ Hill throats",
+  "equations": "Topology $S^2 \\times I$; Orbital Action/Flux: $J = \\frac{2\\pi \\Delta E}{\\omega}$; Quantum transmission probability: $T(\\Delta E) = \\frac{1}{1 + e^{-2\\pi \\Delta E / (\\hbar \\lambda)}}$",
+  "validation": "Differential correction computation of Lyapunov periodic orbits around Jupiter's L1 point",
+  "parameters": "Lyapunov orbit amplitude $0.0018\\,r_H$; Action flux accuracy to $1.000002$",
+  "source": "[1]",
+  "figures": [
+   {
+    "title": "Hill Throats & Lyapunov Orbits",
+    "file": "papers/07_Planetary_Science_The_Four_Giants_as_Balanced_Pairs/fig_throats.png"
+   }
+  ]
+ },
+ {
+  "paperTitle": "The Four Giants as Balanced Pairs: Throats, Hearts, the Gas Ladder and the Interstellar Visitors",
+  "domain": "Planetary Structure / Hydrodynamics",
+  "system": "Rotational response, quadrupole moment ($J_2$), and interior mass concentration",
+  "equations": "Fluid Love number for $n=1$ polytrope: $k_2 = \\frac{15}{\\pi^2} - 1 = 0.519818$; Rotational ratio: $\\frac{J_2}{q_\\omega} = \\frac{1}{3}k_2 = 0.17327$; Density profile: $\\rho = \\rho_c \\frac{\\sin u}{u}$",
+  "validation": "First-order Clairaut perturbation theory on Lane-Emden profiles",
+  "parameters": "$q_\\omega = \\omega_{\\text{rot}}^2 R^3 / GM$; Measured $J_2/q_\\omega$: Jupiter ($0.16477$), Saturn ($0.10303$), Uranus ($0.11331$), Neptune ($0.13080$)",
+  "source": "[1]",
+  "figures": [
+   {
+    "title": "Jupiter Polar Vortex Dynamics",
+    "file": "papers/07_Planetary_Science_The_Four_Giants_as_Balanced_Pairs/fig_jup.png"
+   }
+  ]
+ },
+ {
+  "paperTitle": "The Four Giants as Balanced Pairs: Throats, Hearts, the Gas Ladder and the Interstellar Visitors",
+  "domain": "Planetary Seismology / Asteroseismology",
+  "system": "Acoustic p-mode frequency spacing (heartbeat) of giant gas planets",
+  "equations": "Acoustic spacing equation: $\\Delta \\nu = \\left[ 2 \\int_0^R \\frac{dr}{c} \\right]^{-1} = 1.6747\\, \\nu_{\\text{dyn}}$; Dynamical frequency: $\\nu_{\\text{dyn}} = \\frac{1}{2\\pi}\\sqrt{\\frac{GM}{R^3}}$",
+  "validation": "Numerical quadrature of sound speed profiles over n=1 polytropes against Jupiter ground-based seismic measurements",
+  "parameters": "Jupiter volumetric radius $R = 69911\\text{ km}$; Measured $\\Delta \\nu = 155.3 \\pm 2.2\\,\\mu\\text{Hz}$; Model predicted $\\Delta \\nu = 162.3\\,\\mu\\text{Hz}$ (4.5% error); Predicted Saturn $\\Delta \\nu = 112\\text{--}117\\,\\mu\\text{Hz}$",
+  "source": "[1]",
+  "figures": [
+   {
+    "title": "Acoustic p-mode Heartbeat",
+    "file": "papers/07_Planetary_Science_The_Four_Giants_as_Balanced_Pairs/fig_heart.png"
+   }
+  ]
+ },
+ {
+  "paperTitle": "The Four Giants as Balanced Pairs: Throats, Hearts, the Gas Ladder and the Interstellar Visitors",
+  "domain": "Atmospheric Dynamics / Fluid Mechanics",
+  "system": "Spectral stability of polygonal vortex rings surrounding a central polar vortex",
+  "equations": "Spectral stability intervals for central vortex strength $\\kappa$: $\\frac{N^2 - 8N + 8}{16} < \\kappa < \\frac{(N-1)^2}{4}$ (even $N$), $\\frac{(N-1)(N-7)}{16} < \\kappa < \\frac{(N-1)^2}{4}$ (odd $N$); Maximum central strength share: $\\frac{\\kappa}{\\kappa + N} = \\left(\\frac{N-1}{N+1}\\right)^2$",
+  "validation": "Eigenspectrum analysis of the analytic Jacobian matrix in the co-rotating reference frame validated against finite differences",
+  "parameters": "Ring counts $N=3$ to $12$; Jupiter North pole $N=8+1$ (share $1/9$); Jupiter South pole $N=5+1$ and $N=6+1$",
+  "source": "[1]",
+  "figures": [
+   {
+    "title": "Jupiter Polar Vortex Dynamics",
+    "file": "papers/07_Planetary_Science_The_Four_Giants_as_Balanced_Pairs/fig_jup.png"
+   }
+  ]
+ },
+ {
+  "paperTitle": "The Four Giants as Balanced Pairs: Throats, Hearts, the Gas Ladder and the Interstellar Visitors",
+  "domain": "Planetary Atmospheric Chemistry / Thermodynamics",
+  "system": "Ammonium hydrosulfide ($\\mathrm{NH_4SH}$) condensation titration and chemical survivor identity",
+  "equations": "Mass action condition: $x_{\\mathrm{NH_3}} x_{\\mathrm{H_2S}} = k^2 = \\frac{K(T)}{P_{\\text{atm}}^2}$; Parametrisation: $x_{\\mathrm{NH_3}} = k e^{\\varepsilon/2}, x_{\\mathrm{H_2S}} = k e^{-\\varepsilon/2}$; Conservation of difference: $\\Delta = N - S = 2k \\sinh(\\varepsilon/2)$; Survivor species sign: $\\operatorname{sign}(N - S)$",
+  "validation": "Integration of dry adiabats via 4th-order Runge-Kutta method in ln P, evaluated across 179 abundance variant scenarios",
+  "parameters": "Deep ratios $\\mathrm{N/S}$: Jupiter ($4.73$), Saturn ($3.16$), Uranus ($0.195$), Neptune ($0.170$); $\\mathrm{NH_4SH}$ equilibrium constant: $\\log_{10}(P_{\\mathrm{NH_3}} P_{\\mathrm{H_2S}}/\\text{atm}^2) = 14.82 - 4705/T$",
+  "source": "[1]",
+  "figures": [
+   {
+    "title": "Gas Ladder & NH4SH Titration",
+    "file": "papers/07_Planetary_Science_The_Four_Giants_as_Balanced_Pairs/fig_gas_ladder.png"
+   }
+  ]
+ },
+ {
+  "paperTitle": "The Four Giants as Balanced Pairs: Throats, Hearts, the Gas Ladder and the Interstellar Visitors",
+  "domain": "Orbital Mechanics / Secular Perturbation Theory",
+  "system": "Secular inclination precession modes and invariant invariable plane of the four giant planets",
+  "equations": "Laplace-Lagrange equations: $\\dot{\\mathbf{p}} = \\mathbf{B}\\mathbf{q}$, $\\dot{\\mathbf{q}} = -\\mathbf{B}\\mathbf{p}$; Matrix row sum identity: $\\sum_k B_{jk} = 0 \\implies \\det(\\mathbf{B}) = 0$",
+  "validation": "Numerical eigensystem calculation of the 4x4 Laplace-Lagrange matrix B using NSSDC masses and semimajor axes",
+  "parameters": "Eigenvalues: $-25.5183$, $-2.9276$, $-0.6698$, and $0.0000\\text{ arcsec/yr}$ (zero mode exact to $6 \\times 10^{-17}$)",
+  "source": "[1]",
+  "figures": [
+   {
+    "title": "Hill Throats & Lyapunov Orbits",
+    "file": "papers/07_Planetary_Science_The_Four_Giants_as_Balanced_Pairs/fig_throats.png"
+   }
+  ]
+ },
+ {
+  "paperTitle": "The Four Giants as Balanced Pairs: Throats, Hearts, the Gas Ladder and the Interstellar Visitors",
+  "domain": "Celestial Mechanics / Orbital Stability",
+  "system": "Equilateral triangular equilibrium point ($L_4/L_5$) linear stability and Krein signature spectrum",
+  "equations": "Gascheau-Routh criterion: $27 \\mu (1-\\mu) < 1 \\implies \\mu < \\mu_G = \\frac{1}{2}\\left(1 - \\sqrt{\\frac{23}{27}}\\right) \\approx 0.0385209$; $L_4$ characteristic polynomial: $\\lambda^4 + \\lambda^2 + \\frac{27}{4}\\mu(1-\\mu) = 0$",
+  "validation": "Eigenvalue computation and Krein signature determination across 2000 mass ratio values and random mass triples",
+  "parameters": "Critical mass ratio $\\mu_G = 0.0385209$; Collision frequency $\\omega = 1/\\sqrt{2}$",
+  "source": "[1]",
+  "figures": [
+   {
+    "title": "Hill Throats & Lyapunov Orbits",
+    "file": "papers/07_Planetary_Science_The_Four_Giants_as_Balanced_Pairs/fig_throats.png"
+   }
+  ]
+ },
+ {
+  "paperTitle": "The Four Giants as Balanced Pairs: Throats, Hearts, the Gas Ladder and the Interstellar Visitors",
+  "domain": "Astrophysical Spectroscopy / Radio Astronomy",
+  "system": "Hydroxyl ($\\mathrm{OH}$) ground-state hyperfine transition frequencies of interstellar object 3I/ATLAS",
+  "equations": "$\\mathrm{OH}$ quartet frequency sum rule: $\\nu_{1612.2309} + \\nu_{1720.5299} = \\nu_{1665.4018} + \\nu_{1667.3590} = 3332.7608\\text{ MHz}$; Common spectral centre: $\\nu_c = 1666.38040\\text{ MHz}$",
+  "validation": "Exact algebraic sum validation using MeerKAT radio telescope observed transition frequencies",
+  "parameters": "Main line offsets: $\\pm 0.97860\\text{ MHz}$; Satellite line offsets: $\\pm 54.14950\\text{ MHz}$",
+  "source": "[1]",
+  "figures": [
+   {
+    "title": "Hyperfine Radio Spectra",
+    "file": "papers/07_Planetary_Science_The_Four_Giants_as_Balanced_Pairs/fig_sounds.png"
+   }
+  ]
+ },
+ {
+  "paperTitle": "The Four Giants as Balanced Pairs: Throats, Hearts, the Gas Ladder and the Interstellar Visitors",
+  "domain": "Relativistic Astrophysics / Exoplanetary Physics",
+  "system": "Schwarzschild horizon, photon sphere, and ISCO radii of pulsar PSR B1257+12",
+  "equations": "Schwarzschild radii relations: $r_{\\text{horizon}} = \\frac{2GM}{c^2}$, $r_{\\text{photon}} = \\frac{3GM}{c^2}$, $r_{\\text{ISCO}} = \\frac{6GM}{c^2}$; Horizon ratio: $r_{\\text{horizon}} = \\frac{1}{3} r_{\\text{ISCO}} = \\frac{2}{3} r_{\\text{photon}}$",
+  "validation": "Exact analytical solution of geodesic motion in static Schwarzschild spacetime metrics",
+  "parameters": "Pulsar mass $M = 1.4\\,M_\\odot$; Length unit $GM/c^2 = 2.07\\text{ km}$; Radii values: $4.13\\text{ km}$ (horizon), $6.20\\text{ km}$ (photon sphere), $12.40\\text{ km}$ (ISCO)",
+  "source": "[1]",
+  "figures": [
+   {
+    "title": "Hill Throats & Lyapunov Orbits",
+    "file": "papers/07_Planetary_Science_The_Four_Giants_as_Balanced_Pairs/fig_throats.png"
+   }
+  ]
+ },
+ {
+  "paperTitle": "Pair Balance and the Riemann Zeros: The Signed Current, the Mirror and the Merge, and the Prime Two",
+  "domain": "Number Theory / Analytic Number Theory / Mathematical Physics",
+  "system": "Riemann hypothesis, nontrivial zeros of the Riemann zeta function, signed current $J$, and phase-space density (Wigner function $Q$) of the Riemann kernel $\\Phi$",
+  "equations": "$H(x, y) = \\frac{1}{8} \\int Q(p, x) \\cosh(yp)\\, dp$; $J(x, y) = \\frac{1}{4} \\int Q(p, x)\\, p \\sinh(yp)\\, dp$; $Q(p, x) = 8 e^{p/2} \\sum_{N \\ge 1} \\tau_x(N) \\mathcal{K}_x(2\\pi N e^p)$; $Q(p, x) > 0$ for $2\\pi e^{|p|} \\ge \\max(\\sqrt{2x^2 + 1/2}, 20)$. RH holds $\\iff J \\ge 0$ for $y > 0 \\iff \\int Q(p, x)\\, p^{2k}\\, dp \\ge 0 \\; (\\forall k \\ge 0)$",
+  "validation": "High-precision decimal floating-point arithmetic (40–200 digits), adaptive Gauss–Kronrod quadrature, Riccati comparison for Macdonald functions, sieve computations up to 10^8, and trapezoidal numerical integrations.",
+  "parameters": "$|x| \\ge 14.14$, $y > 0$; verification range for zeros up to height $3 \\cdot 10^{12}$; prime-2 lattice $1 + 2\\pi i / \\log 2$; precision up to 200 significant digits; verification of Liouville sum to $10^8$",
+  "source": "[2]",
+  "figures": [
+   {
+    "title": "Pair Balance & Current J",
+    "file": "papers/01_Mathematics_Pair_Balance_and_the_Riemann_Zeros/fig1_balance.png"
+   }
+  ]
+ },
+ {
+  "paperTitle": "Pair Balance and the Riemann Zeros: The Signed Current, the Mirror and the Merge, and the Prime Two",
+  "domain": "Analytic Number Theory / Mathematical Physics",
+  "system": "Epstein zeta function $Z_\\epsilon(s)$ of the binary quadratic form $2m^2 + 3n^2$ without an Euler product (the mirror without the merge)",
+  "equations": "$\\xi_\\epsilon(s) = s(s-1)(\\sqrt{6}/\\pi)^s \\Gamma(s) Z_\\epsilon(s)$; $Q_\\epsilon(p, x)$ expansion in $\\mathcal{K}_{2ix}$ Macdonald functions; $J_\\epsilon$ takes negative values in the upper half-plane near off-line zeros",
+  "validation": "Trapezoidal quadrature on kernel integrals, high-precision Newton iteration (50 digits) for zero finding.",
+  "parameters": "Off-line zero $s_0 = 1.15958745297694888 + 9.45225081186590043\\,i$; current sign change height $y = \\operatorname{Re} s_0 - 1/2 = 0.6596$",
+  "source": "[2]",
+  "figures": [
+   {
+    "title": "Mirror Symmetry in Zeros",
+    "file": "papers/01_Mathematics_Pair_Balance_and_the_Riemann_Zeros/fig2_mirror.png"
+   }
+  ]
+ },
+ {
+  "paperTitle": "Pair Balance and the Riemann Zeros: The Signed Current, the Mirror and the Merge, and the Prime Two",
+  "domain": "Probability Theory / Analytic Number Theory",
+  "system": "Merge of $\\nu$ copies of independent random variable $S_1$; moment function $M_\\nu(s) = \\mathbb{E}[(\\pi S_\\nu / 2)^{s/2}]$",
+  "equations": "$M_2(s) = 2\\xi(s)$ (the merged pair); $M_1(s) = s \\pi^{-s/2} \\Gamma(s/2) \\eta(s)$; $M_\\nu(1-s) = M_\\nu(s)$ holds for all $s \\iff \\nu = 2$",
+  "validation": "Adaptive quadrature on Mellin/Laplace integral transforms, trapezoidal integration of series expansions, double-precision and high-precision Newton-type zero tracking.",
+  "parameters": "Continuous variation of parameter $\\nu \\in (0, 4]$; movement of first zero from $1 + 2\\pi i / \\log 2$ (at $\\nu = 1$) to $1/2 + 14.134725\\,i$ (at $\\nu = 2$)",
+  "source": "[2]",
+  "figures": [
+   {
+    "title": "Merge Parameter ν Zero Path",
+    "file": "papers/01_Mathematics_Pair_Balance_and_the_Riemann_Zeros/fig3_merge.png"
+   }
+  ]
+ },
+ {
+  "paperTitle": "Pair Balance and the Riemann Zeros: The Signed Current, the Mirror and the Merge, and the Prime Two",
+  "domain": "Statistical Mechanics / Number Theory",
+  "system": "Lee–Yang zeros of uniform three-state spin systems and merged elementary spin pairs; Davenport–Heilbronn function",
+  "equations": "Merged pair $\\varsigma_1 \\oplus_\\kappa \\varsigma_2$ has Lee–Yang zeros on $|z| = 1$ for coupling $\\kappa \\ge 0$; uniform three-state spin zeros sit at exactly $1/3$ and $2/3$ of a turn; Davenport–Heilbronn function $f(s)$ has 4 mirrored pairs off the critical line below height 200",
+  "validation": "Companion matrix eigenvalue computation for spin-chain partition functions; argument principle and grid sign-change searches for Dirichlet series zeros.",
+  "parameters": "Coupling $\\kappa = \\frac{1}{2} \\ln 2$; spin chain lengths $n = 2, \\dots, 6$; height bound $T = 200$",
+  "source": "[2]",
+  "figures": [
+   {
+    "title": "Lee-Yang Zeros & Sign Structure",
+    "file": "papers/01_Mathematics_Pair_Balance_and_the_Riemann_Zeros/fig4_sign_structure.png"
+   }
+  ]
+ },
+ {
+  "paperTitle": "The Remaining Step: Six Equivalent Forms of the Riemann Hypothesis and the Surgery Obstruction",
+  "domain": "Analytic Number Theory / Mathematical Physics",
+  "system": "Riemann Hypothesis (RH), Riemann zeta function $\\zeta(s)$, even entire function $\\Xi(z)$, positivity of the current $J = 2\\partial_y|\\Xi(x + iy)|^2$, and surgery obstructions",
+  "equations": "Proves six equivalent forms of RH: (a) Jensen–Riesz defect vanishing, (b) Krein–Langer index $N_+ = 0$, (c) absence of multiple real zeros in heat-flow deformation $\\Xi_T$ for $0 < T \\le 0.2$, (d) Weil–Poisson form positivity $J = 4H W(h_{x,y})$, (e) Li radius $R_\\zeta = 1$, (f) Hausdorff moment property of Lee–Yang cumulants. Proves a surgery obstruction showing that local gradient/log inequalities on $\\operatorname{Re} s \\ge 1$ cannot prove RH.",
+  "validation": "Potential theory in a strip, indefinite reproducing kernels, heat flow deformations, Weil's explicit formula, Li's coefficients, and double-precision numerical calculations.",
+  "parameters": "Height threshold $3 \\cdot 10^{12}$; Lehmer pairs near $7005.08$ and $17143.8$; de Bruijn–Newman constant bound $\\Lambda \\le 0.2$; Li coefficients positive for $n \\le 10^{12}$; surgery parameters $b = a = 0.018849$",
+  "source": "[3]",
+  "figures": [
+   {
+    "title": "Surgery Obstruction on Re s ≥ 1",
+    "file": "papers/09_The_Remaining_Step/fig1_surgery.png"
+   }
+  ]
+ },
+ {
+  "paperTitle": "The Remaining Step: Six Equivalent Forms of the Riemann Hypothesis and the Surgery Obstruction",
+  "domain": "Analytic Number Theory / Structural Comparison of L-functions",
+  "system": "Structural and numerical separation between Riemann zeta function $\\zeta(s)$ and non-Euler product comparison functions: Epstein zeta function $Z_\\epsilon(s)$ and Davenport–Heilbronn function $f(s)$",
+  "equations": "Demonstrates that $Z_\\epsilon$ and $f$ share structural flow, operator, and heat-flow properties with $\\zeta$, but differ in having zeros off the critical line, negative Li coefficients $(\\lambda_{\\epsilon,1130} = -414.9)$, de Bruijn–Newman constant $\\Lambda_\\epsilon \\in [0.7472, 5.12]$, and negative Weil forms on windows $L \\ge 1.587$",
+  "validation": "High-precision adaptive Gauss–Kronrod quadrature, discrete Cauchy integrals via FFT, Newton's method for zero-finding, and exact sifting up to 10^10.",
+  "parameters": "Epstein zero $s_0 = 1.159587 + 9.452251\\,i$; Spira zero of $f$ at $0.808517 + 85.699348\\,i$; first off-line pair landing time $T_c = 0.7472307$; exact sieve bound $x = 10^{10}$ giving $M(10^{10}) = -33722$ and $L(10^{10}) = -116026$",
+  "source": "[3]",
+  "figures": [
+   {
+    "title": "Comparison with Epstein & Davenport-Heilbronn",
+    "file": "papers/09_The_Remaining_Step/fig2_comparison.png"
+   }
+  ]
+ },
+ {
+  "paperTitle": "The Square-Root Horizon: Squares, Reversal and Prime Clocks in the Distribution of the Primes and the Zeros of the Riemann Zeta Function",
+  "domain": "Analytic Number Theory / Analytic Function Theory",
+  "system": "Residue classes of divisor $r$ in the rebuild law $S_c^{(m)}(x)$, prime squares, reversal of the Euler product, and prime clock alignments relative to the zeros of the Riemann zeta function",
+  "equations": "Split mod 3: $(1, a(x), -a(x))$ for $x \\ge 3$ with $a(x) = \\frac{1}{2} G_{-3}(x)$; Split mod 4: $(1, b(x), 0, -b(x))$; Reversal identity: $\\sum_{n \\le x} L(x/n) = \\lfloor \\sqrt{x} \\rfloor$; Reversed staircase identity: $-\\sum_{k \\ge 1} \\lambda(k)\\{x/k\\} = \\lfloor \\sqrt{x} \\rfloor$; Squares series variance: $\\sum_p p^{-2\\sigma}$",
+  "validation": "Exact sieve to 10^10 in integer and Eisenstein-integer arithmetic, high-precision numerical Integration of Hilbert-space inner products, multi-precision evaluation of zeros and Dirichlet L-functions using mpmath/Euler-Maclaurin formulas",
+  "parameters": "$x = 10^{10}$, $M(10^{10}) = -33722$, $G_{-3}(10^{10}) = -25880$, $G_{-4}(10^{10}) = -66506$, $G_9(10^{10}) = 6679 + 32060\\,\\omega$, fitted square weight $= 0.4994$, mean lean $= -1.364$, $C_{\\text{rev}} = 0.07502$, $C_{\\text{fwd}} = 0.04619$",
+  "source": "[4]",
+  "figures": [
+   {
+    "title": "Prime Clocks & Triad Residue Splits",
+    "file": "papers/11_The_Square_Root_Horizon/fig6_prime_clocks.png"
+   },
+   {
+    "title": "Reversed Staircases & Prime Squares",
+    "file": "papers/11_The_Square_Root_Horizon/fig5_staircases.png"
+   }
+  ]
+ },
+ {
+  "paperTitle": "Which Member Carries: Two-State Pairs from Atoms to Gas Sensors, and Döbereiner’s Triads as Balanced Pairs",
+  "domain": "Atomic Physics / Gas Phase Mass Action",
+  "system": "Valence electron sharing between isolated gas-phase $\\mathrm{Na}$ and $\\mathrm{K}$ cores ($\\mathrm{Na}^+\\mathrm{K}$ vs $\\mathrm{Na}+\\mathrm{K}^+$ configurations)",
+  "equations": "Potassium carries the charge at all temperatures due to lower ionization energy. Minority configuration occupancy: $p = \\frac{1}{1 + e^\\varepsilon}$ with $\\varepsilon = \\Delta E / (k_B T)$; $\\Delta E = 0.7984132\\text{ eV}$. Equilibrium ratio in gas mixture: $\\frac{x}{1 - x} = e^{-\\Delta E / (2 k_B T)}$",
+  "validation": "Exact theoretical calculation evaluated on fundamental ionization energy data",
+  "parameters": "$\\operatorname{IE}(\\text{Na I}) = 5.13907696\\text{ eV}$, $\\operatorname{IE}(\\text{K I}) = 4.34066373\\text{ eV}$, $\\Delta E = 0.7984132(3)\\text{ eV}$, $k_B = 8.617333262 \\times 10^{-5}\\text{ eV/K}$",
+  "source": "[5]",
+  "figures": [
+   {
+    "title": "Two-State Valence Ionization Pair (Na-K)",
+    "file": "papers/04_Chemistry_Which_Member_Carries/fig5_pairs.png"
+   }
+  ]
+ },
+ {
+  "paperTitle": "Which Member Carries: Two-State Pairs from Atoms to Gas Sensors, and Döbereiner’s Triads as Balanced Pairs",
+  "domain": "Nuclear Physics / Radioactive Decay",
+  "system": "Branching ratio and net nuclear charge change per decay in ${}^{40}\\mathrm{K}$ ($\\beta^-$ decay vs electron capture/$\\beta^+$)",
+  "equations": "Average charge change per decay: $\\langle \\Delta Z \\rangle = \\tanh(\\varepsilon/2) = 2p_{\\beta^-} - 1$. Found $\\langle \\Delta Z \\rangle = +0.7856(22)$ for 2017 ENSDF and $+0.7918(10)$ for 2023 KDK branching ratios (2.6$\\sigma$ difference).",
+  "validation": "Evaluation of nuclear branching ratios and decay constants on experimental evaluations",
+  "parameters": "ENSDF 2017: $p_{\\beta^-} = 89.28(11)\\%$, $p_{\\text{EC}+\\beta^+} = 10.72(11)\\%$; KDK 2023: $p_{\\beta^-} = 89.59(5)\\%$, $p_{\\text{EC}+\\beta^+} = 10.41\\%$",
+  "source": "[5]",
+  "figures": [
+   {
+    "title": "Two-State Pairs & Ionization Energies",
+    "file": "papers/04_Chemistry_Which_Member_Carries/fig5_pairs.png"
+   }
+  ]
+ },
+ {
+  "paperTitle": "Which Member Carries: Two-State Pairs from Atoms to Gas Sensors, and Döbereiner’s Triads as Balanced Pairs",
+  "domain": "Atomic Physics / Thermal Population",
+  "system": "Thermal population balance of the fine-structure doublet of neutral Aluminium (${}^2\\mathrm{P}^\\circ_{1/2}$ vs ${}^2\\mathrm{P}^\\circ_{3/2}$)",
+  "equations": "Upper level holds the majority above balance temperature $T_{1/2} = \\frac{h c \\tilde{\\nu}}{k_B \\ln(g_u / g_l)} = 232.61\\text{ K}$; $p_u(T) = \\frac{2e^{-\\Theta/T}}{1 + 2e^{-\\Theta/T}}$ where $\\Theta = 161.231\\text{ K}$.",
+  "validation": "Analytical solution of two-state equilibrium on NIST ASD spectroscopy data",
+  "parameters": "Splitting $\\tilde{\\nu} = 112.061\\text{ cm}^{-1}$, $g_l = 2$, $g_u = 4$, $hc/k_B = 1.438776877\\text{ cm}\\cdot\\text{K}$, $\\Theta = 161.231\\text{ K}$",
+  "source": "[5]",
+  "figures": [
+   {
+    "title": "Two-State Pairs & Ionization Energies",
+    "file": "papers/04_Chemistry_Which_Member_Carries/fig5_pairs.png"
+   }
+  ]
+ },
+ {
+  "paperTitle": "Which Member Carries: Two-State Pairs from Atoms to Gas Sensors, and Döbereiner’s Triads as Balanced Pairs",
+  "domain": "Statistics / Applied Data Analysis",
+  "system": "Effect of joint absent values / shared coding on bivariate correlations",
+  "equations": "Exact coded correlation equation: $r_{\\text{coded}} = \\frac{r + f d_x d_y}{\\sqrt{(1 + f d_x^2)(1 + f d_y^2)}}$. Sign flips when $\\sqrt{d_x d_y}$ crosses $d^* = \\sqrt{-r / f}$. Bound: $|r_{\\text{coded}}| \\le \\frac{|r + f d_x d_y|}{1 + f |d_x d_y|}$.",
+  "validation": "Direct numerical validation using UCI Air Quality dataset hourly sensor channels (PT08.S1 and PT08.S3)",
+  "parameters": "$n = 9357$, $n_{11} = 8991$, $f = 366/9357 = 0.0391151$, $r = -0.771918$; code $-200 \\implies r_{\\text{coded}} = +0.0869312$ and code $0 \\implies r_{\\text{coded}} = -0.0756296$",
+  "source": "[5]",
+  "figures": [
+   {
+    "title": "Two-State Pairs & Ionization Energies",
+    "file": "papers/04_Chemistry_Which_Member_Carries/fig5_pairs.png"
+   }
+  ]
+ },
+ {
+  "paperTitle": "Which Member Carries: Two-State Pairs from Atoms to Gas Sensors, and Döbereiner’s Triads as Balanced Pairs",
+  "domain": "Chemical Sensing / Surface Chemistry",
+  "system": "Steady-state surface occupancy of metal-oxide gas sensors under mass action",
+  "equations": "Surface site occupancy follows logistic law $\\theta = \\frac{1}{1 + e^\\varepsilon}$, where $\\varepsilon = \\ln(\\Phi_+/\\Phi_-)$. Sensor response: $S = S_{\\text{lo}} + \\frac{S_{\\text{hi}} - S_{\\text{lo}}}{1 + (C_{1/2} / C)^\\beta}$. Half-points form a sensor ladder on CO axis: $S_3 (1.68) < S_5 (4.61) < S_2 (5.40) < S_1 (7.49)\\text{ mg/m}^3$.",
+  "validation": "Nonlinear least-squares fitting on UCI Air Quality record with day-block bootstrap (1000 replicates) for 95% confidence intervals; model comparison via ΔAIC against offset power laws",
+  "parameters": "7344 pairwise-present hours on CO axis; fitted slopes $\\beta$ range $1.18$ to $1.45$; $\\Delta\\text{AIC} = 11.7$ to $209.0$ preferring two-state law over power law",
+  "source": "[5]",
+  "figures": [
+   {
+    "title": "Metal-Oxide Gas Sensor Ladder on CO",
+    "file": "papers/04_Chemistry_Which_Member_Carries/fig_sensor_ladder.png"
+   }
+  ]
+ },
+ {
+  "paperTitle": "Which Member Carries: Two-State Pairs from Atoms to Gas Sensors, and Döbereiner’s Triads as Balanced Pairs",
+  "domain": "Atmospheric Science / Planetary Science",
+  "system": "Vapour phase balance of $\\mathrm{NH_3}$ and $\\mathrm{H_2S}$ above the $\\mathrm{NH_4SH}$ ice deck of giant planets",
+  "equations": "Conserved difference $\\Delta = x_N - x_S = 2\\chi\\sinh(\\varepsilon/2)$, with $x_N x_S = K(T)/P^2$ and $\\chi = \\sqrt{K}/P$. $\\mathrm{NH}_3$ vapour fraction: $\\phi_N = \\frac{1}{1 + e^{-\\varepsilon}}$. Deep N/S ratio determines surviving gas: $\\operatorname{sign}(N - S)$.",
+  "validation": "Thermodynamic mass-action equilibrium derivation compared against observed planetary atmosphere compositions",
+  "parameters": "Deep N/S ratios: Jupiter ($4.73$), Saturn ($3.16$), Uranus ($0.195$), Neptune ($0.170$); zero threshold at $\\mathrm{N/S} = 1$",
+  "source": "[5]",
+  "figures": [
+   {
+    "title": "Two-State Pairs & Ionization Energies",
+    "file": "papers/04_Chemistry_Which_Member_Carries/fig5_pairs.png"
+   }
+  ]
+ },
+ {
+  "paperTitle": "Which Member Carries: Two-State Pairs from Atoms to Gas Sensors, and Döbereiner’s Triads as Balanced Pairs",
+  "domain": "Inorganic Chemistry / Periodic Table Theory",
+  "system": "Period capacity and mathematical exactness of vertical Döbereiner triads",
+  "equations": "Period-pair law: $L(p) = \\kappa(p + 1) = 2 \\lceil(p + 1)/2\\rceil^2$. Vertical triad $Z_2 = \\frac{1}{2}(Z_1 + Z_3)$ is exact iff the two spanned periods have equal length. Exactly 27 of 54 vertical triads are exact.",
+  "validation": "Exhaustive combinatorial enumeration based on Madelung (n+ℓ, n) subshell filling order up to Z = 118",
+  "parameters": "Period lengths $L(p) = [2, 8, 8, 18, 18, 32, 32]$ for periods $p = 1..7$; triad gap steps $s \\in \\{8, 18, 32\\}$",
+  "source": "[5]",
+  "figures": [
+   {
+    "title": "Madelung Order & Vertical Triads",
+    "file": "papers/04_Chemistry_Which_Member_Carries/fig_chem2.png"
+   }
+  ]
+ },
+ {
+  "paperTitle": "The Reversible Half and the Third Body: Pairs and Triads in Measurement Records and the Three-Body Problem",
+  "domain": "Quantum Information / Stochastic Processes",
+  "system": "Reversible half of sequential measurement records and time reversal of Markov chains",
+  "equations": "$0 \\le h(S) - h(C) \\le \\frac{1}{4}\\operatorname{EP}$; $h(S) - h(C) = \\sum_j \\pi_j \\operatorname{JSD}(C_{\\cdot j}, \\tilde{C}_{\\cdot j})$; $\\operatorname{EP} = D(J \\| J^{\\text{T}}) \\ge 0$",
+  "validation": "Mathematical proof using convexity, Jensen-Shannon and Jeffreys divergence inequalities",
+  "parameters": "Column-stochastic matrix $C$, stationary law $\\pi$, pair law $J_{ij} = \\pi_j C_{ij}$",
+  "source": "[6]",
+  "figures": [
+   {
+    "title": "Arrow of Time in Measurement Records",
+    "file": "papers/02_Physics_The_Reversible_Half_and_the_Third_Body/fig3_arrow.png"
+   }
+  ]
+ },
+ {
+  "paperTitle": "The Reversible Half and the Third Body: Pairs and Triads in Measurement Records and the Three-Body Problem",
+  "domain": "Quantum Information",
+  "system": "Alternating sharp measurement of a singlet state with $n \\ge 3$ settings",
+  "equations": "$D_L = \\frac{c}{2}(1 - d^{L-2}) \\log_2\\frac{1+c}{1-c}\\text{ bits}$; Limiting irreversibility: $c \\operatorname{artanh}(c)\\text{ nats}$",
+  "validation": "Exact solution of record law, projector identities, and summation over sequences",
+  "parameters": "$n \\ge 3$, $\\theta = \\pi/n$, $c = \\cos(\\pi/n)$, $d = \\cos(2\\pi/n)$, record length $L$",
+  "source": "[6]",
+  "figures": [
+   {
+    "title": "Arrow of Time in Measurement Records",
+    "file": "papers/02_Physics_The_Reversible_Half_and_the_Third_Body/fig3_arrow.png"
+   }
+  ]
+ },
+ {
+  "paperTitle": "The Reversible Half and the Third Body: Pairs and Triads in Measurement Records and the Three-Body Problem",
+  "domain": "Quantum Information / Open Quantum Systems",
+  "system": "Processed four-outcome instrument reconstructed from tomography",
+  "equations": "$\\operatorname{EP} = 0.00686044\\text{ bits/use}$; $h(S) - h(C) = 0.00171268\\text{ bits}$ (99.86% of $\\operatorname{EP}/4$); $\\sigma^2 = 0.46247828\\text{ bits}^2/\\text{use}$",
+  "validation": "Numerical analysis of 4x4 transition matrix C, spectral decomposition, Markov central limit theorem",
+  "parameters": "$4\\times 4$ stochastic matrix $C$ reconstructed from tomography",
+  "source": "[6]",
+  "figures": [
+   {
+    "title": "Arrow of Time in Measurement Records",
+    "file": "papers/02_Physics_The_Reversible_Half_and_the_Third_Body/fig3_arrow.png"
+   }
+  ]
+ },
+ {
+  "paperTitle": "The Reversible Half and the Third Body: Pairs and Triads in Measurement Records and the Three-Body Problem",
+  "domain": "Classical Electromagnetism / Electrical Engineering",
+  "system": "Rotating field of three-phase currents in three coils at $0, \\pm 120^\\circ$",
+  "equations": "$\\mathbf{B}(t) = \\boldsymbol{\\alpha}_+ e^{i\\omega t} + \\boldsymbol{\\alpha}_- e^{-i\\omega t}$; Signed swept area: $\\Phi = \\frac{9\\pi}{4}(|I_+|^2 - |I_-|^2)$; $\\operatorname{tr} K(\\tau) = (|I_+|^2 + |I_-|^2)\\cos\\omega\\tau$",
+  "validation": "Fortescue decomposition into symmetrical components and period-averaged lag-τ correlation matrix analysis",
+  "parameters": "Coil currents $I_a, I_b, I_c$; $I_\\pm = \\frac{1}{3}(I_a + u^{\\pm 1} I_b + u^{\\mp 1} I_c)$; $u = e^{2\\pi i/3}$",
+  "source": "[6]",
+  "figures": [
+   {
+    "title": "Three-Phase Symmetrical Involutions",
+    "file": "papers/02_Physics_The_Reversible_Half_and_the_Third_Body/fig3_arrow.png"
+   }
+  ]
+ },
+ {
+  "paperTitle": "The Reversible Half and the Third Body: Pairs and Triads in Measurement Records and the Three-Body Problem",
+  "domain": "Celestial Mechanics / N-Body Problem",
+  "system": "Planar Newtonian three-body problem with equal unit masses",
+  "equations": "Collinear midpoint instant implies triad $(-s, 0, s)$; Choreography $z_i(t) = q(t + (i-1)T/3)$ has $q_k = 0$ for $3 \\mid k$; $L = \\frac{6\\pi}{T}\\sum k|q_k|^2$; Lagrange triangle growth: $\\max\\operatorname{Re}\\lambda = \\omega/\\sqrt{2}$",
+  "validation": "Fourier series analysis on cube roots of unity, symmetry analysis of Newton's equations, and complex coordinate linearisation",
+  "parameters": "$G = 1$, unit masses $m_1 = m_2 = m_3 = 1$, period $T$, angular velocity $\\omega$",
+  "source": "[6]",
+  "figures": [
+   {
+    "title": "Figure-Eight Choreography & Triads",
+    "file": "papers/02_Physics_The_Reversible_Half_and_the_Third_Body/fig_phys2.png"
+   }
+  ]
+ },
+ {
+  "paperTitle": "The Reversible Half and the Third Body: Pairs and Triads in Measurement Records and the Three-Body Problem",
+  "domain": "Celestial Mechanics / Computational Physics",
+  "system": "Figure-eight orbit and Lagrange triangle stability under perturbation",
+  "equations": "Period $T = 6.325914009781$; Orbit closes to $9.6 \\times 10^{-13}$; Degenerates to triad 6 times/period; Lagrange triangle growth rate $0.702194$ vs exact $\\omega/\\sqrt{2} = 0.702331$",
+  "validation": "8th-order Dormand-Prince Runge-Kutta numerical integration (DOP853) with tolerances 10^-12 to 10^-13",
+  "parameters": "Initial positions $x_1 = -x_2 = (0.97000436, -0.24308753)$, $x_3 = 0$; Initial velocity $\\dot{x}_3 = (-0.93240737, -0.86473146)$; Kick size $10^{-6}$",
+  "source": "[6]",
+  "figures": [
+   {
+    "title": "Figure-Eight Choreography & Triads",
+    "file": "papers/02_Physics_The_Reversible_Half_and_the_Third_Body/fig_phys2.png"
+   }
+  ]
+ },
+ {
+  "paperTitle": "The Reversible Half and the Third Body: Pairs and Triads in Measurement Records and the Three-Body Problem",
+  "domain": "Celestial Mechanics / Orbital Dynamics",
+  "system": "Hierarchical four-body system (fourth mass $\\varepsilon$ orbiting the figure-eight triad at distance $D$)",
+  "equations": "$\\delta_{\\max} \\simeq 2 \\max|L_{\\text{in}}| \\simeq \\sqrt{3}\\langle\\Delta I\\rangle \\varepsilon D^{-3/2} = 2.8438\\,\\varepsilon D^{-3/2}$; Stable/shape kept to $10^{-2}$ for $\\varepsilon/D^3 \\le 10^{-4}$; Unstable inside $D_{\\text{MA}} \\simeq 4.06\\text{--}4.11$",
+  "validation": "Quadrupole tidal torque averaging over inner period, DOP853 numerical integration over 100T",
+  "parameters": "Mass $\\varepsilon \\in \\{10^{-4}, 10^{-3}, 10^{-2}, 10^{-1}\\}$, Distance $D \\in \\{3, 5, 10, 20\\}$, $\\langle\\Delta I\\rangle = 1.641896$",
+  "source": "[6]",
+  "figures": [
+   {
+    "title": "Hierarchical Four-Body Perturbation",
+    "file": "papers/02_Physics_The_Reversible_Half_and_the_Third_Body/fig_phys2.png"
+   }
+  ]
+ },
+ {
+  "paperTitle": "The Riemann Kernel as a Quantum State: Wigner Negativity, Decoherence at the Thirds and Lee–Yang Zeros",
+  "domain": "Quantum Physics / Mathematical Physics",
+  "system": "The Riemann kernel $\\Phi$ and Riemann Hypothesis (RH) formulated as a pure quantum state, its Wigner negativity, and quantum decoherence",
+  "equations": "RH is equivalent to non-detection by the symbol-positive observable family $\\hat{O}_{x,y}$; $J(x,y) = 2\\partial_y|\\Xi(x+iy)|^2 = 2\\pi\\|\\Phi\\|^2 \\langle\\varphi|\\hat{O}_{x,y}|\\varphi\\rangle$; Coherence of probe qubit: $L(t) = \\Xi(\\lambda t)/\\Xi(0)$; Negativity confined via $2\\pi e^{2|a|} < \\max(\\sqrt{2k^2 + 1/2}, 20)$; Heat flow obeys $\\partial_T J_T = \\frac{1}{8}(\\partial_y^2 - \\partial_x^2)J_T$",
+  "validation": "Mathematical proofs (Hadamard factorization, Riccati bounds, Lee-Yang circle theorem), trapezoidal quadrature rules, matrix-exponential evolution on C^2 x C^3N, Lanczos/Golub-Welsch algorithms, and high-precision IEEE double-precision arithmetic.",
+  "parameters": "Wigner negativity mass: $4.844 \\times 10^{-5}$; deepest negativity at $k = 12.022$ ($W_\\varphi = -6.60 \\times 10^{-5}$); $\\|\\Phi\\|^2 = 1.2790072478$; de Bruijn-Newman bounds $0 \\le \\Lambda \\le 0.2$; zero verification height $X_0 = 3 \\cdot 10^{12}$; spin-1/2 Ising coupling $K = \\frac{1}{2}\\ln 2$",
+  "source": "[8]",
+  "figures": [
+   {
+    "title": "Wigner Negativity Mass Distribution",
+    "file": "papers/03_Quantum_The_Riemann_Kernel_as_a_Quantum_State/fig_negativity.png"
+   }
+  ]
+ },
+ {
+  "paperTitle": "The Balanced Pair in Excitable Tissue: What a Membrane Reading Determines, and the Balanced Cortex",
+  "domain": "Neuroscience / Computational Neuroscience",
+  "system": "Balanced network of excitatory and inhibitory binary neurons",
+  "equations": "$\\mu = \\sqrt{K}A(\\nu - \\nu_{\\text{bal}})$, where residual net input and distance from balance solution are one object; network inputs cancel to order one while rates converge to balance as $1/\\sqrt{K}$",
+  "validation": "Direct network simulation (2×10^4 binary neurons with K=100 to 1600) and Newton-type root finding for mean-field rates",
+  "parameters": "$N_E = N_I = 10^4, J_E = 2, J_I = 1.8, b_E = 1, b_I = 0.8, \\nu_0 = 0.1, \\theta_E = 1, \\theta_I = 0.7, K = 100 \\text{ to } 1600$",
+  "source": "[10]",
+  "figures": [
+   {
+    "title": "Balanced E-I Cortical Network Rates",
+    "file": "papers/05_Neuroscience_The_Balanced_Pair_in_Excitable_Tissue/fig_cortex.png"
+   }
+  ]
+ },
+ {
+  "paperTitle": "The Balanced Pair in Excitable Tissue: What a Membrane Reading Determines, and the Balanced Cortex",
+  "domain": "Neuroscience / Biophysics",
+  "system": "Two-state voltage-gated ion channels (Hodgkin–Huxley gates $m, h, n$)",
+  "equations": "$x_\\infty = \\frac{1}{1 + e^\\varepsilon}$; at half-point $V_{1/2}$: $x_\\infty = 1/2$, max entropy $= 1\\text{ bit}$, max variance $= 1/4$; $n^4$ reaches half-max $34.5\\text{ mV}$ above gate half-point",
+  "validation": "Mathematical proof using two-state law and bracketing root search (<10^-6 mV precision)",
+  "parameters": "Hodgkin–Huxley gates half-points: $V_{1/2}(m) = -40.02\\text{ mV}, V_{1/2}(h) = -62.31\\text{ mV}, V_{1/2}(n) = -53.41\\text{ mV}$; slopes $k$: $+9.47, -6.95, +16.35\\text{ mV}$",
+  "source": "[10]",
+  "figures": [
+   {
+    "title": "Hodgkin-Huxley Membrane Kinetics",
+    "file": "papers/05_Neuroscience_The_Balanced_Pair_in_Excitable_Tissue/fig_membrane.png"
+   }
+  ]
+ },
+ {
+  "paperTitle": "The Balanced Pair in Excitable Tissue: What a Membrane Reading Determines, and the Balanced Cortex",
+  "domain": "Neuroscience / Ion Channel Biophysics",
+  "system": "Estimation of ion channel number ($N$) and unitary current ($i$) from current fluctuations",
+  "equations": "Mean $I = N i p$ is invariant under scaling; variance $\\sigma^2 = \\sigma_b^2 + i I - I^2/N$; precision of channel count improves steadily with largest open probability $p_{\\max}$",
+  "validation": "Ordinary least-squares fitting of quadratic mean-variance parabola over 400 simulated recordings per design",
+  "parameters": "$N = 2000\\text{ channels}, i = 1\\text{ pA}, \\sigma_b = 3\\text{ pA}$, gate $V_{1/2} = -40\\text{ mV}, k = 9.47\\text{ mV}, 9\\text{ voltages}, 200\\text{ sweeps/voltage}$",
+  "source": "[10]",
+  "figures": [
+   {
+    "title": "Hodgkin-Huxley Membrane Kinetics",
+    "file": "papers/05_Neuroscience_The_Balanced_Pair_in_Excitable_Tissue/fig_membrane.png"
+   }
+  ]
+ },
+ {
+  "paperTitle": "The Balanced Pair in Excitable Tissue: What a Membrane Reading Determines, and the Balanced Cortex",
+  "domain": "Neuroscience / Pharmacology",
+  "system": "Voltage-dependent channel block (Magnesium block of NMDA receptors)",
+  "equations": "$B(V) = \\frac{1}{1 + e^{-(V - V_{1/2})/k_{\\text{bl}}}}$ is a Boltzmann gate with $k_{\\text{bl}} = \\frac{RT}{z_{\\text{bl}}\\delta F}$ and $V_{1/2} = k_{\\text{bl}}\\ln\\frac{[\\text{B}]}{K_d(0)}$; doubling concentration moves $V_{1/2}$ by $k_{\\text{bl}}\\ln(2) = 11.18\\text{ mV}$",
+  "validation": "Theoretical derivation based on Woodhull model and empirical Jahr & Stevens parameters",
+  "parameters": "$K_d(0) = 3.57\\text{ mM}, k_{\\text{bl}} = 16.13\\text{ mV}, z_{\\text{bl}}\\cdot\\delta = 1.58\\; (\\delta \\approx 0.8), [\\text{Mg}^{2+}] = 0.5, 1.0, 2.0\\text{ mM}, T = 295\\text{ K}$",
+  "source": "[10]",
+  "figures": [
+   {
+    "title": "Hodgkin-Huxley Membrane Kinetics",
+    "file": "papers/05_Neuroscience_The_Balanced_Pair_in_Excitable_Tissue/fig_membrane.png"
+   }
+  ]
+ },
+ {
+  "paperTitle": "The Balanced Pair in Excitable Tissue: What a Membrane Reading Determines, and the Balanced Cortex",
+  "domain": "Neuroscience / Neurophysiology",
+  "system": "Action potential / spike threshold initiation with exponential sodium activation",
+  "equations": "Derived closed-form spike threshold: $\\theta = E_{\\text{Na}} - k_a\\left[1 - W_{-1}\\left(-\\frac{g_L}{g_{\\text{Na}}}e^{1 - (E_{\\text{Na}} - V_a)/k_a}\\right)\\right]$; reduces error of simplest threshold equation by factor of $1.3$ to $33$",
+  "validation": "Fixed-point solution via Lambert W function compared to exact numerical root search of Φ'(V) = 0",
+  "parameters": "$V_a = -30\\text{ mV}, k_a = 6\\text{ mV}, E_{\\text{Na}} = 55\\text{ mV}, E_L = -70\\text{ mV}, g_{\\text{Na}}/g_L = 2\\text{ to } 14$",
+  "source": "[10]",
+  "figures": [
+   {
+    "title": "Balanced E-I Cortical Network Rates",
+    "file": "papers/05_Neuroscience_The_Balanced_Pair_in_Excitable_Tissue/fig_cortex.png"
+   }
+  ]
+ },
+ {
+  "paperTitle": "The Balanced Pair in Excitable Tissue: What a Membrane Reading Determines, and the Balanced Cortex",
+  "domain": "Neuroscience / Neurophysiology",
+  "system": "Action potential generation, ionic charge integrals, and $m^q h$ sodium activation triad",
+  "equations": "$Q_{\\text{Na}} = Q_{\\text{K}} + Q_L - Q_{\\text{stim}}$ over equal voltage interval; $m^3h$ spike carries $\\rho = 13.36$ times minimum sodium charge; $q = 3$ is the unique exponent in $\\{1,2,3,4\\}$ yielding both stable rest and spike",
+  "validation": "Multistep adaptive numerical integration (relative tolerance 10^-9) and implicit Runge-Kutta (Radau) verification",
+  "parameters": "$C = 1\\,\\mu\\text{F/cm}^2, g_{\\text{Na}} = 120, g_{\\text{K}} = 36, g_L = 0.3\\text{ mS/cm}^2, E_{\\text{Na}} = 50, E_{\\text{K}} = -77, E_L = -54.387\\text{ mV}, I_{\\text{stim}} = 10\\,\\mu\\text{A/cm}^2\\text{ for 1 ms}$",
+  "source": "[10]",
+  "figures": [
+   {
+    "title": "m³h Sodium Action Potential Charges",
+    "file": "papers/05_Neuroscience_The_Balanced_Pair_in_Excitable_Tissue/fig_membrane.png"
+   }
+  ]
+ },
+ {
+  "paperTitle": "The Balanced Pair in Excitable Tissue: What a Membrane Reading Determines, and the Balanced Cortex",
+  "domain": "Neuroscience / Cellular Energetics",
+  "system": "Sodium–potassium pump ($\\mathrm{Na^+/K^+}$-ATPase) stoichiometry and energetic stall potential",
+  "equations": "Work per cycle: $W_{\\text{cyc}} = e(3E_{\\text{Na}} - 2E_{\\text{K}} - V_m)$; pump moves 1 net elementary charge outwards per cycle; stall potential: $V_m = 3E_{\\text{Na}} - 2E_{\\text{K}} - |\\Delta G_{\\text{ATP}}|/e = -205\\text{ mV}$",
+  "validation": "Thermodynamic energy balance calculation per ATP hydrolysis cycle",
+  "parameters": "Stoichiometry $3\\,\\mathrm{Na^+} : 2\\,\\mathrm{K^+}$, $E_{\\text{Na}} = +55\\text{ mV}$, $E_{\\text{K}} = -90\\text{ mV}$, $V_m = -65\\text{ mV}$, $T = 310\\text{ K}$, $|\\Delta G_{\\text{ATP}}| \\approx 0.55\\text{ eV } (53\\text{ kJ/mol})$",
+  "source": "[10]",
+  "figures": [
+   {
+    "title": "Hodgkin-Huxley Membrane Kinetics",
+    "file": "papers/05_Neuroscience_The_Balanced_Pair_in_Excitable_Tissue/fig_membrane.png"
+   }
+  ]
+ },
+ {
+  "paperTitle": "The Balance of the Count: One Energy in the Prime Counts and in the Sawtooth, and the Riemann Hypothesis in Real Variables",
+  "domain": "Analytic Number Theory",
+  "system": "Riemann Hypothesis, Mertens function $M(x)$, prime-counting error $(\\psi(x) - x)$, and fractional part sawtooth functions",
+  "equations": "1) Rebuild law: $\\sum_{n \\le x} M(x/n) = 1$; 2) Sawtooth identity: $-\\sum_{k \\ge 1} \\mu(k)\\{1/(kt)\\} = \\chi_{(0,1]}(t)$; 3) Shortfall integral: $\\int_{1/N}^{1} |\\chi_{(0,1]}(t) + \\sum_{k \\le N} \\mu(k)\\varsigma_k(t)|^2 dt = (N-1)m(N)^2$; 4) Energy equivalence of RH: $E(X) = \\int_1^X \\left(\\frac{\\psi(x)-x}{x}\\right)^2 dx \\ll_\\varepsilon X^\\varepsilon$; 5) Mean energy identity: $\\sum_\\rho \\frac{1}{\\rho(1-\\rho)} = 2 + \\gamma - \\log(4\\pi) = 0.0461914\\dots$",
+  "validation": "Exact segmented sieve up to x = 10^10 (recording 675,247 checkpoints), exact evaluations of zero locations up to γ < 3000, and exact piecewise integration of fractional-part Gram integrals for N ≤ 60.",
+  "parameters": "Range $x$ up to $10^{10}$ ($u = \\log_2 x$ up to $33.22$); $L = 10^9$ for Möbius table; $2469$ zero pairs with $\\gamma < 3000$; pitch parameters $\\gamma_k \\log(2)/(2\\pi)$; $N$ up to $60$ for sawtooth distance $d_N$",
+  "source": "[11]",
+  "figures": [
+   {
+    "title": "Prime Count Oscillations & Energy Integral",
+    "file": "papers/10_The_Balance_of_the_Count/fig2_energy.png"
+   },
+   {
+    "title": "Wave Structure of Prime Error",
+    "file": "papers/10_The_Balance_of_the_Count/fig1_waves.png"
+   }
+  ]
+ },
+ {
+  "paperTitle": "Three Is Enough: Radix Economy, Balanced-Ternary Arithmetic and Ternary-Weight Networks",
+  "domain": "Computer Science / Applied Mathematics / Neural Networks",
+  "system": "Radix economy, completeness of balanced-ternary arithmetic, and optimal ternary-weight quantization for neural networks",
+  "equations": "Base 3 is the cheapest radix for $N \\ge 2^{16}$ and unique cheapest for $N \\ge 2^{27}$; $E(b) = \\frac{b}{\\ln b}$; register generating function: $Z_d(z) = \\prod_{i=0}^{d-1} (z^{-3^i} + 1 + z^{3^i}) = z^{-M_d}\\frac{z^{3^d} - 1}{z - 1}$; stationary threshold condition: $h'(\\delta) = f(\\delta)\\alpha(\\delta)(\\alpha(\\delta) - 2\\delta) \\implies \\delta = \\alpha^*/2$",
+  "validation": "Analytic bounds, exact comparison of step functions up to N = 2.66 x 10^8, exhaustive enumeration for integers |n| <= 3^10, and empirical evaluation on the 1797 handwritten digits of the UCI optical-recognition test set using a 64-128-10 network",
+  "parameters": "$E(2)/E(3) = 1.0566$; $\\log_2(3) = 1.585\\text{ bits/weight}$; Gaussian optimal threshold $u^* = 0.612003\\sigma$, zero share $= 0.45946$, squared error $= 0.19017\\sigma^2$; uniform optimal threshold $\\delta^* = a/3$; Laplace optimal threshold $\\delta^* = \\beta$; test accuracy $= 97.44 \\pm 0.73\\%$",
+  "source": "[12]",
+  "figures": [
+   {
+    "title": "Radix Economy & Ternary Quantization",
+    "file": "papers/06_Algorithms_Three_Is_Enough/fig_algo.png"
+   }
+  ]
+ },
+ {
+  "paperTitle": "Nothing Binds a Twin but Exclusion: The Prime Clocks, the Exclusion Law, and the Recurrence of the Twin Pair",
+  "domain": "Number Theory / Analytic Number Theory",
+  "system": "Recurrence and distribution of twin prime pairs ($6k - 1, 6k + 1$), prime clocks modulo $p$, sieve theory limitations (parity barrier), and central $L$-function values of congruent-number curves",
+  "equations": "Exclusion Law fixing twin constant: $E = \\prod_{p \\ge 5} \\left(1 - \\frac{1}{(p-1)^2}\\right) = 0.88022$; Twin Law: $\\pi_2(x) \\sim \\frac{x}{6}\\left(\\frac{3}{\\log x}\\right)^2 E = \\frac{2C_2 x}{\\log^2 x}$; Parity barrier ceiling certified share $= 0.48837$; Central value: $L(E_n, 1)\\sqrt{n} = 4\\kappa_n m^2$",
+  "validation": "Mathematical proof, segmented sieve of Eratosthenes up to 10^10, enumeration of full turns, joint factor law over 5 * 10^7 pairs, and numerical integration of Buchstab delay equations.",
+  "parameters": "$E = 0.88022, C_2 = 0.66016, x$ up to $10^{10}, u^* = 3.565$, maximum certifiable share $= 0.48837\\; (u = 3.16), \\kappa_n = 0.163879$ (odd $n$) or $0.327757$ (even $n$)",
+  "source": "[7]",
+  "figures": [
+   {
+    "title": "The Exclusion Law & Twin Constant E",
+    "file": "papers/Nothing_Binds_a_Twin/fig3_exclusion.png"
+   },
+   {
+    "title": "Twin Law Recurrence Dynamics",
+    "file": "papers/Nothing_Binds_a_Twin/fig5_law.png"
+   }
+  ]
+ }
 ]

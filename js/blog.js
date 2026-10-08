@@ -9,323 +9,217 @@
 
 let BLOG_ENTRIES = [
   {
-    id: "symplectic-invariants-in-collinear-lagrange-poin-49250",
-    title: "Symplectic Invariants in Collinear Lagrange Point Hill Throats",
-    date: "October 2026",
-    isoDate: "2026-10-07",
-    readTime: "1 min read",
-    category: "celestial-mechanics",
-    categoryLabel: "Celestial Throats & Flux",
-    categoryClass: "cat-crimson",
-    tags: ["[\"Hill Throats\"", "\"Celestial Mechanics\"", "\"Lagrange Points\"", "\"Symplectic Dynamics\"]"],
-    formulaTag: "THROAT ACTION INTEGRAL",
-    formulaHighlight: "J = \\frac{1}{2\\pi} \\oint p \\, dq = \\frac{E - E_c}{\\omega_H}",
-    summary: "An analytical derivation of the phase space transport flux and Hill throat action integral across the L1/L2 necks in the circular restricted three-body problem.",
-    paperId: "08_Planetary_The_Four_Giants_as_Balanced_Pairs",
-    paperTitle: "The Four Giants as Balanced Pairs: Throats, Hearts, the Gas Ladder and the Interstellar Visitors",
-    paperPdf: "papers/08_Planetary_The_Four_Giants_as_Balanced_Pairs.pdf",
-    contentHtml: `
-<h3>1. Phase Space Geometry of the Neck</h3>
-<p>Near the collinear equilibrium points $L_1$ and $L_2$, the linearized Hamiltonian takes the saddle-center form:</p>
-<div class="katex-display-block">$$H_2 = \frac{1}{2}(p_x^2 + p_y^2) - \lambda_H x p_y + \omega_H y p_x$$</div>
-<p>The characteristic polynomial governing the eigenvalues is:</p>
-<div class="katex-display-block">$$\lambda^4 - 2\lambda^2 - 27 = 0$$</div>
-<p>Yielding the Hill asymptotic values:</p>
-<ul>
-  <li>$\lambda_H = 2.508287$ (unstable/stable saddle manifold)</li>
-  <li>$\omega_H = 2.071594$ (center manifold harmonic frequency)</li>
-</ul>
-<div class="blog-callout-box">
-<p><strong>Flux Invariance Theorem:</strong></p>
-<p>The phase space mass transport flux across the Hill sphere boundary is given by the action integral of the Lyapunov periodic orbit:</p>
-<p>$$ J = \frac{\Delta E}{\omega_H} $$</p>
-<p>This value is strictly invariant under canonical transformations.</p>
-</div>
-<h3>2. Numerical Convergence</h3>
-<p>Higher-order asymptotic expansions match 50-digit numerical boundary integrations with fractional error $< 10^{-12}$.</p>
-    `
-  },
-
-  {
-    id: "fluid-manifold-simplicial-complex",
-    title: "The 36-Node Simplicial Complex: Translating Discrete Triads into Continuous Solenoidal Flow",
-    date: "October 6, 2026",
-    isoDate: "2026-10-06",
-    readTime: "6 min read",
+    id: "medial-antiprism-two-strands",
+    title: "The Medial Antiprism: What Survives When Each Step Passes Only a Sum",
+    date: "October 9, 2026",
+    isoDate: "2026-10-09",
+    readTime: "5 min read",
     category: "differential-geometry",
-    categoryLabel: "Fluid Manifolds & Topology",
+    categoryLabel: "Geometry & Structure",
     categoryClass: "cat-violet",
-    tags: ["Simplicial Complex", "Solenoidal Flow", "Catmull-Rom", "Phase Space", "Invariance"],
-    formulaHighlight: "\\nabla \\cdot \\mathbf{J} = 0 \\quad \\Longleftrightarrow \\quad \\oint_{\\partial \\Omega} \\mathbf{v} \\cdot \\hat{n}\\, dS = 0",
-    summary: "Moving beyond rigid discrete wireframes: how a 6-layer simplicial complex with 18 primary vertices and 18 edge midpoints ($L/2$) naturally generalizes to a volume-preserving solenoidal velocity field with continuous Catmull-Rom streamlines and vortex shear.",
-    paperId: "11_Topology_Balance_and_Duality_in_Topological_Quantum_Systems",
-    paperTitle: "Balance and Duality in Topological Quantum Systems: Majorana Modes, Anyons and Braiding",
-    paperPdf: "papers/11_Topology_Balance_and_Duality_in_Topological_Quantum_Systems/11_Topology_Balance_and_Duality_in_Topological_Quantum_Systems.pdf",
+    tags: ["Medial Antiprism", "Two Strands", "Horizon", "Möbius Ladder", "Triad"],
+    formulaHighlight: "J = I + C + C^2,\\qquad J\\,(1,1,1) = 3\\,(1,1,1),\\qquad J\\,(1,\\omega,\\omega^2) = 0",
+    summary: "Stack triangles, each turned through $180^\\circ$, and join every vertex to every side midpoint of its neighbours. One move builds it, a half-turn with a halving. Its 36 nodes and 90 lines form two strands that meet only at the half of each gap.",
+    paperId: "medial_antiprism",
+    paperTitle: "The Medial Antiprism: Two Strands, a Horizon at One Half and an Undecided Trefoil",
+    paperPdf: "papers/medial_antiprism/medial_antiprism.pdf",
     contentHtml: `
       <p class="blog-lead">
-        Discrete lattice models provide foundational intuition for symmetry groups and topological invariants. However, when studying dynamical mass transport and phase-space flow, rigid straight wireframes fail to capture continuous transport invariance. Here, I discuss the geometric construction of the 36-node simplicial fluid manifold embedded on this site.
+        The side midpoints of a triangle are its vertices multiplied by $-\\tfrac12$: the medial triangle is the triangle turned through $180^\\circ$ and halved. Repeat that move along an axis and join every vertex of each layer to every side midpoint of the next. The result is the medial antiprism.
       </p>
-
-      <h3>1. The 6-Layer Simplicial Topology</h3>
+      <h3>1. Two strands</h3>
       <p>
-        The underlying simplicial complex combines two alternating 18-node systems across six vertical layers in $\\mathbb{R}^3$:
+        Every line reverses two signs, vertex or midpoint and the parity of the layer, so their product is conserved. With six layers the 36 nodes and 90 lines split into two strands of 18 nodes. They share every layer and no line, and the central inversion $x\\mapsto -x$ exchanges them.
       </p>
-      <div class="blog-callout">
-        <strong>Layer Distribution:</strong>
-        $$z_k \\in \\{-1.20, -0.72, -0.24, +0.24, +0.72, +1.20\\}, \\quad k = 0, \\dots, 5$$
-        The 36 nodes comprise 18 primary orbital vertices and 18 edge midpoints ($L/2$), generating a total of 90 internal geodesics obeying the tetrahedral-octahedral dihedral symmetry $C_3 \\rtimes \\mathbb{Z}_2$.
-      </div>
-
-      <h3>2. Velocity Field and Fluid Relaxation</h3>
+      <h3>2. Each step passes only a sum</h3>
       <p>
-        To transform this discrete graph into an organic fluid manifold without introducing artificial turbulence, we introduce an incompressible solenoidal velocity field $\\mathbf{v}(r, \\theta, z, t)$ satisfying:
+        Between layers the lines join three nodes completely to three, so the coupling is $J=I+C+C^2$. It keeps the still pattern $(1,1,1)$ and erases the two patterns that turn by a third.
       </p>
-      $$\\nabla \\cdot \\mathbf{v} = \\frac{1}{r}\\frac{\\partial(r v_r)}{\\partial r} + \\frac{1}{r}\\frac{\\partial v_\\theta}{\\partial \\theta} + \\frac{\\partial v_z}{\\partial z} = 0$$
+      <div class="blog-callout"><strong>The slab:</strong> in every gap each strand crosses itself three times, at one third and at two thirds of the height, and the two strands meet six times at one half. Moving the midpoints to the fraction $f$ of their sides moves the meetings to $f$ and $1-f$.</div>
+      <h3>3. The bridge and the ring</h3>
       <p>
-        The coordinates of each node and streamline undergo three coupled harmonic perturbations:
+        Each bridge is a Möbius ladder whose rim is a six-edge trefoil with its three crossings undecided. A ring of an odd number of layers joins the two strands into one, which returns only after two circuits.
       </p>
-      <ul>
-        <li><strong>Wave Breathing (Radial):</strong> $\\Delta R(z, \\theta, t) = A_r \\cos(2\\theta - \\omega t) \\cdot \\cos(\\pi z / 2.4)$</li>
-        <li><strong>Vertical Shear (Axial):</strong> $\\Delta y(\\theta, z, t) = A_y \\sin(3\\theta + \\omega t) \\cdot (1 - 0.25 z^2)$</li>
-        <li><strong>Torsional Swirl (Azimuthal):</strong> $\\Delta \\theta(z, t) = A_\\theta \\sin(1.8 z + \\omega t)$</li>
-      </ul>
-
-      <h3>3. Catmull-Rom Geodesics and Streamline Advection</h3>
+      <h3>4. Unrolled</h3>
       <p>
-        Instead of rigid linear segments between connected pairs $(v_i, v_j)$, the connection is promoted to a cubic Catmull-Rom spline $\\mathbf{C}_{ij}(s)$ parameterized by $s \\in [0, 1]$:
-      </p>
-      $$\\mathbf{C}_{ij}(s) = \\frac{1}{2} \\begin{bmatrix} 1 & s & s^2 & s^3 \\end{bmatrix} \\begin{bmatrix} 0 & 2 & 0 & 0 \\\\ -1 & 0 & 1 & 0 \\\\ 2 & -5 & 4 & -1 \\\\ -1 & 3 & -3 & 1 \\end{bmatrix} \\begin{bmatrix} \\mathbf{P}_{i-1} \\\\ \\mathbf{P}_i \\\\ \\mathbf{P}_j \\\\ \\mathbf{P}_{j+1} \\end{bmatrix}$$
-      <p>
-        A central control point is displaced dynamically along the normal $\\hat{\\mathbf{n}}_{ij} \\times \\hat{\\mathbf{z}}$, producing the fluid bowing and vortex swirl visible in the 3D WebGL simulator. Over 240 passive fluid particles are simultaneously advected along these streamlines with continuous wrap-around boundary conditions.
-      </p>
-
-      <h3>4. Physical Consequence: Throat Flux Invariance</h3>
-      <p>
-        Just as in the Hill throat dynamics investigated in Paper 08, the cross-sectional mass transport across the central throat layers $z_2$ and $z_3$ maintains a conserved symplectic action:
-      </p>
-      $$J = \\oint_{\\gamma} p\\, dq = \\text{const}$$
-      <p>
-        The fluid visualization is therefore not merely aesthetic ornamentation, but a rigorous continuous representation of phase-space transport under pair-balance constraints.
+        The routes of a strand unroll into the $3$-adic tree, whose ends are the $3$-adic integers written in the digits $\\{-1,0,1\\}$. In the tree's variable $s$ the still pattern of a bridge sits at $s=1$ and its turning patterns on $\\operatorname{Re}s=\\tfrac12$. Every statement here is proved in the paper.
       </p>
     `
   },
   {
     id: "prime-two-mirror-merge-riemann-zeros",
-    title: "The Prime Two as an Asymmetric Anchor: Why the Alternating Series Has No Mirror Partners",
+    title: "The Prime Two and the Mirror: Why One Copy Has No Mirror and Two Copies Do",
     date: "September 28, 2026",
     isoDate: "2026-09-28",
-    readTime: "8 min read",
+    readTime: "4 min read",
     category: "number-theory",
     categoryLabel: "Number Theory & Riemann Zeros",
     categoryClass: "cat-blue",
-    tags: ["Riemann Zeros", "Prime Two", "Euler Product", "Macdonald Functions", "Wigner Negativity"],
-    formulaHighlight: "\\mathbb{E}[Y^s] = 2\\xi(s), \\quad s_k = 1 + \\frac{2\\pi i k}{\\log 2}",
-    summary: "Riemann's $\\xi(s)$ is the moment function of two merged copies of a random unit. A single copy yields the completed alternating series of the prime two, whose zeros along $\\Re(s)=1$ have no mirror partners. Tracing the merge parameter $\\nu$ shows the exact migration of the first zero onto the critical line.",
+    tags: ["Riemann Zeta", "Euler Product", "Merge", "Davenport–Heilbronn"],
+    formulaHighlight: "\\mathbb E[Y^s]=2\\xi(s),\\qquad M_\\nu(s)=M_\\nu(1-s)\\iff\\nu=2",
+    summary: "Riemann\\'s $\\xi$ is the moment function of two merged copies of one random unit. One copy gives the completed alternating series of the prime two, whose zeros on $\\operatorname{Re}s=1$ have no mirror partners; among $\\nu$ merged copies the mirror $s\\mapsto1-s$ holds only at $\\nu=2$.",
     paperId: "01_Mathematics_Pair_Balance_and_the_Riemann_Zeros",
     paperTitle: "Pair Balance and the Riemann Zeros: The Signed Current, the Mirror and the Merge, and the Prime Two",
     paperPdf: "papers/01_Mathematics_Pair_Balance_and_the_Riemann_Zeros/01_Mathematics_Pair_Balance_and_the_Riemann_Zeros.pdf",
     contentHtml: `
       <p class="blog-lead">
-        In Paper 01, we demonstrated that the Riemann Hypothesis is strictly equivalent to the positivity of the signed current $J = 2\\partial_y |\\Xi(x+iy)|^2 > 0$ for $y > 0$, expressed as a phase-space average over the Wigner function $Q(p, x)$. Here I unpack the role of the prime two as an asymmetric anchor in the Euler merge.
+        Paper 01 writes the Riemann Hypothesis as the positivity of a current, $J=2\\partial_y|\\Xi(x+iy)|^2>0$ for $y>0$, the criterion of Sondow and Dumitrescu and of Lagarias, and reads the Euler product as a merge. This note follows the merge.
       </p>
-
-      <h3>1. The Merge Representation: $\\nu = 1$ vs $\\nu = 2$</h3>
+      <h3>1. Two copies of one unit</h3>
       <p>
-        Riemann's completed function $\\xi(s) = \\frac{1}{2}s(s-1)\\pi^{-s/2}\\Gamma(s/2)\\zeta(s)$ satisfies the reflection symmetry $\\xi(s) = \\xi(1-s)$. We showed that $\\xi$ can be constructed as the moment function of two merged copies of a fundamental random unit $Y$:
+        $\\xi$ is the moment function of two merged copies of one random unit $Y$:
       </p>
-      $$\\mathbb{E}[Y^s] = 2\\xi(s)$$
+      <div class="katex-display-block">$$\\mathbb E[Y^s]=2\\xi(s).$$</div>
       <p>
-        If we consider only <em>one</em> unmerged copy ($\\nu = 1$), the resulting completed function is:
+        One copy gives $s\\pi^{-s/2}\\Gamma(\\frac s2)\\eta(s)$, the completed alternating series of the prime two. The factor $1-2^{1-s}$ puts zeros on the line $\\operatorname{Re}s=1$, at $s=1+2\\pi ik/\\log2$, and they have no mirror partners.
       </p>
-      $$\\xi_1(s) = s \\pi^{-s/2} \\Gamma\\left(\\frac{s}{2}\\right) \\eta(s)$$
+      <h3>2. The mirror holds only at two</h3>
       <p>
-        where $\\eta(s) = (1 - 2^{1-s})\\zeta(s) = \\sum_{n=1}^\\infty (-1)^{n-1} n^{-s}$ is Dirichlet's alternating eta function (the prime two factor).
+        Let $M_\\nu$ be the moment function of $\\nu$ merged copies. For every $\\nu>0$, $\\log\\bigl(M_\\nu(1-2k)/M_\\nu(2k)\\bigr)=2k\\log(2/\\nu)+o(k)$, so
       </p>
-
-      <h3>2. Zeros Without Mirror Partners</h3>
+      <div class="katex-display-block">$$M_\\nu(s)=M_\\nu(1-s)\\ \\text{for all } s\\iff\\nu=2.$$</div>
       <p>
-        The factor $(1 - 2^{1-s})$ produces an infinite tower of zeros located exactly on the boundary line $\\Re(s) = 1$:
+        Followed in $\\nu$, the first zero of $M_\\nu$ moves from $1+2\\pi i/\\log2$ at $\\nu=1$ to $\\frac12+14.134725\\,i$ at $\\nu=2$, the only point of its path within $10^{-6}$ of the critical line.
       </p>
-      $$s_k = 1 + \\frac{2\\pi i k}{\\log 2}, \\quad k \\in \\mathbb{Z} \\setminus \\{0\\}$$
+      <h3>3. The mirror without the merge</h3>
       <p>
-        Crucially, these zeros have <strong>no mirror partners</strong> at $\\Re(s) = 0$! The reflection symmetry $s \\mapsto 1-s$ does not exist at $\\nu = 1$. It emerges <em>if and only if</em> $\\nu = 2$.
+        The Davenport–Heilbronn function has the mirror and not the merge. It has eight zeros off the line with $0.5\\lt t\\lt200$, Spira's four mirrored pairs, while all $114$ zeros of $L(s,\\chi_{-3})$ and all $122$ zeros of $L(s,\\chi_{-4})$ in that range lie on the line.
       </p>
-
-      <div class="blog-callout">
-        <strong>The Zero Migration Trajectory:</strong>
-        As the continuous merge parameter $\\nu$ increases from $1$ to $2$, the first zero $s_1(\\nu)$ migrates smoothly in the complex plane:
-        $$s_1(1) = 1 + \\frac{2\\pi i}{\\log 2} \\approx 1 + 9.064720\\,i \\quad \\longrightarrow \\quad s_1(2) = \\frac{1}{2} + 14.134725\\,i$$
-        $\\nu = 2$ is the <em>unique</em> point along this continuous deformation where the trajectory meets the critical line $\\Re(s) = 1/2$.
-      </div>
-
-      <h3>3. Why the Davenport-Heilbronn Counterexample Fails</h3>
-      <p>
-        Many functions satisfy the functional equation mirror $s \\mapsto 1-s$ but violate the Riemann Hypothesis (having pairs of zeros off the critical line). The archetypal case is the Davenport-Heilbronn function:
-      </p>
-      $$f_{DH}(s) = \\frac{1-i\\kappa}{2} L(s, \\chi) + \\frac{1+i\\kappa}{2} L(s, \\bar{\\chi})$$
-      <p>
-        It has the mirror, but <strong>not</strong> the Euler product merge. Off-line zeros appear in mirrored quadruplets $\\{\\rho, 1-\\rho, \\bar{\\rho}, 1-\\bar{\\rho}\\}$ below height $200$. In contrast, $L(s, \\chi_{-3})$, which possesses the true Euler product, has all $114$ zeros strictly on the line. The merge of the prime two is the mathematical constraint enforcing global current positivity.
-      </p>
+      <div class="blog-callout"><strong>What remains:</strong> the paper proves $J\\gt0$ outside an explicit region and states the remaining step, $J\\ge0$ there, as a conjecture equivalent to RH, which a proof must close with a property such as the Euler product.</div>
     `
   },
   {
     id: "hill-throats-cubic-asymmetry-flux",
-    title: "Phase-Space Action and Cubic Asymmetry in the Throats of the Four Giants",
+    title: "Two Throats About One Centre: The Hill Polynomial and the Asymmetry of the Lagrange Points",
     date: "September 14, 2026",
     isoDate: "2026-09-14",
-    readTime: "7 min read",
+    readTime: "4 min read",
     category: "celestial-mechanics",
     categoryLabel: "Celestial Mechanics & Hill Throats",
     categoryClass: "cat-crimson",
-    tags: ["Restricted Three-Body", "Lagrange Points", "Hill Throats", "Asymmetric Flux", "Interstellar Visitors"],
-    formulaHighlight: "\\lambda^4 - 2\\lambda^2 - 27 = 0, \\quad A \\simeq \\frac{h}{3}\\left(1 - \\frac{h^2}{27}\\right)",
-    summary: "Collinear Lagrange points $L_1$ and $L_2$ form a symmetric balanced pair in linearized theory, but exact asymptotic expansion reveals an asymmetric throat transport flux governed by $h = (\\mu/3)^{1/3}$. How Jupiter, Saturn, Uranus, and Neptune act as a gas ladder for interstellar visitors.",
-    paperId: "08_Planetary_The_Four_Giants_as_Balanced_Pairs",
+    tags: ["Hill Throats", "Lagrange Points", "Restricted Three-Body Problem", "Giant Planets"],
+    formulaHighlight: "\\lambda^4-2\\lambda^2-27=0,\\qquad \\mathcal A=\\frac h3\\Bigl(1-\\frac{h^2}{27}+O(h^3)\\Bigr),\\quad h=(\\mu/3)^{1/3}",
+    summary: "Around every planet the two collinear Lagrange points $L_1$ and $L_2$ are two throats about one centre. Their linear rates obey one polynomial for every planet, and the throats are unequal by a third of the Hill scale, a law that holds in the full restricted problem to $0.99972$ for Jupiter.",
+    paperId: "07_Planetary_Science_The_Four_Giants_as_Balanced_Pairs",
     paperTitle: "The Four Giants as Balanced Pairs: Throats, Hearts, the Gas Ladder and the Interstellar Visitors",
-    paperPdf: "papers/08_Planetary_The_Four_Giants_as_Balanced_Pairs/08_Planetary_The_Four_Giants_as_Balanced_Pairs.pdf",
+    paperPdf: "papers/07_Planetary_Science_The_Four_Giants_as_Balanced_Pairs/07_Planetary_Science_The_Four_Giants_as_Balanced_Pairs.pdf",
     contentHtml: `
       <p class="blog-lead">
-        In celestial mechanics, the collinear equilibrium points $L_1$ and $L_2$ in the planar circular restricted three-body problem (PCR3BP) are conventionally treated as symmetric bottlenecks. In Paper 08, we proved that non-linear terms induce an unavoidable cubic asymmetry in phase-space transport.
+        A planet and its star leave two narrow gates in the planet's sphere of influence, at the collinear Lagrange points $L_1$ and $L_2$. Paper 07 reads them as a balanced pair about one centre and measures how far the balance holds.
       </p>
-
-      <h3>1. Universal Hill Eigenvalues</h3>
+      <h3>1. One polynomial for every planet</h3>
       <p>
-        Expanding the gravitational potential around either collinear point in rotating coordinates yields the characteristic polynomial:
+        In Hill's problem the linear motion near either collinear point has the characteristic polynomial
       </p>
-      $$\\lambda^4 - 2\\lambda^2 - 27 = 0$$
+      <div class="katex-display-block">$$\\lambda^4-2\\lambda^2-27=0,$$</div>
       <p>
-        This bi-quadratic equation possesses exactly one real unstable pair $\\pm \\lambda_H$ and one pure imaginary center pair $\\pm i\\omega_H$:
+        the same for every planet. Its roots are a real pair $\\pm\\lambda_H$, with $\\lambda_H^2=1+2\\sqrt7$, and an imaginary pair $\\pm i\\omega_H$, with $\\omega_H^2=2\\sqrt7-1$. Hence $\\lambda_H^2-\\omega_H^2=2$ and $\\lambda_H^2\\omega_H^2=27$, and the vertical frequency is $2$.
       </p>
-      $$\\lambda_H = \\sqrt{1 + 2\\sqrt{7}} \\approx 2.508287, \\quad \\omega_H = \\sqrt{2\\sqrt{7} - 1} \\approx 2.071594$$
+      <h3>2. The two throats are unequal by a third of the Hill scale</h3>
       <p>
-        Remarkably, their quadratic difference and product satisfy exact integers:
+        Expanding the collinear equilibrium conditions in the Hill scale $h=(\\mu/3)^{1/3}$ gives the asymmetry of the two throats:
       </p>
-      $$\\lambda_H^2 - \\omega_H^2 = 2, \\qquad \\lambda_H^2 \\omega_H^2 = 27$$
-
-      <h3>2. The Cubic Asymmetry Formula</h3>
+      <div class="katex-display-block">$$\\mathcal A=\\frac h3\\Bigl(1-\\frac{h^2}{27}+O(h^3)\\Bigr).$$</div>
       <p>
-        Let $\\mu = m / (M + m)$ be the mass parameter and $h = (\\mu/3)^{1/3}$ the Hill scale. Linear theory predicts that the throat openings around $L_1$ and $L_2$ have identical geometric cross-sections for a Jacobi energy excess $\\Delta C > 0$. However, solving the non-linear invariant manifold equations to third order gives the exact asymmetry ratio $A$:
+        In the full restricted problem $\\mathcal A/(h/3)$ is $0.99972$ for Jupiter and within $10^{-5}$ of $1$ for the planets of the pulsar PSR B1257+12. The October paper <em>The Pair, the Triad and the Half</em> carries the series one order further, $\\mathcal A=\\frac h3\\bigl(1-\\frac{h^2}{27}-\\frac{h^3}{3}+O(h^4)\\bigr)$.
       </p>
-      $$A = \\frac{h}{3}\\left(1 - \\frac{h^2}{27} + O(h^3)\\right)$$
+      <h3>3. The throat in phase space</h3>
       <p>
-        For Jupiter ($\\mu \\approx 9.537 \\times 10^{-4}, h \\approx 0.0682$), this generates an inward-to-outward flux bias exceeding $2.2\\%$, altering capture cross-sections for inbound hyperbolic orbiters.
+        Near each throat the planar energy surface is $S^2\\times I$. The flux through the throat is the action $2\\pi\\Delta E/\\omega$ of its Lyapunov orbit, which the computed orbits at Jupiter's $L_1$ approach to $1.000002$ times it. The quantum transmission through the saddle is the two-state law
       </p>
-
-      <h3>3. The Gas Ladder and Interstellar Visitors</h3>
+      <div class="katex-display-block">$$T=\\frac{1}{1+e^{-2\\pi\\Delta E/\\hbar\\lambda}},$$</div>
       <p>
-        This cubic throat asymmetry explains why retrograde hyperbolic interlopers such as 1I/'Oumuamua and 2I/Borisov preferentially scatter through outer throats ($L_2$) rather than inner Lagrange conduits ($L_1$). The Four Giants (Jupiter-Saturn, Uranus-Neptune) act as a balanced cascading ladder, where energy exchange is dictated by invariant manifold tube intersections in 5-dimensional phase space.
+        equal to $\\frac12$ at the saddle energy. Every long temporary capture of a comet by Jupiter in the Ohtsuka catalogue entered and left through the $L_1$ or $L_2$ region.
       </p>
+      <div class="blog-callout"><strong>The visitors:</strong> the paper also tests the three interstellar objects. They share neither a direction nor a kinematic origin: no statistic of their incoming directions departs from an isotropic or kinematic population (smallest $p=0.27$).</div>
     `
   },
   {
     id: "wigner-negativity-decoherence-thirds",
-    title: "Decoherence at the Thirds: Lee-Yang Circle Theorems in Three-State Spin Chains",
+    title: "Decoherence at the Thirds: Riemann's Kernel as a Quantum State",
     date: "August 29, 2026",
     isoDate: "2026-08-29",
-    readTime: "9 min read",
+    readTime: "4 min read",
     category: "quantum-physics",
-    categoryLabel: "Quantum Negativity & Coherence",
+    categoryLabel: "Quantum Coherence",
     categoryClass: "cat-amber",
-    tags: ["Wigner Negativity", "Lee-Yang Theorem", "Decoherence", "Spin Chains", "Quantum Phase Space"],
-    formulaHighlight: "L(t) = \\frac{1 + 2\\cos(2\\lambda t)}{3} = 0 \\quad \\left(t = \\frac{T}{3}, \\; \\frac{2T}{3}\\right)",
-    summary: "Interpreting Riemann's kernel as a pure quantum state $\\varphi = \\Phi / \\|\\Phi\\|$. The total Wigner negativity is bounded by $4.844 \\times 10^{-5}$, and coupling to a triad $\\{-s, 0, s\\}$ produces complete decoherence at exactly one-third and two-thirds of the revival period.",
+    tags: ["Wigner Function", "Decoherence", "Lee–Yang", "Triad"],
+    formulaHighlight: "L(t)=\\frac{1+2\\cos2\\lambda t}{3},\\qquad L(t)=\\frac{\\Xi(\\lambda t)}{\\Xi(0)}",
+    summary: "Riemann\\'s kernel is both a pure quantum state and a probability law. Its Wigner function is negative on only $4.844\\times10^{-5}$ of its mass; a qubit coupled to the triad $\\{-s,0,s\\}$ loses its coherence completely at one third and two thirds of the period; and a qubit in a field with Riemann\\'s law loses it exactly at the zeros of $\\zeta$.",
     paperId: "03_Quantum_The_Riemann_Kernel_as_a_Quantum_State",
     paperTitle: "The Riemann Kernel as a Quantum State: Wigner Negativity, Decoherence at the Thirds and Lee-Yang Zeros",
     paperPdf: "papers/03_Quantum_The_Riemann_Kernel_as_a_Quantum_State/03_Quantum_The_Riemann_Kernel_as_a_Quantum_State.pdf",
     contentHtml: `
       <p class="blog-lead">
-        Can the nontrivial zeros of the Riemann zeta function be directly mapped to observable quantum physical phenomena? In Paper 03, we established that a qubit dephased by a classical field whose distribution matches Riemann's kernel exhibits coherence zeros precisely at the Riemann ordinates $\\gamma_n$.
+        Riemann's kernel $\\Phi$, the positive even function with $\\Xi(z)=\\int_0^\\infty\\Phi(\\tau)\\cos(z\\tau)\\,d\\tau$, is square-integrable and integrable. Paper 03 reads it twice: as a pure state $\\varphi=\\Phi/\\|\\Phi\\|$ and as a probability law.
       </p>
-
-      <h3>1. The Riemann Wavefunction in $L^2(\\mathbb{R})$</h3>
+      <h3>1. Confined negativity</h3>
       <p>
-        Riemann's kernel $\\Phi(\\tau) = \\sum_{n=1}^\\infty (2\\pi^2 n^4 e^{9\\tau/2} - 3\\pi n^2 e^{5\\tau/2}) \\exp(-\\pi n^2 e^{2\\tau})$ is positive, even, and exponentially decaying. Normalizing gives a pure quantum state:
+        The Wigner function of $\\varphi$ is negative, but only slightly: its negative part carries $4.844\\times10^{-5}$ of the Wigner mass. On the axis $a=0$ it is negative for $11.1994\\lt k\\lt15.8346$ and deepest at $k=12.022$. For every momentum $k$ it is positive whenever $2\\pi e^{2|a|}\\ge\\max(\\sqrt{2k^2+\\frac12},20)$.
       </p>
-      $$\\varphi(\\tau) = \\frac{\\Phi(\\tau)}{\\|\\Phi\\|_{L^2}}$$
+      <h3>2. Decoherence at the thirds</h3>
       <p>
-        Evaluating the Wigner quasiprobability distribution $W_\\varphi(x, p) = \\frac{1}{\\pi} \\int \\varphi(x+y)\\bar{\\varphi}(x-y)e^{-2ipy} dy$ reveals non-classical negativity. However, unlike Fock states where negativity is macroscopic, the Riemann state's negativity is confined:
+        A qubit prepared in $|+\\rangle$ and coupled by $\\lambda\\sigma_z\\otimes S_z$ to a maximally mixed spin one, the triad $\\{-s,0,s\\}$, has coherence
       </p>
-      $$\\int_{W_\\varphi < 0} |W_\\varphi(x, p)|\\, dx\\, dp = 4.844 \\times 10^{-5}$$
+      <div class="katex-display-block">$$L(t)=\\frac{1+2\\cos2\\lambda t}{3},$$</div>
       <p>
-        The negativity is located exclusively in the momentum band $11.1994 < |x| < 15.8346$, reaching its minimum at $x \\approx 12.022$.
+        which vanishes exactly at $\\frac13$ and $\\frac23$ of the revival period $\\pi/\\lambda$. Two Ising spins one half with weight $e^{4g\\mu_1\\mu_2}$ give the same law exactly at $g=\\frac12\\ln2$, the merged pair; the unmerged pair, $g=0$, gives $\\cos^2\\lambda t$. For an open chain of $N$ three-state spins with $K\\ge0$, all $2N$ zeros of the partition function lie on the unit circle: the coherence vanishes only at real times.
       </p>
-
-      <h3>2. Complete Decoherence at the Thirds</h3>
+      <h3>3. Riemann's spin</h3>
       <p>
-        Now couple a probe qubit to a bath of $N$ symmetric triads $\\{-s, 0, s\\}$. For a single triad with coupling $\\lambda$, the coherence function is:
+        A qubit coupled to a classical field with law $\\Phi/(2\\Xi(0))$ has coherence
       </p>
-      $$L(t) = \\frac{1}{3} + \\frac{2}{3}\\cos(2\\lambda t)$$
+      <div class="katex-display-block">$$L(t)=\\frac{\\Xi(\\lambda t)}{\\Xi(0)},$$</div>
       <p>
-        This vanishes completely when $\\cos(2\\lambda t) = -1/2$, which occurs at exact thirds of the period:
-      </p>
-      $$t^* = \\frac{1}{3}T, \\quad \\frac{2}{3}T, \\qquad T = \\frac{\\pi}{\\lambda}$$
-      <p>
-        By mapping this triad into a merged pair of Ising spins with coupling $K = \\frac{1}{2}\\ln 2$, we proved that for any chain of $N$ ferromagnetic triads ($K \\ge 0$), all zeros of the partition function and coherence function lie strictly on the unit circle $|z|=1$, in exact conformance with the Lee-Yang circle theorem.
+        which vanishes at a real time exactly when $\\frac12\\pm i\\lambda t$ is a zero of $\\zeta$ on the critical line. RH holds if and only if this coherence, continued to complex time, vanishes only at real times.
       </p>
     `
   },
   {
     id: "radix-economy-cortical-balance",
-    title: "Radix Economy and Cortical Balance: Why $e$ Prefers Balanced Ternary Networks",
+    title: "Three Is Enough: Radix Economy, Balanced Ternary and Ternary Weights",
     date: "August 10, 2026",
     isoDate: "2026-08-10",
-    readTime: "6 min read",
+    readTime: "4 min read",
     category: "cortical-networks",
-    categoryLabel: "Cortical & Ternary Networks",
+    categoryLabel: "Ternary & Cortical Networks",
     categoryClass: "cat-emerald",
-    tags: ["Radix Economy", "Balanced Ternary", "Cortical Networks", "E/I Balance", "Euler Number"],
-    formulaHighlight: "\\mu = \\sqrt{K} A (\\nu - \\nu_{\\mathrm{bal}}), \\quad b^* = e \\approx 2.718",
-    summary: "The mathematical optimality of base $e \\approx 2.718$ implies that balanced-ternary $\\{-1, 0, +1\\}$ maximizes hardware radix economy. This mathematical optimum mirrors the precise inward/outward charge cancellation in excitable tissue and the $\\sqrt{K}$ drive cancellation in cortical networks.",
+    tags: ["Radix Economy", "Balanced Ternary", "Ternary Weights", "Balanced Networks"],
+    formulaHighlight: "E(b)=\\frac{b}{\\ln b},\\qquad \\frac{E(2)}{E(3)}=\\frac{E(4)}{E(3)}=\\tfrac23\\log_2 3=1.0566",
+    summary: "Base $3$ is a cheapest base for every $N\\ge2^{16}$ and the unique cheapest for every $N\\ge2^{27}$. Balanced ternary $\\{-1,0,1\\}$ is a complete signed arithmetic, and a network with weights in $\\{-\\alpha,0,+\\alpha\\}$ matches 32-bit floats within the spread of five seeds.",
     paperId: "06_Algorithms_Three_Is_Enough",
     paperTitle: "Three Is Enough: Radix Economy, Balanced-Ternary Arithmetic and Ternary-Weight Networks",
     paperPdf: "papers/06_Algorithms_Three_Is_Enough/06_Algorithms_Three_Is_Enough.pdf",
     contentHtml: `
       <p class="blog-lead">
-        Why does biology favor balanced push-pull cancellation, and why does computer architecture persistently struggle with multiplication overhead? The answer connects the classical calculus problem of radix economy to excitation-inhibition balance in biological neural circuits.
+        A base-$b$ register that holds the integers $0,\\dots,N$ costs $C_b(N)=b\\,d_b(N)$ digit-states, where $d_b(N)$ is the number of digits. Its growth rate $E(b)=b/\\ln b$ is least over the reals at $b=e$ and over the integers at $b=3$. Paper 06 makes this exact.
       </p>
-
-      <h3>1. The Mathematical Optimum of Radix Economy</h3>
+      <h3>1. Three is the cheapest radix</h3>
       <p>
-        The radix economy $E(b, N)$ measures the hardware complexity required to represent numbers up to $N$ in integer base $b$:
+        Base $3$ is a cheapest base for every $N\\ge2^{16}$ and the unique cheapest base for every $N\\ge2^{27}$, and both thresholds are sharp. Asymptotically binary and base $4$ both pay the factor
       </p>
-      $$E(b, N) = b \\cdot \\lceil \\log_b N \\rceil \\approx \\frac{b}{\\ln b} \\ln N$$
+      <div class="katex-display-block">$$\\frac{E(2)}{E(3)}=\\frac{E(4)}{E(3)}=\\tfrac23\\log_2 3=1.0566.$$</div>
+      <h3>2. Balanced ternary is a complete signed arithmetic</h3>
       <p>
-        Minimizing $f(b) = b / \\ln b$ over positive reals yields $f'(b) = (\\ln b - 1)/(\\ln b)^2 = 0$, giving the unique global minimum at Euler's constant:
+        With digits $\\{-1,0,1\\}$ every integer has exactly one representation, negation is the digit flip, the carries of addition stay in the triad, products of digits need no carry, rounding is truncation, the sign is the leading nonzero trit and order is lexicographic. The generating function of a width-$d$ register has all its $3^d-1$ zeros on the unit circle.
       </p>
-      $$b^* = e \\approx 2.718281828$$
+      <h3>3. Ternary weights</h3>
       <p>
-        Among discrete integers $b \\in \\mathbb{Z}^+$, $f(3) = 3 / \\ln 3 \\approx 2.7307$ beats $f(2) = 2 / \\ln 2 \\approx 2.8854$. Ternary logic is strictly more hardware-efficient than binary logic.
+        The quantiser $\\{-\\alpha,0,+\\alpha\\}$ is optimal in least squares exactly when $\\alpha=\\mathrm E(|W|\\mid|W|\\gt\\Delta)$ and $\\Delta=\\alpha/2$; for uniform weights it sets exactly one third of them to zero. On the 1797 test digits of the UCI optical-recognition set, a $64$–$128$–$10$ network with ternary weights reaches $97.44\\pm0.73\\%$, against $97.70\\pm0.43\\%$ with 32-bit floats and $97.11\\pm0.55\\%$ with binary weights (five seeds), at $\\log_2 3=1.585$ bits per weight.
       </p>
-
-      <h3>2. Balanced Ternary $\\{-1, 0, +1\\}$ and Zero-Multiplier Neural Networks</h3>
-      <p>
-        In symmetric balanced ternary, the digits represent weights $\\{-1, 0, +1\\}$. In neural network inference, this eliminates multiplications entirely:
-      </p>
-      $$\\mathbf{y} = \\sum_{w_{ij} = +1} x_j - \\sum_{w_{ij} = -1} x_j$$
-      <p>
-        Floating-point multiply-accumulate (MAC) units are replaced with simple bitwise multiplexers and additions, reducing silicon area by $87\\%$ and power dissipation by an order of magnitude.
-      </p>
-
-      <h3>3. The Biological Mirror: Cortical $\\sqrt{K}$ Cancellation</h3>
-      <p>
-        In Paper 05, we analyzed $20{,}000$ binary neurons with $K = 100$ to $1600$ synapses per neuron. The excitatory and inhibitory inputs scale as $\\sqrt{K}$, but cancel to order 1:
-      </p>
-      $$\\mu = \\sqrt{K}\\, A\\, (\\nu - \\nu_{\\mathrm{bal}})$$
-      <p>
-        At $K = 1600$, $97.63\\%$ of excitatory drive is canceled by inhibition. Biological cortex and ternary computing both converge on the same mathematical imperative: optimal dynamical range occurs through symmetric pair balance rather than asymmetric accumulation.
-      </p>
+      <div class="blog-callout"><strong>The same pair in tissue:</strong> Paper 05 proves that in a balanced network the residual input and the distance of the rates from balance are one object, $\\mu=\\sqrt K\\,A\\,(\\nu-\\nu_{\\mathrm{bal}})$. At $K=1600$ inhibition cancels $97.63\\%$ of the excitatory drive.</div>
     `
   }
 ];
 
 // --- Category Class Mapping ---
 const CATEGORY_MAP = {
-  "differential-geometry": { label: "Fluid Manifolds & Topology", class: "cat-violet" },
+  "differential-geometry": { label: "Geometry & Structure", class: "cat-violet" },
   "number-theory": { label: "Number Theory & Zeros", class: "cat-blue" },
-  "celestial-mechanics": { label: "Celestial Throats & Flux", class: "cat-crimson" },
-  "quantum-physics": { label: "Quantum Negativity & Coherence", class: "cat-amber" },
-  "cortical-networks": { label: "Cortical & Ternary Networks", class: "cat-emerald" },
-  "general-physics": { label: "Mathematical Physics & Balance", class: "cat-blue" }
+  "celestial-mechanics": { label: "Celestial Mechanics", class: "cat-crimson" },
+  "quantum-physics": { label: "Quantum Coherence", class: "cat-amber" },
+  "cortical-networks": { label: "Ternary & Cortical Networks", class: "cat-emerald" },
+  "general-physics": { label: "Mathematical Physics", class: "cat-blue" }
 };
 
 // --- State Variables ---
