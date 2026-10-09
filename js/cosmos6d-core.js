@@ -1,16 +1,21 @@
 /* The 6D cosmos: the structure and its behaviour, nothing else.
    Structure. Six layers; each holds a triad of vertices and a triad of midpoints, a midpoint being a vertex moved by -1/2
-   (halved and turned half a turn). Bridges join every vertex of a layer to every midpoint of the next, and every
-   midpoint to every vertex of the next. Where two bridges cross, they meet: the two strands at 1/2 of a gap, a strand
-   with itself at 1/3 and 2/3. Nested in itself, every node holds the whole structure again by the same move, so a node
-   of the cosmos is a node at every level at once.
-   Behaviour. Each node holds a pair, its phase and its current (the rate of its phase). Every bridge and every meeting
-   pulls toward the coherence of the triad, (1 + 2 cos d)/3, and the pull changes the currents: what one end gains the
-   other loses, so the total current is kept, and so is the energy. The step runs the same backwards as forwards, so
-   there is no arrow of time in it and no clock: the only turning is the phases' own.
-   The current is put in once; nothing is touched afterwards. */
+   (halved and turned half a turn), each layer the one before turned by -1. Bridges join every vertex of a layer to
+   every midpoint of the next, and every midpoint to every vertex of the next. Where two bridges cross, they meet: the
+   two strands at 1/2 of a gap, a strand with itself at 1/3 and 2/3.
+   Six scales. Scale 1 is the structure; every node of scale s is the whole structure within, which is scale s + 1, down
+   to scale 6: 36^6 = 2,176,782,336 vertices. A vertex is named by its six digits, one node of the structure at each scale.
+   Behaviour. Each vertex holds a pair, its phase and its current (the rate of its phase). Every bridge and every meeting
+   at every scale pulls toward the coherence of the triad, (1 + 2 cos d)/3; what one end gains the other loses, so the
+   total current and the energy are kept, and the step runs the same backwards as forwards.
+   Every pull at scale s depends only on differences between vertices that differ in their scale-s digit, and the current
+   put in at one scale depends only on that digit. So the cosmos stays exactly a sum over the scales: the phase of a vertex
+   is psi_1(d_1) + ... + psi_6(d_6), and the 2,176,782,336 vertices are carried, without loss, by six structures of 36:
+   216 phases and 216 currents. The current is put in once; nothing is touched afterwards. */
 
-export const MOVE = -0.5;
+export const MOVE = -0.5, SCALES = 6, N36 = 36;
+export const VERTICES = N36 ** SCALES;                                    // 2,176,782,336
+export const COPIES = N36 ** (SCALES - 1);                                // each scale's structure, once for every place in the others
 
 export const unit = (() => {
   const L = 6, R = 1, Y = 0.62;
@@ -29,7 +34,6 @@ export const unit = (() => {
   for (let l = 0; l < L; l++) for (let kd = 0; kd < 2; kd++) triads.push([...Array(n).keys()].filter(d => layer[d] === l && kind[d] === kd));
   const triadNbr = triads.map(t => triads.map((u, j) => j).filter(j =>
     Math.abs(layer[triads[j][0]] - layer[t[0]]) === 1 && kind[triads[j][0]] !== kind[t[0]]));
-
   // where two bridges of one gap cross: both run between the same two heights, so they cross at one fraction t of each
   const sub = (u, v) => [u[0] - v[0], u[1] - v[1], u[2] - v[2]], dot = (u, v) => u[0] * v[0] + u[1] * v[1] + u[2] * v[2];
   const meetings = [];
@@ -46,122 +50,80 @@ export const unit = (() => {
     if (Math.hypot(X[0] - Z[0], X[1] - Z[1], X[2] - Z[2]) > 1e-9) continue;
     meetings.push({ a0, a1, b0, b1, t, pos: X });
   }
-  // the phase difference of the two crossing lines at the meeting point, as weights on the four ends
   const W = meetings.map(m => [[m.b0, 1 - m.t], [m.b1, m.t], [m.a0, -(1 - m.t)], [m.a1, -m.t]]);
   return { n, L, pos, layer, kind, lines, triads, triadNbr, meetings, W };
 })();
 
-export function makeCosmos(k) {
-  const n = unit.n, N = n ** k, stride = Array.from({ length: k }, (_, i) => n ** (k - 1 - i));
-  const tri = unit.triads, triN = unit.triadNbr, W = unit.W, Mn = W.length, T = tri.length;
-  const th = new Float64Array(N), p = new Float64Array(N), F = new Float64Array(N);
-  const co = new Float64Array(N), si = new Float64Array(N), sr = new Float64Array(T), sm = new Float64Array(T);
-  const meetN = k * Mn * (N / n), light = new Float32Array(meetN);       // what each meeting point exchanges
-  const c = { k, N, stride, th, p, light, meetN, putIn: 0 };
+export function makeCosmos() {
+  const n = unit.n, S = SCALES, tri = unit.triads, triN = unit.triadNbr, W = unit.W, Mn = W.length;
+  const psi = new Float64Array(S * n), p = new Float64Array(S * n), F = new Float64Array(S * n);
+  const light = new Float64Array(S * Mn);                                  // what each meeting exchanges, the same in every copy
+  const sr = new Float64Array(tri.length), sm = new Float64Array(tri.length);
+  const c = { psi, p, light, putIn: 0, S, n, Mn };
 
-  function pull() {
-    F.fill(0);
-    for (let x = 0; x < N; x++) { co[x] = Math.cos(th[x]); si[x] = Math.sin(th[x]); }
-    let mi = 0;
-    for (let i = 0; i < k; i++) {
-      const s = stride[i], block = n * s;
-      for (let hi = 0; hi < N; hi += block) for (let lo = 0; lo < s; lo++) {
-        const b = hi + lo;
-        for (let t = 0; t < T; t++) {                                     // each triad's summed phasor: all that crosses a bridge
-          const m = tri[t]; let re = 0, im = 0;
-          for (let q = 0; q < 3; q++) { const x = b + m[q] * s; re += co[x]; im += si[x]; }
-          sr[t] = re; sm[t] = im;
-        }
-        for (let t = 0; t < T; t++) {
-          const nb = triN[t]; let re = 0, im = 0;
-          for (let q = 0; q < nb.length; q++) { re += sr[nb[q]]; im += sm[nb[q]]; }
-          const m = tri[t];
-          for (let q = 0; q < 3; q++) { const x = b + m[q] * s; F[x] += im * co[x] - re * si[x]; }
-        }
-        for (let g = 0; g < Mn; g++) {                                    // the meetings
-          const w = W[g]; let d = 0;
-          for (let q = 0; q < 4; q++) d += w[q][1] * th[b + w[q][0] * s];
-          const v = Math.sin(d);
-          for (let q = 0; q < 4; q++) F[b + w[q][0] * s] -= w[q][1] * v;
-          light[mi++] = v;
-        }
-      }
+  // the pull on one scale's structure: bridges pass each triad's summed phasor; meetings pull the two crossing lines
+  function pullScale(s) {
+    const o = s * n;
+    for (let t = 0; t < tri.length; t++) {
+      let re = 0, im = 0;
+      for (const d of tri[t]) { re += Math.cos(psi[o + d]); im += Math.sin(psi[o + d]); }
+      sr[t] = re; sm[t] = im;
+    }
+    for (let d = 0; d < n; d++) F[o + d] = 0;
+    for (let t = 0; t < tri.length; t++) {
+      let re = 0, im = 0;
+      for (const q of triN[t]) { re += sr[q]; im += sm[q]; }
+      for (const d of tri[t]) F[o + d] += im * Math.cos(psi[o + d]) - re * Math.sin(psi[o + d]);
+    }
+    for (let g = 0; g < Mn; g++) {
+      const w = W[g]; let x = 0;
+      for (let q = 0; q < 4; q++) x += w[q][1] * psi[o + w[q][0]];
+      const v = Math.sin(x);
+      for (let q = 0; q < 4; q++) F[o + w[q][0]] -= w[q][1] * v;
+      light[s * Mn + g] = v;
     }
   }
+  function pull() { for (let s = 0; s < S; s++) pullScale(s); }
+
   c.step = function (dt, times = 1) {
     for (let r = 0; r < times; r++) {
-      for (let x = 0; x < N; x++) p[x] += 0.5 * dt * F[x];
-      for (let x = 0; x < N; x++) th[x] += dt * p[x];
+      for (let i = 0; i < S * n; i++) p[i] += 0.5 * dt * F[i];
+      for (let i = 0; i < S * n; i++) psi[i] += dt * p[i];
       pull();
-      for (let x = 0; x < N; x++) p[x] += 0.5 * dt * F[x];
+      for (let i = 0; i < S * n; i++) p[i] += 0.5 * dt * F[i];
     }
   };
-  c.put = function (nodes, I) { for (const x of nodes) { p[x] += I; c.putIn += I; } };
-  c.current = () => { let s = 0; for (let x = 0; x < N; x++) s += p[x]; return s; };
+  // put the current into one layer at one scale: every vertex whose digit at that scale lies in that layer
+  c.put = function (scale, layer, I) {
+    for (let d = 6 * layer; d < 6 * layer + 6; d++) p[scale * n + d] += I;
+    c.putIn += I * 6 * COPIES;
+  };
+  c.reset = function () { psi.fill(0); p.fill(0); c.putIn = 0; pull(); };
+
+  const P = s => { let a = 0; for (let d = 0; d < n; d++) a += p[s * n + d]; return a; };
+  c.current = () => { let a = 0; for (let s = 0; s < S; s++) a += P(s); return a * COPIES; };
   c.energy = function () {
-    let e = 0;
-    for (let x = 0; x < N; x++) e += 0.5 * p[x] * p[x];
-    for (let i = 0; i < k; i++) {
-      const s = stride[i], block = n * s;
-      for (let hi = 0; hi < N; hi += block) for (let lo = 0; lo < s; lo++) {
-        const b = hi + lo;
-        for (const [a0, a1] of unit.lines) e -= Math.cos(th[b + a1 * s] - th[b + a0 * s]);
-        for (let g = 0; g < Mn; g++) { const w = W[g]; let d = 0; for (let q = 0; q < 4; q++) d += w[q][1] * th[b + w[q][0] * s]; e -= Math.cos(d); }
-      }
+    let kin = 0, cross = 0, pot = 0; const Ps = [];
+    for (let s = 0; s < S; s++) { Ps.push(P(s)); for (let d = 0; d < n; d++) kin += p[s * n + d] ** 2; }
+    for (let s = 0; s < S; s++) for (let t = 0; t < S; t++) if (s !== t) cross += Ps[s] * Ps[t];
+    for (let s = 0; s < S; s++) {
+      const o = s * n;
+      for (const [a0, a1] of unit.lines) pot -= Math.cos(psi[o + a1] - psi[o + a0]);
+      for (let g = 0; g < Mn; g++) { const w = W[g]; let x = 0; for (let q = 0; q < 4; q++) x += w[q][1] * psi[o + w[q][0]]; pot -= Math.cos(x); }
     }
-    return e;
+    return 0.5 * (kin * COPIES + cross * COPIES / N36) + pot * COPIES;
   };
-  c.reset = function () { th.fill(0); p.fill(0); c.putIn = 0; pull(); };
-
-  // the current crossing each gap of the outermost level, upward: what the upper layer gains from the lower one
-  c.gapCurrents = function () {
-    const s = stride[0], out = new Float64Array(5);
-    for (const [a0, a1] of unit.lines) {
-      const g = unit.layer[a0];
-      for (let r = 0; r < s; r++) out[g] += Math.sin(th[a0 * s + r] - th[a1 * s + r]);
-    }
+  // the sum of e^(i psi) over one scale's structure: what a node passes outward of that scale, in every copy
+  c.scaleSum = function (s) {
+    let re = 0, im = 0;
+    for (let d = 0; d < n; d++) { re += Math.cos(psi[s * n + d]); im += Math.sin(psi[s * n + d]); }
+    return [re, im];
+  };
+  // the current crossing each gap of one scale's structure, upward, in each copy
+  c.gapCurrents = function (s) {
+    const out = new Float64Array(5), o = s * n;
+    for (const [a0, a1] of unit.lines) out[unit.layer[a0]] += Math.sin(psi[o + a0] - psi[o + a1]);
     return out;
-  };
-
-  // the node at given digits (coarsest first), and the six nodes of one layer at one level, at one place in the others
-  c.node = digits => digits.reduce((a, d, i) => a + d * stride[i], 0);
-  c.layerAt = function (level, layer, place) {
-    const out = [];
-    for (let d = 6 * layer; d < 6 * layer + 6; d++) out.push(c.node(place.map((q, i) => (i === level ? d : q))));
-    return out;
-  };
-
-  // where the meeting points are: the structure, then the structure again in each node by the move, level after level
-  c.meetPositions = function () {
-    const P = new Float32Array(meetN * 3); let mi = 0;
-    const off = x => {
-      let px = 0, py = 0, pz = 0, f = 1;
-      for (let i = 0; i < k; i++) { const u = unit.pos[Math.floor(x / stride[i]) % n]; px += f * u[0]; py += Math.abs(f) * u[1]; pz += f * u[2]; f *= MOVE; }
-      return [px, py, pz];
-    };
-    for (let i = 0; i < k; i++) {
-      const s = stride[i], block = n * s, f = Math.pow(MOVE, i), u0 = unit.pos[0];
-      for (let hi = 0; hi < N; hi += block) for (let lo = 0; lo < s; lo++) {
-        const o = off(hi + lo);                                           // this level's digit is 0 here: take that node out
-        const ox = o[0] - f * u0[0], oy = o[1] - Math.abs(f) * u0[1], oz = o[2] - f * u0[2];
-        for (const m of unit.meetings) {
-          P[mi * 3] = ox + f * m.pos[0]; P[mi * 3 + 1] = oy + Math.abs(f) * m.pos[1]; P[mi * 3 + 2] = oz + f * m.pos[2]; mi++;
-        }
-      }
-    }
-    return P;
-  };
-  // the four nodes whose currents meet at each meeting point
-  c.meetEnds = function () {
-    const E = new Uint32Array(meetN * 4); let mi = 0;
-    for (let i = 0; i < k; i++) {
-      const s = stride[i], block = n * s;
-      for (let hi = 0; hi < N; hi += block) for (let lo = 0; lo < s; lo++) {
-        const b = hi + lo;
-        for (const m of unit.meetings) { E[mi * 4] = b + m.a0 * s; E[mi * 4 + 1] = b + m.a1 * s; E[mi * 4 + 2] = b + m.b0 * s; E[mi * 4 + 3] = b + m.b1 * s; mi++; }
-      }
-    }
-    return E;
   };
 
   pull();

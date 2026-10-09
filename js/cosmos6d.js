@@ -1,256 +1,226 @@
-/* The 6D cosmos, seen. Nothing of the structure is drawn: no node, no line. Light comes only from the meeting points of
-   lines, as much as the current exchanged there. The observer keeps a record of each place's rate; colour is read from
-   it, one turn of the colour wheel for each doubling of the rate above the cosmos's common rate, and there is no colour
-   where a place turns at the common rate. The structure and its behaviour are in cosmos6d-core.js. */
+/* The 6D cosmos, seen. Nothing of the structure is drawn. Light comes only from the meetings of lines, as much as the
+   current exchanged there. A node seen from far is one object holding all the light inside it; when the observer is near
+   enough to resolve it, it opens into the structure within, and so on through the six scales. Colour is read from the
+   observer's record of each place's rate: one turn of the colour wheel for each doubling above the cosmos's common rate,
+   white at the common rate. The structure and its behaviour are in cosmos6d-core.js. */
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
-import { makeCosmos, unit } from "./cosmos6d-core.js?v=20261010b";
+import { makeCosmos, unit, SCALES, VERTICES, COPIES, MOVE } from "./cosmos6d-core.js?v=20261010g";
 
 const $ = id => document.getElementById(id);
 const host = $("cosmos6d-view");
 if (host) init();
 
 function init() {
-  const BG = 0x02030a, DT = 0.01, fmt = (v, d = 0) => v.toLocaleString("en-GB", { maximumFractionDigits: d, minimumFractionDigits: d });
+  const BG = 0x02030a, DT = 0.01, n = unit.n, Mn = unit.meetings.length;
+  const fmt = (v, d = 0) => v.toLocaleString("en-GB", { maximumFractionDigits: d, minimumFractionDigits: d });
+  // lightning, in the structure's own terms: the current at which a layer can no longer hand its current on and turns
+  // by itself, between 7.0 and 7.5 (cosmos6d/current/inertial.py). Since the cosmos is a sum over its scales, the value
+  // is the same at every scale. The default is the last value below it.
+  const LIGHTNING = 7.0;
 
   /* ---------- space ---------- */
   const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: "high-performance" });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
   renderer.setClearColor(new THREE.Color(BG).convertSRGBToLinear(), 1);   // the render target keeps it as given; the output pass encodes once
   const stage = document.createElement("div"); stage.className = "stage"; stage.appendChild(renderer.domElement); host.appendChild(stage);
-  const scene = new THREE.Scene(), camera = new THREE.PerspectiveCamera(40, 1, 0.0005, 400);
+  const scene = new THREE.Scene(), camera = new THREE.PerspectiveCamera(40, 1, 0.00001, 400);
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true; controls.dampingFactor = 0.07; controls.zoomToCursor = true;
-  controls.minDistance = 0.005; controls.maxDistance = 60;
+  controls.minDistance = 0.00005; controls.maxDistance = 60;
   const composer = new EffectComposer(renderer); composer.addPass(new RenderPass(scene, camera));
   const bloom = new UnrealBloomPass(new THREE.Vector2(512, 512), 0.9, 0.4, 0.05); composer.addPass(bloom); composer.addPass(new OutputPass());
-  const dot = (() => {
-    const cv = document.createElement("canvas"); cv.width = cv.height = 32; const g = cv.getContext("2d");
-    const gr = g.createRadialGradient(16, 16, 0, 16, 16, 16);
-    gr.addColorStop(0, "rgba(255,255,255,1)"); gr.addColorStop(0.35, "rgba(255,255,255,0.5)"); gr.addColorStop(1, "rgba(255,255,255,0)");
-    g.fillStyle = gr; g.fillRect(0, 0, 32, 32); return new THREE.CanvasTexture(cv);
-  })();
 
-  let cos = null, points = null, colors = null, ends = null, rec = null, running = false, perFrame = 4, frames = 0;
-  // lightning, in the structure's own terms: the current at which a layer can no longer hand its current on and turns
-  // by itself. Found by running the structure (cosmos6d/current/inertial.py): between 7.0 and 7.5 at one level and
-  // between 9.0 and 9.5 at two, between 10 and 11 at three. The default is the last value below it, where the whole
-  // cosmos takes the current.
-  const LIGHTNING = { 1: 7.0, 2: 9.0, 3: 10.0 };
+  // points of light: each with its own size, so a whole node and a single meeting can be drawn side by side
+  const MAXP = 300000;
+  const P = new Float32Array(MAXP * 3), C = new Float32Array(MAXP * 3), Z = new Float32Array(MAXP);
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute("position", new THREE.BufferAttribute(P, 3).setUsage(THREE.DynamicDrawUsage));
+  geo.setAttribute("color", new THREE.BufferAttribute(C, 3).setUsage(THREE.DynamicDrawUsage));
+  geo.setAttribute("size", new THREE.BufferAttribute(Z, 1).setUsage(THREE.DynamicDrawUsage));
+  const mat = new THREE.ShaderMaterial({
+    uniforms: { scale: { value: 300 } }, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+    vertexShader: "attribute float size; attribute vec3 color; varying vec3 vC; uniform float scale;" +
+      "void main(){ vC = color; vec4 mv = modelViewMatrix * vec4(position, 1.0); gl_PointSize = max(1.0, size * scale / -mv.z); gl_Position = projectionMatrix * mv; }",
+    fragmentShader: "varying vec3 vC; void main(){ vec2 q = gl_PointCoord - 0.5; float r2 = dot(q, q) * 4.0; if (r2 > 1.0) discard; gl_FragColor = vec4(vC, exp(-4.0 * r2)); }"
+  });
+  const points = new THREE.Points(geo, mat); points.frustumCulled = false; scene.add(points);
 
-  // each node is the whole structure within. Seen from outside it is one object: all the light inside it, summed at
-  // its place. When the observer is near enough to resolve it, it opens into its structure, and so on, level by level.
-  let objs = [], meetLevel = null, meetBase = null, depthW = null;
-  function build(k) {
-    cos = makeCosmos(k);
-    for (const o of [points, ...objs.map(q => q.pts)]) if (o) { scene.remove(o); o.geometry.dispose(); o.material.dispose(); }
-    const g = new THREE.BufferGeometry();
-    g.setAttribute("position", new THREE.BufferAttribute(cos.meetPositions(), 3));
-    colors = new Float32Array(cos.meetN * 3); g.setAttribute("color", new THREE.BufferAttribute(colors, 3));
-    ends = cos.meetEnds(); rec = new Float64Array(cos.N);
-    points = new THREE.Points(g, new THREE.PointsMaterial({
-      size: 0.12 * Math.pow(0.5, k - 1), map: dot, vertexColors: true, transparent: true,
-      depthWrite: false, blending: THREE.AdditiveBlending, sizeAttenuation: true
-    }));
-    scene.add(points);
-    // which level each meeting point belongs to, and the node it lies in
-    meetLevel = new Uint8Array(cos.meetN); meetBase = new Uint32Array(cos.meetN);
-    let mi = 0;
-    for (let i = 0; i < k; i++) {
-      const sd = cos.stride[i], block = 36 * sd;
-      for (let hi = 0; hi < cos.N; hi += block) for (let lo = 0; lo < sd; lo++)
-        for (let m = 0; m < unit.meetings.length; m++) { meetLevel[mi] = i; meetBase[mi] = hi + lo; mi++; }
-    }
-    // the nodes of each outer level, as objects at their own places
-    objs = [];
-    for (let v = 1; v < k; v++) {
-      const n = 36 ** v, P = new Float32Array(n * 3), inside = new Float32Array(n);
-      for (let o = 0; o < n; o++) {
-        let px = 0, py = 0, pz = 0, f = 1;
-        for (let j = 0; j < v; j++) { const u = unit.pos[Math.floor(o / 36 ** (v - 1 - j)) % 36]; px += f * u[0]; py += Math.abs(f) * u[1]; pz += f * u[2]; f *= -0.5; }
-        P[o * 3] = px; P[o * 3 + 1] = py; P[o * 3 + 2] = pz;
-      }
-      for (let q = 0; q < cos.meetN; q++) if (meetLevel[q] >= v) inside[Math.floor(meetBase[q] / 36 ** (k - v))]++;
-      const og = new THREE.BufferGeometry(); og.setAttribute("position", new THREE.BufferAttribute(P, 3));
-      const oc = new Float32Array(n * 3); og.setAttribute("color", new THREE.BufferAttribute(oc, 3));
-      const pts = new THREE.Points(og, new THREE.PointsMaterial({
-        size: 0.5 * Math.pow(0.5, v - 1), map: dot, vertexColors: true, transparent: true,
-        depthWrite: false, blending: THREE.AdditiveBlending, sizeAttenuation: true
-      }));
-      scene.add(pts); objs.push({ v, n, pts, oc, inside, acc: new Float32Array(n * 3) });
-    }
-    depthW = new Float32Array(k + 1);
-    fillLevels(); val.value = LIGHTNING[k]; $("out-c6-value").textContent = LIGHTNING[k].toFixed(1); begin();
-  }
-  // how deep the observer resolves: a node of level v opens when its structure would span more than OPEN pixels
-  const OPEN = 48;
-  function resolve() {
-    if (!cos) return;
-    const d = camera.position.distanceTo(controls.target), h = stage.clientHeight || 600;
-    const px = 1.6 / (d * Math.tan(camera.fov * Math.PI / 360)) * (h / 2);     // the whole structure's size on screen
-    const nu = Math.log2(px / OPEN);                                           // each level inside is half the size
-    const v = Math.floor(nu) + 1, f = nu - Math.floor(nu);
-    depthW.fill(0);
-    if (v < 1) depthW[1] = 1; else if (v >= cos.k) depthW[cos.k] = 1; else { depthW[v] = 1 - f; depthW[v + 1] = f; }
-  }
-  function begin() {
-    setRun(false); cos.reset(); rec.fill(0); steps = 0; samples = 0; put.disabled = false; paint(); bars();
-  }
-
-  /* ---------- the observer: a record of each place's rate, read at every step ---------- */
-  const KEEP = 0.002;                                                       // each reading enters the record at 1/500: a memory of about 5 time units
-  function observe() { const p = cos.p; for (let x = 0; x < cos.N; x++) rec[x] += KEEP * (p[x] - rec[x]); }
-  // and the propagation: every 10 steps it notes each layer's mean current and the current across each gap
+  /* ---------- the cosmos and its observer ---------- */
+  const cos = makeCosmos();
+  const rec = new Float64Array(SCALES * n);                                 // the observer's record of each place's rate
+  const KEEP = 0.002;                                                       // each reading enters at 1/500: about 5 time units
+  let running = false, perFrame = 20, steps = 0, samples = 0, putScale = -1;
   const RING = 1024, EVERY = 10, layerSeries = Array.from({ length: 6 }, () => new Float64Array(RING)), gapSeries = Array.from({ length: 5 }, () => new Float64Array(RING));
-  let steps = 0, samples = 0;
   function sample() {
-    const s = cos.stride[0], p = cos.p, m = new Float64Array(6);
-    for (let x = 0; x < cos.N; x++) m[Math.floor(Math.floor(x / s) / 6)] += p[x];
-    const g = cos.gapCurrents(), i = samples % RING;
-    for (let l = 0; l < 6; l++) layerSeries[l][i] = m[l] / (6 * s);
+    if (putScale < 0) return;
+    const o = putScale * n, i = samples % RING, g = cos.gapCurrents(putScale);
+    for (let l = 0; l < 6; l++) { let m = 0; for (let d = 6 * l; d < 6 * l + 6; d++) m += cos.p[o + d]; layerSeries[l][i] = m / 6; }
     for (let l = 0; l < 5; l++) gapSeries[l][i] = g[l];
     samples++;
   }
-  function step() { for (let r = 0; r < perFrame; r++) { cos.step(DT); observe(); if (++steps % EVERY === 0) sample(); } }
-  function fft(re, im) {                                                  // radix-2, in place
-    const n = re.length;
-    for (let i = 1, j = 0; i < n; i++) { let b = n >> 1; for (; j & b; b >>= 1) j ^= b; j ^= b; if (i < j) { [re[i], re[j]] = [re[j], re[i]]; [im[i], im[j]] = [im[j], im[i]]; } }
-    for (let len = 2; len <= n; len <<= 1) {
-      const a = -2 * Math.PI / len, wr = Math.cos(a), wi = Math.sin(a);
-      for (let i = 0; i < n; i += len) { let cr = 1, ci = 0; for (let j = 0; j < len / 2; j++) { const ur = re[i + j], ui = im[i + j], vr = re[i + j + len / 2] * cr - im[i + j + len / 2] * ci, vi = re[i + j + len / 2] * ci + im[i + j + len / 2] * cr; re[i + j] = ur + vr; im[i + j] = ui + vi; re[i + j + len / 2] = ur - vr; im[i + j + len / 2] = ui - vi; const t = cr * wr - ci * wi; ci = cr * wi + ci * wr; cr = t; } }
+  function step() {
+    for (let r = 0; r < perFrame; r++) {
+      cos.step(DT);
+      for (let i = 0; i < rec.length; i++) rec[i] += KEEP * (cos.p[i] - rec[i]);
+      if (++steps % EVERY === 0) sample();
     }
-  }
-  // the strongest frequency in a layer's mean current over the last samples (turns of the phase per unit of the step's time)
-  function strongest(series) {
-    let n = 1; while (n * 2 <= Math.min(samples, RING)) n *= 2; if (n < 16) return null;
-    const re = new Float64Array(n), im = new Float64Array(n); let mean = 0;
-    for (let i = 0; i < n; i++) { re[i] = series[(samples - n + i) % RING]; mean += re[i]; } mean /= n;
-    for (let i = 0; i < n; i++) re[i] = (re[i] - mean) * (0.5 - 0.5 * Math.cos(2 * Math.PI * i / (n - 1)));
-    fft(re, im); let best = 1, bp = 0;
-    for (let i = 1; i < n / 2; i++) { const q = re[i] * re[i] + im[i] * im[i]; if (q > bp) { bp = q; best = i; } }
-    return bp > 0 ? 2 * Math.PI * best / (n * EVERY * DT) : 0;
   }
 
-  function paint() {
-    resolve();
-    const L = cos.light, m = cos.putIn / cos.N, k = cos.k;
-    for (const o of objs) o.acc.fill(0);
-    for (let i = 0; i < cos.meetN; i++) {
-      const v = Math.min(1, Math.abs(L[i])), o = i * 3;
-      let r = v, g = v, b = v;
-      if (v > 0 && m > 0) {
-        const e = ends.subarray(i * 4, i * 4 + 4), rate = Math.abs(rec[e[0]] + rec[e[1]] + rec[e[2]] + rec[e[3]]) / 4;
-        const oct = Math.log2(rate / m);
-        if (oct > 0) {                                                       // faster than the cosmos as a whole: a colour
-          const h = oct - Math.floor(oct), s = Math.min(1, oct);
-          const f = n => { const kk = (n + h * 6) % 6; return 1 - Math.max(0, Math.min(kk, 4 - kk, 1)); };
-          r = v * (1 - s + s * f(5)); g = v * (1 - s + s * f(3)); b = v * (1 - s + s * f(1));
-        }
+  /* ---------- what the observer sees, from the outside in ---------- */
+  const OPEN = 48;                                                          // a node opens when its structure spans this many pixels
+  const frustum = new THREE.Frustum(), M4 = new THREE.Matrix4(), sph = new THREE.Sphere(), V3 = new THREE.Vector3(), V2 = new THREE.Vector2();
+  const scaleF = Array.from({ length: SCALES + 1 }, (_, v) => Math.pow(MOVE, v));
+  function hueOf(rate, m, v) {
+    if (!(v > 0) || !(m > 0)) return [v, v, v];
+    const oct = Math.log2(Math.abs(rate) / m);
+    if (!(oct > 0)) return [v, v, v];                                       // at the common rate or slower: white
+    const h = oct - Math.floor(oct), s = Math.min(1, oct);
+    const f = k => { const kk = (k + h * 6) % 6; return 1 - Math.max(0, Math.min(kk, 4 - kk, 1)); };
+    return [v * (1 - s + s * f(5)), v * (1 - s + s * f(3)), v * (1 - s + s * f(1))];
+  }
+  let drawn = 0;
+  function draw() {
+    const h = renderer.getDrawingBufferSize(V2).y || 600, focal = (h / 2) / Math.tan(camera.fov * Math.PI / 360);
+    mat.uniforms.scale.value = h / 2;
+    camera.updateMatrixWorld(); M4.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse); frustum.setFromProjectionMatrix(M4);
+    const m = cos.putIn / VERTICES;                                         // the common rate: every vertex's share of the current
+    // per scale: its meetings' light, the rate of its summed phasor, and the light inside a node of each depth
+    const Ls = new Float64Array(SCALES), Rs = new Float64Array(SCALES);
+    for (let s = 0; s < SCALES; s++) {
+      for (let g = 0; g < Mn; g++) Ls[s] += Math.abs(cos.light[s * Mn + g]);
+      const [re, im] = cos.scaleSum(s), q = re * re + im * im;
+      if (q > 1e-6) { let a = 0; for (let d = 0; d < n; d++) a += rec[s * n + d] * (Math.cos(cos.psi[s * n + d]) * re + Math.sin(cos.psi[s * n + d]) * im); Rs[s] = a / q; }
+    }
+    const tail = new Float64Array(SCALES + 1), bright = new Float64Array(SCALES + 1);
+    for (let v = SCALES - 1; v >= 0; v--) tail[v] = tail[v + 1] + Rs[v];
+    for (let v = 0; v < SCALES; v++) {
+      let T = 0, N = 0;
+      for (let s = v; s < SCALES; s++) { T += 36 ** (s - v) * Ls[s]; N += 36 ** (s - v) * Mn; }
+      bright[v] = Math.log1p(T) / Math.log1p(N);
+    }
+    let k = 0;
+    const emit = (x, y, z, size, light, rate) => {
+      if (k >= MAXP || !(light > 1e-4)) return;
+      const c = hueOf(rate, m, light);
+      P[k * 3] = x; P[k * 3 + 1] = y; P[k * 3 + 2] = z; C[k * 3] = c[0]; C[k * 3 + 1] = c[1]; C[k * 3 + 2] = c[2]; Z[k] = size; k++;
+    };
+    // breadth first: the cosmos itself is always open; every node after it opens only as far as it is resolved
+    const queue = [[0, 0, 0, 0, 0, 1]]; let head = 0;                        // depth, x, y, z, rate so far, weight
+    while (head < queue.length) {
+      const [v, x, y, z, rb, w] = queue[head++];
+      if (v >= SCALES) continue;                                            // a vertex of scale 6: its structure within is not run
+      const f = scaleF[v], fa = Math.abs(f), r = 1.7 * fa;
+      let open = 1;
+      if (v > 0) {
+        sph.center.set(x, y, z); sph.radius = r * 1.3;
+        if (!frustum.intersectsSphere(sph)) continue;
+        const dist = Math.max(1e-9, V3.set(x, y, z).distanceTo(camera.position));
+        open = Math.max(0, Math.min(1, (r * focal / dist - OPEN) / OPEN));
+        if (k + Mn + 1 > MAXP || queue.length > 60000) open = 0;
+        if (open < 1) emit(x, y, z, 1.4 * fa, bright[v] * w * (1 - open), rb + tail[v]);
       }
-      // seen individually only by an observer who resolves the level it lies in; otherwise it is inside an object
-      const lv = meetLevel[i]; let w = 0;
-      for (let d = lv + 1; d <= k; d++) w += depthW[d];
-      colors[o] = r * w; colors[o + 1] = g * w; colors[o + 2] = b * w;
-      for (const ob of objs) if (lv >= ob.v) {
-        const q = Math.floor(meetBase[i] / 36 ** (k - ob.v)) * 3;
-        ob.acc[q] += r; ob.acc[q + 1] += g; ob.acc[q + 2] += b;
+      if (open <= 0) continue;
+      const o = v * n;
+      for (let g = 0; g < Mn; g++) {                                        // the meetings of the structure within
+        const mt = unit.meetings[g], ends = (rec[o + mt.a0] + rec[o + mt.a1] + rec[o + mt.b0] + rec[o + mt.b1]) / 4;
+        emit(x + f * mt.pos[0], y + fa * mt.pos[1], z + f * mt.pos[2], 0.2 * fa, Math.abs(cos.light[v * Mn + g]) * w * open, rb + ends + tail[v + 1]);
+      }
+      for (let d = 0; d < n; d++) {                                         // and its 36 nodes, each the structure within again
+        const u = unit.pos[d];
+        queue.push([v + 1, x + f * u[0], y + fa * u[1], z + f * u[2], rb + rec[o + d], w * open]);
       }
     }
-    for (const ob of objs) {                                                 // an object shows the light inside it, summed
-      const w = depthW[ob.v];
-      for (let q = 0; q < ob.n; q++) {
-        const c = ob.inside[q] || 1, gain = w * 3 / Math.sqrt(c);
-        ob.oc[q * 3] = ob.acc[q * 3] * gain; ob.oc[q * 3 + 1] = ob.acc[q * 3 + 1] * gain; ob.oc[q * 3 + 2] = ob.acc[q * 3 + 2] * gain;
-      }
-      ob.pts.geometry.attributes.color.needsUpdate = true;
-    }
-    points.geometry.attributes.color.needsUpdate = true; requestRender();
+    geo.setDrawRange(0, k);
+    geo.attributes.position.needsUpdate = true; geo.attributes.color.needsUpdate = true; geo.attributes.size.needsUpdate = true;
+    drawn = k;
   }
 
   /* ---------- the bars: what an observer inside could measure ---------- */
+  function fft(re, im) {
+    const N = re.length;
+    for (let i = 1, j = 0; i < N; i++) { let b = N >> 1; for (; j & b; b >>= 1) j ^= b; j ^= b; if (i < j) { [re[i], re[j]] = [re[j], re[i]]; [im[i], im[j]] = [im[j], im[i]]; } }
+    for (let len = 2; len <= N; len <<= 1) {
+      const a = -2 * Math.PI / len, wr = Math.cos(a), wi = Math.sin(a);
+      for (let i = 0; i < N; i += len) { let cr = 1, ci = 0; for (let j = 0; j < len / 2; j++) { const hh = len / 2, ur = re[i + j], ui = im[i + j], vr = re[i + j + hh] * cr - im[i + j + hh] * ci, vi = re[i + j + hh] * ci + im[i + j + hh] * cr; re[i + j] = ur + vr; im[i + j] = ui + vi; re[i + j + hh] = ur - vr; im[i + j + hh] = ui - vi; const t = cr * wr - ci * wi; ci = cr * wi + ci * wr; cr = t; } }
+    }
+  }
+  function strongest(series) {
+    let N = 1; while (N * 2 <= Math.min(samples, RING)) N *= 2; if (N < 16) return null;
+    const re = new Float64Array(N), im = new Float64Array(N); let mean = 0;
+    for (let i = 0; i < N; i++) { re[i] = series[(samples - N + i) % RING]; mean += re[i]; } mean /= N;
+    for (let i = 0; i < N; i++) re[i] = (re[i] - mean) * (0.5 - 0.5 * Math.cos(2 * Math.PI * i / (N - 1)));
+    fft(re, im); let best = 1, bp = 0;
+    for (let i = 1; i < N / 2; i++) { const q = re[i] * re[i] + im[i] * im[i]; if (q > bp) { bp = q; best = i; } }
+    return bp > 0 ? 2 * Math.PI * best / (N * EVERY * DT) : 0;
+  }
+  let frames = 0;
   function bars() {
-    const N = cos.N, p = cos.p;
-    $("c6-in").textContent = fmt(cos.putIn, 2);
-    $("c6-now").textContent = fmt(cos.current(), 2);
-    let ke = 0; for (let x = 0; x < N; x++) ke += 0.5 * p[x] * p[x];
-    // current as it propagates: across each gap of the outermost level its one-way part and its alternating part,
-    // and in each layer its strongest frequency and its temperature (the spread of its places' currents)
-    const n = Math.min(samples, RING);
-    if (n > 1) {
-      $("c6-gaps").textContent = gapSeries.map((g, i) => {
-        let m = 0, q = 0; for (let t = 0; t < n; t++) { m += g[t]; q += g[t] * g[t]; } m /= n;
-        return `${i + 1}|${i + 2}: ${fmt(m, 2)} · ${fmt(Math.sqrt(Math.max(0, q / n - m * m)), 1)}`;
-      }).join("   ");
-    } else $("c6-gaps").textContent = "–";
-    const sL = cos.stride[0], sum = new Float64Array(6), sq = new Float64Array(6);
-    for (let x = 0; x < N; x++) { const l = Math.floor(Math.floor(x / sL) / 6); sum[l] += p[x]; sq[l] += p[x] * p[x]; }
-    $("c6-layers").textContent = cos.putIn ? layerSeries.map((ser, l) => {
-      const c = 6 * sL, m = sum[l] / c, T = sq[l] / c - m * m, f = strongest(ser);
-      return `${l + 1}: ${f === null ? "–" : fmt(f, 2)} · ${fmt(T, 3)}`;
+    $("c6-in").textContent = fmt(cos.putIn);
+    $("c6-now").textContent = fmt(cos.current());
+    $("c6-energy").textContent = fmt(cos.energy());
+    let ex = 0; for (let i = 0; i < SCALES * Mn; i++) if (Math.abs(cos.light[i]) > 0.01) ex++;
+    $("c6-meet").textContent = `${fmt(ex * COPIES)} of ${fmt(SCALES * Mn * COPIES)}`;
+    $("c6-gaps-label").textContent = putScale >= 0 ? `Across the gaps of scale ${putScale + 1}` : "Across the gaps";
+    $("c6-layers-label").textContent = putScale >= 0 ? `In each layer of scale ${putScale + 1}` : "In each layer";
+    const nN = Math.min(samples, RING);
+    $("c6-gaps").textContent = putScale >= 0 && nN > 1 ? gapSeries.map((g, i) => {
+      let a = 0, q = 0; for (let t = 0; t < nN; t++) { a += g[t]; q += g[t] * g[t]; } a /= nN;
+      return `${i + 1}|${i + 2}: ${fmt(a, 2)} · ${fmt(Math.sqrt(Math.max(0, q / nN - a * a)), 2)}`;
     }).join("   ") : "–";
-    // where the motion is: by layer of the outermost level, and in the busiest hundredth of places
-    const s = cos.stride[0], byLayer = new Array(6).fill(0), kin = new Float64Array(N);
-    for (let x = 0; x < N; x++) { kin[x] = 0.5 * p[x] * p[x]; byLayer[Math.floor(Math.floor(x / s) / 6)] += kin[x]; }
-    const sorted = Array.from(kin).sort((a, b) => b - a); let busy = 0; for (let i = 0; i < Math.max(1, Math.floor(N / 100)); i++) busy += sorted[i];
-    $("c6-where").textContent = ke > 0 ? byLayer.map(v => (v / ke).toFixed(3)).join(" · ") + ` · busiest 1%: ${(busy / ke).toFixed(3)}` : "–";
-    let lit = 0; for (let i = 0; i < cos.meetN; i++) if (Math.abs(cos.light[i]) > 0.01) lit++;
-    $("c6-meet").textContent = `${fmt(lit)} of ${fmt(cos.meetN)}`;
-    if (frames % 4 === 0) $("c6-energy").textContent = fmt(cos.energy(), 2);
+    $("c6-layers").textContent = putScale >= 0 ? layerSeries.map((ser, l) => {
+      let a = 0, q = 0; for (let d = 6 * l; d < 6 * l + 6; d++) { const x = cos.p[putScale * n + d]; a += x; q += x * x; } a /= 6;
+      const f = strongest(ser);
+      return `${l + 1}: ${f === null ? "–" : fmt(f, 2)} · ${fmt(q / 6 - a * a, 3)}`;
+    }).join("   ") : "–";
+    let tot = 0; const ks = new Float64Array(SCALES);
+    for (let s = 0; s < SCALES; s++) { for (let d = 0; d < n; d++) ks[s] += cos.p[s * n + d] ** 2; tot += ks[s]; }
+    $("c6-where").textContent = tot > 0 ? Array.from(ks).map((v, s) => `${s + 1}: ${(v / tot).toFixed(3)}`).join("   ") : "–";
   }
 
   /* ---------- controls ---------- */
-  const put = $("c6-put"), runBtn = $("c6-run"), lev = $("c6-level"), lay = $("c6-layer"), val = $("c6-value");
-  function fillLevels() {
-    lev.innerHTML = Array.from({ length: cos.k }, (_, i) => `<option value="${i}">${i + 1}</option>`).join("");
-  }
+  const put = $("c6-put"), runBtn = $("c6-run"), sc = $("c6-scale"), lay = $("c6-layer"), val = $("c6-value");
   put.addEventListener("click", () => {                                    // put in once, then never touched
-    cos.put(nodesOfLayer(+lev.value, +lay.value - 1), +val.value);
-    put.disabled = true; paint(); bars(); setRun(true);
+    putScale = +sc.value - 1; cos.put(putScale, +lay.value - 1, +val.value);
+    put.disabled = true; draw(); bars(); setRun(true);
   });
-  // every node whose digit at this level lies in this layer: the whole layer at that scale
-  function nodesOfLayer(level, layer) {
-    const out = [], s = cos.stride[level];
-    for (let x = 0; x < cos.N; x++) if (Math.floor(Math.floor(x / s) % 36 / 6) === layer) out.push(x);
-    return out;
+  function begin() {
+    setRun(false); cos.reset(); rec.fill(0); steps = 0; samples = 0; putScale = -1; put.disabled = false;
+    val.value = LIGHTNING; $("out-c6-value").textContent = LIGHTNING.toFixed(1); draw(); bars();
   }
-  $("c6-scales").addEventListener("click", e => {
-    const b = e.target.closest("button[data-k]"); if (!b) return;
-    $("c6-scales").querySelectorAll("button").forEach(x => x.classList.toggle("active", x === b));
-    build(+b.dataset.k);
-  });
   function setRun(on) { running = on; runBtn.textContent = on ? "Pause" : "Run"; requestRender(); }
   runBtn.addEventListener("click", () => setRun(!running));
   $("c6-again").addEventListener("click", begin);
   const sp = $("c6-speed"); sp.addEventListener("input", () => { perFrame = +sp.value; $("out-c6-speed").textContent = sp.value; });
   val.addEventListener("input", () => { $("out-c6-value").textContent = (+val.value).toFixed(1); });
-  $("c6-whole").addEventListener("click", () => { home(); requestRender(); });
+  $("c6-whole").addEventListener("click", () => { home(); moved = true; requestRender(); });
   $("c6-full").addEventListener("click", () => {
     const f = $("cosmos6d-frame");
     if (document.fullscreenElement) document.exitFullscreen(); else if (f.requestFullscreen) f.requestFullscreen();
   });
-  let lastDepth = "";
-  controls.addEventListener("change", () => { if (!cos) return requestRender(); resolve(); const key = Array.from(depthW).map(x => x.toFixed(2)).join(); if (key !== lastDepth) { lastDepth = key; paint(); } requestRender(); });
 
   /* ---------- render only while it can be seen ---------- */
-  let visible = false, onScreen = false, raf = 0, dirty = true;
+  let visible = false, onScreen = false, raf = 0, dirty = true, moved = true;
+  controls.addEventListener("change", () => { moved = true; requestRender(); });
   const sized = () => stage.clientWidth > 0 && stage.clientHeight > 0;
   function requestRender() { dirty = true; if (visible && !raf) raf = requestAnimationFrame(loop); }
   function home() { camera.position.set(4.6, 2.2, 7.4); controls.target.set(0, 0, 0); controls.update(); }
   function fit() {
     const w = stage.clientWidth, h = stage.clientHeight; if (!w || !h) return;
     renderer.setSize(w, h, false); composer.setSize(w, h); bloom.setSize(w, h);
-    camera.aspect = w / h; camera.updateProjectionMatrix(); dirty = true;
+    camera.aspect = w / h; camera.updateProjectionMatrix(); dirty = true; moved = true;
   }
   function loop() {
     raf = 0; if (!visible || !sized()) return;
-    if (running) { step(); paint(); frames++; if (frames % 10 === 0) bars(); }
-    const moved = controls.update();
-    if (dirty || moved) { composer.render(); dirty = false; }
-    if (running || moved) raf = requestAnimationFrame(loop);
+    const turning = controls.update();
+    if (running) { step(); frames++; if (frames % 10 === 0) bars(); }
+    if (running || moved || turning) { draw(); moved = false; dirty = true; }
+    if (dirty) { composer.render(); dirty = false; }
+    if (running || turning) raf = requestAnimationFrame(loop);
   }
   function check() {
     const panel = host.closest(".tab-panel"), mode = host.closest(".cosmos-mode");
@@ -261,6 +231,6 @@ function init() {
   new ResizeObserver(() => { fit(); check(); requestRender(); }).observe(stage);
   for (const ev of ["tabchange", "cosmosmode", "fullscreenchange"]) document.addEventListener(ev, () => setTimeout(() => { fit(); check(); requestRender(); }, 0));
 
-  window.__cosmos6d = { get c() { return cos; }, get objs() { return objs; }, step, paint, bars, get colors() { return colors; }, get rec() { return rec; }, camera, controls, unit, nodesOfLayer };
-  home(); build(2);
+  window.__cosmos6d = { c: cos, step, draw, bars, camera, controls, get drawn() { return drawn; }, get putScale() { return putScale; } };
+  home(); begin();
 }
