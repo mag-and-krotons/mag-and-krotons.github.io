@@ -648,14 +648,17 @@
     document.querySelectorAll("#cosmos-mode button").forEach(b => b.classList.toggle("active", b.dataset.v === m));
     document.querySelectorAll(".cosmos-mode").forEach(p => p.classList.toggle("active", p.dataset.mode === m));
     if (m === "clocks") { stopSpinsIfHidden(); requestAnimationFrame(updateClocks); }
-    else { requestAnimationFrame(() => { drawLeeYang(); renderSpinFacts(true); startSpins(); }); }
+    else if (m === "spins") { requestAnimationFrame(() => { drawLeeYang(); renderSpinFacts(true); startSpins(); }); }
+    else stopSpinsIfHidden();
+    document.dispatchEvent(new CustomEvent("cosmosmode", { detail: m }));
   }
   function stopSpinsIfHidden() { if (spin.raf && !isPanelVisible($("spins-canvas"))) { cancelAnimationFrame(spin.raf); spin.raf = 0; } }
 
   function onShown() {
     const m = document.querySelector("#cosmos-mode button.active");
     if (!m) return;
-    if (m.dataset.v === "clocks") updateClocks(); else { drawLeeYang(); renderSpinFacts(true); startSpins(); }
+    if (m.dataset.v === "clocks") updateClocks();
+    else if (m.dataset.v === "spins") { drawLeeYang(); renderSpinFacts(true); startSpins(); }
   }
 
   document.addEventListener("DOMContentLoaded", () => {

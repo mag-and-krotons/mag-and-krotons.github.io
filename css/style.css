@@ -299,3 +299,5 @@ a.repo b { font-family: var(--serif); font-weight: 600; font-size: 1.05rem; colo
 .btn-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
 .fact .ok { color: var(--ok); font-weight: 600; }
 @media (max-width: 920px) { .cosmos-view { min-height: 0; } .cosmos-view .stage { height: 360px; } }
+.life-strip { display: block; width: 100%; height: 150px; margin-top: 14px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+#life-seeds .btn { flex: 1 1 45%; }

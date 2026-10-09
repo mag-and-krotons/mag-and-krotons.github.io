@@ -137,13 +137,54 @@
     </div>
 
     <div class="tab-panel" data-panel="cosmos">
-      <p class="section-lead" style="margin-top:0">Two games. Each runs on rules taken from one paper and nothing else, and every number beside it is counted as it runs. In the first, prime clocks mark the pairs $6k\pm1$, and what no clock marks is a twin prime pair. In the second, triad spins sit on a strand of the medial antiprism, and order travels along the axis as far as one coupling lets it.</p>
+      <p class="section-lead" style="margin-top:0">Three games on one structure and its arithmetic, each run only on its own rule, with every number beside it counted as it runs. In 6D Life, Conway's rule runs on the 36 vertices of the six layers. In the world of clocks, prime clocks mark the pairs $6k\pm1$, and what no clock marks is a twin prime pair. In the third, triad spins sit on a strand, and order travels along the axis as far as one coupling lets it.</p>
       <div class="seg cosmos-switch" id="cosmos-mode">
-        <button data-v="clocks" class="active">World of clocks</button>
+        <button data-v="life" class="active">6D Life</button>
+        <button data-v="clocks">World of clocks</button>
         <button data-v="spins">Triad spins on a strand</button>
       </div>
 
-      <div class="cosmos-mode active" data-mode="clocks">
+      <div class="cosmos-mode active" data-mode="life">
+        <div class="playground">
+          <div class="viewport" id="life-view">
+            <div class="hint">Drag to turn · click a node to light or clear it</div>
+            <div class="legend">
+              <span><i style="background:var(--vertex)"></i>vertex alive</span>
+              <span><i style="background:var(--midpoint)"></i>midpoint alive</span>
+              <span><i style="background:var(--strand-a)"></i>lit line, strand A</span>
+              <span><i style="background:var(--strand-b)"></i>lit line, strand B</span>
+              <span><i style="background:var(--accent)"></i>horizon lit</span>
+            </div>
+          </div>
+          <div class="controls">
+            <div class="control-group">
+              <h4>Begin with</h4>
+              <div class="btn-row" id="life-seeds" style="margin-top:0">
+                <button class="btn btn-sm" data-seed="random">Half alive at random</button>
+                <button class="btn btn-sm" data-seed="wave">One full triad</button>
+                <button class="btn btn-sm" data-seed="turning">One node</button>
+                <button class="btn btn-sm" data-seed="forms">Still forms</button>
+                <button class="btn btn-sm" data-seed="mirror">Mirrored strands</button>
+                <button class="btn btn-sm" data-seed="clear">Nothing</button>
+              </div>
+            </div>
+            <div class="control-group">
+              <h4>Run</h4>
+              <div class="btn-row" style="margin-top:0">
+                <button class="btn btn-sm btn-primary" id="life-run">Run</button>
+                <button class="btn btn-sm" id="life-step">One step</button>
+              </div>
+              <div class="control-row"><label for="life-speed">Steps per second</label><input type="range" id="life-speed" min="1" max="12" step="1" value="3"><output id="out-life-speed">3</output></div>
+            </div>
+            <p class="small muted" style="margin:0">Conway's rule on the 36 nodes and 90 lines: a dead node with exactly 3 live neighbours comes alive; a live node with 2 or 3 stays alive; every other node is dead at the next step.</p>
+          </div>
+        </div>
+        <canvas id="life-strip" class="life-strip" aria-label="The triads of both strands over the generations"></canvas>
+        <div class="facts" id="life-facts"></div>
+        <p class="small muted" style="margin-top:14px">The structure is the one in the playground above and in <a href="#paper-medial_antiprism">The Medial Antiprism</a>.</p>
+      </div>
+
+      <div class="cosmos-mode" data-mode="clocks">
         <div class="playground">
           <div class="viewport cosmos-view" id="clocks-view">
             <div class="stage"><canvas id="clocks-canvas"></canvas></div>
@@ -355,7 +396,8 @@
 
 <script src="js/app.js?v=20261009b"></script>
 <script src="js/blog.js?v=20261009b"></script>
-<script defer src="js/cosmos.js?v=20261009d"></script>
+<script defer src="js/cosmos.js?v=20261009e"></script>
+<script type="module" src="js/life6d.js?v=20261009g"></script>
 <script type="module" src="js/structure.js?v=20261009b"></script>
 </body>
 </html>
