@@ -301,3 +301,8 @@ a.repo b { font-family: var(--serif); font-weight: 600; font-size: 1.05rem; colo
 @media (max-width: 920px) { .cosmos-view { min-height: 0; } .cosmos-view .stage { height: 360px; } }
 .life-strip { display: block; width: 100%; height: 150px; margin-top: 14px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
 #life-seeds .btn { flex: 1 1 45%; }
+
+/* the cosmos is shown in space, whatever the page theme */
+.viewport.space { background: #02030a; border-color: #1b2540; }
+.viewport.space .hint { color: #8b95b3; }
+.viewport.space .legend { background: rgba(6, 9, 20, 0.75); border-color: #1b2540; color: #c9d2ea; }

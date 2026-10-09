@@ -6,6 +6,9 @@
    any other count clears it. */
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
 
 const $ = id => document.getElementById(id);
 const host = $("cosmos36-view");
@@ -99,20 +102,27 @@ function init() {
     return p === 1 ? (x === 0 ? "void" : "still") : p === 2 ? "blinker" : `wave${p}`;
   }
 
-  /* ---------- drawing ---------- */
-  let col = {};
-  function readColours() {
-    const cs = getComputedStyle(document.documentElement), v = n => (cs.getPropertyValue(n) || "").trim() || "#888";
-    col = { a: v("--strand-a"), b: v("--strand-b"), vertex: v("--vertex"), mid: v("--midpoint"), line: v("--line"), lineStrong: v("--line-strong"), accent: v("--accent"), muted: v("--muted") };
-  }
-  readColours();
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2)); renderer.setClearColor(0x000000, 0);
+  /* ---------- drawing: space, as in the author's structure.html ---------- */
+  const SPACE = { bg: 0x02030a, vertex: 0x00e5ff, mid: 0xff2bd6, dead: 0x2a3550, a: 0x4fc3ff, b: 0xffb347, outer: 0xfff1c1, horizon: 0xffffff, line: 0x1b2540 };
+  const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2)); renderer.setClearColor(SPACE.bg, 1);
   const stage = document.createElement("div"); stage.className = "stage"; stage.appendChild(renderer.domElement); host.prepend(stage);
-  const scene = new THREE.Scene(), camera = new THREE.PerspectiveCamera(34, 1, 0.05, 200);
+  host.classList.add("space");
+  const scene = new THREE.Scene(); scene.fog = new THREE.FogExp2(SPACE.bg, 0.018);
+  const camera = new THREE.PerspectiveCamera(40, 1, 0.05, 400);
   const controls = new OrbitControls(camera, renderer.domElement);
-  controls.enableDamping = true; controls.enablePan = false; controls.enableZoom = false; controls.autoRotate = true; controls.autoRotateSpeed = 0.5;
+  controls.enableDamping = true; controls.dampingFactor = 0.05; controls.enablePan = false; controls.enableZoom = false; controls.autoRotate = true; controls.autoRotateSpeed = 0.45;
   renderer.domElement.style.touchAction = "pan-y";
+  const composer = new EffectComposer(renderer);
+  composer.addPass(new RenderPass(scene, camera));
+  const bloom = new UnrealBloomPass(new THREE.Vector2(512, 512), 1.25, 0.55, 0.12); composer.addPass(bloom);
+
+  // a soft round point, for stars and glows
+  const dotTex = (() => { const c = document.createElement("canvas"); c.width = c.height = 64; const g = c.getContext("2d");
+    const gr = g.createRadialGradient(32, 32, 0, 32, 32, 32); gr.addColorStop(0, "rgba(255,255,255,1)"); gr.addColorStop(0.25, "rgba(255,255,255,0.75)"); gr.addColorStop(1, "rgba(255,255,255,0)");
+    g.fillStyle = gr; g.fillRect(0, 0, 64, 64); return new THREE.CanvasTexture(c); })();
+
+
   const outerPos = structure(2.2, 1.25), cellScale = 0.2;
   const nodeWorld = []; for (let c = 0; c < 36; c++) for (let i = 0; i < 36; i++) nodeWorld.push(outerPos[c].clone().add(unit[i].clone().multiplyScalar(cellScale)));
   const inst = new THREE.InstancedMesh(new THREE.SphereGeometry(1, 10, 8), new THREE.MeshBasicMaterial(), 1296);
@@ -120,31 +130,37 @@ function init() {
   const innerGeo = new THREE.BufferGeometry(), ip = new Float32Array(36 * lines.length * 6), ic = new Float32Array(36 * lines.length * 6);
   for (let c = 0; c < 36; c++) lines.forEach(([a, b], k) => { const A = nodeWorld[c * 36 + a], B = nodeWorld[c * 36 + b]; ip.set([A.x, A.y, A.z, B.x, B.y, B.z], (c * lines.length + k) * 6); });
   innerGeo.setAttribute("position", new THREE.BufferAttribute(ip, 3)); innerGeo.setAttribute("color", new THREE.BufferAttribute(ic, 3));
-  scene.add(new THREE.LineSegments(innerGeo, new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.8 })));
+  scene.add(new THREE.LineSegments(innerGeo, new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending, depthWrite: false })));
   const outerGeo = new THREE.BufferGeometry(), op = new Float32Array(lines.length * 6), oc = new Float32Array(lines.length * 6);
   lines.forEach(([a, b], k) => op.set([outerPos[a].x, outerPos[a].y, outerPos[a].z, outerPos[b].x, outerPos[b].y, outerPos[b].z], k * 6));
   outerGeo.setAttribute("position", new THREE.BufferAttribute(op, 3)); outerGeo.setAttribute("color", new THREE.BufferAttribute(oc, 3));
-  scene.add(new THREE.LineSegments(outerGeo, new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.55 })));
-  const halo = outerPos.map(p => { const m = new THREE.Mesh(new THREE.SphereGeometry(0.42, 18, 12), new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.12, depthWrite: false })); m.position.copy(p); scene.add(m); return m; });
+  scene.add(new THREE.LineSegments(outerGeo, new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.8, blending: THREE.AdditiveBlending, depthWrite: false })));
+  // each living cell shines; its glow grows with how many of its 36 nodes are alive
+  const halo = outerPos.map(p => { const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: dotTex, color: SPACE.outer, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false })); sp.position.copy(p); scene.add(sp); return sp; });
   const H = 5 * 1.25 + 0.6, rad = Math.sqrt((H / 2) ** 2 + 2.2 * 2.2) + 0.3;
   const C = c => new THREE.Color(c);
+  let col = {};
+  function readColours() {}
 
   function paint() {
-    const cv = C(col.vertex), cm = C(col.mid), cd = C(col.lineStrong), ca = C(col.a), cb = C(col.b), cl = C(col.line), cacc = C(col.accent);
+    const cv = C(SPACE.vertex), cm = C(SPACE.mid), cd = C(SPACE.dead), ca = C(SPACE.a), cb = C(SPACE.b), cl = C(SPACE.line), co = C(SPACE.outer);
     for (let c = 0; c < 36; c++) for (let i = 0; i < 36; i++) {
       const on = S[c][i] === 1, k = c * 36 + i;
-      dummy.position.copy(nodeWorld[k]); dummy.scale.setScalar(on ? 0.028 : 0.01); dummy.updateMatrix();
+      dummy.position.copy(nodeWorld[k]); dummy.scale.setScalar(on ? 0.03 : 0.008); dummy.updateMatrix();
       inst.setMatrixAt(k, dummy.matrix); inst.setColorAt(k, on ? ((i % 6) < 3 ? cv : cm) : cd);
     }
     inst.instanceMatrix.needsUpdate = true; if (inst.instanceColor) inst.instanceColor.needsUpdate = true;
     for (let c = 0; c < 36; c++) lines.forEach(([a, b, s], k) => {
-      const lit = S[c][a] && S[c][b], cc = lit ? (s === 0 ? ca : cb) : cl, o = (c * lines.length + k) * 6;
-      ic[o] = ic[o + 3] = cc.r; ic[o + 1] = ic[o + 4] = cc.g; ic[o + 2] = ic[o + 5] = cc.b;
+      const lit = S[c][a] && S[c][b], cc = lit ? (s === 0 ? ca : cb) : cl, o = (c * lines.length + k) * 6, f = lit ? 1 : 0.35;
+      ic[o] = ic[o + 3] = cc.r * f; ic[o + 1] = ic[o + 4] = cc.g * f; ic[o + 2] = ic[o + 5] = cc.b * f;
     });
     innerGeo.attributes.color.needsUpdate = true;
-    lines.forEach(([a, b], k) => { const lit = outerAlive[a] && outerAlive[b], cc = lit ? cacc : cl, o = k * 6; oc[o] = oc[o + 3] = cc.r; oc[o + 1] = oc[o + 4] = cc.g; oc[o + 2] = oc[o + 5] = cc.b; });
+    lines.forEach(([a, b], k) => { const lit = outerAlive[a] && outerAlive[b], cc = lit ? co : cl, o = k * 6, f = lit ? 1 : 0.25; oc[o] = oc[o + 3] = cc.r * f; oc[o + 1] = oc[o + 4] = cc.g * f; oc[o + 2] = oc[o + 5] = cc.b * f; });
     outerGeo.attributes.color.needsUpdate = true;
-    halo.forEach((m, c) => { m.visible = outerAlive[c] === 1 || met[c] === 1; m.material.color.copy(cacc); m.material.opacity = outerAlive[c] ? 0.16 : 0.07; });
+    halo.forEach((sp, c) => {
+      const n = S[c].reduce((x, y) => x + y, 0), shine = outerAlive[c] ? 1 : met[c] ? 0.55 : 0;
+      sp.visible = n > 0 && shine > 0; sp.scale.setScalar(0.5 + 1.1 * Math.sqrt(n / 36)); sp.material.opacity = 0.25 + 0.55 * shine * (n / 36);
+    });
     paintFacts(); requestRender();
   }
 
@@ -180,16 +196,16 @@ function init() {
   const sizeOK = () => stage.clientWidth > 0 && stage.clientHeight > 0;
   function fit() {
     const w = stage.clientWidth, h = stage.clientHeight; if (!w || !h) return;
-    renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
+    renderer.setSize(w, h, false); composer.setSize(w, h); bloom.setSize(w, h); camera.aspect = w / h; camera.updateProjectionMatrix();
     const vf = THREE.MathUtils.degToRad(camera.fov), hf = 2 * Math.atan(Math.tan(vf / 2) * camera.aspect), dist = rad / Math.sin(Math.min(vf, hf) / 2);
-    const d = camera.position.lengthSq() > 0 ? camera.position.clone().normalize() : new THREE.Vector3(0.5, 0.35, 0.8).normalize();
+    const d = camera.position.lengthSq() > 0 ? camera.position.clone().normalize() : new THREE.Vector3(0.5, 0.3, 0.8).normalize();
     camera.position.copy(d.multiplyScalar(dist)); controls.target.set(0, 0, 0); controls.update(); dirty = true;
   }
   function loop(t) {
     raf = 0; if (!visible || !sizeOK()) return;
     if (running) { if (!last) last = t; if (t - last >= 1000 / speed) { last = t; innerStep(); paint(); } }
     const moved = controls.update();
-    if (dirty || moved || controls.autoRotate) { renderer.render(scene, camera); dirty = false; }
+    if (dirty || moved || controls.autoRotate) { composer.render(); dirty = false; }
     raf = requestAnimationFrame(loop);
   }
   function checkVisible() {
@@ -200,7 +216,7 @@ function init() {
   new IntersectionObserver(es => { onScreen = es[0].isIntersecting; checkVisible(); }, { rootMargin: "100px" }).observe(host);
   new ResizeObserver(() => { fit(); checkVisible(); }).observe(stage);
   for (const ev of ["tabchange", "cosmosmode"]) document.addEventListener(ev, () => setTimeout(checkVisible, 0));
-  const retheme = () => { readColours(); paint(); };
+  const retheme = () => { paint(); };
   document.addEventListener("themechange", retheme);
   if (window.matchMedia) { const mq = window.matchMedia("(prefers-color-scheme: dark)"); if (mq.addEventListener) mq.addEventListener("change", retheme); }
   seed("random");
