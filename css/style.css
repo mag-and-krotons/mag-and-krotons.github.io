@@ -299,10 +299,24 @@ a.repo b { font-family: var(--serif); font-weight: 600; font-size: 1.05rem; colo
 .btn-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
 .fact .ok { color: var(--ok); font-weight: 600; }
 @media (max-width: 920px) { .cosmos-view { min-height: 0; } .cosmos-view .stage { height: 360px; } }
-.life-strip { display: block; width: 100%; height: 150px; margin-top: 14px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
-#life-seeds .btn { flex: 1 1 45%; }
 
-/* the cosmos is shown in space, whatever the page theme */
-.viewport.space { background: #02030a; border-color: #1b2540; }
-.viewport.space .hint { color: #8b95b3; }
-.viewport.space .legend { background: rgba(6, 9, 20, 0.75); border-color: #1b2540; color: #c9d2ea; }
+/* the 6D cosmos: the space as large as the screen allows, the bars outside it */
+.cosmos-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; margin: 14px 0 12px; }
+.cosmos-controls .btn-row { margin-top: 0; align-items: center; }
+.cosmos-controls input[type="range"] { width: 110px; accent-color: var(--accent); }
+.cosmos-controls output { font-family: var(--mono); font-size: 0.85rem; min-width: 20px; }
+#cosmos6d-scales button { padding: 7px 12px; white-space: nowrap; }
+.cosmos-frame { display: flex; flex-direction: column; background: #02030a; border: 1px solid #1b2540; border-radius: var(--radius); overflow: hidden; color: #c9d2ea; }
+.cosmos-frame .bar { flex: none; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 22px; padding: 7px 14px; background: #060914; font: 0.8rem/1.5 var(--mono); font-variant-numeric: tabular-nums; }
+.cosmos-frame .bar b { font: 600 0.7rem var(--sans); letter-spacing: 0.06em; text-transform: uppercase; color: #8b95b3; margin-right: 8px; }
+.cosmos-frame .bar.top { border-bottom: 1px solid #1b2540; }
+.cosmos-frame .bar.bottom { border-top: 1px solid #1b2540; flex-direction: column; align-items: stretch; gap: 2px; }
+.cosmos-frame .bar.bottom div { display: flex; flex-wrap: wrap; gap: 0 18px; }
+.cosmos-frame .bar.bottom b { min-width: 64px; }
+#cosmos6d-spark { width: 180px; height: 22px; margin-left: auto; }
+.cosmos-frame .space-view { position: relative; height: calc(100vh - 150px); min-height: 440px; }
+.cosmos-frame .space-view .stage { position: absolute; inset: 0; }
+.cosmos-frame .space-view canvas { display: block; width: 100%; height: 100%; }
+.cosmos-frame:fullscreen { border: 0; border-radius: 0; width: 100vw; height: 100vh; }
+.cosmos-frame:fullscreen .space-view { flex: 1; height: auto; min-height: 0; }
+@media (max-width: 920px) { .cosmos-frame .space-view { height: 72vh; min-height: 320px; } #cosmos6d-spark { margin-left: 0; } }

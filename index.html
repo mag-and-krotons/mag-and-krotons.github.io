@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
-  <link rel="stylesheet" href="css/style.css?v=20261009b">
+  <link rel="stylesheet" href="css/style.css?v=20261009c">
   <script type="importmap">
   {
     "imports": {
@@ -137,86 +137,48 @@
     </div>
 
     <div class="tab-panel" data-panel="cosmos">
-      <p class="section-lead" style="margin-top:0">Four games on one structure and its arithmetic, each run only on its own rule, with every number beside it counted as it runs. In 6D Life, Conway's rule runs on the 36 vertices of the six layers. The cosmos of 36 cells runs the same rule at the next scale, on cells that are each the whole structure. In the world of clocks, prime clocks mark the pairs $6k\pm1$, and what no clock marks is a twin prime pair. In the third, triad spins sit on a strand, and order travels along the axis as far as one coupling lets it.</p>
+      <p class="section-lead" style="margin-top:0">Three games on one structure and its arithmetic, each run only on its own rule, with every number beside it counted as it runs. In the 6D cosmos, the six-layer structure holds itself in every node, scale inside scale, and every node takes one count across its bridges at every scale at once. In the world of clocks, prime clocks mark the pairs $6k\pm1$, and what no clock marks is a twin prime pair. In the third, triad spins sit on a strand, and order travels along the axis as far as one coupling lets it.</p>
       <div class="seg cosmos-switch" id="cosmos-mode">
-        <button data-v="life" class="active">6D Life</button>
-        <button data-v="cosmos36">Cosmos of 36 cells</button>
+        <button data-v="cosmos6d" class="active">6D cosmos</button>
         <button data-v="clocks">World of clocks</button>
         <button data-v="spins">Triad spins on a strand</button>
       </div>
 
-      <div class="cosmos-mode active" data-mode="life">
-        <div class="playground">
-          <div class="viewport" id="life-view">
-            <div class="hint">Drag to turn · click a node to light or clear it</div>
-            <div class="legend">
-              <span><i style="background:var(--vertex)"></i>vertex alive</span>
-              <span><i style="background:var(--midpoint)"></i>midpoint alive</span>
-              <span><i style="background:var(--strand-a)"></i>lit line, strand A</span>
-              <span><i style="background:var(--strand-b)"></i>lit line, strand B</span>
-              <span><i style="background:var(--accent)"></i>horizon lit</span>
-            </div>
+      <div class="cosmos-mode active" data-mode="cosmos6d">
+        <div class="cosmos-controls">
+          <div class="seg" id="cosmos6d-scales" aria-label="Scales">
+            <button data-k="1">1 scale · 36</button><button data-k="2">2 · 1,296</button><button data-k="3" class="active">3 · 46,656</button><button data-k="4">4 · 1,679,616</button>
           </div>
-          <div class="controls">
-            <div class="control-group">
-              <h4>Begin with</h4>
-              <div class="btn-row" id="life-seeds" style="margin-top:0">
-                <button class="btn btn-sm" data-seed="random">Half alive at random</button>
-                <button class="btn btn-sm" data-seed="wave">One full triad</button>
-                <button class="btn btn-sm" data-seed="turning">One node</button>
-                <button class="btn btn-sm" data-seed="forms">Still forms</button>
-                <button class="btn btn-sm" data-seed="mirror">Mirrored strands</button>
-                <button class="btn btn-sm" data-seed="clear">Nothing</button>
-              </div>
-            </div>
-            <div class="control-group">
-              <h4>Run</h4>
-              <div class="btn-row" style="margin-top:0">
-                <button class="btn btn-sm btn-primary" id="life-run">Run</button>
-                <button class="btn btn-sm" id="life-step">One step</button>
-              </div>
-              <div class="control-row"><label for="life-speed">Steps per second</label><input type="range" id="life-speed" min="1" max="12" step="1" value="3"><output id="out-life-speed">3</output></div>
-            </div>
-            <p class="small muted" style="margin:0">Conway's rule on the 36 nodes and 90 lines: a dead node with exactly 3 live neighbours comes alive; a live node with 2 or 3 stays alive; every other node is dead at the next step.</p>
+          <div class="btn-row" id="cosmos6d-seeds">
+            <span class="small muted">Begin with</span>
+            <button class="btn btn-sm" data-seed="mean">A triad on average, at random</button>
+            <button class="btn btn-sm" data-seed="half">Half of all nodes, at random</button>
+            <button class="btn btn-sm" data-seed="triad">One triad</button>
+            <button class="btn btn-sm" data-seed="unit">One whole structure</button>
+            <button class="btn btn-sm" data-seed="every">A triad at every scale</button>
+            <button class="btn btn-sm" data-seed="none">Nothing</button>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-sm btn-primary" id="cosmos6d-run">Run</button>
+            <button class="btn btn-sm" id="cosmos6d-step">One step</button>
+            <label class="small" for="cosmos6d-speed">Steps per second</label><input type="range" id="cosmos6d-speed" min="1" max="20" step="1" value="4"><output id="out-cosmos6d-speed">4</output>
+            <button class="btn btn-sm" id="cosmos6d-whole">See the whole</button>
+            <button class="btn btn-sm" id="cosmos6d-full">Full screen</button>
           </div>
         </div>
-        <canvas id="life-strip" class="life-strip" aria-label="The triads of both strands over the generations"></canvas>
-        <div class="facts" id="life-facts"></div>
-        <p class="small muted" style="margin-top:14px">The structure is the one in the playground above and in <a href="#paper-medial_antiprism">The Medial Antiprism</a>.</p>
-      </div>
-
-      <div class="cosmos-mode" data-mode="cosmos36">
-        <div class="playground">
-          <div class="viewport" id="cosmos36-view">
-            <div class="hint">Drag to turn</div>
-            <div class="legend">
-              <span><i style="background:#00e5ff"></i>vertex alive</span>
-              <span><i style="background:#ff2bd6"></i>midpoint alive</span>
-              <span><i style="background:#fff1c1"></i>cell alive at the outer scale</span>
-            </div>
+        <div class="cosmos-frame" id="cosmos6d-frame">
+          <div class="bar top">
+            <span><b>Generation</b><span id="cosmos6d-gen">0</span></span>
+            <span><b>Alive</b><span id="cosmos6d-alive">–</span></span>
+            <span><b>Last step</b><span id="cosmos6d-act">–</span></span>
+            <span><b>Repeats</b><span id="cosmos6d-rep">not yet</span></span>
+            <canvas id="cosmos6d-spark" aria-label="Share of nodes alive over the generations"></canvas>
           </div>
-          <div class="controls">
-            <div class="control-group">
-              <h4>Begin with</h4>
-              <div class="btn-row" id="cosmos36-seeds" style="margin-top:0">
-                <button class="btn btn-sm" data-seed="random">Every cell half alive</button>
-                <button class="btn btn-sm" data-seed="triad">One full triad of cells</button>
-                <button class="btn btn-sm" data-seed="clear">Nothing</button>
-              </div>
-            </div>
-            <div class="control-group">
-              <h4>Run</h4>
-              <div class="btn-row" style="margin-top:0">
-                <button class="btn btn-sm btn-primary" id="cosmos36-run">Run</button>
-                <button class="btn btn-sm" id="cosmos36-step">One epoch</button>
-              </div>
-              <div class="control-row"><label for="cosmos36-speed">Generations per second</label><input type="range" id="cosmos36-speed" min="2" max="30" step="1" value="8"><output id="out-cosmos36-speed">8</output></div>
-              <div class="seg" id="cosmos36-epoch" style="margin-top:8px"><button data-v="7">Epoch of 7</button><button data-v="14" class="active">Epoch of 14</button></div>
-            </div>
-            <p class="small muted" style="margin:0">Each cell runs Conway's rule on its own 36 nodes. A cell counts as one at the outer scale when its two halves met at its horizon during the epoch (0.5 + 0.5 = 1). Then the same rule acts on the cells: 3 live neighbouring cells fill a cell, 2 keep it, anything else clears it.</p>
-          </div>
+          <div class="space-view" id="cosmos6d-view"></div>
+          <div class="bar bottom" id="cosmos6d-scalebar"></div>
         </div>
-        <div class="facts" id="cosmos36-facts"></div>
+        <p class="small muted" style="margin-top:12px">Drag to turn, scroll to zoom towards the pointer, right-drag to move. Cyan points are vertices and magenta points are midpoints at the finest scale; a point is bright while it is alive. The top bar counts the whole cosmos at each step; the bottom bar counts the triads at each scale (still when full, turning when one or two of its nodes are alive) and the share of the living in each strand.</p>
+        <p class="small muted">Every node of the six layers holds the whole structure again, halved and turned half a turn, which is the move that makes a midpoint from a vertex, so a node of this cosmos is a node at every scale at once. At each scale a bridge joins every node of a triad to every node of the next layer's triad of the other kind, so a triad passes its live count across the bridge whole, and a node adds what it receives at every scale. It comes alive when it receives exactly a triad (3) and stays alive when it receives a pair or a triad (2 or 3); otherwise it is clear at the next step. That is Conway's rule, read off the structure: the triad is the number of nodes in a triad, the pair is the number of strands, and the half is the move between scales. Nothing else is in the code. The first beginning makes each node alive with chance 3 in 5k at k scales, so that on average every node receives exactly a triad: 90 lines on 36 nodes give 5 neighbours per node at each scale.</p>
       </div>
 
       <div class="cosmos-mode" data-mode="clocks">
@@ -432,8 +394,7 @@
 <script src="js/app.js?v=20261009b"></script>
 <script src="js/blog.js?v=20261009b"></script>
 <script defer src="js/cosmos.js?v=20261009e"></script>
-<script type="module" src="js/life6d.js?v=20261009g"></script>
-<script type="module" src="js/cosmos36.js?v=20261009g"></script>
+<script type="module" src="js/cosmos6d.js?v=20261009j"></script>
 <script type="module" src="js/structure.js?v=20261009b"></script>
 </body>
 </html>
