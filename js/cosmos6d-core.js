@@ -113,6 +113,16 @@ export function makeCosmos(k) {
   };
   c.reset = function () { th.fill(0); p.fill(0); c.putIn = 0; pull(); };
 
+  // the current crossing each gap of the outermost level, upward: what the upper layer gains from the lower one
+  c.gapCurrents = function () {
+    const s = stride[0], out = new Float64Array(5);
+    for (const [a0, a1] of unit.lines) {
+      const g = unit.layer[a0];
+      for (let r = 0; r < s; r++) out[g] += Math.sin(th[a0 * s + r] - th[a1 * s + r]);
+    }
+    return out;
+  };
+
   // the node at given digits (coarsest first), and the six nodes of one layer at one level, at one place in the others
   c.node = digits => digits.reduce((a, d, i) => a + d * stride[i], 0);
   c.layerAt = function (level, layer, place) {

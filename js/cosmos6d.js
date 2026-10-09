@@ -8,7 +8,7 @@ import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
-import { makeCosmos, unit } from "./cosmos6d-core.js?v=20261010a";
+import { makeCosmos, unit } from "./cosmos6d-core.js?v=20261010b";
 
 const $ = id => document.getElementById(id);
 const host = $("cosmos6d-view");
@@ -57,13 +57,42 @@ function init() {
     fillLevels(); val.value = LIGHTNING[k]; $("out-c6-value").textContent = LIGHTNING[k].toFixed(1); begin();
   }
   function begin() {
-    setRun(false); cos.reset(); rec.fill(0); put.disabled = false; paint(); bars();
+    setRun(false); cos.reset(); rec.fill(0); steps = 0; samples = 0; put.disabled = false; paint(); bars();
   }
 
   /* ---------- the observer: a record of each place's rate, read at every step ---------- */
   const KEEP = 0.002;                                                       // each reading enters the record at 1/500: a memory of about 5 time units
   function observe() { const p = cos.p; for (let x = 0; x < cos.N; x++) rec[x] += KEEP * (p[x] - rec[x]); }
-  function step() { for (let r = 0; r < perFrame; r++) { cos.step(DT); observe(); } }
+  // and the propagation: every 10 steps it notes each layer's mean current and the current across each gap
+  const RING = 1024, EVERY = 10, layerSeries = Array.from({ length: 6 }, () => new Float64Array(RING)), gapSeries = Array.from({ length: 5 }, () => new Float64Array(RING));
+  let steps = 0, samples = 0;
+  function sample() {
+    const s = cos.stride[0], p = cos.p, m = new Float64Array(6);
+    for (let x = 0; x < cos.N; x++) m[Math.floor(Math.floor(x / s) / 6)] += p[x];
+    const g = cos.gapCurrents(), i = samples % RING;
+    for (let l = 0; l < 6; l++) layerSeries[l][i] = m[l] / (6 * s);
+    for (let l = 0; l < 5; l++) gapSeries[l][i] = g[l];
+    samples++;
+  }
+  function step() { for (let r = 0; r < perFrame; r++) { cos.step(DT); observe(); if (++steps % EVERY === 0) sample(); } }
+  function fft(re, im) {                                                  // radix-2, in place
+    const n = re.length;
+    for (let i = 1, j = 0; i < n; i++) { let b = n >> 1; for (; j & b; b >>= 1) j ^= b; j ^= b; if (i < j) { [re[i], re[j]] = [re[j], re[i]]; [im[i], im[j]] = [im[j], im[i]]; } }
+    for (let len = 2; len <= n; len <<= 1) {
+      const a = -2 * Math.PI / len, wr = Math.cos(a), wi = Math.sin(a);
+      for (let i = 0; i < n; i += len) { let cr = 1, ci = 0; for (let j = 0; j < len / 2; j++) { const ur = re[i + j], ui = im[i + j], vr = re[i + j + len / 2] * cr - im[i + j + len / 2] * ci, vi = re[i + j + len / 2] * ci + im[i + j + len / 2] * cr; re[i + j] = ur + vr; im[i + j] = ui + vi; re[i + j + len / 2] = ur - vr; im[i + j + len / 2] = ui - vi; const t = cr * wr - ci * wi; ci = cr * wi + ci * wr; cr = t; } }
+    }
+  }
+  // the strongest frequency in a layer's mean current over the last samples (turns of the phase per unit of the step's time)
+  function strongest(series) {
+    let n = 1; while (n * 2 <= Math.min(samples, RING)) n *= 2; if (n < 16) return null;
+    const re = new Float64Array(n), im = new Float64Array(n); let mean = 0;
+    for (let i = 0; i < n; i++) { re[i] = series[(samples - n + i) % RING]; mean += re[i]; } mean /= n;
+    for (let i = 0; i < n; i++) re[i] = (re[i] - mean) * (0.5 - 0.5 * Math.cos(2 * Math.PI * i / (n - 1)));
+    fft(re, im); let best = 1, bp = 0;
+    for (let i = 1; i < n / 2; i++) { const q = re[i] * re[i] + im[i] * im[i]; if (q > bp) { bp = q; best = i; } }
+    return bp > 0 ? 2 * Math.PI * best / (n * EVERY * DT) : 0;
+  }
 
   function paint() {
     const L = cos.light, m = cos.putIn / cos.N;
@@ -90,11 +119,21 @@ function init() {
     $("c6-in").textContent = fmt(cos.putIn, 2);
     $("c6-now").textContent = fmt(cos.current(), 2);
     let ke = 0; for (let x = 0; x < N; x++) ke += 0.5 * p[x] * p[x];
-    // rates in the record, grouped to two decimals: places that turn together
-    const groups = new Map();
-    for (let x = 0; x < N; x++) { const r = Math.round(rec[x] * 100) / 100; groups.set(r, (groups.get(r) || 0) + 1); }
-    const top = [...groups.entries()].sort((a, b) => b[1] - a[1]).slice(0, 5);
-    $("c6-rates").textContent = cos.putIn ? `${fmt(groups.size)} · ` + top.map(([r, c]) => `${fmt(c)} at ${fmt(r, 2)}`).join(", ") : "–";
+    // current as it propagates: across each gap of the outermost level its one-way part and its alternating part,
+    // and in each layer its strongest frequency and its temperature (the spread of its places' currents)
+    const n = Math.min(samples, RING);
+    if (n > 1) {
+      $("c6-gaps").textContent = gapSeries.map((g, i) => {
+        let m = 0, q = 0; for (let t = 0; t < n; t++) { m += g[t]; q += g[t] * g[t]; } m /= n;
+        return `${i + 1}|${i + 2}: ${fmt(m, 2)} · ${fmt(Math.sqrt(Math.max(0, q / n - m * m)), 1)}`;
+      }).join("   ");
+    } else $("c6-gaps").textContent = "–";
+    const sL = cos.stride[0], sum = new Float64Array(6), sq = new Float64Array(6);
+    for (let x = 0; x < N; x++) { const l = Math.floor(Math.floor(x / sL) / 6); sum[l] += p[x]; sq[l] += p[x] * p[x]; }
+    $("c6-layers").textContent = cos.putIn ? layerSeries.map((ser, l) => {
+      const c = 6 * sL, m = sum[l] / c, T = sq[l] / c - m * m, f = strongest(ser);
+      return `${l + 1}: ${f === null ? "–" : fmt(f, 2)} · ${fmt(T, 3)}`;
+    }).join("   ") : "–";
     // where the motion is: by layer of the outermost level, and in the busiest hundredth of places
     const s = cos.stride[0], byLayer = new Array(6).fill(0), kin = new Float64Array(N);
     for (let x = 0; x < N; x++) { kin[x] = 0.5 * p[x] * p[x]; byLayer[Math.floor(Math.floor(x / s) / 6)] += kin[x]; }
