@@ -1,142 +1,159 @@
 /* The 6D cosmos: the structure and its behaviour, nothing else.
-   The structure is six layers. Each layer holds a triad of vertices and a triad of midpoints, and a midpoint is a vertex
-   moved by -1/2: halved and turned half a turn. Bridges join the vertices of a layer to the midpoints of the next layer,
-   and its midpoints to the next layer's vertices, every node of one triad to every node of the other.
-   Nested in itself, every node holds the whole structure again by the same move, so a node of the cosmos is a node at
-   every scale at once.
-   Behaviour: each triad passes its live count across its bridges. A node adds what it receives at every scale. It comes
-   alive on exactly a triad, stays alive on a pair or a triad, and is clear at the next step otherwise. The triad and the
-   pair are counted from the structure below, not written in. */
+   Structure. Six layers; each holds a triad of vertices and a triad of midpoints, a midpoint being a vertex moved by -1/2
+   (halved and turned half a turn). Bridges join every vertex of a layer to every midpoint of the next, and every
+   midpoint to every vertex of the next. Where two bridges cross, they meet: the two strands at 1/2 of a gap, a strand
+   with itself at 1/3 and 2/3. Nested in itself, every node holds the whole structure again by the same move, so a node
+   of the cosmos is a node at every level at once.
+   Behaviour. Each node holds a pair, its phase and its current (the rate of its phase). Every bridge and every meeting
+   pulls toward the coherence of the triad, (1 + 2 cos d)/3, and the pull changes the currents: what one end gains the
+   other loses, so the total current is kept, and so is the energy. The step runs the same backwards as forwards, so
+   there is no arrow of time in it and no clock: the only turning is the phases' own.
+   The current is put in once; nothing is touched afterwards. */
 
-export const MOVE = -0.5;                                   // midpoint = MOVE x vertex
-export const HALF = Math.abs(MOVE);
+export const MOVE = -0.5;
 
 export const unit = (() => {
   const L = 6, R = 1, Y = 0.62;
   const pos = [], layer = [], kind = [];
   for (let l = 0; l < L; l++) {
-    const th0 = (l % 2 === 0 ? 1 : -1) * Math.PI / 2;      // each layer turned half a turn from the last
+    const th0 = (l % 2 === 0 ? 1 : -1) * Math.PI / 2;
     for (let kd = 0; kd < 2; kd++) for (let j = 0; j < 3; j++) {
       const th = th0 + 2 * Math.PI * j / 3, s = kd === 0 ? R : MOVE * R;
       pos.push([s * Math.cos(th), (l - (L - 1) / 2) * Y, -s * Math.sin(th)]); layer.push(l); kind.push(kd);
     }
   }
-  const n = pos.length, nbr = Array.from({ length: n }, () => []);
+  const n = pos.length, lines = [];
   for (let a = 0; a < n; a++) for (let b = 0; b < n; b++)
-    if (Math.abs(layer[a] - layer[b]) === 1 && kind[a] !== kind[b]) nbr[a].push(b);
-
-  // triads: the nodes of one kind in one layer
+    if (layer[b] === layer[a] + 1 && kind[a] !== kind[b]) lines.push([a, b]);              // from a layer to the next
   const triads = [];
   for (let l = 0; l < L; l++) for (let kd = 0; kd < 2; kd++) triads.push([...Array(n).keys()].filter(d => layer[d] === l && kind[d] === kd));
-  const triadOf = new Int8Array(n); triads.forEach((t, i) => t.forEach(d => { triadOf[d] = i; }));
-  // a bridge joins all of a triad to all of the next, so what a node receives is the sum of whole triads
-  const triadNbr = triads.map(t => [...new Set(nbr[t[0]].map(d => triadOf[d]))]);
-  triads.forEach((t, i) => t.forEach(d => {
-    const got = new Set(nbr[d]), want = triadNbr[i].flatMap(j => triads[j]);
-    if (got.size !== want.length || !want.every(x => got.has(x))) throw new Error("bridge not complete");
-  }));
+  const triadNbr = triads.map(t => triads.map((u, j) => j).filter(j =>
+    Math.abs(layer[triads[j][0]] - layer[t[0]]) === 1 && kind[triads[j][0]] !== kind[t[0]]));
 
-  // strands: the parts of the structure joined by bridges
-  const strand = new Int8Array(n).fill(-1); let strands = 0;
-  for (let s = 0; s < n; s++) if (strand[s] < 0) {
-    const st = [s]; strand[s] = strands;
-    while (st.length) { const x = st.pop(); for (const y of nbr[x]) if (strand[y] < 0) { strand[y] = strands; st.push(y); } }
-    strands++;
+  // where two bridges of one gap cross: both run between the same two heights, so they cross at one fraction t of each
+  const sub = (u, v) => [u[0] - v[0], u[1] - v[1], u[2] - v[2]], dot = (u, v) => u[0] * v[0] + u[1] * v[1] + u[2] * v[2];
+  const meetings = [];
+  for (let x = 0; x < lines.length; x++) for (let y = x + 1; y < lines.length; y++) {
+    const [a0, a1] = lines[x], [b0, b1] = lines[y];
+    if (layer[a0] !== layer[b0]) continue;
+    const d1 = sub(pos[a1], pos[a0]), d2 = sub(pos[b1], pos[b0]), r = sub(pos[a0], pos[b0]);
+    const A = dot(d1, d1), B = dot(d1, d2), C = dot(d2, d2), Dd = dot(d1, r), E = dot(d2, r), den = A * C - B * B;
+    if (Math.abs(den) < 1e-12) continue;
+    const t = (B * E - C * Dd) / den, u = (A * E - B * Dd) / den;
+    if (!(t > 1e-7 && t < 1 - 1e-7 && u > 1e-7 && u < 1 - 1e-7)) continue;
+    const X = [pos[a0][0] + t * d1[0], pos[a0][1] + t * d1[1], pos[a0][2] + t * d1[2]];
+    const Z = [pos[b0][0] + u * d2[0], pos[b0][1] + u * d2[1], pos[b0][2] + u * d2[2]];
+    if (Math.hypot(X[0] - Z[0], X[1] - Z[1], X[2] - Z[2]) > 1e-9) continue;
+    meetings.push({ a0, a1, b0, b1, t, pos: X });
   }
-  const triadStrand = triads.map(t => strand[t[0]]);
-  return { n, L, pos, layer, kind, nbr, triads, triadNbr, triadStrand, strand, strands };
+  // the phase difference of the two crossing lines at the meeting point, as weights on the four ends
+  const W = meetings.map(m => [[m.b0, 1 - m.t], [m.b1, m.t], [m.a0, -(1 - m.t)], [m.a1, -m.t]]);
+  return { n, L, pos, layer, kind, lines, triads, triadNbr, meetings, W };
 })();
-
-export const TRIAD = unit.triads[0].length;                 // 3
-export const PAIR = unit.strands;                           // 2
-export const LINES = unit.nbr.reduce((a, b) => a + b.length, 0) / 2;   // 90
 
 export function makeCosmos(k) {
   const n = unit.n, N = n ** k, stride = Array.from({ length: k }, (_, i) => n ** (k - 1 - i));
-  const T = unit.triads.length, tri = unit.triads, triN = unit.triadNbr, triS = unit.triadStrand;
-  let cur = new Uint8Array(N), nxt = new Uint8Array(N);
-  const cnt = new Uint8Array(N), sum = new Int32Array(T);
-  const scales = Array.from({ length: k }, () => ({ still: 0, turning: 0, empty: 0, strand: new Array(unit.strands).fill(0) }));
-  const c = { k, N, stride, gen: 0, alive: 0, scales, last: null };
+  const tri = unit.triads, triN = unit.triadNbr, W = unit.W, Mn = W.length, T = tri.length;
+  const th = new Float64Array(N), p = new Float64Array(N), F = new Float64Array(N);
+  const co = new Float64Array(N), si = new Float64Array(N), sr = new Float64Array(T), sm = new Float64Array(T);
+  const meetN = k * Mn * (N / n), light = new Float32Array(meetN);       // what each meeting point exchanges
+  const c = { k, N, stride, th, p, light, meetN, putIn: 0 };
 
-  // every triad at every scale passes its count across its bridges; each node adds what it receives
-  function scan() {
-    cnt.fill(0);
+  function pull() {
+    F.fill(0);
+    for (let x = 0; x < N; x++) { co[x] = Math.cos(th[x]); si[x] = Math.sin(th[x]); }
+    let mi = 0;
     for (let i = 0; i < k; i++) {
-      const s = stride[i], block = n * s, sc = scales[i];
-      sc.still = sc.turning = sc.empty = 0; sc.strand.fill(0);
+      const s = stride[i], block = n * s;
       for (let hi = 0; hi < N; hi += block) for (let lo = 0; lo < s; lo++) {
         const b = hi + lo;
-        for (let t = 0; t < T; t++) {
-          const m = tri[t]; let v = 0;
-          for (let q = 0; q < m.length; q++) v += cur[b + m[q] * s];
-          sum[t] = v;
-          if (v === m.length) sc.still++; else if (v) sc.turning++; else sc.empty++;
-          sc.strand[triS[t]] += v;
+        for (let t = 0; t < T; t++) {                                     // each triad's summed phasor: all that crosses a bridge
+          const m = tri[t]; let re = 0, im = 0;
+          for (let q = 0; q < 3; q++) { const x = b + m[q] * s; re += co[x]; im += si[x]; }
+          sr[t] = re; sm[t] = im;
         }
         for (let t = 0; t < T; t++) {
-          const nb = triN[t]; let r = 0;
-          for (let q = 0; q < nb.length; q++) r += sum[nb[q]];
-          if (r) { const m = tri[t]; for (let q = 0; q < m.length; q++) cnt[b + m[q] * s] += r; }
+          const nb = triN[t]; let re = 0, im = 0;
+          for (let q = 0; q < nb.length; q++) { re += sr[nb[q]]; im += sm[nb[q]]; }
+          const m = tri[t];
+          for (let q = 0; q < 3; q++) { const x = b + m[q] * s; F[x] += im * co[x] - re * si[x]; }
+        }
+        for (let g = 0; g < Mn; g++) {                                    // the meetings
+          const w = W[g]; let d = 0;
+          for (let q = 0; q < 4; q++) d += w[q][1] * th[b + w[q][0] * s];
+          const v = Math.sin(d);
+          for (let q = 0; q < 4; q++) F[b + w[q][0] * s] -= w[q][1] * v;
+          light[mi++] = v;
         }
       }
     }
-    c.alive = scales[0].strand.reduce((a, b) => a + b, 0);
   }
-
-  c.step = function () {
-    let created = 0, kept = 0, cleared = 0;
-    for (let x = 0; x < N; x++) {
-      const a = cur[x], r = cnt[x], b = (r === TRIAD || (a === 1 && r === PAIR)) ? 1 : 0;
-      nxt[x] = b;
-      if (b) { if (a) kept++; else created++; } else if (a) cleared++;
+  c.step = function (dt, times = 1) {
+    for (let r = 0; r < times; r++) {
+      for (let x = 0; x < N; x++) p[x] += 0.5 * dt * F[x];
+      for (let x = 0; x < N; x++) th[x] += dt * p[x];
+      pull();
+      for (let x = 0; x < N; x++) p[x] += 0.5 * dt * F[x];
     }
-    [cur, nxt] = [nxt, cur]; c.gen++; c.last = { created, kept, cleared };
-    scan();
   };
-
-  c.begin = function (seed, rand = Math.random) {
-    cur.fill(0); c.gen = 0; c.last = null;
-    const fine = stride[k - 1];
-    if (seed === "half") for (let x = 0; x < N; x++) cur[x] = rand() < HALF ? 1 : 0;
-    if (seed === "mean") {                                                                // on average every node receives a triad
-      const p = TRIAD / (k * 2 * LINES / n);
-      for (let x = 0; x < N; x++) cur[x] = rand() < p ? 1 : 0;
-    }
-    if (seed === "triad") for (const d of tri[0]) cur[d * fine] = 1;                      // one triad, inside the first node of every scale above
-    if (seed === "unit") for (let d = 0; d < n; d++) cur[d * fine] = 1;                   // one whole structure, the same way
-    if (seed === "every") {                                                               // the first triad at every scale
-      const rec = (i, x) => { if (i === k) { cur[x] = 1; return; } for (const d of tri[0]) rec(i + 1, x + d * stride[i]); };
-      rec(0, 0);
-    }
-    scan();
-  };
-
-  c.state = () => cur;
-  c.set = arr => { cur.set(arr); c.gen = 0; c.last = null; scan(); };
-  c.hash = function () { let h = 2166136261 >>> 0; for (let x = 0; x < N; x++) if (cur[x]) h = Math.imul(h ^ x, 16777619) >>> 0; return h; };
-  // a state's key for finding repeats: two independent 32-bit hashes and the count, so a false repeat is out of reach
-  c.key = function () {
-    let a = 2166136261 >>> 0, b = 0x9e3779b9;
-    for (let x = 0; x < N; x++) if (cur[x]) { a = Math.imul(a ^ x, 16777619) >>> 0; b = Math.imul((b ^ Math.imul(x, 0x85ebca6b)) >>> 0, 0xc2b2ae35) >>> 0; b = (b ^ (b >>> 13)) >>> 0; }
-    return `${c.alive}:${a}:${b}`;
-  };
-
-  // where each node sits: the structure, then the structure again in each node by the move, scale after scale
-  c.positions = function () {
-    const p = new Float32Array(N * 3);
-    for (let x = 0; x < N; x++) {
-      let px = 0, py = 0, pz = 0, f = 1;
-      for (let i = 0; i < k; i++) {
-        const u = unit.pos[Math.floor(x / stride[i]) % n];
-        px += f * u[0]; py += Math.abs(f) * u[1]; pz += f * u[2]; f *= MOVE;
+  c.put = function (nodes, I) { for (const x of nodes) { p[x] += I; c.putIn += I; } };
+  c.current = () => { let s = 0; for (let x = 0; x < N; x++) s += p[x]; return s; };
+  c.energy = function () {
+    let e = 0;
+    for (let x = 0; x < N; x++) e += 0.5 * p[x] * p[x];
+    for (let i = 0; i < k; i++) {
+      const s = stride[i], block = n * s;
+      for (let hi = 0; hi < N; hi += block) for (let lo = 0; lo < s; lo++) {
+        const b = hi + lo;
+        for (const [a0, a1] of unit.lines) e -= Math.cos(th[b + a1 * s] - th[b + a0 * s]);
+        for (let g = 0; g < Mn; g++) { const w = W[g]; let d = 0; for (let q = 0; q < 4; q++) d += w[q][1] * th[b + w[q][0] * s]; e -= Math.cos(d); }
       }
-      p[x * 3] = px; p[x * 3 + 1] = py; p[x * 3 + 2] = pz;
     }
-    return p;
+    return e;
   };
-  c.fineKind = x => unit.kind[x % n];
+  c.reset = function () { th.fill(0); p.fill(0); c.putIn = 0; pull(); };
 
-  scan();
+  // the node at given digits (coarsest first), and the six nodes of one layer at one level, at one place in the others
+  c.node = digits => digits.reduce((a, d, i) => a + d * stride[i], 0);
+  c.layerAt = function (level, layer, place) {
+    const out = [];
+    for (let d = 6 * layer; d < 6 * layer + 6; d++) out.push(c.node(place.map((q, i) => (i === level ? d : q))));
+    return out;
+  };
+
+  // where the meeting points are: the structure, then the structure again in each node by the move, level after level
+  c.meetPositions = function () {
+    const P = new Float32Array(meetN * 3); let mi = 0;
+    const off = x => {
+      let px = 0, py = 0, pz = 0, f = 1;
+      for (let i = 0; i < k; i++) { const u = unit.pos[Math.floor(x / stride[i]) % n]; px += f * u[0]; py += Math.abs(f) * u[1]; pz += f * u[2]; f *= MOVE; }
+      return [px, py, pz];
+    };
+    for (let i = 0; i < k; i++) {
+      const s = stride[i], block = n * s, f = Math.pow(MOVE, i), u0 = unit.pos[0];
+      for (let hi = 0; hi < N; hi += block) for (let lo = 0; lo < s; lo++) {
+        const o = off(hi + lo);                                           // this level's digit is 0 here: take that node out
+        const ox = o[0] - f * u0[0], oy = o[1] - Math.abs(f) * u0[1], oz = o[2] - f * u0[2];
+        for (const m of unit.meetings) {
+          P[mi * 3] = ox + f * m.pos[0]; P[mi * 3 + 1] = oy + Math.abs(f) * m.pos[1]; P[mi * 3 + 2] = oz + f * m.pos[2]; mi++;
+        }
+      }
+    }
+    return P;
+  };
+  // the four nodes whose currents meet at each meeting point
+  c.meetEnds = function () {
+    const E = new Uint32Array(meetN * 4); let mi = 0;
+    for (let i = 0; i < k; i++) {
+      const s = stride[i], block = n * s;
+      for (let hi = 0; hi < N; hi += block) for (let lo = 0; lo < s; lo++) {
+        const b = hi + lo;
+        for (const m of unit.meetings) { E[mi * 4] = b + m.a0 * s; E[mi * 4 + 1] = b + m.a1 * s; E[mi * 4 + 2] = b + m.b0 * s; E[mi * 4 + 3] = b + m.b1 * s; mi++; }
+      }
+    }
+    return E;
+  };
+
+  pull();
   return c;
 }
