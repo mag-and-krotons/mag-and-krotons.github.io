@@ -42,9 +42,12 @@ function init() {
   // cosmos takes the current.
   const LIGHTNING = { 1: 7.0, 2: 9.0, 3: 10.0 };
 
+  // each node is the whole structure within. Seen from outside it is one object: all the light inside it, summed at
+  // its place. When the observer is near enough to resolve it, it opens into its structure, and so on, level by level.
+  let objs = [], meetLevel = null, meetBase = null, depthW = null;
   function build(k) {
     cos = makeCosmos(k);
-    if (points) { scene.remove(points); points.geometry.dispose(); points.material.dispose(); }
+    for (const o of [points, ...objs.map(q => q.pts)]) if (o) { scene.remove(o); o.geometry.dispose(); o.material.dispose(); }
     const g = new THREE.BufferGeometry();
     g.setAttribute("position", new THREE.BufferAttribute(cos.meetPositions(), 3));
     colors = new Float32Array(cos.meetN * 3); g.setAttribute("color", new THREE.BufferAttribute(colors, 3));
@@ -54,7 +57,45 @@ function init() {
       depthWrite: false, blending: THREE.AdditiveBlending, sizeAttenuation: true
     }));
     scene.add(points);
+    // which level each meeting point belongs to, and the node it lies in
+    meetLevel = new Uint8Array(cos.meetN); meetBase = new Uint32Array(cos.meetN);
+    let mi = 0;
+    for (let i = 0; i < k; i++) {
+      const sd = cos.stride[i], block = 36 * sd;
+      for (let hi = 0; hi < cos.N; hi += block) for (let lo = 0; lo < sd; lo++)
+        for (let m = 0; m < unit.meetings.length; m++) { meetLevel[mi] = i; meetBase[mi] = hi + lo; mi++; }
+    }
+    // the nodes of each outer level, as objects at their own places
+    objs = [];
+    for (let v = 1; v < k; v++) {
+      const n = 36 ** v, P = new Float32Array(n * 3), inside = new Float32Array(n);
+      for (let o = 0; o < n; o++) {
+        let px = 0, py = 0, pz = 0, f = 1;
+        for (let j = 0; j < v; j++) { const u = unit.pos[Math.floor(o / 36 ** (v - 1 - j)) % 36]; px += f * u[0]; py += Math.abs(f) * u[1]; pz += f * u[2]; f *= -0.5; }
+        P[o * 3] = px; P[o * 3 + 1] = py; P[o * 3 + 2] = pz;
+      }
+      for (let q = 0; q < cos.meetN; q++) if (meetLevel[q] >= v) inside[Math.floor(meetBase[q] / 36 ** (k - v))]++;
+      const og = new THREE.BufferGeometry(); og.setAttribute("position", new THREE.BufferAttribute(P, 3));
+      const oc = new Float32Array(n * 3); og.setAttribute("color", new THREE.BufferAttribute(oc, 3));
+      const pts = new THREE.Points(og, new THREE.PointsMaterial({
+        size: 0.5 * Math.pow(0.5, v - 1), map: dot, vertexColors: true, transparent: true,
+        depthWrite: false, blending: THREE.AdditiveBlending, sizeAttenuation: true
+      }));
+      scene.add(pts); objs.push({ v, n, pts, oc, inside, acc: new Float32Array(n * 3) });
+    }
+    depthW = new Float32Array(k + 1);
     fillLevels(); val.value = LIGHTNING[k]; $("out-c6-value").textContent = LIGHTNING[k].toFixed(1); begin();
+  }
+  // how deep the observer resolves: a node of level v opens when its structure would span more than OPEN pixels
+  const OPEN = 48;
+  function resolve() {
+    if (!cos) return;
+    const d = camera.position.distanceTo(controls.target), h = stage.clientHeight || 600;
+    const px = 1.6 / (d * Math.tan(camera.fov * Math.PI / 360)) * (h / 2);     // the whole structure's size on screen
+    const nu = Math.log2(px / OPEN);                                           // each level inside is half the size
+    const v = Math.floor(nu) + 1, f = nu - Math.floor(nu);
+    depthW.fill(0);
+    if (v < 1) depthW[1] = 1; else if (v >= cos.k) depthW[cos.k] = 1; else { depthW[v] = 1 - f; depthW[v + 1] = f; }
   }
   function begin() {
     setRun(false); cos.reset(); rec.fill(0); steps = 0; samples = 0; put.disabled = false; paint(); bars();
@@ -95,7 +136,9 @@ function init() {
   }
 
   function paint() {
-    const L = cos.light, m = cos.putIn / cos.N;
+    resolve();
+    const L = cos.light, m = cos.putIn / cos.N, k = cos.k;
+    for (const o of objs) o.acc.fill(0);
     for (let i = 0; i < cos.meetN; i++) {
       const v = Math.min(1, Math.abs(L[i])), o = i * 3;
       let r = v, g = v, b = v;
@@ -108,7 +151,22 @@ function init() {
           r = v * (1 - s + s * f(5)); g = v * (1 - s + s * f(3)); b = v * (1 - s + s * f(1));
         }
       }
-      colors[o] = r; colors[o + 1] = g; colors[o + 2] = b;
+      // seen individually only by an observer who resolves the level it lies in; otherwise it is inside an object
+      const lv = meetLevel[i]; let w = 0;
+      for (let d = lv + 1; d <= k; d++) w += depthW[d];
+      colors[o] = r * w; colors[o + 1] = g * w; colors[o + 2] = b * w;
+      for (const ob of objs) if (lv >= ob.v) {
+        const q = Math.floor(meetBase[i] / 36 ** (k - ob.v)) * 3;
+        ob.acc[q] += r; ob.acc[q + 1] += g; ob.acc[q + 2] += b;
+      }
+    }
+    for (const ob of objs) {                                                 // an object shows the light inside it, summed
+      const w = depthW[ob.v];
+      for (let q = 0; q < ob.n; q++) {
+        const c = ob.inside[q] || 1, gain = w * 3 / Math.sqrt(c);
+        ob.oc[q * 3] = ob.acc[q * 3] * gain; ob.oc[q * 3 + 1] = ob.acc[q * 3 + 1] * gain; ob.oc[q * 3 + 2] = ob.acc[q * 3 + 2] * gain;
+      }
+      ob.pts.geometry.attributes.color.needsUpdate = true;
     }
     points.geometry.attributes.color.needsUpdate = true; requestRender();
   }
@@ -174,7 +232,8 @@ function init() {
     const f = $("cosmos6d-frame");
     if (document.fullscreenElement) document.exitFullscreen(); else if (f.requestFullscreen) f.requestFullscreen();
   });
-  controls.addEventListener("change", () => requestRender());
+  let lastDepth = "";
+  controls.addEventListener("change", () => { if (!cos) return requestRender(); resolve(); const key = Array.from(depthW).map(x => x.toFixed(2)).join(); if (key !== lastDepth) { lastDepth = key; paint(); } requestRender(); });
 
   /* ---------- render only while it can be seen ---------- */
   let visible = false, onScreen = false, raf = 0, dirty = true;
@@ -202,6 +261,6 @@ function init() {
   new ResizeObserver(() => { fit(); check(); requestRender(); }).observe(stage);
   for (const ev of ["tabchange", "cosmosmode", "fullscreenchange"]) document.addEventListener(ev, () => setTimeout(() => { fit(); check(); requestRender(); }, 0));
 
-  window.__cosmos6d = { get c() { return cos; }, step, paint, bars, get colors() { return colors; }, get rec() { return rec; }, camera, controls, unit, nodesOfLayer };
+  window.__cosmos6d = { get c() { return cos; }, get objs() { return objs; }, step, paint, bars, get colors() { return colors; }, get rec() { return rec; }, camera, controls, unit, nodesOfLayer };
   home(); build(2);
 }
