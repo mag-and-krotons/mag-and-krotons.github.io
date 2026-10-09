@@ -137,7 +137,7 @@
     </div>
 
     <div class="tab-panel" data-panel="cosmos">
-      <p class="section-lead" style="margin-top:0">Three games on one structure and its arithmetic, each run only on its own rule, with every number beside it counted as it runs. In the 6D cosmos, the six-layer structure holds itself in every node, scale inside scale, and a current put in once flows across every bridge and crossing at every scale at once. In the world of clocks, prime clocks mark the pairs $6k\pm1$, and what no clock marks is a twin prime pair. In the third, triad spins sit on a strand, and order travels along the axis as far as one coupling lets it.</p>
+      <p class="section-lead" style="margin-top:0">Three games on one structure and its arithmetic, each run only on its own rule, with every number beside it counted as it runs. In the 6D cosmos, the six-layer structure holds itself in every node, scale inside scale, and a current from the scale above flows down through every scale at once. In the world of clocks, prime clocks mark the pairs $6k\pm1$, and what no clock marks is a twin prime pair. In the third, triad spins sit on a strand, and order travels along the axis as far as one coupling lets it.</p>
       <div class="seg cosmos-switch" id="cosmos-mode">
         <button data-v="cosmos6d" class="active">6D cosmos</button>
         <button data-v="clocks">World of clocks</button>
@@ -146,39 +146,31 @@
 
       <div class="cosmos-mode active" data-mode="cosmos6d">
         <div class="cosmos-controls">
-          <span class="small muted">6 scales · 2,176,782,336 vertices</span>
+          <span class="small muted">6 scales · 2,176,782,336 vertices · nothing put in</span>
           <div class="btn-row">
-            <span class="small muted">Put the current into layer</span>
-            <select id="c6-layer" aria-label="Layer"><option>1</option><option>2</option><option>3</option><option selected>4</option><option>5</option><option>6</option></select>
-            <span class="small muted">at scale</span>
-            <select id="c6-scale" aria-label="Scale"><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option><option>6</option></select>
-            <label class="small" for="c6-value">current</label><input type="range" id="c6-value" min="0.5" max="20" step="0.1" value="7"><output id="out-c6-value">7.0</output>
-            <button class="btn btn-sm btn-primary" id="c6-put">Put it in</button>
-          </div>
-          <div class="btn-row">
-            <button class="btn btn-sm" id="c6-run">Run</button>
+            <button class="btn btn-sm btn-primary" id="c6-run">Run</button>
             <label class="small" for="c6-speed">Steps per frame</label><input type="range" id="c6-speed" min="1" max="200" step="1" value="20"><output id="out-c6-speed">20</output>
-            <button class="btn btn-sm" id="c6-again">Begin again, still</button>
+            <button class="btn btn-sm" id="c6-again">Begin again</button>
             <button class="btn btn-sm" id="c6-whole">See the whole</button>
             <button class="btn btn-sm" id="c6-full">Full screen</button>
           </div>
         </div>
         <div class="cosmos-frame" id="cosmos6d-frame">
           <div class="bar top">
-            <span><b>Current put in</b><span id="c6-in">–</span></span>
+            <span><b>The scale above turns at</b><span id="c6-above">–</span></span>
             <span><b>Current now</b><span id="c6-now">–</span></span>
-            <span><b>Energy</b><span id="c6-energy">–</span></span>
+            <span><b>Energy · in from above · out to the endless within</b><span id="c6-energy">–</span></span>
             <span><b>Meetings exchanging</b><span id="c6-meet">–</span></span>
           </div>
           <div class="space-view" id="cosmos6d-view"></div>
           <div class="bar bottom">
-            <div><b id="c6-gaps-label">Across the gaps</b><span id="c6-gaps">–</span></div>
-            <div><b id="c6-layers-label">In each layer</b><span id="c6-layers">–</span></div>
-            <div><b>Motion by scale</b><span id="c6-where">–</span></div>
+            <div><b>What each scale passes on</b><span id="c6-pass">–</span></div>
+            <div><b>Temperature by scale</b><span id="c6-temp">–</span></div>
+            <div><b>Current by scale</b><span id="c6-flow">–</span></div>
           </div>
         </div>
-        <p class="small muted" style="margin-top:12px">Drag to turn, scroll to zoom towards the pointer, right-drag to move. Nothing of the structure is drawn. Light comes only from the points where two lines meet, as much as the current exchanged there. A node seen from far away is one object holding all the light inside it; as you come near enough to resolve it, it opens into the structure within, through all six scales. Where a place turns faster than the cosmos as a whole its light takes a colour, one turn of the colour wheel for each doubling; at the common rate it is white. The bars give what an observer inside could measure: the current put in and the current now (they stay equal), the energy (it stays the same), how many meetings are exchanging, the current across each gap of the scale the current was put into (its one-way part, then its alternating part), each of its layers' strongest frequency and temperature (the spread of its places' currents), and how the motion is shared among the six scales.</p>
-        <p class="small muted">Scale 1 is the structure: six layers, each the one before turned by −1, each with a triad of vertices and a triad of midpoints, 36 nodes. Every node of scale 1 is the whole structure within, which is scale 2, and so on to scale 6: 36<sup>6</sup> = 2,176,782,336 vertices, each named by one node at every scale. Each vertex holds a pair, its phase and its current. Every bridge, and every point where two bridges cross, pulls toward the coherence of the triad, (1 + 2 cos d)/3, and the pull moves current from one end to the other, so the total current and the energy are kept; the step runs the same backwards as forwards and nothing in it counts time. Every pull at a scale depends only on that scale's differences, so the cosmos is exactly a sum over its six scales, and its 2,176,782,336 vertices are carried without loss by six structures of 36. The cosmos begins still, the current is put in once, into one layer at one scale, and nothing is touched afterwards. From then on the current never stops: its total stays what was put in, so it is never zero everywhere at once, and it carries the structure through every scale. The default is the fourth layer at the third scale with a current of 7: the last value below the breakdown, where a layer can no longer hand its current on and turns by itself.</p>
+        <p class="small muted" style="margin-top:12px">Drag to turn, scroll to zoom towards the pointer, right-drag to move. Nothing of the structure is drawn. Light comes only from the points where two lines meet, as much as the current exchanged there. A node seen from far away is one object holding all the light inside it; as you come near enough to resolve it, it opens into the structure within, through all six scales. Colour is the rate at which a place turns against the frequency arriving from the scale above: white where it turns with it, one turn of the colour wheel for each halving below it. The bars give what an observer inside could measure: the rate of the scale above, the current now, the energy with what has come in from above and gone out to the endless structure within, how many meetings are exchanging, and for each scale its sum as a share of the whole (what it passes on), its temperature (the spread of its currents) and its current.</p>
+        <p class="small muted">Scale 1 is the structure: six layers, each the one before turned by −1, each with a triad of vertices and a triad of midpoints, 36 nodes. Every node of scale 1 is the whole structure within, which is scale 2, and so on to scale 6: 36<sup>6</sup> = 2,176,782,336 vertices. The structure within is the same in every node of a scale, so six structures of 36 carry them all. Nothing is put in. Every node begins at the turn where it sits, so the current carries the structure from the start. The scale above, which holds the whole, turns at the rate of lightning, the current at which a layer turns by itself, and is joined to every node of scale 1. Every node of each scale is joined to every node of the structure within it, so what crosses between scales is their sums, and no scale sees more of another than its sum. The structure within scale 6 is never reached; it takes whatever arrives. Every bridge and every meeting pulls toward the coherence of the triad, (1 + 2 cos d)/3. So the current flows one way, from the scale above down through the six, and is never zero everywhere at once. Begun from still phases instead of the structure's turns, the scale above only rocks the whole together and nothing emerges.</p>
       </div>
 
       <div class="cosmos-mode" data-mode="clocks">
@@ -394,7 +386,7 @@
 <script src="js/app.js?v=20261009b"></script>
 <script src="js/blog.js?v=20261009b"></script>
 <script defer src="js/cosmos.js?v=20261009e"></script>
-<script type="module" src="js/cosmos6d.js?v=20261010g"></script>
+<script type="module" src="js/cosmos6d.js?v=20261010h"></script>
 <script type="module" src="js/structure.js?v=20261009b"></script>
 </body>
 </html>

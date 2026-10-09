@@ -5,13 +5,10 @@
    two strands at 1/2 of a gap, a strand with itself at 1/3 and 2/3.
    Six scales. Scale 1 is the structure; every node of scale s is the whole structure within, which is scale s + 1, down
    to scale 6: 36^6 = 2,176,782,336 vertices. A vertex is named by its six digits, one node of the structure at each scale.
-   Behaviour. Each vertex holds a pair, its phase and its current (the rate of its phase). Every bridge and every meeting
-   at every scale pulls toward the coherence of the triad, (1 + 2 cos d)/3; what one end gains the other loses, so the
-   total current and the energy are kept, and the step runs the same backwards as forwards.
-   Every pull at scale s depends only on differences between vertices that differ in their scale-s digit, and the current
-   put in at one scale depends only on that digit. So the cosmos stays exactly a sum over the scales: the phase of a vertex
-   is psi_1(d_1) + ... + psi_6(d_6), and the 2,176,782,336 vertices are carried, without loss, by six structures of 36:
-   216 phases and 216 currents. The current is put in once; nothing is touched afterwards. */
+   Behaviour. Each node holds a pair, its phase and its current (the rate of its phase). Every bridge and every meeting
+   pulls toward the coherence of the triad, (1 + 2 cos d)/3; what one end gains the other loses. The structure within is
+   the same in every node of a scale, so six structures of 36, one per scale, carry the 2,176,782,336 vertices, and a
+   vertex's phase is the sum of its nodes' phases down the scales. Nothing is put in: see makeCosmos below. */
 
 export const MOVE = -0.5, SCALES = 6, N36 = 36;
 export const VERTICES = N36 ** SCALES;                                    // 2,176,782,336
@@ -54,14 +51,35 @@ export const unit = (() => {
   return { n, L, pos, layer, kind, lines, triads, triadNbr, meetings, W };
 })();
 
+// The six scales and their flow. Nothing is put in. Every node starts at the turn where it sits: a vertex at its angle,
+// a midpoint half a turn on (it is -1/2 times its vertex), each layer -1 times the one before. The scale above, which
+// holds the whole, is one heavy node turning at the lightning's rate; it is joined to every node of scale 1, and every
+// node of each scale is joined to every node of the structure within it, so what crosses between scales is their sums
+// and no scale sees more of another than its sum. The structure within scale 6 is the endless tree, never reached: it
+// takes whatever arrives. So the current flows one way, from the scale above down through the six, and is never zero
+// everywhere at once.
+export const LIGHTNING = 7.0;                    // the current at which a layer turns by itself: between 7.0 and 7.5 (cosmos6d/current)
+export const turns = unit.pos.map((u, d) => {
+  const l = unit.layer[d], j = d % 3;
+  return (l % 2 === 0 ? 1 : -1) * Math.PI / 2 + 2 * Math.PI * j / 3 + Math.PI * unit.kind[d];
+});
+
 export function makeCosmos() {
   const n = unit.n, S = SCALES, tri = unit.triads, triN = unit.triadNbr, W = unit.W, Mn = W.length;
   const psi = new Float64Array(S * n), p = new Float64Array(S * n), F = new Float64Array(S * n);
-  const light = new Float64Array(S * Mn);                                  // what each meeting exchanges, the same in every copy
-  const sr = new Float64Array(tri.length), sm = new Float64Array(tri.length);
-  const c = { psi, p, light, putIn: 0, S, n, Mn };
+  const light = new Float64Array(S * Mn);                                  // what each meeting exchanges
+  const sr = new Float64Array(tri.length), sm = new Float64Array(tri.length), Sre = new Float64Array(S), Sim = new Float64Array(S);
+  const M0 = VERTICES;                                                     // the scale above holds every vertex
+  const c = { psi, p, light, S, n, Mn, Phi: 0, P0: LIGHTNING * M0, M0, Ein: 0, Eout: 0 };
+  let f0 = 0;
 
-  // the pull on one scale's structure: bridges pass each triad's summed phasor; meetings pull the two crossing lines
+  function sums() {
+    for (let s = 0; s < S; s++) {
+      let re = 0, im = 0;
+      for (let d = 0; d < n; d++) { re += Math.cos(psi[s * n + d]); im += Math.sin(psi[s * n + d]); }
+      Sre[s] = re; Sim[s] = im;
+    }
+  }
   function pullScale(s) {
     const o = s * n;
     for (let t = 0; t < tri.length; t++) {
@@ -83,49 +101,71 @@ export function makeCosmos() {
       light[s * Mn + g] = v;
     }
   }
-  function pull() { for (let s = 0; s < S; s++) pullScale(s); }
+  function pull() {
+    sums();
+    for (let s = 0; s < S; s++) pullScale(s);
+    // the scale above on scale 1, and scale 1 back on it
+    const cr = Math.cos(c.Phi), ci = Math.sin(c.Phi);
+    for (let d = 0; d < n; d++) F[d] += ci * Math.cos(psi[d]) - cr * Math.sin(psi[d]);
+    f0 = Sim[0] * cr - Sre[0] * ci;
+    // each scale and the structure within it, joined node to node: what crosses is their sums
+    for (let s = 0; s < S - 1; s++) for (const [a, b] of [[s, s + 1], [s + 1, s]]) {
+      const o = a * n;
+      for (let d = 0; d < n; d++) F[o + d] += (Sim[b] * Math.cos(psi[o + d]) - Sre[b] * Math.sin(psi[o + d])) / n;
+    }
+  }
 
   c.step = function (dt, times = 1) {
     for (let r = 0; r < times; r++) {
       for (let i = 0; i < S * n; i++) p[i] += 0.5 * dt * F[i];
+      c.P0 += 0.5 * dt * f0;
+      let inn = 0; const cr = Math.cos(c.Phi), ci = Math.sin(c.Phi);
+      for (let d = 0; d < n; d++) inn += (ci * Math.cos(psi[d]) - cr * Math.sin(psi[d])) * p[d];
       for (let i = 0; i < S * n; i++) psi[i] += dt * p[i];
+      c.Phi += dt * c.P0 / M0;
       pull();
       for (let i = 0; i < S * n; i++) p[i] += 0.5 * dt * F[i];
+      c.P0 += 0.5 * dt * f0;
+      c.Ein += inn * dt;
+      // the endless tree within scale 6 takes what arrives
+      const o = (S - 1) * n;
+      for (let d = 0; d < n; d++) { c.Eout += p[o + d] * p[o + d] * dt; p[o + d] -= dt * p[o + d]; }
     }
   };
-  // put the current into one layer at one scale: every vertex whose digit at that scale lies in that layer
-  c.put = function (scale, layer, I) {
-    for (let d = 6 * layer; d < 6 * layer + 6; d++) p[scale * n + d] += I;
-    c.putIn += I * 6 * COPIES;
+  c.reset = function () {
+    for (let s = 0; s < S; s++) for (let d = 0; d < n; d++) { psi[s * n + d] = turns[d]; p[s * n + d] = 0; }
+    c.Phi = 0; c.P0 = LIGHTNING * M0; c.Ein = 0; c.Eout = 0; pull();
   };
-  c.reset = function () { psi.fill(0); p.fill(0); c.putIn = 0; pull(); };
+  c.aboveRate = () => c.P0 / M0;
 
   const P = s => { let a = 0; for (let d = 0; d < n; d++) a += p[s * n + d]; return a; };
   c.current = () => { let a = 0; for (let s = 0; s < S; s++) a += P(s); return a * COPIES; };
-  c.energy = function () {
-    let kin = 0, cross = 0, pot = 0; const Ps = [];
-    for (let s = 0; s < S; s++) { Ps.push(P(s)); for (let d = 0; d < n; d++) kin += p[s * n + d] ** 2; }
-    for (let s = 0; s < S; s++) for (let t = 0; t < S; t++) if (s !== t) cross += Ps[s] * Ps[t];
+  c.scaleCurrent = s => P(s) / n;
+  c.energy = function () {                                                 // of the six scales, in one copy of each
+    let e = 0;
+    for (let i = 0; i < S * n; i++) e += 0.5 * p[i] * p[i];
     for (let s = 0; s < S; s++) {
       const o = s * n;
-      for (const [a0, a1] of unit.lines) pot -= Math.cos(psi[o + a1] - psi[o + a0]);
-      for (let g = 0; g < Mn; g++) { const w = W[g]; let x = 0; for (let q = 0; q < 4; q++) x += w[q][1] * psi[o + w[q][0]]; pot -= Math.cos(x); }
+      for (const [a0, a1] of unit.lines) e -= Math.cos(psi[o + a1] - psi[o + a0]);
+      for (let g = 0; g < Mn; g++) { const w = W[g]; let x = 0; for (let q = 0; q < 4; q++) x += w[q][1] * psi[o + w[q][0]]; e -= Math.cos(x); }
     }
-    return 0.5 * (kin * COPIES + cross * COPIES / N36) + pot * COPIES;
+    sums();
+    e -= Sre[0] * Math.cos(c.Phi) + Sim[0] * Math.sin(c.Phi);
+    for (let s = 0; s < S - 1; s++) e -= (Sre[s] * Sre[s + 1] + Sim[s] * Sim[s + 1]) / n;
+    return e;
   };
-  // the sum of e^(i psi) over one scale's structure: what a node passes outward of that scale, in every copy
   c.scaleSum = function (s) {
     let re = 0, im = 0;
     for (let d = 0; d < n; d++) { re += Math.cos(psi[s * n + d]); im += Math.sin(psi[s * n + d]); }
     return [re, im];
   };
-  // the current crossing each gap of one scale's structure, upward, in each copy
+  c.temperature = s => { const m = P(s) / n; let q = 0; for (let d = 0; d < n; d++) q += (p[s * n + d] - m) ** 2; return q / n; };
   c.gapCurrents = function (s) {
     const out = new Float64Array(5), o = s * n;
     for (const [a0, a1] of unit.lines) out[unit.layer[a0]] += Math.sin(psi[o + a0] - psi[o + a1]);
     return out;
   };
 
-  pull();
+  c.reset();
   return c;
 }
