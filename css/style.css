@@ -286,3 +286,16 @@ a.repo b { font-family: var(--serif); font-weight: 600; font-size: 1.05rem; colo
 @media (max-width: 520px) { .ring-wrap { grid-template-columns: 1fr; } .ring-wrap svg { max-width: 180px; } }
 .fact.wide { grid-column: 1 / -1; }
 .pill.active .muted { color: inherit; opacity: 0.7; }
+
+/* ---------- Game of Cosmos ---------- */
+.cosmos-switch { max-width: 460px; margin-bottom: 18px; }
+.cosmos-mode { display: none; }
+.cosmos-mode.active { display: block; }
+.cosmos-view { min-height: 480px; }
+.cosmos-view canvas { cursor: crosshair; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; min-height: 28px; }
+.chip { font: 500 0.82rem var(--mono); padding: 3px 8px; border-radius: 999px; border: 1px solid var(--line-strong); color: var(--ink); display: inline-flex; align-items: center; gap: 6px; }
+.chip i { width: 9px; height: 9px; border-radius: 2px; display: inline-block; }
+.btn-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.fact .ok { color: var(--ok); font-weight: 600; }
+@media (max-width: 920px) { .cosmos-view { min-height: 0; } .cosmos-view .stage { height: 360px; } }

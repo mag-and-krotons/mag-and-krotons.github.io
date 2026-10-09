@@ -12,6 +12,7 @@ The site is static: plain HTML, CSS and JavaScript served by GitHub Pages, with 
 | `css/style.css` | The one stylesheet (light and dark) |
 | `js/app.js` | Navigation, tabs, the paper list, citations, the results table, the code list |
 | `js/structure.js` | The structure playground (Three.js). Every number it shows is computed from the construction |
+| `js/cosmos.js` | The Game of Cosmos: the world of clocks (from *Nothing Binds a Twin*) and triad spins on a strand (from *The Medial Antiprism*), with every count checked as it runs |
 | `js/blog.js` | The dispatches, compiled by `publish_dispatch.py` |
 | `papers.json` | The paper list: titles, abstracts, PDFs, DOIs, BibTeX |
 | `papers/<id>/<id>.pdf` | The PDFs, with the LaTeX sources and figures of the September series |

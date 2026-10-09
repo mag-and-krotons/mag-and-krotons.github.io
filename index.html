@@ -137,9 +137,84 @@
     </div>
 
     <div class="tab-panel" data-panel="cosmos">
-      <div class="card" id="cosmos-panel">
-        <h3>The Game of Cosmos</h3>
-        <p>The Game of Cosmos is being rebuilt so that it follows its rules exactly: emergence from the structure and its principle alone, with nothing placed by hand.</p>
+      <p class="section-lead" style="margin-top:0">Two games. Each runs on rules taken from one paper and nothing else, and every number beside it is counted as it runs. In the first, prime clocks mark the pairs $6k\pm1$, and what no clock marks is a twin prime pair. In the second, triad spins sit on a strand of the medial antiprism, and order travels along the axis as far as one coupling lets it.</p>
+      <div class="seg cosmos-switch" id="cosmos-mode">
+        <button data-v="clocks" class="active">World of clocks</button>
+        <button data-v="spins">Triad spins on a strand</button>
+      </div>
+
+      <div class="cosmos-mode active" data-mode="clocks">
+        <div class="playground">
+          <div class="viewport cosmos-view" id="clocks-view">
+            <div class="stage"><canvas id="clocks-canvas"></canvas></div>
+            <div class="hint" id="clocks-hover">Point at a cell to read it</div>
+            <div class="legend" id="clocks-legend">
+              <span><i class="sq" style="background:var(--accent)"></i><span id="leg-a">unmarked, in the reach: twin primes</span></span>
+              <span id="leg-b-wrap"><i class="sq" style="background:var(--muted)"></i>unmarked, beyond the reach</span>
+              <span><i class="sq" style="background:var(--surface-2);outline:1px solid var(--line-strong)"></i>marked</span>
+            </div>
+          </div>
+          <div class="controls">
+            <div class="control-group">
+              <h4>Clocks</h4>
+              <div class="chips" id="clock-chips"></div>
+              <div class="btn-row">
+                <button class="btn btn-sm btn-primary" id="clock-add">Add the next clock</button>
+                <button class="btn btn-sm" id="clock-remove">Remove the last</button>
+              </div>
+              <div class="btn-row">
+                <button class="btn btn-sm" id="clock-play">Play</button>
+                <button class="btn btn-sm" id="clock-reset">Start again</button>
+              </div>
+            </div>
+            <div class="control-group">
+              <h4>Show</h4>
+              <div class="seg" id="clock-view">
+                <button data-v="window" class="active">Centres 1–360</button>
+                <button data-v="turn">One full turn</button>
+              </div>
+              <label class="check"><input type="checkbox" id="clock-colours" checked> Colour each mark by its clock</label>
+              <label class="check"><input type="checkbox" id="clock-twins"> Dot the actual twin primes</label>
+            </div>
+            <p class="small muted" style="margin:0">Each cell is a centre $k$. Its left half is $6k-1$, its right half $6k+1$. The clock $p$ marks the lower member when $p\mid 6k-1$ and the upper when $p\mid 6k+1$, never both.</p>
+          </div>
+        </div>
+        <div class="facts" id="clocks-facts"></div>
+        <p class="small muted" style="margin-top:14px">Rules and theorems: <a href="#paper-nothing_binds_a_twin">Nothing Binds a Twin but Exclusion</a>.</p>
+      </div>
+
+      <div class="cosmos-mode" data-mode="spins">
+        <div class="playground">
+          <div class="viewport cosmos-view" id="spins-view">
+            <div class="stage"><canvas id="spins-canvas"></canvas></div>
+            <div class="hint">The axis runs left to right</div>
+            <div class="legend">
+              <span><i style="background:var(--ok)"></i>spin $+1$</span>
+              <span><i style="background:transparent;outline:1.5px solid var(--muted);outline-offset:-1.5px"></i>spin $0$</span>
+              <span><i style="background:var(--neg)"></i>spin $-1$</span>
+              <span><i class="sq" style="background:var(--accent)"></i>layer sum $S$</span>
+            </div>
+          </div>
+          <div class="controls">
+            <div class="control-group">
+              <h4>Strand</h4>
+              <div class="control-row"><label for="spin-kappa">Coupling $\kappa$</label><input type="range" id="spin-kappa" min="-1" max="1.5" step="0.01" value="0.41"><output id="out-kappa">0.41</output></div>
+              <div class="control-row"><label for="spin-layers">Layers $L$</label><input type="range" id="spin-layers" min="2" max="12" step="1" value="8"><output id="out-spin-layers">8</output></div>
+              <div class="btn-row">
+                <button class="btn btn-sm btn-primary" id="spin-play">Pause</button>
+                <button class="btn btn-sm" id="spin-shake">Shake</button>
+                <button class="btn btn-sm" id="spin-reset">Restart the count</button>
+              </div>
+            </div>
+            <div class="control-group">
+              <h4>Lee–Yang zeros of the strand</h4>
+              <svg id="ly-svg" class="ring-svg" viewBox="-1.7 -1.7 3.4 3.4" role="img" aria-label="Zeros of the partition function in the fugacity"></svg>
+              <p class="small muted" style="margin:6px 0 0" id="ly-note"></p>
+            </div>
+          </div>
+        </div>
+        <div class="facts" id="spins-facts"></div>
+        <p class="small muted" style="margin-top:14px">Rules and theorems: <a href="#paper-medial_antiprism">The Medial Antiprism</a>, section “The Axis as Time”.</p>
       </div>
     </div>
   </div>
@@ -280,6 +355,7 @@
 
 <script src="js/app.js?v=20261009b"></script>
 <script src="js/blog.js?v=20261009b"></script>
+<script defer src="js/cosmos.js?v=20261009d"></script>
 <script type="module" src="js/structure.js?v=20261009b"></script>
 </body>
 </html>
