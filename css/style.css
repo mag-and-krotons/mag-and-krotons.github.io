@@ -321,3 +321,7 @@ a.repo b { font-family: var(--serif); font-weight: 600; font-size: 1.05rem; colo
 .cosmos-controls select { font: 0.85rem var(--sans); padding: 4px 6px; border: 1px solid var(--line-strong); border-radius: 6px; background: var(--surface); color: var(--ink); }
 .cosmos-frame .bar.bottom div > span { white-space: normal; }
 @media (max-width: 920px) { .cosmos-frame .space-view { height: 72vh; min-height: 320px; } }
+
+/* the no-training section */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+@media (max-width: 760px) { .grid-2 { grid-template-columns: 1fr; } }

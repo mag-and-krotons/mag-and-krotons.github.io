@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
-  <link rel="stylesheet" href="css/style.css?v=20261010a">
+  <link rel="stylesheet" href="css/style.css?v=20261010b">
   <script type="importmap">
   {
     "imports": {
@@ -36,6 +36,7 @@
     <nav class="site-nav" id="site-nav">
       <a href="#structure">Structure</a>
       <a href="#cosmos">Game of Cosmos</a>
+      <a href="#readers">No training</a>
       <a href="#papers">Papers</a>
       <a href="#blog">Dispatches</a>
       <a href="#github">Code</a>
@@ -250,6 +251,51 @@
   </div>
 </section>
 
+<!-- ============ Reading without training ============ -->
+<section id="readers">
+  <div class="container">
+    <div class="section-kicker">No training</div>
+    <h2>Reading images and language with no training</h2>
+    <p class="section-lead">Two architectures from the triad: a pair read forward and in reverse, the middle that stays, and the turn between the two ends. Nothing is fitted by gradient descent and no network weights exist; each writes its memory in one pass and is judged on held-out data beside a scrambled control. Code, data and every run: <a href="https://github.com/mag-and-krotons/triad-pattern" target="_blank" rel="noopener">github.com/mag-and-krotons/triad-pattern</a>.</p>
+    <div class="table-wrap">
+      <table class="matrix-table">
+        <thead><tr><th>Task</th><th>No training</th><th>The trained network beside it</th></tr></thead>
+        <tbody>
+          <tr><td>Handwritten digits (UCI, 1,258 training images, 539 test)</td><td><b>98.08 ± 0.38%</b>; memory written in 0.004 s</td><td>Grassmannian Neural Engine: 98.08 ± 0.47%; 337,298 trained numbers; about 170 s of training</td></tr>
+          <tr><td>Next character of Webster’s dictionary (83 characters; the same 200,000 held-out positions and the same 3.84 million training positions)</td><td><b>2.098 bits per character</b>, 58.2% right; counted in 15 s</td><td>0.83-million-weight network: 2.410 bits per character; about 6,400 s of training on one CPU core</td></tr>
+          <tr><td>A letter read from both sides (200,000 held-out letters, 3.84 million counted)</td><td><b>0.363 bits per letter, 93.0% right</b></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="grid-2" style="margin-top:22px">
+      <div class="card">
+        <h3>The six-image stack</h3>
+        <p>Three images a, b, c of a digit are read forward, (a − b) − c, and in reverse, (c − b) − a. The sum of the two readings is the middle, −2b; their difference is the turn, 2(a − c). Each digit keeps its still pattern and its own turning directions. A new image is read as the digit whose still pattern, allowed to turn in that digit’s directions, leaves the least behind.</p>
+        <p class="small muted">Still pattern only: 89.8%. Written two digits at a time and never shown again: 97.71%. Labels scrambled: 10.8%.</p>
+      </div>
+      <div class="card">
+        <h3>The triad flow</h3>
+        <p>The text is a flow through the 26 letters and silence. A letter is the middle of its triads (x<sub>−k</sub>, x, x<sub>+k</sub>): the pair of flows into it and out of it, and the turn, the two ends counted together. The triads stop at silence, what flowed returns, and the word triad is the same reading one scale up.</p>
+        <p class="small muted">The same 6 letters read as a context before the letter: 51.8%. Read as three triads around it: 81.0%. Scrambled text: 11.7%.</p>
+      </div>
+    </div>
+    <h3 style="margin-top:28px">More is good, but not without end</h3>
+    <div class="table-wrap">
+      <table class="matrix-table">
+        <thead><tr><th>Measured</th><th>As it grows</th></tr></thead>
+        <tbody>
+          <tr><td>Digits: images per digit</td><td>3: 62.1% · 12: 87.2% · 48: 96.0% · 96: 97.7% · all (~126): 98.0%</td></tr>
+          <tr><td>Digits: turning directions kept</td><td>0: 90.4% · 6: 98.0% · 11: <b>98.6%</b> · 20: 97.5% · 30: 95.8% — past eleven, more turns hurt</td></tr>
+          <tr><td>Text: positions counted (next character)</td><td>60 thousand: 2.850 · 960 thousand: 2.277 · 3.84 million: 2.098 · all 26.5 million: 1.899 bits. Each fourfold step buys less (0.33, 0.24, 0.18, 0.15 bits); 6.9 times the data buys 0.20 bits</td></tr>
+          <tr><td>Text: characters back on the path</td><td>past nine, each further character adds under 0.003 bits</td></tr>
+          <tr><td>Text: structure against data, one letter from both sides</td><td>five times the letters: 82.9% → 87.0%. The structure (silence, the return, the word triad), with no more data: 82.9% → <b>93.0%</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="small muted" style="margin-top:14px">Reading a letter from both sides is not writing text; for the next character the flow reaches 58.2% at 3.84 million positions. The trained network beside it is one network of 0.83 million weights. Every number comes from the JSON files in the repository.</p>
+  </div>
+</section>
+
 <!-- ============ Papers ============ -->
 <section id="papers">
   <div class="container">
@@ -383,7 +429,7 @@
 
 <div id="app-toast" class="toast-notice"></div>
 
-<script src="js/app.js?v=20261009b"></script>
+<script src="js/app.js?v=20261010a"></script>
 <script src="js/blog.js?v=20261009b"></script>
 <script defer src="js/cosmos.js?v=20261009e"></script>
 <script type="module" src="js/cosmos6d.js?v=20261010h"></script>
