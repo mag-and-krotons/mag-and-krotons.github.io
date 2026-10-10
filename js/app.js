@@ -28,7 +28,7 @@
 
   const GITHUB_USER = "mag-and-krotons";
   const FALLBACK_REPOS = [
-    { name: "triad-pattern", description: "Reading images and language with no training: the six-image stack (98.08% on handwritten digits) and the triad flow (93.0% of letters read from both sides).", html_url: "https://github.com/mag-and-krotons/triad-pattern", language: "Python" },
+    { name: "BeTeR-Intelligence", description: "BeTeR Intelligence: reading images and language with no training. Handwritten digits 98.08%, letters read from the flow of language 93.0%, zero trained parameters.", html_url: "https://github.com/mag-and-krotons/BeTeR-Intelligence", language: "Python" },
     { name: "mag-and-krotons.github.io", description: "Source of this site: papers, notes and the interactive model of the medial antiprism.", html_url: "https://github.com/mag-and-krotons/mag-and-krotons.github.io", language: "HTML / JavaScript" },
     { name: "GAT", description: "", html_url: "https://github.com/mag-and-krotons/GAT", language: "" }
   ];

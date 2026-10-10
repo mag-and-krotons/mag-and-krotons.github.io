@@ -36,7 +36,7 @@
     <nav class="site-nav" id="site-nav">
       <a href="#structure">Structure</a>
       <a href="#cosmos">Game of Cosmos</a>
-      <a href="#readers">No training</a>
+      <a href="#readers">BeTeR Intelligence</a>
       <a href="#papers">Papers</a>
       <a href="#blog">Dispatches</a>
       <a href="#github">Code</a>
@@ -251,48 +251,57 @@
   </div>
 </section>
 
-<!-- ============ Reading without training ============ -->
+<!-- ============ BeTeR Intelligence ============ -->
 <section id="readers">
   <div class="container">
-    <div class="section-kicker">No training</div>
+    <div class="section-kicker" style="text-transform:none">BeTeR Intelligence</div>
     <h2>Reading images and language with no training</h2>
-    <p class="section-lead">Two architectures from the triad: a pair read forward and in reverse, the middle that stays, and the turn between the two ends. Nothing is fitted by gradient descent and no network weights exist; each writes its memory in one pass and is judged on held-out data beside a scrambled control. Code, data and every run: <a href="https://github.com/mag-and-krotons/triad-pattern" target="_blank" rel="noopener">github.com/mag-and-krotons/triad-pattern</a>.</p>
+    <p class="section-lead">No trained parameters, no gradient descent, no network weights. Each architecture writes its memory in one pass and is judged on held-out data beside a scrambled control. Both come from the triad: a pair read forward and in reverse, the middle that stays, and the turn between the two ends. Every gain in accuracy came from a step of that principle, not from parameters or data. Code, data and every run: <a href="https://github.com/mag-and-krotons/BeTeR-Intelligence" target="_blank" rel="noopener">github.com/mag-and-krotons/BeTeR-Intelligence</a>.</p>
+    <div class="grid-2">
+      <div class="card">
+        <h3>Handwritten digits: 98.08 ± 0.38%</h3>
+        <p>Three images a, b, c of a digit are read forward, (a − b) − c, and in reverse, (c − b) − a. Their sum is the middle, −2b; their difference is the turn, 2(a − c). Each digit keeps its still pattern and its own turning directions; a new image is read as the digit that, turning in its own directions, leaves the least behind.</p>
+        <p class="small muted">Memory written in 0.004 s. A trained engine of 337,298 numbers reaches the same 98.08%. Written two digits at a time, it forgets nothing (97.71%). Labels scrambled: 10.8%.</p>
+      </div>
+      <div class="card">
+        <h3>Language, read from its flow: 93.0%</h3>
+        <p>Letters write down sounds; punctuation is not sound and becomes one silence, and silence is a node of the flow, not an absence. A letter is the middle of its triads (x<sub>−k</sub>, x, x<sub>+k</sub>): the flow into it, the flow out of it, and the turn. The triads stop at silence, what flowed returns, and the word triad is the same reading one scale up.</p>
+        <p class="small muted">200,000 held-out letters of Webster’s dictionary, 3.84 million counted: 0.363 bits per letter. Scrambled text: 11.7%.</p>
+      </div>
+    </div>
+    <h3 style="margin-top:28px">The flaw in “context”</h3>
+    <p>In today’s language models, context means the window of symbols before a position. Intelligence is predicting the next symbol from it, and when it falls short the window, the parameters and the data are made larger. Each of those three meanings fails here, with every count fixed at the same 3.84 million letters:</p>
     <div class="table-wrap">
       <table class="matrix-table">
-        <thead><tr><th>Task</th><th>No training</th><th>The trained network beside it</th></tr></thead>
+        <thead><tr><th>Measured</th><th>Right</th></tr></thead>
         <tbody>
-          <tr><td>Handwritten digits (UCI, 1,258 training images, 539 test)</td><td><b>98.08 ± 0.38%</b>; memory written in 0.004 s</td><td>Grassmannian Neural Engine: 98.08 ± 0.47%; 337,298 trained numbers; about 170 s of training</td></tr>
-          <tr><td>Next character of Webster’s dictionary (83 characters; the same 200,000 held-out positions and the same 3.84 million training positions)</td><td><b>2.098 bits per character</b>, 58.2% right; counted in 15 s</td><td>0.83-million-weight network: 2.410 bits per character; about 6,400 s of training on one CPU core</td></tr>
-          <tr><td>A letter read from both sides (200,000 held-out letters, 3.84 million counted)</td><td><b>0.363 bits per letter, 93.0% right</b></td><td></td></tr>
+          <tr><td>Six letters read as a window before the letter: what “context” means now</td><td>51.8%</td></tr>
+          <tr><td>The same six letters as the flow into the letter and the flow out of it: the pair</td><td>63.2%</td></tr>
+          <tr><td>The same six letters as three triads, each triad’s two ends counted together: the turn</td><td>81.0%</td></tr>
+          <tr><td>A longer window: past nine letters back, each further letter adds under 0.003 bits</td><td>—</td></tr>
+          <tr><td>A wider window that crosses the silence reads worse; stopped at silence the triads rise from 82.9% to</td><td>84.8%</td></tr>
+          <tr><td>From far away, not a wider window but the return of the same pattern in another form (the word said again in syllables): where found, 76–80% rises to</td><td>96–99%</td></tr>
+          <tr><td>The word as a node of the same triad one scale up (word before, word, word after)</td><td><b>93.0%</b></td></tr>
+          <tr><td>Five times the letters, read as triads without the rest of the structure</td><td>87.0%</td></tr>
         </tbody>
       </table>
     </div>
-    <div class="grid-2" style="margin-top:22px">
-      <div class="card">
-        <h3>The six-image stack</h3>
-        <p>Three images a, b, c of a digit are read forward, (a − b) − c, and in reverse, (c − b) − a. The sum of the two readings is the middle, −2b; their difference is the turn, 2(a − c). Each digit keeps its still pattern and its own turning directions. A new image is read as the digit whose still pattern, allowed to turn in that digit’s directions, leaves the least behind.</p>
-        <p class="small muted">Still pattern only: 89.8%. Written two digits at a time and never shown again: 97.71%. Labels scrambled: 10.8%.</p>
-      </div>
-      <div class="card">
-        <h3>The triad flow</h3>
-        <p>The text is a flow through the 26 letters and silence. A letter is the middle of its triads (x<sub>−k</sub>, x, x<sub>+k</sub>): the pair of flows into it and out of it, and the turn, the two ends counted together. The triads stop at silence, what flowed returns, and the word triad is the same reading one scale up.</p>
-        <p class="small muted">The same 6 letters read as a context before the letter: 51.8%. Read as three triads around it: 81.0%. Scrambled text: 11.7%.</p>
-      </div>
-    </div>
+    <p class="small muted" style="margin-top:10px">Context is not a window that grows. It is the triad, bounded by silence, returning, and nested by scale.</p>
     <h3 style="margin-top:28px">More is good, but not without end</h3>
     <div class="table-wrap">
       <table class="matrix-table">
         <thead><tr><th>Measured</th><th>As it grows</th></tr></thead>
         <tbody>
           <tr><td>Digits: images per digit</td><td>3: 62.1% · 12: 87.2% · 48: 96.0% · 96: 97.7% · all (~126): 98.0%</td></tr>
-          <tr><td>Digits: turning directions kept</td><td>0: 90.4% · 6: 98.0% · 11: <b>98.6%</b> · 20: 97.5% · 30: 95.8% — past eleven, more turns hurt</td></tr>
-          <tr><td>Text: positions counted (next character)</td><td>60 thousand: 2.850 · 960 thousand: 2.277 · 3.84 million: 2.098 · all 26.5 million: 1.899 bits. Each fourfold step buys less (0.33, 0.24, 0.18, 0.15 bits); 6.9 times the data buys 0.20 bits</td></tr>
-          <tr><td>Text: characters back on the path</td><td>past nine, each further character adds under 0.003 bits</td></tr>
-          <tr><td>Text: structure against data, one letter from both sides</td><td>five times the letters: 82.9% → 87.0%. The structure (silence, the return, the word triad), with no more data: 82.9% → <b>93.0%</b></td></tr>
+          <tr><td>Digits: turning directions kept</td><td>0: 90.4% · 6: 98.0% · 11: <b>98.6%</b> · 20: 97.5% · 30: 95.8%. Past eleven, more turns hurt</td></tr>
+          <tr><td>Language: letters counted</td><td>240 thousand: 71.8% · 960 thousand: 78.1% · 3.84 million: 82.9% · 15.4 million: 86.5% · all 19.4 million: 87.0%. Each fourfold step buys less: 6.3, 4.8, 3.6 points</td></tr>
+          <tr><td>Today’s language models</td><td>Their builders’ own fits: loss falls as a power law in parameters and data toward an irreducible floor E (Kaplan et al. 2020; Hoffmann et al. 2022, L = E + A/N<sup>α</sup> + B/D<sup>β</sup>). Every tenfold step buys less, and by their own fit no number of parameters goes below E.</td></tr>
         </tbody>
       </table>
     </div>
-    <p class="small muted" style="margin-top:14px">Reading a letter from both sides is not writing text; for the next character the flow reaches 58.2% at 3.84 million positions. The trained network beside it is one network of 0.83 million weights. Every number comes from the JSON files in the repository.</p>
+    <h3 style="margin-top:28px">On the trained network’s own terms</h3>
+    <p>The next character from the window before it, the one-sided reading that “context” keeps, on the same 83 characters, the same 3.84 million training positions and the same 200,000 held-out positions. A network of 831,363 trained weights reaches 2.410 bits per character after about 6,400 s of training on one CPU core. The flow, counted with no training in 15 s, reaches <b>2.098</b>; with a quarter of the data, 2.277. All 26.5 million positions, 6.9 times the data, buy 0.20 bits more.</p>
+    <p class="small muted">Reading a letter from the flow is not yet writing text. Choices that need the meaning (“stat[u]s / states”, “cou[n]t / court”) are among the 7% still wrong. Every number comes from the JSON files in the repository.</p>
   </div>
 </section>
 
@@ -429,7 +438,7 @@
 
 <div id="app-toast" class="toast-notice"></div>
 
-<script src="js/app.js?v=20261010a"></script>
+<script src="js/app.js?v=20261010b"></script>
 <script src="js/blog.js?v=20261009b"></script>
 <script defer src="js/cosmos.js?v=20261009e"></script>
 <script type="module" src="js/cosmos6d.js?v=20261010h"></script>
