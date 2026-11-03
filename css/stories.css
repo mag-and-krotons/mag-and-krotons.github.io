@@ -1,0 +1,36 @@
+/* Stories: honest knowledge told as stories. Builds on style.css tokens. */
+:root { --dawn: #f6ead8; --dawn-ink: #7a4a12; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --dawn: #2a2218; --dawn-ink: #f0c48a; } }
+:root[data-theme="dark"] { --dawn: #2a2218; --dawn-ink: #f0c48a; }
+
+.story-hero { background: linear-gradient(180deg, var(--dawn), var(--bg) 85%); }
+.refrain { font: italic 400 1.15rem/1.4 var(--serif); color: var(--dawn-ink); margin: 0 0 12px; }
+.story-hero h1 { max-width: 18ch; text-wrap: balance; }
+.story-hero .tagline { max-width: 58ch; }
+
+.story-list { display: grid; gap: 18px; margin-top: 22px; }
+.story { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+.story > summary { list-style: none; cursor: pointer; padding: 20px 22px; display: grid; gap: 6px; }
+.story > summary::-webkit-details-marker { display: none; }
+.story > summary h3 { margin: 0; font-size: 1.35rem; }
+.story-hook { font: italic 400 1.05rem/1.5 var(--serif); color: var(--ink-2); margin: 0; }
+.story-meta { font: 500 0.8rem/1 var(--sans); color: var(--muted); letter-spacing: 0.04em; display: flex; gap: 12px; flex-wrap: wrap; }
+.story-meta .open-cue { color: var(--accent); }
+.story[open] .open-cue::after { content: " ▴"; }
+.story:not([open]) .open-cue::after { content: " ▾"; }
+.story-body { padding: 0 22px 22px; max-width: 68ch; font: 400 1.12rem/1.75 var(--serif); color: var(--ink); }
+.story-body p { margin: 0 0 1em; }
+.story-body p:last-of-type { font-style: italic; }
+.story-foot { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; border-top: 1px solid var(--line); padding-top: 14px; margin-top: 6px; font-family: var(--sans); font-size: 0.9rem; }
+
+.ask-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 28px; align-items: start; }
+@media (max-width: 760px) { .ask-grid { grid-template-columns: 1fr; } }
+.ask-form { display: grid; gap: 12px; }
+.pf { display: grid; gap: 4px; }
+.pf span { font-size: 0.82rem; color: var(--muted); }
+.pf input, .pf textarea { font: inherit; padding: 8px 10px; border-radius: 6px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink); width: 100%; min-width: 0; }
+
+.give { max-width: 760px; }
+.mono { font-family: var(--mono); overflow-wrap: anywhere; }
+.site-nav a[aria-current="page"] { color: var(--accent); font-weight: 600; }
+.byline { font: 500 0.9rem/1 var(--sans); letter-spacing: 0.06em; text-transform: uppercase; color: var(--dawn-ink); margin: -4px 0 16px; }
