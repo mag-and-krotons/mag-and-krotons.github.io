@@ -31,13 +31,5 @@
 .pf input, .pf textarea { font: inherit; padding: 8px 10px; border-radius: 6px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink); width: 100%; min-width: 0; }
 
 .give { max-width: 760px; }
-.give-box { display: grid; gap: 16px; margin-top: 18px; }
-.give-amounts { display: flex; gap: 8px; flex-wrap: wrap; }
-.chip { font: 500 0.92rem var(--sans); border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink); border-radius: 999px; padding: 6px 14px; cursor: pointer; }
-.chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
-.give-pay { display: flex; gap: 20px; flex-wrap: wrap; align-items: center; }
-.give-side { display: grid; gap: 8px; flex: 1 1 220px; min-width: 0; }
-.pay-qr svg { width: 180px; height: 180px; max-width: 100%; background: #fff; padding: 8px; border-radius: 8px; display: block; }
-.give-closed { margin: 0; padding: 10px 14px; border-radius: var(--radius); background: var(--dawn); color: var(--ink); }
 .mono { font-family: var(--mono); overflow-wrap: anywhere; }
 .site-nav a[aria-current="page"] { color: var(--accent); font-weight: 600; }

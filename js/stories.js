@@ -1,13 +1,9 @@
-/* Stories page: renders the stories, sends questions, and optional giving by UPI.
+/* Stories page: renders the stories, sends questions, and passing them on. No money, only kindness.
  *
- * SETTINGS: fill in to open giving and WhatsApp questions.
- *   upiId     your UPI ID (VPA), e.g. "abhijit@okhdfcbank". Gifts go straight to the bank account behind it.
+ * SETTINGS: fill in whatsapp to receive questions there.
  *   whatsapp  your WhatsApp number with country code, digits only, e.g. "919812345678". Questions go here if set, otherwise by email.
- * Until upiId is set, the giving box says "Giving opens soon". Nothing on the page is ever required to be paid.
  */
 const SETTINGS = {
-  upiId: "",
-  payeeName: "Abhijit Singh",
   whatsapp: "",
   email: "abhijitsingh@tuta.io"
 };
@@ -82,35 +78,4 @@ const SETTINGS = {
   });
   if (SETTINGS.whatsapp) $("#ask-send").textContent = "Send on WhatsApp";
 
-  /* giving, only if they wish */
-  const open = !!SETTINGS.upiId;
-  $("#give-closed").style.display = open ? "none" : "";
-  $(".give-amounts").style.display = open ? "" : "none";
-  $(".give-pay").style.display = open ? "" : "none";
-  let amount = "";
-  function upiLink() {
-    const p = new URLSearchParams({ pa: SETTINGS.upiId, pn: SETTINGS.payeeName, cu: "INR", tn: "Thank you for the stories" });
-    if (amount) p.set("am", amount);
-    return "upi://pay?" + p.toString().replace(/\+/g, "%20");
-  }
-  function renderGive() {
-    if (!open) return;
-    const link = upiLink();
-    $("#give-upi").href = link;
-    $("#give-vpa").textContent = SETTINGS.upiId;
-    const box = $("#give-qr");
-    if (window.qrcode) {
-      const q = qrcode(0, "M"); q.addData(link); q.make();
-      box.innerHTML = q.createSvgTag({ cellSize: 4, margin: 2, scalable: true });
-      box.style.display = "";
-    } else {
-      box.style.display = "none";
-    }
-  }
-  document.querySelectorAll(".give-amounts .chip").forEach(c => c.addEventListener("click", () => {
-    amount = c.dataset.amt;
-    document.querySelectorAll(".give-amounts .chip").forEach(x => x.setAttribute("aria-pressed", x === c ? "true" : "false"));
-    renderGive();
-  }));
-  renderGive();
 })();
