@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stories by Abhijit Singh</title>
+  <meta name="description" content="Honest knowledge, told as stories, free for everyone. Ask for a story, and give only if you wish.">
+  <meta name="author" content="Abhijit Singh">
+  <meta property="og:title" content="Stories by Abhijit Singh">
+  <meta property="og:description" content="Honest knowledge, told as stories, free for everyone.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=20261010b">
+  <link rel="stylesheet" href="css/stories.css?v=20261103">
+  <script>try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="index.html">
+      <span class="brand-name">Abhijit Singh</span>
+      <span class="brand-sub">Independent researcher</span>
+    </a>
+    <nav class="site-nav" id="site-nav">
+      <a href="stories.html" aria-current="page">Stories</a>
+      <a href="index.html#papers">Papers</a>
+      <a href="index.html#structure">Structure</a>
+      <a href="index.html#about">About</a>
+    </nav>
+    <div style="display:flex;gap:6px">
+      <button class="theme-btn" id="theme-btn" title="Switch light / dark" aria-label="Switch light or dark theme">◐</button>
+      <button class="menu-btn" id="menu-btn" aria-label="Open menu">☰</button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+<section class="hero story-hero">
+  <div class="container">
+    <p class="refrain">Take a sad song and make it better</p>
+    <h1>Honest stories, told with love</h1>
+    <p class="tagline">What I've learned about numbers, nature and the world, told as stories anyone can read. Each one is true, and says plainly what is still unknown. They are free for everyone, always.</p>
+    <div class="hero-links">
+      <a class="btn-primary btn" href="#stories">Read a story</a>
+      <a class="btn" href="#ask">Ask for a story</a>
+    </div>
+  </div>
+</section>
+
+<section id="stories">
+  <div class="container">
+    <div class="section-kicker">Stories</div>
+    <h2>Read one, then pass it on</h2>
+    <div class="story-list" id="story-list"></div>
+  </div>
+</section>
+
+<section id="ask">
+  <div class="container ask-grid">
+    <div>
+      <div class="section-kicker">Ask for a story</div>
+      <h2>Wondering about something?</h2>
+      <p>Ask me anything: why the sky does what it does, what a prime number is for, how a computer counts, or something that's been on your mind. I'll answer as a story, as honestly as I can. If I don't know, I'll say so.</p>
+      <p class="muted small">It's free. The best questions may become stories here, without your name unless you want it.</p>
+    </div>
+    <form class="card ask-form" id="ask-form">
+      <label class="pf"><span>Your question</span><textarea id="ask-q" rows="4" required placeholder="Why do bees build hexagons?"></textarea></label>
+      <label class="pf"><span>Your name (optional)</span><input id="ask-name" autocomplete="name"></label>
+      <div class="btn-row"><button class="btn-primary btn" type="submit" id="ask-send">Send my question</button></div>
+      <p class="muted small" id="ask-hint"></p>
+    </form>
+  </div>
+</section>
+
+<section id="give">
+  <div class="container give">
+    <div class="section-kicker">Give, only if you wish</div>
+    <h2>If a story made your day a little better</h2>
+    <p>Nothing here has a price, and nothing ever will. If you want to give something back, you can send any amount you like by UPI. Whatever comes in keeps the stories coming. If you'd rather give by sharing a story with someone who needs it, that is just as welcome.</p>
+    <div class="give-box card" id="give-box">
+      <div class="give-amounts" role="group" aria-label="Choose an amount, or leave it to you">
+        <button type="button" class="chip" data-amt="" aria-pressed="true">Any amount</button>
+        <button type="button" class="chip" data-amt="21" aria-pressed="false">₹21</button>
+        <button type="button" class="chip" data-amt="51" aria-pressed="false">₹51</button>
+        <button type="button" class="chip" data-amt="101" aria-pressed="false">₹101</button>
+        <button type="button" class="chip" data-amt="501" aria-pressed="false">₹501</button>
+      </div>
+      <div class="give-pay">
+        <div class="pay-qr" id="give-qr" aria-label="UPI QR code"></div>
+        <div class="give-side">
+          <a class="btn-primary btn" id="give-upi" href="#">Give with a UPI app</a>
+          <p class="muted small">Scan the code with any UPI app, or tap the button on your phone. It goes to <span class="mono" id="give-vpa"></span>.</p>
+        </div>
+      </div>
+      <p class="give-closed" id="give-closed">Giving opens soon. The stories are free either way.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>© 2026 Abhijit Singh · Stories under CC BY 4.0, share them freely</span>
+    <span><a href="index.html">Research</a> · <a href="index.html#about">Contact</a></span>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+<script src="js/stories-data.js?v=20261103"></script>
+<script src="js/stories.js?v=20261103"></script>
+</body>
+</html>
