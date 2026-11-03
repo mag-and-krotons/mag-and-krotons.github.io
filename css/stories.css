@@ -33,3 +33,4 @@
 .give { max-width: 760px; }
 .mono { font-family: var(--mono); overflow-wrap: anywhere; }
 .site-nav a[aria-current="page"] { color: var(--accent); font-weight: 600; }
+.byline { font: 500 0.9rem/1 var(--sans); letter-spacing: 0.06em; text-transform: uppercase; color: var(--dawn-ink); margin: -4px 0 16px; }

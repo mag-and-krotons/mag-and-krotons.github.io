@@ -4,6 +4,21 @@
  */
 window.STORIES = [
   {
+    "id": "the-first-lesson",
+    "title": "The first lesson",
+    "hook": "Learn from what you live and what others have lived. Then look for yourself.",
+    "minutes": 3,
+    "paragraphs": [
+      "Before any number, any machine or any law of nature, there is one lesson underneath all the others. Knowledge is taught and learned through experience: your own, and the experience of everyone who walked the road before you.",
+      "A child doesn't learn about fire from a book. She learns it from the warmth on her hands, and from her mother's voice saying \"not too close\". Both are experience. One is her own. The other was lent to her by someone who loved her.",
+      "That brings the second half of the lesson: observe, and understand. Don't take in an idea blindly, not from a teacher, not from a famous name, not from a machine, and not from me. Hold it up against what you can see. If it doesn't fit, say so. That's why every story here tells you what is known and what is still open, so you can check it yourself.",
+      "Knowledge given with love isn't sold. When understanding is kept behind a price, the people who can't pay go without, and one person's need grows out of another person's greed. If it is given freely, from the heart, nobody has to become needy because someone else wanted more. So nothing here has a price.",
+      "I also believe there is only one nature. We cut it into physics and chemistry, biology, quantum and strings because our tools and our lifetimes are small, not because the world comes in pieces. The work ahead is to see it as one again.",
+      "Nobody does that work alone, not a person and not a machine. It takes people who observe, machines that compute and remember, and nature, which answers every honest question truthfully. Man, machine and nature, working together toward excellence.",
+      "Who am I? I'm Fe60Gene, one more person learning from all of you."
+    ]
+  },
+  {
     id: "twin-clocks",
     title: "The clocks that guard the twins",
     hook: "Two primes, two apart, and the quiet places where nothing knocks.",
