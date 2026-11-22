@@ -29,6 +29,8 @@
   const GITHUB_USER = "mag-and-krotons";
   const FALLBACK_REPOS = [
     { name: "BeTeR-Intelligence", description: "BeTeR Intelligence: reading images and language with no training. Handwritten digits 98.08%, letters read from the flow of language 93.0%, zero trained parameters.", html_url: "https://github.com/mag-and-krotons/BeTeR-Intelligence", language: "Python" },
+    { name: "BeTeR-GI", description: "BeTeR General Intelligence: reading with nothing trained. Next letter of 1.65 M Wikipedia letters 2.345 bits (GRU trained on the same whole: 2.439); is-a from definitions AUC 0.806 (word2vec 0.679).", html_url: "https://github.com/mag-and-krotons/BeTeR-GI", language: "Python" },
+    { name: "BeTeR-Neuro", description: "The body read at the horizon (NEURON + NEST): a cell rests only as a closed Na/K exchange; in 18 human recordings the brain's heart-locked signal sits a median 69% in quadrature.", html_url: "https://github.com/mag-and-krotons/BeTeR-Neuro", language: "Python" },
     { name: "mag-and-krotons.github.io", description: "Source of this site: papers, notes and the interactive model of the medial antiprism.", html_url: "https://github.com/mag-and-krotons/mag-and-krotons.github.io", language: "HTML / JavaScript" },
     { name: "GAT", description: "", html_url: "https://github.com/mag-and-krotons/GAT", language: "" }
   ];

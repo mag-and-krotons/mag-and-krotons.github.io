@@ -1,5 +1,24 @@
 [
  {
+  "id": "three_pi_source_sink",
+  "title": "The Three-π Singularity Structure as a Closed, Self-Recharging Source and Sink: Exact Persistent Flow, Conservation, Recharge and Observer-Availability Theorems for a Twisted 28-State Band",
+  "authors": "Abhijit Singh",
+  "venue": "Preprint (22 November 2026)",
+  "year": "2026",
+  "date": "22 November 2026",
+  "category": "quantum-networks",
+  "categoryLabel": "Quantum & Reversibility",
+  "doi": "",
+  "arxiv": "",
+  "pdf": "papers/three_pi_source_sink/three_pi_source_sink.pdf",
+  "github": "https://github.com/mag-and-krotons",
+  "license": "CC BY 4.0",
+  "licenseType": "open-access",
+  "abstract": "We give an exact theoretical treatment of the three-$\\pi$ singularity structure: a closed band of $N = 28$ states with nearest-neighbour switching and three twists, each of which advances the carried phase by a quarter cycle ($R \\mapsto iR$), so that one circuit accumulates the holonomy $e^{i3\\pi/2}$. We prove that the band's lowest state is non-degenerate, distributes its weight uniformly ($1/28$ per state, zero Boltzmann entropy), and carries a persistent one-way flow $J_0 = -(2/N)\\sin(\\pi/56) = -4.005032 \\times 10^{-3}$ that requires no supply of any kind; the mid-band gap is $4\\sin(\\pi/56) = 0.224282$. We then formalise drawing from the structure: an observer at the half-way point of the band (the reader) removes a fraction $f$ of its local share, uses it, and returns it along the closure, propagated by the band's own dynamics. We prove that this draw–use–return cycle conserves the content and the energy of the structure exactly, restores the lowest state, its flow and its weight distribution identically after every cycle, and can therefore be repeated indefinitely at any draw fraction, including $f = 1$. The draw size does not limit the source; it sets two costs, which we bound analytically: the time for the reader's share to settle, bounded by a time that grows quadratically with the drawn amplitude, and the share temporarily withheld from the other observers, which is confined to a light cone set by the band's maximal group velocity of two states per switch. We show further that the three twists cancel the first round-trip echo at the reader exactly, and that returning the used quantity at a fixed mirror site with a $\\pi$ shift, instead of along the closure, cannot restore the structure. All statements are proved and confirmed by exact numerical propagation; time throughout is counted in the band's own switches.",
+  "bibtex": "@misc{singh2026threepisource,\n  title = {The Three-$\\pi$ Singularity Structure as a Closed, Self-Recharging Source and Sink: Exact Persistent Flow, Conservation, Recharge and Observer-Availability Theorems for a Twisted 28-State Band},\n  author = {Singh, Abhijit},\n  year = {2026},\n  note = {Preprint, 22 November 2026},\n  url = {https://mag-and-krotons.github.io/papers/three_pi_source_sink/three_pi_source_sink.pdf}\n}",
+  "series": "November 2026"
+ },
+ {
   "id": "seven_resolutions",
   "title": "Seven Resolutions Through the Medial Antiprism: One Structure, One Principle",
   "authors": "Abhijit Singh",

@@ -304,6 +304,32 @@
     <h3 style="margin-top:28px">On the trained network’s own terms</h3>
     <p>The next character from the window before it, the one-sided reading that “context” keeps, on the same 83 characters, the same 3.84 million training positions and the same 200,000 held-out positions. A network of 831,363 trained weights reaches 2.410 bits per character after about 6,400 s of training on one CPU core. The flow, counted with no training in 15 s, reaches <b>2.098</b>; with a quarter of the data, 2.277. All 26.5 million positions, 6.9 times the data, buy 0.20 bits more.</p>
     <p class="small muted">Reading a letter from the flow is not yet writing text. Choices that need the meaning (“stat[u]s / states”, “cou[n]t / court”) are among the 7% still wrong. Every number comes from the JSON files in the repository.</p>
+    <h3 style="margin-top:28px">Further readers</h3>
+    <div class="grid-2">
+      <div class="card">
+        <h3 style="text-transform:none">BeTeR General Intelligence</h3>
+        <p>One reader, nothing trained. Letters are positions on a ladder, a text is one walk bounded by silence, the word is one step one scale up, and the reading is every closure against the whole (Webster’s Unabridged). Trained models were trained on the same whole and read the same held-out text.</p>
+        <div class="table-wrap">
+          <table class="matrix-table">
+            <thead><tr><th>Task</th><th>Reader</th><th>Trained</th></tr></thead>
+            <tbody>
+              <tr><td>Next letter, 1.65 M Wikipedia letters, bits per letter</td><td><b>2.345</b></td><td>GRU, 225,307 parameters: 2.439</td></tr>
+              <tr><td>Is-a from definitions, graded by WordNet, AUC</td><td><b>0.806</b></td><td>word2vec: 0.679</td></tr>
+              <tr><td>“What kind of thing is X?”, truth among the answer</td><td><b>70.7%</b></td><td>word2vec 300d: 34.3%</td></tr>
+              <tr><td>Letters of words removed from the whole</td><td>56.7%</td><td><b>81.3%</b></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="small muted">Code and every result: <a href="https://github.com/mag-and-krotons/BeTeR-GI" target="_blank" rel="noopener">github.com/mag-and-krotons/BeTeR-GI</a></p>
+      </div>
+      <div class="card">
+        <h3 style="text-transform:none">BeTeR-Neuro: the body read at the horizon</h3>
+        <p>Each excitable cell is an exchange between two members, sodium in and potassium out, closed by the 3:2 pump. Each organ is a carrier (heartbeat, breath, the stomach’s slow wave), and the brain reads them by phase, with both members kept, in phase and in quadrature (NEURON + NEST).</p>
+        <p>NEST’s standard unit has no resting state and fires alone at 13.9 Hz. Split its leak into its sodium and potassium members and close them with the pump: the rest appears at −68.45 mV with nothing chosen.</p>
+        <p>In all 18 human recordings (84 h) the EEG is locked to its own heartbeat. With the heart’s field removed, a median 69% of the heart-locked signal sits in quadrature, where an instantaneous reading cannot see it; the model gave 81%. The recordings were not used to build the model.</p>
+        <p class="small muted">Code and every result: <a href="https://github.com/mag-and-krotons/BeTeR-Neuro" target="_blank" rel="noopener">github.com/mag-and-krotons/BeTeR-Neuro</a></p>
+      </div>
+    </div>
   </div>
 </section>
 
